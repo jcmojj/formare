@@ -11,8 +11,4 @@ public class TipoTelefoneDao extends Dao<TipoTelefone> {
 		super(TipoTelefone.class);
 	}
 	
-//	public TipoTelefone busca(String tipo) {
-//		EntityManager manager1 = getEntityManager();
-//		return manager1.find(TipoTelefone.class, tipo);
-//	}
 }
