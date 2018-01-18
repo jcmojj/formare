@@ -1,0 +1,113 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+<h:head>
+	<h1>Tabela de Produto</h1>
+	<script name="jquery/jquery.js" library="primefaces"></script>
+</h:head>
+
+
+
+<h:form>
+	<p:layout style="min-width:400px;min-height:200px;" id="layout">
+		<p:layoutUnit position="west" resizable="true" size="600"
+			minSize="500" maxSize="600">
+
+			<h:panelGrid columns="2" cellpadding="5">
+				<h:outputLabel for="nome" value="Nome:" style="font-weight:bold" />
+				<p:inputText id="nome" value="#{produtoBean.produto.nome}" />
+			</h:panelGrid>
+
+			<h:panelGrid columns="2" cellpadding="5">
+				<h:outputLabel for="descricao" value="Descrição:" style="font-weight:bold" />
+				<p:inputTextarea id="descricao" rows="6" cols="33" value="#{produtoBean.produto.descricao}"/>
+			</h:panelGrid>
+
+			<div>
+				<h:outputLabel value="Preço" />
+				<h:inputText value="#{produtoBean.produto.preco}" />
+			</div>
+			<div>
+				<h:outputLabel value="Quantidade" />
+				<h:inputText value="#{produtoBean.produto.quantidade}" />
+			</div>
+		</p:layoutUnit>
+
+		<p:layoutUnit position="center">  
+        Center  
+    </p:layoutUnit>
+
+		<p:layoutUnit position="south">  
+        Center  
+    </p:layoutUnit>
+	</p:layout>
+
+
+
+	<div>
+		<h:panelGroup id="tipoPet">
+			<h:outputLabel value="Tipo Pet" />
+			<h:selectManyListbox value="#{produtoBean.tiposPetId}"
+				converter="javax.faces.Long">
+				<f:selectItems value="#{produtoBean.tiposPet}" var="tipoPet"
+					itemValue="#{tipoPet.id}" itemLabel="#{tipoPet.nome}" />
+			</h:selectManyListbox>
+		</h:panelGroup>
+	</div>
+	<div>
+		<h:panelGroup id="secaoPet"
+			rendered="#{not empty produtoBean.tiposPetId}">
+			<h:outputLabel value="Secoes" />
+			<h:selectManyListbox value="#{produtoBean.secoesPetId}"
+				converter="javax.faces.Long">
+				<f:selectItems value="#{produtoBean.secoesPet}" var="secaoPet"
+					itemValue="#{secaoPet.id}" itemLabel="#{secaoPet.nome}" />
+			</h:selectManyListbox>
+		</h:panelGroup>
+	</div>
+	<div>
+		<h:panelGroup id="tipoProduto">
+			<h:outputLabel value="Tipo Produto" />
+			<h:selectOneMenu value="#{produtoBean.tipoProdutoPetId}"
+				converter="javax.faces.Long">
+				<f:ajax execute="@this" render="@form" />
+				<f:selectItem itemValue="#{0}"
+					itemLabel="Selecione um tipo de Produto" />
+				<f:selectItems value="#{produtoBean.tiposProdutoPet}"
+					var="tipoProdutoPet" itemValue="#{tipoProdutoPet.id}"
+					itemLabel="#{tipoProdutoPet.nome}" />
+			</h:selectOneMenu>
+		</h:panelGroup>
+	</div>
+
+	<div>
+		<h:panelGroup id="tipoRacao">
+			<h:outputLabel value="Tipo Racao" />
+			<h:selectManyListbox value="#{produtoBean.tiposRacaoPetId}"
+				converter="javax.faces.Long"
+				rendered="#{produtoBean.tipoRacaoRenderizado}">
+				<f:selectItems value="#{produtoBean.tiposRacaoPet}"
+					var="tipoRacaoPet" itemValue="#{tipoRacaoPet.id}"
+					itemLabel="#{tipoRacaoPet.nome}" />
+			</h:selectManyListbox>
+		</h:panelGroup>
+	</div>
+
+
+
+
+
+
+
+	<h:commandButton value="Cadastrar" action="#{produtoBean.salvar}" />
+
+</h:form>
+
+</html>
+

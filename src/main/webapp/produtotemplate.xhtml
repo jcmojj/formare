@@ -1,0 +1,214 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+<h:head>
+	<style type="text/css">
+.white-button.ui-button.ui-state-default {
+	background-color: #ffffff;
+	color: #222222;
+	border-color: #d6d6d6;
+}
+
+.white-button.ui-button.ui-state-default:enabled:hover, .white-button.ui-button.ui-state-default:focus
+	{
+	background-color: #f2f2f2;
+	border-color: #ccc;
+	color: #373a3c;
+}
+
+.green-button.ui-button.ui-state-default {
+	background-color: #5cb85c;
+	border-color: #5cb85c;
+	color: #fff;
+}
+
+.green-button.ui-button.ui-state-default:enabled:hover, .green-button.ui-button.ui-state-default:focus
+	{
+	background-color: #4cae4c;
+	border-color: #5cb85c;
+}
+
+.red-button.ui-button.ui-state-default {
+	background-color: #d9534f;
+	border-color: #d9534f;
+	color: #fff;
+}
+
+.red-button.ui-button.ui-state-default:enabled:hover, .red-button.ui-button.ui-state-default:focus
+	{
+	background-color: #d43f3a;
+	border-color: #d9534f;
+}
+</style>
+</h:head>
+<h:body>
+
+	<ui:composition template="/template/layout.xhtml">
+
+		<ui:define name="content">
+			<h2>Tabela de Produtos</h2>
+
+			<h:form>
+				<p:panelGrid columns="2" cellpadding="5"
+					styleClass="ui-panelgrid-blank">
+					<p:panelGrid columns="1" cellpadding="5" layout="grid">
+						<p:panelGrid columns="1" cellpadding="5"
+							style="margin: 0px; padding: 0px; border-width: 0px">
+							<h:outputLabel for="nome" value="Nome" style="font-weight:bold" />
+
+
+							<p:inputText id="nome" placeholder="Nome do Produto"
+								value="#{produtoBean.produto.nome}" />
+						</p:panelGrid>
+
+						<p:panelGrid columns="1" cellpadding="5"
+							style="margin: 0px; padding: 0px; border-width: 0px">
+							<h:outputLabel for="descricao" value="Descrição"
+								style="font-weight:bold" />
+							<p:inputTextarea id="descricao" rows="6" cols="33"
+								placeholder="Descrição do Produto"
+								value="#{produtoBean.produto.descricao}" />
+						</p:panelGrid>
+
+						<p:panelGrid columns="1" cellpadding="5"
+							style="margin: 0px; padding: 0px; border-width: 0px">
+							<h:outputLabel for="preco" value="Preço" style="font-weight:bold" />
+							<p:spinner id="preco" value="#{produtoBean.produto.preco}"
+								prefix="R$" max="1000" stepFactor="0.1" min="0" />
+
+
+
+
+						</p:panelGrid>
+
+						<p:panelGrid columns="1" cellpadding="5"
+							style="margin: 0px; padding: 0px; border-width: 0px">
+							<h:outputLabel for="quantidade" value="Quantidade"
+								style="font-weight:bold" />
+							<p:inputNumber id="quantidade"
+								value="#{produtoBean.produto.quantidade}" />
+							<p:slider for="quantidade" minValue="1" maxValue="20" step="1" />
+
+						</p:panelGrid>
+
+					</p:panelGrid>
+
+					<p:panelGrid columns="1" cellpadding="5">
+						<p:fieldset for="tipoPet" legend="Pets"
+							style="margin-bottom:20px; padding: 5px">
+							<p:selectManyButton id="tipoPet"
+								value="#{produtoBean.tiposPetId}" converter="javax.faces.Long"
+								layout="responsive" columns="5">
+								<f:selectItems value="#{produtoBean.tiposPet}" var="tipoPet"
+									itemValue="#{tipoPet.id}" itemLabel="#{tipoPet.nome}" />
+							</p:selectManyButton>
+						</p:fieldset>
+
+						<p:fieldset for="tipoSecao" legend="Departamentos"
+							style="margin-bottom:20px; padding: 5px">
+							<p:selectManyButton id="tipoSecao"
+								value="#{produtoBean.secoesPetId}" converter="javax.faces.Long"
+								layout="responsive">
+								<f:selectItems value="#{produtoBean.secoesPet}" var="secaoPet"
+									itemValue="#{secaoPet.id}" itemLabel="#{secaoPet.nome}" />
+							</p:selectManyButton>
+						</p:fieldset>
+
+						<p:panelGrid columns="1" cellpadding="5"
+							style="margin: 0px; padding: 0px; border-width: 0px">
+							<h:outputLabel for="tipoProdutoPet" value="Tipo de Produto"
+								style="font-weight:bold" />
+							<p:selectOneMenu id="tipoProdutoPet"
+								value="#{produtoBean.tipoProdutoPetId}"
+								converter="javax.faces.Long" effect="fold">
+								<f:ajax execute="@this" render="@form" />
+								<f:selectItem itemValue="#{0}"
+									itemLabel="Selecione um tipo de Produto" />
+								<f:selectItems value="#{produtoBean.tiposProdutoPet}"
+									var="tipoProdutoPet" itemValue="#{tipoProdutoPet.id}"
+									itemLabel="#{tipoProdutoPet.nome}" />
+							</p:selectOneMenu>
+						</p:panelGrid>
+
+
+					</p:panelGrid>
+				</p:panelGrid>
+				<p:separator />
+				<p:panelGrid columns="2" cellpadding="5"
+					styleClass="ui-panelgrid-blank">
+					<p:panelGrid columns="1" cellpadding="5"
+						styleClass="ui-panelgrid-blank">
+						<p:panelGrid columns="2" cellpadding="5"
+							styleClass="ui-panelgrid-blank">
+							<h:outputText value="Novo ou Usado" />
+							<p:selectOneButton id="tipoNovoUsado"
+								value="#{managedBean.tipoNovoUsadoId}"
+								converter="javax.faces.Long">
+								<f:selectItems value="#{produtoBean.tiposNovoUsado}"
+									var="tipoNovoUsado" itemValue="#{tipoNovoUsado.id}"
+									itemLabel="#{tipoNovoUsado.nome}" />
+							</p:selectOneButton>
+						</p:panelGrid>
+
+						<p:panelGrid columns="2" cellpadding="5"
+							styleClass="ui-panelgrid-blank">
+							<h:outputText value="Aberto ou Fechado" />
+							<p:selectOneButton id="tipoAbertoFechado"
+								value="#{managedBean.tipoAbertoFechadoId}"
+								converter="javax.faces.Long">
+								<f:selectItems value="#{produtoBean.tiposAbertoFechado}"
+									var="tipoAbertoFechado" itemValue="#{tipoAbertoFechado.id}"
+									itemLabel="#{tipoAbertoFechado.nome}" />
+							</p:selectOneButton>
+						</p:panelGrid>
+
+						<p:fieldset for="idadePet" legend="Faixa de Idade do Pet"
+							style="margin-bottom:20px; padding: 5px">
+							<p:selectManyButton id="idadePet"
+								value="#{produtoBean.idadesPetId}" converter="javax.faces.Long"
+								layout="responsive">
+								<f:selectItems value="#{produtoBean.idadesPet}" var="idadePet"
+									itemValue="#{idadePet.id}" itemLabel="#{idadePet.nome}" />
+							</p:selectManyButton>
+						</p:fieldset>
+
+						<p:fieldset for="portePet" legend="Faixa de Porte de Pet"
+							style="margin-bottom:20px; padding: 5px">
+							<p:selectManyButton id="portePet"
+								value="#{produtoBean.portesPetId}" converter="javax.faces.Long"
+								layout="responsive">
+								<f:selectItems value="#{produtoBean.portesPet}" var="portePet"
+									itemValue="#{portePet.id}" itemLabel="#{portePet.nome}" />
+							</p:selectManyButton>
+						</p:fieldset>
+						
+				
+						
+					</p:panelGrid>
+
+					<p:panelGrid columns="2" cellpadding="5"
+						styleClass="ui-panelgrid-blank">
+				
+
+					</p:panelGrid>
+				</p:panelGrid>
+			</h:form>
+
+
+		</ui:define>
+
+
+
+	</ui:composition>
+
+</h:body>
+
+</html>
+
+
+

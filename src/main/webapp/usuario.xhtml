@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html">
+<h:head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<title>CoisasDe</title>
+	<h:outputStylesheet library="css" name="style.css"></h:outputStylesheet>
+</h:head>
+<h:body>
+	<header id="cabecalho"> <h:graphicImage library="img"
+		name="tatinha.png" style="padding:0; margin:0; height:60px" /> <h:outputText> MyKidPet - Control </h:outputText>
+	<h:graphicImage library="img" name="belinha.png"
+		style="padding:0; margin:0; height:60px" /> <!-- <div id="usuarioLogado">Logado como: #{loginBean.usuario.login}</div> -->
+	</header>
+	<!--  formulario para adicionar o produto -->
+	<div id="conteudo">
+		<h2>
+			<h:outputText value="Novo Usuario"
+				rendered="#{empty usuariosBean.usuario.id}"></h:outputText>
+			<h:outputText value="Editar Usuario"
+				rendered="#{not empty usuariosBean.usuario.id}"></h:outputText>
+		</h2>
+		<h:form id="formUsuario">
+			<h:inputHidden value="#{usuariosBean.usuario.id}" />
+
+
+			<h:inputHidden value="#{usuariosBean.usuario.dataAlteracao.time}">
+				<f:convertDateTime timeZone="Americas/Sao_Paulo"
+					pattern="dd/mm/yyyy" />
+			</h:inputHidden>
+			<h:inputHidden value="#{usuariosBean.usuario.dataCriacao.time}">
+				<f:convertDateTime timeZone="Americas/Sao_Paulo"
+					pattern="dd/mm/yyyy" />
+			</h:inputHidden>
+
+			<fieldset>
+				<legend>Dados do Produto</legend>
+
+				<!-- <h:panelGrid columns="2"> -->
+				<h:outputLabel value="Email: " for="email"></h:outputLabel>
+				<h:inputText id="email" value="#{usuariosBean.usuario.email}"></h:inputText>
+
+				<h:outputLabel value="Senha: " for="senha"></h:outputLabel>
+				<h:inputText id="senha" value="#{usuariosBean.usuario.senha}"></h:inputText>
+
+				<h:outputLabel value="Apelido:" for="apelido"></h:outputLabel>
+				<h:inputText id="apelido" value="#{usuariosBean.usuario.apelido}"></h:inputText>
+
+				<h:commandButton value="Gravar" action="#{usuariosBean.grava}">
+					<f:ajax execute="@form" render="@form :formTabela" />
+					<!-- manda o formulario e executa a resposta nesse form @form e no form tabela :formTabela  -->
+				</h:commandButton>
+			</fieldset>
+		</h:form>
+		<!-- formulario dos produto  -->
+		<h2>Listagem de Usuarios</h2>
+		<h:form id="formTabela">
+			<h:dataTable value="#{usuariosBean.usuarios}" var="usuario"
+				styleClass="dados" rowClasses="impar,par">
+
+				<h:column>
+					<f:facet name="header">Id</f:facet>
+			#{usuario.id}
+			</h:column>
+
+				<h:column>
+					<f:facet name="header">Email</f:facet>
+			#{usuario.email}
+			</h:column>email
+
+				<h:column>
+					<f:facet name="header">Senha</f:facet>
+			#{usuario.senha}
+			</h:column>
+
+				<h:column>
+					<f:facet name="header">Data Criacao</f:facet>
+					<h:outputText value="#{usuario.dataCriacao.time}">
+						<f:convertDateTime type="both" dateStyle="long" />
+					</h:outputText>
+				</h:column>
+
+				<h:column>
+					<f:facet name="header">Data Alteracao</f:facet>
+					<h:outputText value="#{usuario.dataAlteracao.time}">
+						<f:convertDateTime type="both" dateStyle="long" />
+					</h:outputText>
+				</h:column>
+
+
+
+				<h:column>
+					<f:facet name="header">Remover</f:facet>
+					<h:commandLink action="#{usuariosBean.remove(usuario)}"
+						value="Remover">
+						<f:ajax render="@form" />
+					</h:commandLink>
+				</h:column>
+
+				<h:column>
+					<f:facet name="header">Alterar</f:facet>
+					<h:commandLink value="Alterar">
+						<f:setPropertyActionListener target="#{usuariosBean.usuario}"
+							value="#{usuario}" />
+						<f:ajax execute="@form" render=":formUsuario :formTabela" />
+					</h:commandLink>
+				</h:column>
+
+			</h:dataTable>
+		</h:form>
+	</div>
+	<footer id="rodape"> Copyright 2013. Todos os direitor
+	reservados a MyKidPet </footer>
+</h:body>
+</html>
