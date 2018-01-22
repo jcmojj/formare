@@ -53,7 +53,8 @@ public class Usuario implements Serializable {
 	// Todo usuario nasce como cliente, quem define outras funcoes são as sócias
 	protected boolean ehCliente;
 	protected boolean ehPaciente;
-	protected boolean ehTerapeuta;
+	protected boolean ehClientePagante;
+	protected boolean ehProfissional;
 	protected boolean ehSocia;
 	protected boolean ehAdministrador;
 	protected boolean ehSecretaria;
@@ -69,27 +70,42 @@ public class Usuario implements Serializable {
 	}
 
 	// Constructor
-	public Usuario(String email, String senha) {
+	public Usuario() {
 		super();
-		this.email = email;
-		this.senha = senha;
 		this.ehCliente = true;
+		this.ehClientePagante = false;
 		this.ehPaciente = false;
-		this.ehTerapeuta = false;
+		this.ehProfissional = false;
 		this.ehSocia = false;
 		this.ehAdministrador = false;
 		this.ehSecretaria = false;
 		quandoCriar();
 	}
 
-	public Usuario() {
-		super();
-	}
-
 	public Usuario(Long id) {
 		super();
-		quandoAtualizar();
 		this.id = id;
+		this.ehCliente = true;
+		this.ehClientePagante = false;
+		this.ehPaciente = false;
+		this.ehProfissional = false;
+		this.ehSocia = false;
+		this.ehAdministrador = false;
+		this.ehSecretaria = false;
+		quandoCriar();
+	}
+	public Usuario(String email, String senha) {
+		super();
+		this.email = email;
+		this.senha = senha;
+		this.ehCliente = true;
+		this.ehClientePagante = false;
+		this.ehPaciente = false;
+		this.ehProfissional = false;
+		this.ehSocia = false;
+		this.ehAdministrador = false;
+		this.ehSecretaria = false;
+		quandoCriar();
 	}
 
 	// Getters and Setters
@@ -166,53 +182,6 @@ public class Usuario implements Serializable {
 		this.telefones = telefones;
 	}
 
-	public boolean isEhCliente() {
-		return ehCliente;
-	}
-
-	public void setEhCliente(boolean ehCliente) {
-		this.ehCliente = ehCliente;
-	}
-
-	public boolean isEhPaciente() {
-		return ehPaciente;
-	}
-
-	public void setEhPaciente(boolean ehPaciente) {
-		this.ehPaciente = ehPaciente;
-	}
-
-	public boolean isEhTerapeuta() {
-		return ehTerapeuta;
-	}
-
-	public void setEhTerapeuta(boolean ehTerapeuta) {
-		this.ehTerapeuta = ehTerapeuta;
-	}
-
-	public boolean isEhSocia() {
-		return ehSocia;
-	}
-
-	public void setEhSocia(boolean ehSocia) {
-		this.ehSocia = ehSocia;
-	}
-
-	public boolean isEhAdministrador() {
-		return ehAdministrador;
-	}
-
-	public void setEhAdministrador(boolean ehAdministrador) {
-		this.ehAdministrador = ehAdministrador;
-	}
-
-	public boolean isEhSecretaria() {
-		return ehSecretaria;
-	}
-
-	public void setEhSecretaria(boolean ehSecretaria) {
-		this.ehSecretaria = ehSecretaria;
-	}
 
 	public Calendar getDataCriacao() {
 		return dataCriacao;

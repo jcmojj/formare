@@ -5,19 +5,23 @@ import java.util.List;
 
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 
 @Entity
 public class Cliente extends Usuario implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
-	// Dependente e o Que está autorizado a fazer
-	@OneToMany(mappedBy="autorizador")
-	private List<Autorizacao> autorizacoes;	
-	@OneToOne(mappedBy="autorizado")
-	private Autorizacao autorizacaoDoAutorizado;
-	@OneToOne(mappedBy="dependente")
-	private Autorizacao autorizacaoDoDependente;
+	@OneToMany(mappedBy="autorizado")
+	private List<Autorizacao> autorizacoesDoAutorizado;
+	
+//	@OneToMany(mappedBy="autorizador") //ok
+//	private List<Autorizacao> autorizacoes;	
+	// Pacote
+//	@OneToMany
+//	
+//	
+//	// Paciente
+//	@OneToOne
+	
 
 	
 	
@@ -45,25 +49,21 @@ public class Cliente extends Usuario implements Serializable {
 	public Cliente(String email, String senha) {
 		super(email, senha);
 	}
-//	// Getters and Setters
-	public List<Autorizacao> getAutorizacoes() {
-		return autorizacoes;
+	// Getters and Setters
+	public List<Autorizacao> getAutorizacoesDoAutorizado() {
+		return autorizacoesDoAutorizado;
 	}
-	public void setAutorizacoes(List<Autorizacao> autorizacoes) {
-		this.autorizacoes = autorizacoes;
+	public void setAutorizacoesDoAutorizado(List<Autorizacao> autorizacoesDoAutorizado) {
+		this.autorizacoesDoAutorizado = autorizacoesDoAutorizado;
 	}
-	public Autorizacao getAutorizacaoDoAutorizado() {
-		return autorizacaoDoAutorizado;
-	}
-	public void setAutorizacaoDoAutorizado(Autorizacao autorizacaoDoAutorizado) {
-		this.autorizacaoDoAutorizado = autorizacaoDoAutorizado;
-	}
-	public Autorizacao getAutorizacaoDoDependente() {
-		return autorizacaoDoDependente;
-	}
-	public void setAutorizacaoDoDependente(Autorizacao autorizacaoDoDependente) {
-		this.autorizacaoDoDependente = autorizacaoDoDependente;
-	}
+	
+//	public Autorizacao getAutorizacaoDoAutorizado() {
+//		return autorizacaoDoAutorizado;
+//	}
+//	public void setAutorizacaoDoAutorizado(Autorizacao autorizacaoDoAutorizado) {
+//		this.autorizacaoDoAutorizado = autorizacaoDoAutorizado;
+//	}
+
 //	public List<Cliente> getDependentes() {
 //		return dependentes;
 //	}
