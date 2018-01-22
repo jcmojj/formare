@@ -16,9 +16,9 @@ public class Autorizacao implements Serializable {
 	private Long id;
 
 	@ManyToOne
-	private ClientePagante autorizador;
+	private Pagante autorizador;
 	@ManyToOne
-	private Cliente autorizado;
+	private Autorizado autorizado;
 	@ManyToOne
 	private Paciente paciente;
 
@@ -38,7 +38,7 @@ public class Autorizacao implements Serializable {
 		super();
 	}
 
-	public Autorizacao(ClientePagante autorizador, Cliente autorizado, Paciente paciente) {
+	public Autorizacao(Pagante autorizador, Autorizado autorizado, Paciente paciente) {
 		super();
 		this.autorizador = autorizador;
 		this.autorizado = autorizado;
@@ -54,19 +54,19 @@ public class Autorizacao implements Serializable {
 		this.id = id;
 	}
 
-	public ClientePagante getAutorizador() {
+	public Pagante getAutorizador() {
 		return autorizador;
 	}
 
-	public void setAutorizador(ClientePagante autorizador) {
+	public void setAutorizador(Pagante autorizador) {
 		this.autorizador = autorizador;
 	}
 
-	public Cliente getAutorizado() {
+	public Autorizado getAutorizado() {
 		return autorizado;
 	}
 
-	public void setAutorizado(Cliente autorizado) {
+	public void setAutorizado(Autorizado autorizado) {
 		this.autorizado = autorizado;
 	}
 

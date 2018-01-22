@@ -2,63 +2,41 @@ package br.com.coisasde.loja.model.usuario;
 
 import java.io.Serializable;
 import java.util.Calendar;
-import java.util.List;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
-import br.com.coisasde.loja.model.atendimento.Pacote;
-
 @Entity
-public class Paciente implements Serializable {
+public class Secretaria implements Serializable {
 	private static final long serialVersionUID = 1L;
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	@OneToOne(mappedBy = "paciente")
+	@OneToOne(mappedBy = "secretaria")
 	Usuario usuario;
 	@Temporal(TemporalType.TIMESTAMP)
 	private Calendar dataCriacao;
 	@Temporal(TemporalType.TIMESTAMP)
 	private Calendar dataAlteracao;
 
-	@OneToMany(mappedBy = "paciente")
-	private List<Autorizacao> autorizacoesDoDependente;
-	@OneToMany(mappedBy = "paciente")
-	private List<Pacote> pacotes;
-
 	// Constructor
-	public Paciente() {
+	public Secretaria() {
+		super();
 	}
 
-	public Paciente(Long id) {
+	public Secretaria(Long id) {
+		super();
 		this.id = id;
 	}
 
-	// Getters and Setters
-	public List<Autorizacao> getAutorizacoesDoDependente() {
-		return autorizacoesDoDependente;
-	}
-
-	public void setAutorizacoesDoDependente(List<Autorizacao> autorizacoesDoDependente) {
-		this.autorizacoesDoDependente = autorizacoesDoDependente;
-	}
-
-	public List<Pacote> getPacotes() {
-		return pacotes;
-	}
-
-	public void setPacotes(List<Pacote> pacotes) {
-		this.pacotes = pacotes;
-	}
+	// Getters and setters
 
 	public Long getId() {
 		return id;
@@ -104,4 +82,5 @@ public class Paciente implements Serializable {
 	public void quandoAtualizar() {
 		this.setDataAlteracao(Calendar.getInstance());
 	}
+
 }

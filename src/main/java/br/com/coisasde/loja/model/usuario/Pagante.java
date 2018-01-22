@@ -18,38 +18,41 @@ import javax.persistence.TemporalType;
 import br.com.coisasde.loja.model.atendimento.Pacote;
 
 @Entity
-public class Paciente implements Serializable {
+public class Pagante implements Serializable {
 	private static final long serialVersionUID = 1L;
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	@OneToOne(mappedBy = "paciente")
+	@OneToOne(mappedBy = "pagante")
 	Usuario usuario;
 	@Temporal(TemporalType.TIMESTAMP)
 	private Calendar dataCriacao;
 	@Temporal(TemporalType.TIMESTAMP)
 	private Calendar dataAlteracao;
 
-	@OneToMany(mappedBy = "paciente")
-	private List<Autorizacao> autorizacoesDoDependente;
-	@OneToMany(mappedBy = "paciente")
+	// Dependente e o Que está autorizado a fazer
+	@OneToMany(mappedBy = "autorizador") // ok
+	private List<Autorizacao> autorizacoes;
+
+	@OneToMany(mappedBy = "contratante")
 	private List<Pacote> pacotes;
 
 	// Constructor
-	public Paciente() {
+	public Pagante() {
+		super();
 	}
 
-	public Paciente(Long id) {
+	public Pagante(Long id) {
 		this.id = id;
 	}
 
 	// Getters and Setters
-	public List<Autorizacao> getAutorizacoesDoDependente() {
-		return autorizacoesDoDependente;
+	public List<Autorizacao> getAutorizacoes() {
+		return autorizacoes;
 	}
 
-	public void setAutorizacoesDoDependente(List<Autorizacao> autorizacoesDoDependente) {
-		this.autorizacoesDoDependente = autorizacoesDoDependente;
+	public void setAutorizacoes(List<Autorizacao> autorizacoes) {
+		this.autorizacoes = autorizacoes;
 	}
 
 	public List<Pacote> getPacotes() {

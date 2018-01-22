@@ -11,7 +11,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
-import br.com.coisasde.loja.model.usuario.ClientePagante;
+import br.com.coisasde.loja.model.usuario.Pagante;
 import br.com.coisasde.loja.model.usuario.Paciente;
 import br.com.coisasde.loja.model.usuario.Socia;
 
@@ -25,7 +25,7 @@ public class Pacote implements Serializable {
 	@ManyToOne
 	private Socia sociaResponsavel;
 	@ManyToOne
-	private ClientePagante contratante; // !!! relacao
+	private Pagante contratante; // !!! relacao
 	@OneToOne
 	private Paciente paciente; // deve ser um dependente do contratante !!!relacao
 	// private List<Cliente> pacientesPermitidos;
@@ -52,7 +52,7 @@ public class Pacote implements Serializable {
 		this.id = id;
 	}
 
-	public Pacote(Socia sociaResponsavel, ClientePagante contratante) {
+	public Pacote(Socia sociaResponsavel, Pagante contratante) {
 		super();
 		this.sociaResponsavel = sociaResponsavel;
 		this.contratante = contratante;
@@ -76,11 +76,11 @@ public class Pacote implements Serializable {
 		this.sociaResponsavel = sociaResponsavel;
 	}
 
-	public ClientePagante getContratante() {
+	public Pagante getContratante() {
 		return contratante;
 	}
 
-	public void setContratante(ClientePagante contratante) {
+	public void setContratante(Pagante contratante) {
 		this.contratante = contratante;
 	}
 

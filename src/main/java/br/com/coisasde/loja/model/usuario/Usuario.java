@@ -12,6 +12,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 import javax.persistence.Temporal;
@@ -43,21 +44,30 @@ public class Usuario implements Serializable {
 	private String cpf;
 	private String rg;
 
-	@ManyToMany
+	// Relações com tipos de Usuário
+	protected boolean cliente;
+	protected boolean equipe;
+	@OneToOne
+	Paciente paciente;
+	@OneToOne
+	Autorizado autorizado;
+	@OneToOne
+	Pagante pagante;
+	@OneToOne
+	Profissional profissional;
+	@OneToOne
+	Socia socia;
+	@OneToOne
+	Administrador administrador;
+	@OneToOne
+	Secretaria secretaria;
+
+	@ManyToMany // Join para criar uma tabela única em relacionamento many to many
 	@JoinTable(name = "Usuario_Telefone", joinColumns = @JoinColumn(name = "Usuario_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "Telefone_id", referencedColumnName = "id"))
 	private List<Telefone> telefones;
-	@ManyToMany
+	@ManyToMany // Join para criar uma tabela única em relacionamento many to many
 	@JoinTable(name = "Usuario_Endereco", joinColumns = @JoinColumn(name = "Usuario_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "Endereco_id", referencedColumnName = "id"))
 	private List<Endereco> enderecos;
-
-	// Todo usuario nasce como cliente, quem define outras funcoes são as sócias
-	protected boolean ehCliente;
-	protected boolean ehPaciente;
-	protected boolean ehClientePagante;
-	protected boolean ehProfissional;
-	protected boolean ehSocia;
-	protected boolean ehAdministrador;
-	protected boolean ehSecretaria;
 
 	@Temporal(TemporalType.TIMESTAMP)
 	private Calendar dataCriacao;
@@ -66,46 +76,22 @@ public class Usuario implements Serializable {
 
 	@Override
 	public String toString() {
-		return "Usuario [id=" + id + ", email=" + email + ", senha=" + senha + ", nome=" + nome + ", sobrenome=" + sobrenome + ", cpf=" + cpf + "]";
+		return "Usuario [id=" + id + ", email=" + email + ", senha=" + senha + ", nome=" + nome + ", sobrenome=" + sobrenome + ", dataNascimento=" + dataNascimento + ", cpf=" + cpf + ", rg=" + rg
+				+ ", telefones=" + telefones + ", enderecos=" + enderecos + ", Cliente=" + isCliente() + ", Paciente=" + isPaciente() + ", Autorizado=" + isAutorizado() + ", Pagante=" + isPagante()
+				+ ", Equipe=" + isEquipe() + ", Profissional=" + isProfissional() + ", Socia=" + isSocia() + ", Administrador=" + isAdministrador() + ", Secretaria=" + isSecretaria() + "]";
 	}
 
 	// Constructor
 	public Usuario() {
-		super();
-		this.ehCliente = true;
-		this.ehClientePagante = false;
-		this.ehPaciente = false;
-		this.ehProfissional = false;
-		this.ehSocia = false;
-		this.ehAdministrador = false;
-		this.ehSecretaria = false;
-		quandoCriar();
 	}
 
 	public Usuario(Long id) {
-		super();
 		this.id = id;
-		this.ehCliente = true;
-		this.ehClientePagante = false;
-		this.ehPaciente = false;
-		this.ehProfissional = false;
-		this.ehSocia = false;
-		this.ehAdministrador = false;
-		this.ehSecretaria = false;
-		quandoCriar();
 	}
+
 	public Usuario(String email, String senha) {
-		super();
 		this.email = email;
 		this.senha = senha;
-		this.ehCliente = true;
-		this.ehClientePagante = false;
-		this.ehPaciente = false;
-		this.ehProfissional = false;
-		this.ehSocia = false;
-		this.ehAdministrador = false;
-		this.ehSecretaria = false;
-		quandoCriar();
 	}
 
 	// Getters and Setters
@@ -182,7 +168,6 @@ public class Usuario implements Serializable {
 		this.telefones = telefones;
 	}
 
-
 	public Calendar getDataCriacao() {
 		return dataCriacao;
 	}
@@ -205,6 +190,107 @@ public class Usuario implements Serializable {
 
 	public void setEnderecos(List<Endereco> enderecos) {
 		this.enderecos = enderecos;
+	}
+	// Getters and Setters das Relacoes
+
+	public Paciente getPaciente() {
+		return paciente;
+	}
+
+	public void setPaciente(Paciente paciente) {
+		this.cliente = !this.paciente.equals(null) & !this.autorizado.equals(null) & !this.pagante.equals(null);
+		this.paciente = paciente;
+	}
+
+	public Autorizado getAutorizado() {
+		return autorizado;
+	}
+
+	public void setAutorizado(Autorizado autorizado) {
+		this.cliente = !this.paciente.equals(null) & !this.autorizado.equals(null) & !this.pagante.equals(null);
+		this.autorizado = autorizado;
+	}
+
+	public Pagante getPagante() {
+		return pagante;
+	}
+
+	public void setPagante(Pagante pagante) {
+		this.cliente = !this.paciente.equals(null) & !this.autorizado.equals(null) & !this.pagante.equals(null);
+		this.pagante = pagante;
+	}
+
+	public Profissional getProfissional() {
+		return profissional;
+	}
+
+	public void setProfissional(Profissional profissional) {
+		this.equipe = !this.profissional.equals(null) & !this.socia.equals(null) & !this.administrador.equals(null) & !this.secretaria.equals(null);
+		this.profissional = profissional;
+	}
+
+	public Socia getSocia() {
+		return socia;
+	}
+
+	public void setSocia(Socia socia) {
+		this.equipe = !this.profissional.equals(null) & !this.socia.equals(null) & !this.administrador.equals(null) & !this.secretaria.equals(null);
+		this.socia = socia;
+	}
+
+	public Administrador getAdministrador() {
+		return administrador;
+	}
+
+	public void setAdministrador(Administrador administrador) {
+		this.equipe = !this.profissional.equals(null) & !this.socia.equals(null) & !this.administrador.equals(null) & !this.secretaria.equals(null);
+		this.administrador = administrador;
+	}
+
+	public Secretaria getSecretaria() {
+		return secretaria;
+	}
+
+	public void setSecretaria(Secretaria secretaria) {
+		this.equipe = !this.profissional.equals(null) & !this.socia.equals(null) & !this.administrador.equals(null) & !this.secretaria.equals(null);
+		this.secretaria = secretaria;
+	}
+
+	// Getters and Setters dos Booleans
+	public boolean isCliente() {
+		return cliente; 
+	}
+
+	public boolean isPaciente() {
+		return !this.paciente.equals(null);
+	}
+
+	public boolean isAutorizado() {
+		return !this.autorizado.equals(null);
+	}
+
+	public boolean isPagante() {
+		return !this.pagante.equals(null);
+	}
+
+	public boolean isEquipe() {
+		return equipe;
+	}
+
+	public boolean isProfissional() {
+		return !this.profissional.equals(null);
+	}
+
+	public boolean isSocia() {
+		return !this.socia.equals(null);
+	}
+
+	public boolean isAdministrador() {
+		return !this.administrador.equals(null);
+	}
+
+	public boolean isSecretaria() {
+		return !this.secretaria.equals(null);
 	}
 
 	// Método Callback para persistir
