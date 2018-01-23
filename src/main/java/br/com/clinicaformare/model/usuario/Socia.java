@@ -8,6 +8,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.PrePersist;
@@ -25,6 +26,8 @@ public class Socia implements Serializable {
 	private Long id;
 	@OneToOne(mappedBy = "socia")
 	Usuario usuario;
+	@ManyToOne
+	TipoProfissional tipoProfissional;
 	@Temporal(TemporalType.TIMESTAMP)
 	private Calendar dataCriacao;
 	@Temporal(TemporalType.TIMESTAMP)
@@ -34,6 +37,12 @@ public class Socia implements Serializable {
 	@OneToMany(mappedBy = "sociaResponsavel")
 	private List<Pacote> pacotes;
 
+	@Override
+	public String toString() {
+		return "Socia [id=" + id + ", usuario=" + usuario + ", tipoProfissional=" + tipoProfissional + ", dataCriacao=" + dataCriacao + ", dataAlteracao=" + dataAlteracao + ", pacotes=" + pacotes
+				+ "]";
+	}
+
 	// Constructor
 	public Socia() {
 	}
@@ -41,8 +50,12 @@ public class Socia implements Serializable {
 	public Socia(Long id) {
 		this.id = id;
 	}
+	public Socia(TipoProfissional tipoProfissional) {
+		this.tipoProfissional = tipoProfissional;
+	}
 
 	// Getters and setters
+
 
 	public List<Pacote> getPacotes() {
 		return pacotes;
@@ -82,6 +95,14 @@ public class Socia implements Serializable {
 
 	public void setDataAlteracao(Calendar dataAlteracao) {
 		this.dataAlteracao = dataAlteracao;
+	}
+
+	public TipoProfissional getTipoProfissional() {
+		return tipoProfissional;
+	}
+
+	public void setTipoProfissional(TipoProfissional tipoProfissional) {
+		this.tipoProfissional = tipoProfissional;
 	}
 
 	// Método Callback para persistir

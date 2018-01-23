@@ -35,6 +35,12 @@ public class Paciente implements Serializable {
 	@OneToMany(mappedBy = "paciente")
 	private List<Pacote> pacotes;
 
+	@Override
+	public String toString() {
+		return "Paciente [id=" + id + ", usuario=" + usuario + ", dataCriacao=" + dataCriacao + ", dataAlteracao=" + dataAlteracao + ", autorizacoesDoDependente=" + autorizacoesDoDependente
+				+ ", pacotes=" + pacotes + "]";
+	}
+
 	// Constructor
 	public Paciente() {
 	}

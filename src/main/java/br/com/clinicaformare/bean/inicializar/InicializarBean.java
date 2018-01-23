@@ -12,9 +12,9 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import javax.transaction.Transactional;
 
-import br.com.clinicaformare.daos.LogradouroDao;
-import br.com.clinicaformare.daos.PaesciDao;
-import br.com.clinicaformare.daos.TipoTelefoneDao;
+import br.com.clinicaformare.daos.usuario.LogradouroDao;
+import br.com.clinicaformare.daos.usuario.PaesciDao;
+import br.com.clinicaformare.daos.usuario.TipoTelefoneDao;
 import br.com.clinicaformare.model.usuario.telefone.TipoTelefone;
 import br.com.clinicaformare.usuario.endereco.Logradouro;
 import br.com.clinicaformare.usuario.endereco.Paesci;

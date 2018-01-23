@@ -26,6 +26,11 @@ public class Secretaria implements Serializable {
 	@Temporal(TemporalType.TIMESTAMP)
 	private Calendar dataAlteracao;
 
+	@Override
+	public String toString() {
+		return "Secretaria [id=" + id + ", usuario=" + usuario + ", dataCriacao=" + dataCriacao + ", dataAlteracao=" + dataAlteracao + "]";
+	}
+
 	// Constructor
 	public Secretaria() {
 		super();

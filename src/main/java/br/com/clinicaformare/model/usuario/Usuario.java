@@ -1,7 +1,8 @@
 package br.com.clinicaformare.model.usuario;
 
 import java.io.Serializable;
-import java.util.Calendar;
+import java.time.LocalDateTime;
+import java.time.Period;
 import java.util.List;
 
 import javax.persistence.Column;
@@ -15,8 +16,6 @@ import javax.persistence.ManyToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 
 import org.hibernate.validator.constraints.Email;
 
@@ -28,6 +27,7 @@ public class Usuario implements Serializable {
 	private static final long serialVersionUID = 2L;
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "id", updatable = false, nullable = false)
 	private Long id;
 
 	// Necessário para criação
@@ -39,14 +39,14 @@ public class Usuario implements Serializable {
 
 	private String nome;
 	private String sobrenome;
-	private Calendar dataNascimento;
+	private LocalDateTime dataNascimento;
 	@Column(unique = true)
 	private String cpf;
 	private String rg;
 
 	// Relações com tipos de Usuário
-	protected boolean cliente;
-	protected boolean equipe;
+	protected Boolean cliente;
+	protected Boolean equipe;
 	@OneToOne
 	Paciente paciente;
 	@OneToOne
@@ -69,10 +69,10 @@ public class Usuario implements Serializable {
 	@JoinTable(name = "Usuario_Endereco", joinColumns = @JoinColumn(name = "Usuario_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "Endereco_id", referencedColumnName = "id"))
 	private List<Endereco> enderecos;
 
-	@Temporal(TemporalType.TIMESTAMP)
-	private Calendar dataCriacao;
-	@Temporal(TemporalType.TIMESTAMP)
-	private Calendar dataAlteracao;
+	@Column
+	private LocalDateTime dataCriacao;
+	@Column
+	private LocalDateTime dataAlteracao;
 
 	@Override
 	public String toString() {
@@ -92,6 +92,10 @@ public class Usuario implements Serializable {
 	public Usuario(String email, String senha) {
 		this.email = email;
 		this.senha = senha;
+	}
+
+	public Usuario(String nome) {
+		this.nome = nome;
 	}
 
 	// Getters and Setters
@@ -136,11 +140,11 @@ public class Usuario implements Serializable {
 		this.sobrenome = sobrenome;
 	}
 
-	public Calendar getDataNascimento() {
+	public LocalDateTime getDataNascimento() {
 		return dataNascimento;
 	}
 
-	public void setDataNascimento(Calendar dataNascimento) {
+	public void setDataNascimento(LocalDateTime dataNascimento) {
 		this.dataNascimento = dataNascimento;
 	}
 
@@ -168,19 +172,19 @@ public class Usuario implements Serializable {
 		this.telefones = telefones;
 	}
 
-	public Calendar getDataCriacao() {
+	public LocalDateTime getDataCriacao() {
 		return dataCriacao;
 	}
 
-	public void setDataCriacao(Calendar dataCriacao) {
+	public void setDataCriacao(LocalDateTime dataCriacao) {
 		this.dataCriacao = dataCriacao;
 	}
 
-	public Calendar getDataAlteracao() {
+	public LocalDateTime getDataAlteracao() {
 		return dataAlteracao;
 	}
 
-	public void setDataAlteracao(Calendar dataAlteracao) {
+	public void setDataAlteracao(LocalDateTime dataAlteracao) {
 		this.dataAlteracao = dataAlteracao;
 	}
 
@@ -198,7 +202,7 @@ public class Usuario implements Serializable {
 	}
 
 	public void setPaciente(Paciente paciente) {
-		this.cliente = !this.paciente.equals(null) & !this.autorizado.equals(null) & !this.pagante.equals(null);
+		this.cliente = (paciente != null) & (autorizado != null) & (pagante != null);
 		this.paciente = paciente;
 	}
 
@@ -207,7 +211,7 @@ public class Usuario implements Serializable {
 	}
 
 	public void setAutorizado(Autorizado autorizado) {
-		this.cliente = !this.paciente.equals(null) & !this.autorizado.equals(null) & !this.pagante.equals(null);
+		this.cliente = (paciente != null) & (autorizado != null) & (pagante != null);
 		this.autorizado = autorizado;
 	}
 
@@ -216,7 +220,7 @@ public class Usuario implements Serializable {
 	}
 
 	public void setPagante(Pagante pagante) {
-		this.cliente = !this.paciente.equals(null) & !this.autorizado.equals(null) & !this.pagante.equals(null);
+		this.cliente = (paciente != null) & (autorizado != null) & (pagante != null);
 		this.pagante = pagante;
 	}
 
@@ -225,8 +229,11 @@ public class Usuario implements Serializable {
 	}
 
 	public void setProfissional(Profissional profissional) {
-		this.equipe = !this.profissional.equals(null) & !this.socia.equals(null) & !this.administrador.equals(null) & !this.secretaria.equals(null);
+		this.equipe = (profissional != null) & (socia != null) & (administrador != null) & (secretaria != null);
+		// System.out.println("AQUI3");
 		this.profissional = profissional;
+		// profissional.setUsuario(this);
+		// System.out.println("AQUI1");
 	}
 
 	public Socia getSocia() {
@@ -234,7 +241,7 @@ public class Usuario implements Serializable {
 	}
 
 	public void setSocia(Socia socia) {
-		this.equipe = !this.profissional.equals(null) & !this.socia.equals(null) & !this.administrador.equals(null) & !this.secretaria.equals(null);
+		this.equipe = (profissional != null) & (socia != null) & (administrador != null) & (secretaria != null);
 		this.socia = socia;
 	}
 
@@ -243,7 +250,7 @@ public class Usuario implements Serializable {
 	}
 
 	public void setAdministrador(Administrador administrador) {
-		this.equipe = !this.profissional.equals(null) & !this.socia.equals(null) & !this.administrador.equals(null) & !this.secretaria.equals(null);
+		this.equipe = (profissional != null) & (socia != null) & (administrador != null) & (secretaria != null);
 		this.administrador = administrador;
 	}
 
@@ -252,58 +259,62 @@ public class Usuario implements Serializable {
 	}
 
 	public void setSecretaria(Secretaria secretaria) {
-		this.equipe = !this.profissional.equals(null) & !this.socia.equals(null) & !this.administrador.equals(null) & !this.secretaria.equals(null);
+		this.equipe = (profissional != null) & (socia != null) & (administrador != null) & (secretaria != null);
 		this.secretaria = secretaria;
 	}
 
+	public Integer getIdade() {
+		return Period.between(dataNascimento.toLocalDate(), LocalDateTime.now().toLocalDate()).getYears();
+	}
+
 	// Getters and Setters dos Booleans
-	public boolean isCliente() {
-		return cliente; 
+	public Boolean isCliente() {
+		return cliente;
 	}
 
-	public boolean isPaciente() {
-		return !this.paciente.equals(null);
+	public Boolean isPaciente() {
+		return (paciente != null) ? true : false;
 	}
 
-	public boolean isAutorizado() {
-		return !this.autorizado.equals(null);
+	public Boolean isAutorizado() {
+		return (autorizado != null) ? true : false;
 	}
 
-	public boolean isPagante() {
-		return !this.pagante.equals(null);
+	public Boolean isPagante() {
+		return (pagante != null) ? true : false;
 	}
 
-	public boolean isEquipe() {
+	public Boolean isEquipe() {
 		return equipe;
 	}
 
-	public boolean isProfissional() {
-		return !this.profissional.equals(null);
+	public Boolean isProfissional() {
+		return (profissional != null) ? true : false;
 	}
 
-	public boolean isSocia() {
-		return !this.socia.equals(null);
+	public Boolean isSocia() {
+		return (socia != null) ? true : false;
 	}
 
-	public boolean isAdministrador() {
-		return !this.administrador.equals(null);
+	public Boolean isAdministrador() {
+		return (administrador != null) ? true : false;
 	}
 
-	public boolean isSecretaria() {
-		return !this.secretaria.equals(null);
+	public Boolean isSecretaria() {
+		return (secretaria != null) ? true : false;
 	}
 
 	// Método Callback para persistir
 	@PrePersist
 	public void quandoCriar() {
-		this.setDataCriacao(Calendar.getInstance());
-		this.setDataAlteracao(Calendar.getInstance());
+		this.setDataCriacao(LocalDateTime.now());
+		this.setDataAlteracao(LocalDateTime.now());
 	}
 
 	// Método Callback para update
 	@PreUpdate
 	public void quandoAtualizar() {
-		this.setDataAlteracao(Calendar.getInstance());
+		this.setDataAlteracao(LocalDateTime.now());
 	}
 
 }

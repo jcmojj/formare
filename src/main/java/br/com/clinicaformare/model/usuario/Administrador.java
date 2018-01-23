@@ -26,6 +26,11 @@ public class Administrador implements Serializable {
 	@Temporal(TemporalType.TIMESTAMP)
 	private Calendar dataAlteracao;
 
+	@Override
+	public String toString() {
+		return "Administrador [id=" + id + ", usuario=" + usuario + ", dataCriacao=" + dataCriacao + ", dataAlteracao=" + dataAlteracao + "]";
+	}
+
 	// Constructor
 	public Administrador() {
 		super();

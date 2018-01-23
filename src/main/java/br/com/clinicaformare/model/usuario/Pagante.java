@@ -37,6 +37,11 @@ public class Pagante implements Serializable {
 	@OneToMany(mappedBy = "contratante")
 	private List<Pacote> pacotes;
 
+	@Override
+	public String toString() {
+		return "Pagante [id=" + id + ", usuario=" + usuario + ", dataCriacao=" + dataCriacao + ", dataAlteracao=" + dataAlteracao + ", autorizacoes=" + autorizacoes + ", pacotes=" + pacotes + "]";
+	}
+
 	// Constructor
 	public Pagante() {
 		super();

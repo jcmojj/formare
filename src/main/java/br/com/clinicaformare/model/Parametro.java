@@ -8,18 +8,18 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 @Entity
-public class Parametros implements Serializable {
+public class Parametro implements Serializable {
 	private static final long serialVersionUID = 2L;
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	private double parametro;
+	private String nome;
 	private double valorPorcentagem;
 	private double valorReais;
 
 	// Constructor
-	public Parametros() {
+	public Parametro() {
 		super();
 	}
 
@@ -32,12 +32,12 @@ public class Parametros implements Serializable {
 		this.id = id;
 	}
 
-	public double getParametro() {
-		return parametro;
+	public String getNome() {
+		return nome;
 	}
 
-	public void setParametro(double parametro) {
-		this.parametro = parametro;
+	public void setNome(String nome) {
+		this.nome = nome;
 	}
 
 	public double getValorPorcentagem() {

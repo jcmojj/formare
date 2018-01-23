@@ -31,6 +31,11 @@ public class Autorizado implements Serializable {
 	@OneToMany(mappedBy = "autorizado")
 	private List<Autorizacao> autorizacoesDoAutorizado;
 
+	@Override
+	public String toString() {
+		return "Autorizado [id=" + id + ", usuario=" + usuario + ", dataCriacao=" + dataCriacao + ", dataAlteracao=" + dataAlteracao + ", autorizacoesDoAutorizado=" + autorizacoesDoAutorizado + "]";
+	}
+
 	// Constructor
 	public Autorizado() {
 		super();

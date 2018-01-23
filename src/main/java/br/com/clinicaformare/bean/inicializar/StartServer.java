@@ -12,9 +12,19 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import javax.transaction.Transactional;
 
-import br.com.clinicaformare.daos.LogradouroDao;
-import br.com.clinicaformare.daos.PaesciDao;
-import br.com.clinicaformare.daos.TipoTelefoneDao;
+import br.com.clinicaformare.daos.ParametroDao;
+import br.com.clinicaformare.daos.usuario.LogradouroDao;
+import br.com.clinicaformare.daos.usuario.PaesciDao;
+import br.com.clinicaformare.daos.usuario.ProfissionalDao;
+import br.com.clinicaformare.daos.usuario.SociaDao;
+import br.com.clinicaformare.daos.usuario.TipoProfissionalDao;
+import br.com.clinicaformare.daos.usuario.TipoTelefoneDao;
+import br.com.clinicaformare.daos.usuario.UsuarioDao;
+import br.com.clinicaformare.model.Parametro;
+import br.com.clinicaformare.model.usuario.Profissional;
+import br.com.clinicaformare.model.usuario.Socia;
+import br.com.clinicaformare.model.usuario.TipoProfissional;
+import br.com.clinicaformare.model.usuario.Usuario;
 import br.com.clinicaformare.model.usuario.telefone.TipoTelefone;
 import br.com.clinicaformare.usuario.endereco.Logradouro;
 import br.com.clinicaformare.usuario.endereco.Paesci;
@@ -27,7 +37,7 @@ public class StartServer {
 	public void allMainValues() {
 			logradouro();
 			tipoTelefone();
-			paesci();		
+			paesci();
 	}
 	
 	@Inject
@@ -120,5 +130,210 @@ public class StartServer {
 			e.printStackTrace();
 		}
 	}
+	
+	@Inject
+	private ParametroDao parametroDao ;
 
+	@Transactional
+	public void parametro() {
+		try {
+			InputStream is = new FileInputStream(
+					"/Users/josecarlosoliveira/javaee/eclipse-workspace/formare/src/main/resources/startServer/parametros");
+			InputStreamReader isr = new InputStreamReader(is);
+			BufferedReader br = new BufferedReader(isr);
+			String parametroString = br.readLine();
+			Integer first;
+			Integer second;
+			Integer third;
+			Integer lenght;
+
+			while (parametroString != null) {
+				Parametro parametro = new Parametro();
+				first = 0;
+				second = parametroString.indexOf(";", first);
+				third = parametroString.indexOf(";", second + 1);
+				lenght = parametroString.length();
+				parametro.setNome			(parametroString.substring(first,second));
+				parametro.setValorPorcentagem	(Double.parseDouble(parametroString.substring(second+1,third)));
+				parametro.setValorReais			(Double.parseDouble(parametroString.substring(third+1,lenght)));
+				parametroDao.adiciona(parametro);
+				
+
+				parametroString = br.readLine();
+			}
+			br.close();
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	@Inject
+	private TipoProfissionalDao tipoProfissionalDao ;
+
+	@Transactional
+	public void tipoProfissional() {
+		try {
+			InputStream is = new FileInputStream(
+					"/Users/josecarlosoliveira/javaee/eclipse-workspace/formare/src/main/resources/startServer/tipoProfissional");
+			InputStreamReader isr = new InputStreamReader(is);
+			BufferedReader br = new BufferedReader(isr);
+			String tipoProfissionalString = br.readLine();
+			Integer first;
+			Integer second;
+			Integer third;
+			Integer lenght;
+			String tipo; 
+			Double valorBrutoHora; 
+			Double valorLiquidoHora;
+			
+
+			while (tipoProfissionalString != null) {
+				first = 0;
+				second = tipoProfissionalString.indexOf(";", first);
+				third = tipoProfissionalString.indexOf(";", second + 1);
+				lenght = tipoProfissionalString.length();
+				tipo = tipoProfissionalString.substring(first,second);
+				valorBrutoHora = Double.parseDouble(tipoProfissionalString.substring(second+1,third));
+				valorLiquidoHora = Double.parseDouble(tipoProfissionalString.substring(third+1,lenght));
+				tipoProfissionalDao.adiciona(new TipoProfissional(tipo, valorBrutoHora, valorLiquidoHora));
+				
+
+				tipoProfissionalString = br.readLine();
+			}
+			br.close();
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	
+	//
+	@Inject
+	private ProfissionalDao profissionalDao ;
+
+	
+	@Transactional
+	public void profissional() {
+		try {
+			InputStream is = new FileInputStream(
+					"/Users/josecarlosoliveira/javaee/eclipse-workspace/formare/src/main/resources/startServer/profissionais");
+			InputStreamReader isr = new InputStreamReader(is);
+			BufferedReader br = new BufferedReader(isr);
+			String profissionalString = br.readLine();
+			
+			String nome;
+			Long tipoProfissionalId;
+			Integer second;
+			Integer lenght;
+
+			while (profissionalString != null) {
+				second = profissionalString.indexOf(";", 0);
+				lenght = profissionalString.length();
+				nome =		(profissionalString.substring(0,second));
+				System.out.println("AQUI9");
+				tipoProfissionalId =			(Long.parseLong(profissionalString.substring(second+1,lenght)));
+				System.out.println("AQUI11" + profissionalString.substring(second+1,lenght));
+				TipoProfissional tipoProfissional = tipoProfissionalDao.buscaPorId(tipoProfissionalId);
+				System.out.println("AQUI12" + tipoProfissional);
+				Profissional profissional = new Profissional(tipoProfissional);
+				System.out.println("AQUI5");
+				
+//				Usuario usuario = new Usuario(nome);
+//				System.out.println("AQUI6 + usuario: " + usuario);
+//				usuario = usuarioDao.adicionaVolta(usuario);
+				
+				Usuario usuario = adicionaUsuarioComNome(nome);
+				System.out.println("AQUI7 + usuario: " + usuario);
+				profissional.setUsuario(usuario);
+				usuario.setProfissional(profissional);
+				System.out.println("AQUI8");
+				profissionalDao.adiciona(profissional);
+				usuarioDao.atualiza(usuario);
+				profissionalString = br.readLine();
+			}
+			br.close();
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	@Inject
+	private UsuarioDao usuarioDao;
+	
+	@Transactional
+	public Usuario adicionaUsuarioComNome(String nome) {
+		Usuario usuario = new Usuario(nome);
+		return usuarioDao.adicionaVolta(usuario);
+	}
+
+	@Inject
+	private SociaDao sociaDao;
+	
+	@Transactional
+	public void socia() {
+		try {
+			InputStream is = new FileInputStream(
+					"/Users/josecarlosoliveira/javaee/eclipse-workspace/formare/src/main/resources/startServer/socias");
+			InputStreamReader isr = new InputStreamReader(is);
+			BufferedReader br = new BufferedReader(isr);
+			String sociaString = br.readLine();
+			
+			String nome;
+			Long tipoProfissionalId;
+			Integer second;
+			Integer lenght;
+//
+			while (sociaString != null) {
+				second = sociaString.indexOf(";", 0);
+				lenght = sociaString.length();
+				nome =		(sociaString.substring(0,second));
+				System.out.println("AQUI9");
+				tipoProfissionalId =			(Long.parseLong(sociaString.substring(second+1,lenght)));
+				System.out.println("AQUI11" + sociaString.substring(second+1,lenght));
+				TipoProfissional tipoProfissional = tipoProfissionalDao.buscaPorId(tipoProfissionalId);
+				System.out.println("AQUI12" + tipoProfissional);
+				Socia socia = new Socia(tipoProfissional);
+				System.out.println("AQUI5");
+				
+//				Usuario usuario = new Usuario(nome);
+//				System.out.println("AQUI6 + usuario: " + usuario);
+				System.out.println("AQUI6 + socia: " + socia);
+//				usuario = usuarioDao.adicionaVolta(usuario);
+//				System.out.println("AQUI8 + usuario: " + usuario);
+				
+				Usuario usuario = adicionaUsuarioComNome(nome);
+				System.out.println("AQUI7 + usuario: " + usuario);
+				socia.setUsuario(usuario);
+				System.out.println("AQUI8 + socia: " + socia);
+				usuario.setSocia(socia);
+				System.out.println("AQUI9 + usuario: " + usuario);
+				System.out.println("AQUI878");
+				sociaDao.adiciona(socia);
+				usuarioDao.atualiza(usuario);
+				sociaString = br.readLine();
+			}
+			br.close();
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	@Transactional
+	public void paciente() {
+		
+	}
+	
+	@Transactional
+	public void atendimentoPadrao() {
+		
+	}
+	
 }
