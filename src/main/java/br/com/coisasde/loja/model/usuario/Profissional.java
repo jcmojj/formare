@@ -54,6 +54,7 @@ public class Profissional implements Serializable {
 		this.tipoProfissional = tipoProfissional;
 		this.valorBrutoHora = tipoProfissional.getValorBrutoHora();
 		this.valorLiquidoHora = tipoProfissional.getValorLiquidoHora();
+		this.porcentagemLiquidoSobreBruto = tipoProfissional.getPorcentagemLiquidoSobreBruto();
 	}
 
 	// Getters and Setters
@@ -112,6 +113,9 @@ public class Profissional implements Serializable {
 
 	public void setUsuario(Usuario usuario) {
 		this.usuario = usuario;
+//		System.out.println("AQUI19");
+//		usuario.setProfissional(this);
+//		System.out.println("AQUI2");
 	}
 
 	public Calendar getDataCriacao() {

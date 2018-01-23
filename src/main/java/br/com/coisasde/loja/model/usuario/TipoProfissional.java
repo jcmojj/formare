@@ -26,6 +26,8 @@ public class TipoProfissional implements Serializable {
 	private List<Profissional> profissionais;
 	@OneToMany(mappedBy = "tipoProfissional")
 	private List<AtendimentoPadrao> atendimentosPadrao;
+	@OneToMany(mappedBy = "tipoProfissional")
+	private List<Socia> socias;
 
 	// Constructor
 	@Override
@@ -38,6 +40,7 @@ public class TipoProfissional implements Serializable {
 		this.tipo = tipo;
 		this.valorBrutoHora = valorBrutoHora;
 		this.valorLiquidoHora = valorLiquidoHora;
+		this.porcentagemLiquidoSobreBruto = this.valorLiquidoHora / this.valorBrutoHora;
 	}
 
 	public TipoProfissional() {
@@ -102,6 +105,14 @@ public class TipoProfissional implements Serializable {
 
 	public void setAtendimentosPadrao(List<AtendimentoPadrao> atendimentosPadrao) {
 		this.atendimentosPadrao = atendimentosPadrao;
+	}
+
+	public List<Socia> getSocias() {
+		return socias;
+	}
+
+	public void setSocias(List<Socia> socias) {
+		this.socias = socias;
 	}
 
 }

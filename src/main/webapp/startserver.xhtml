@@ -2,9 +2,10 @@
     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
 <html xmlns="http://www.w3.org/1999/xhtml"
-	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
 	xmlns:h="http://xmlns.jcp.org/jsf/html"
-	xmlns:f="http://xmlns.jcp.org/jsf/core">
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
 
 <h:form> 
 <h2>Popular as Entidades</h2>
@@ -12,7 +13,12 @@
 <h:commandLink action="#{startServer.paesci}" value="Paesci" /><br />
 <h:commandLink action="#{startServer.logradouro}" value="Logradouro" /><br />
 <h:commandLink action="#{startServer.tipoTelefone}" value="Tipo Telefone" /><br />
-
+<h:commandLink action="#{startServer.parametro}" value="Parametro" /><br />
+<h:commandLink action="#{startServer.tipoProfissional}" value="Tipo Profissional" /><br />
+<h:commandLink action="#{startServer.profissional}" value="Profissional" /><br />
+<h:commandLink action="#{startServer.socia}" value="Socia" /><br />
+<h:commandLink action="#{startServer.paciente}" value="Paciente" /><br />
+<h:commandLink action="#{startServer.atendimentoPadrao}" value="Atendimento Padrão" /><br />
 </h:form>
 <h:form>
 <h2>Coletar Base de Arquivos de Dados de Sites</h2>

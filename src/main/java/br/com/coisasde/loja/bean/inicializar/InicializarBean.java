@@ -12,9 +12,9 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import javax.transaction.Transactional;
 
-import br.com.coisasde.loja.daos.LogradouroDao;
-import br.com.coisasde.loja.daos.PaesciDao;
-import br.com.coisasde.loja.daos.TipoTelefoneDao;
+import br.com.coisasde.loja.daos.model.usuario.LogradouroDao;
+import br.com.coisasde.loja.daos.model.usuario.PaesciDao;
+import br.com.coisasde.loja.daos.model.usuario.TipoTelefoneDao;
 import br.com.coisasde.loja.model.usuario.endereco.Logradouro;
 import br.com.coisasde.loja.model.usuario.endereco.Paesci;
 import br.com.coisasde.loja.model.usuario.telefone.TipoTelefone;

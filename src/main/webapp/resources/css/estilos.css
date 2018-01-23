@@ -1,0 +1,91 @@
+@charset "UTF-8";
+
+body {background-color: coral;}
+
+
+#page {
+	height: 680px;
+	width: 1000px;
+	margin: 0 auto;
+	background-color: black
+}
+.header-logo {
+	align: center;
+	padding: 10px;
+	line-height: 1.5;
+    display: inline-block;
+    vertical-align: middle
+}
+
+.centralizar-vertical {
+	display: inline-block;
+    vertical-align: middle
+}
+
+#header-container {
+	height: 500px;
+	background: #0055FA;
+	background-color: white;
+	position: absolute
+}
+
+#header {
+
+	width: 1000px;
+	height: 100%;
+	margin: 0
+}
+
+#messages-container {
+	height: 50px;
+	margin: 0;
+	display: inline-block;
+}
+
+#messages {
+
+	width: 1000px;
+	height: 100%;
+	margin: 0;
+	display: inline-block
+}
+
+#content-container {
+	height: 100%;
+	margin: 0;
+	overflow: auto;
+}
+
+#content {
+	float: right;
+
+	width: 700px;
+	height: 100%;
+	margin: 0
+}
+
+#sidebar {
+	float: left;
+
+	width: 300px;
+	height: 100%;
+	margin: 0
+}
+
+#footer-container {
+	height: 100px;
+	margin: 0;
+	clear: both;
+	display: inline-block
+}
+
+#footer {
+
+	width: 1000px;
+	height: 100%;
+	margin: 0 auto
+}
+
+.container {
+	padding: 0 10%; /*nao perco espaço nas laterais no celular */
+}
