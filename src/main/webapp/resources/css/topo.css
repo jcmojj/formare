@@ -1,8 +1,95 @@
 @charset "UTF-8";
 
-#container-superior {
+.container-superior {
 	height: 40px;
 	position: relative;
-	min-width: 1190px;
+	min-width: 800px;
 	background-color: #262626;
+}
+
+.centraliza {
+	width: 800px;
+	margin: 0 auto;
+	position: relative;
+}
+
+.pagina-inicial {
+	border-left-style: solid;
+	border-left-width: 1px;
+	border-right-style: solid;
+	border-right-width: 1px;
+	display: inline-block;
+	float: left;
+	font-size: 20px;
+	padding: 10px;
+	position: relative;
+	z-index: 1;
+}
+
+.data-container {
+	float: left;
+	line-height: 26px;
+	position: relative;
+	text-align: center;
+	width: 240px;
+}
+
+.data {
+	font-size: 13px;
+	display: inline-block;
+	line-height: 20px;
+	position: relative;
+	text-align: center;
+	z-index: 0;
+	color: #999;
+	padding: 10px 5px 10px;
+}
+.logo-final-container{
+	float: right;
+	line-height: 26px;
+	position: relative;
+	text-align: center;
+	width: 120px;
+}
+.logo-final{
+	line-height: 26px;
+		border-left-style: solid;
+	border-left-width: 1px;
+	border-right-style: solid;
+	border-right-width: 1px;
+	float: right;
+	font-size: 20px;
+	padding: 10px;
+	position: relative;
+	z-index: 1;
+}
+.usuario-container{
+	float: left;
+	line-height: 26px;
+	position: relative;
+	text-align: center;
+	width: 320px;
+}
+.usuario {
+	float: left;
+	display: inline-block;
+	font-size: 15px;
+	line-height: 20px;
+	padding: 10px 5px 10px;
+	position: relative;
+	color: #fff;
+	z-index: 0;
+}
+
+.border-right-light {
+	border-right-color: #404040;
+}
+
+.border-left-right {
+	border-left-color: #404040;
+}
+
+.fa {
+	color: #fff;
+	font-size: 20px;
 }

@@ -10,19 +10,19 @@
 	<h:outputStylesheet name="css/reset.css" />
 	<h:outputStylesheet library="font-awesome"
 		name="css/font-awesome.min.css" />
-	<h:outputStylesheet name="css/header.css" />
+		<h:outputStylesheet name="css/topo.css" />
+<!-- 	<h:outputStylesheet name="css/header.css" />
 	<h:outputStylesheet name="css/estilos.css" />
-	<h:outputStylesheet name="css/sidenav.css" />
+	<h:outputStylesheet name="css/sidenav.css" /> -->
 
 
 	<script type="text/javascript" src="js/cssrefresh.js"></script>
 </h:head>
 
 <h:body>
-
+	<ui:include src="topo.xhtml" />
 	<h:panelGroup id="page" styleClass="container" layout="block">
 
-		<ui:include src="topo.xhtml" />
 		<div id="content-container">
 
 			<div id="sidebar">
