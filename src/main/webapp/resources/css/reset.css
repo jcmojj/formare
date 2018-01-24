@@ -1,0 +1,14 @@
+*{
+  margin: 0;
+  padding: 0;
+  border: 0;
+  color: #000;
+  outline: 0;
+}
+/*nao pega todo mundo.. nao pega os filhos */
+
+body{
+  font-family: Arial, Roboto,sans-serif; /* fall-back -> se nao tem no browser ele pega o proximo*/
+  font-size: 16px;
+  color: black;
+}
