@@ -4,19 +4,19 @@
     xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
     	xmlns:p="http://primefaces.org/ui">
 <h:form>
-	<p:menu>
-		<p:submenu label="File">
-			<p:menuitem value="Open"></p:menuitem>
-			<p:menuitem value="Edit"></p:menuitem>
-			<p:separator/>
-			<p:menuitem value="Exit"></p:menuitem>
-		</p:submenu>
-		<p:submenu label="Help">
-			<p:menuitem value="About Primefaces"></p:menuitem>
-			<p:menuitem value="Contact Us"></p:menuitem>
-			<p:separator/>
-			<p:menuitem value="Help"></p:menuitem>
-		</p:submenu>
-	</p:menu>
+<p:commandButton id="dynaButton" value="Menu" type="button" icon="ui-icon-extlink"/>
+    <p:menu overlay="true" trigger="dynaButton" my="left top" at="left bottom">
+        <p:submenu label="Ajax">
+            <p:menuitem value="Save" actionListener="#" icon="ui-icon-disk"/>
+            <p:menuitem value="Update" actionListener="#"  icon="ui-icon-arrowrefresh-1-w"/>
+        </p:submenu>
+        <p:submenu label="Non-Ajax">
+            <p:menuitem value="Delete" actionListener="#"  ajax="false" icon="ui-icon-close"/>
+        </p:submenu>
+        <p:submenu label="Navigations">
+            <p:menuitem value="External" url="http://www.primefaces.org" icon="ui-icon-home"/>
+            <p:menuitem value="Internal" icon="ui-icon-star"/>
+        </p:submenu>
+    </p:menu>
 </h:form>
 </ui:composition>

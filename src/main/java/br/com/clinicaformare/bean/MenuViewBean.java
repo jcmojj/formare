@@ -14,7 +14,7 @@ import org.primefaces.model.menu.MenuModel;
 //@ManagedBean
 @RequestScoped
 @Named
-public class MenuView {
+public class MenuViewBean {
      
     private MenuModel model;
  

@@ -1,6 +1,6 @@
 @charset "UTF-8";
 
-.container-superior {
+.container-cabecalho-superior {
 	height: 40px;
 	position: relative;
 	min-width: 800px;
@@ -26,7 +26,7 @@
 	z-index: 1;
 }
 
-.data-container {
+.data-container-cabecalho {
 	float: left;
 	line-height: 26px;
 	position: relative;
@@ -44,16 +44,18 @@
 	color: #999;
 	padding: 10px 5px 10px;
 }
-.logo-final-container{
+
+.logo-final-container-cabecalho {
 	float: right;
 	line-height: 26px;
 	position: relative;
 	text-align: center;
 	width: 120px;
 }
-.logo-final{
+
+.logo-final {
 	line-height: 26px;
-		border-left-style: solid;
+	border-left-style: solid;
 	border-left-width: 1px;
 	border-right-style: solid;
 	border-right-width: 1px;
@@ -63,13 +65,15 @@
 	position: relative;
 	z-index: 1;
 }
-.usuario-container{
+
+.usuario-container-cabecalho {
 	float: left;
 	line-height: 26px;
 	position: relative;
 	text-align: center;
 	width: 320px;
 }
+
 .usuario {
 	float: left;
 	display: inline-block;
@@ -81,6 +85,77 @@
 	z-index: 0;
 }
 
+.container-cabecalho-logo {
+	height: 110px;
+}
+
+.cabecalho-logo {
+	float: left;
+	margin: 18px 50px 15px 0;
+	vertical-align: middle;
+	height: 60px;
+	z-index: 0;
+}
+
+.info-formare-container-cabecalho {
+	float: left;
+	vertical-align: middle;
+	height: 110px;
+	z-index: 0;
+}
+
+.info-formare {
+	margin: 15px 0px 15px;
+	height: 80px;
+	font-size: 15px;
+}
+
+.login-container-cabecalho {
+	float: right;
+	vertical-align: middle;
+	height: 110px;
+	z-index: 0;
+	width: 250px;
+}
+
+.login-sub-container-cabecalho {
+	float: right;
+	margin: 5px 0px 5px;
+	height: 80px;
+	color: #000;
+	border: 0;
+	text-decoration: none;
+}
+.login-sub-container-cabecalho.ui-panelgrid>*>tr,
+.login-sub-container-cabecalho.ui-panelgrid .ui-panelgrid-cell {
+    border: none;
+}
+
+.login, .login::-webkit-input-placeholder  {
+	font-size: 12px;
+	line-height: 1;
+	font-style: italic;
+	color: #999;
+	border: 0;
+	text-decoration: none;
+	width: 150px;
+}
+.login-novo {
+	line-height: 1;
+	text-decoration: none;
+	color: #e6e6e6;
+	font-style: italic;
+}
+.container-cabecalho-inferior {
+	border-top: 3px solid #e6e6e6;
+	border-bottom: 3px solid #e6e6e6;
+	margin-bottom: 10px;
+}
+.cabecalho-inferior{
+	
+}
+
+
 .border-right-light {
 	border-right-color: #404040;
 }
@@ -89,7 +164,19 @@
 	border-left-color: #404040;
 }
 
-.fa {
+.fas {
 	color: #fff;
 	font-size: 20px;
 }
+
+.fa-container-cabecalho-superior {
+	color: #fff;
+	font-size: 20px;
+}
+
+.fa-container-cabecalho-abaixo-superior {
+	color: #000;
+	border: 0;
+	text-decoration: none;
+}
+
