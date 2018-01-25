@@ -8,7 +8,7 @@
 			<h:panelGroup styleClass="tema  " layout="block">
 				<h:form>
 					<p:themeSwitcher id="advanced" style="width:165px" effect="fade"
-						var="t">
+						var="t" value="#{themeSwitcherViewBean.tema}">
 						<f:selectItem itemLabel="Choose Theme" itemValue="#{null}" />
 						<f:selectItems value="#{themeSwitcherViewBean.themes}" var="theme"
 							itemLabel="#{theme.displayName}" itemValue="#{theme}" />
@@ -21,6 +21,7 @@
 						<p:column>
                			 #{t.displayName}
             			</p:column>
+            			<f:ajax />
 					</p:themeSwitcher>
 				</h:form>
 			</h:panelGroup>

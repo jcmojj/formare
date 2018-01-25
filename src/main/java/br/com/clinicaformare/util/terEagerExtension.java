@@ -11,11 +11,11 @@ import javax.enterprise.inject.spi.BeanManager;
 import javax.enterprise.inject.spi.Extension;
 import javax.enterprise.inject.spi.ProcessBean;
  
-public class EagerExtension implements Extension {
+public class terEagerExtension implements Extension {
     private List<Bean<?>> eagerBeansList = new ArrayList<Bean<?>>();
  
     public <T> void collect(@Observes ProcessBean<T> event) {
-        if (event.getAnnotated().isAnnotationPresent(Eager.class)
+        if (event.getAnnotated().isAnnotationPresent(terEager.class)
             && event.getAnnotated().isAnnotationPresent(ApplicationScoped.class)) {
             eagerBeansList.add(event.getBean());
         }

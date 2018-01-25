@@ -13,8 +13,8 @@
 			  <p:growl id="growl" sticky="true" showDetail="true"/>
  
     <p:wizard flowListener="#{usuarioWizard.onFlowProcess}">
-        <p:tab id="personal" title="Personal">
-            <p:panel header="Personal Details">
+        <p:tab id="personal" title="Pessoa">
+            <p:panel header="Informações Pessoais">
                 <p:messages />
                 <h:panelGrid columns="2" columnClasses="label, value">
                     <h:outputText value="Nome: *" />
@@ -31,8 +31,8 @@
             </p:panel>
         </p:tab>
  
-        <p:tab id="address" title="Address">
-            <p:panel header="Address Details">
+        <p:tab id="address" title="Endereço">
+            <p:panel header="Endereço Residencial">
                 <p:messages />
                 <h:panelGrid columns="2" columnClasses="label, value">
                     <h:outputText value="Endereço: " />
@@ -50,7 +50,9 @@
             </p:panel>
         </p:tab>
  
-        <p:tab id="contact" title="Contact">
+ 
+ 
+        <p:tab id="contact" title="Contato">
             <p:panel header="Contact Information">
                 <p:messages />
                 <h:panelGrid columns="2" columnClasses="label, value">
@@ -66,7 +68,7 @@
             </p:panel>
         </p:tab>
  
-        <p:tab id="confirm" title="Confirmation">
+        <p:tab id="confirm" title="Confirmação">
             <p:panel header="Confirmation">
                 <h:panelGrid id="confirmation" columns="3" columnClasses="grid,grid,grid">
                     <h:panelGrid columns="2" columnClasses="label, value">

@@ -112,6 +112,7 @@
 	margin: 15px 0px 15px;
 	height: 80px;
 	font-size: 15px;
+	≈
 }
 
 .login-container-cabecalho {
@@ -134,7 +135,6 @@
 .login-sub-container-cabecalho.ui-panelgrid .ui-panelgrid-cell {
     border: none;
 }
-
 .login, .login::-webkit-input-placeholder  {
 	font-size: 12px;
 	line-height: 1;
@@ -202,13 +202,10 @@
 	font-style: italic;	
 }
 .tema{
-	float: left;
-	vertical-align: middle;
 	display: inline-block;
-	padding: 0px;
+	float: left;
+	font-size: 20px;
+	padding: 0px 0px 1.5px;
 	position: relative;
-	color: #fff;
-	z-index: 0;
- 	display: table-cell;
-	font-style: italic;	
+	z-index: 1;
 }
