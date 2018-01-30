@@ -13,7 +13,6 @@ public class ThemeSwitcherViewBean {
 
 	private List<Theme> themes;
 	private Theme tema;
-	private String temado = "aristo";
 
 	// @ManagedProperty("#{themeService}")
 //	@Inject 
@@ -62,7 +61,7 @@ public class ThemeSwitcherViewBean {
 		themes.add(new Theme(35, "UI-Darkness", "ui-darkness"));
 		themes.add(new Theme(36, "UI-Lightness", "ui-lightness"));
 		themes.add(new Theme(37, "Vader", "vader"));
-		tema = themes.get(7);
+		tema = themes.get(31);
 	}
 
 	public List<Theme> getThemes() {
@@ -83,14 +82,6 @@ public class ThemeSwitcherViewBean {
 		this.tema = tema;
 	}
 
-	public String getTemado() {
-		System.out.println("ThemeSwitcher - getTemado");
-		return temado;
-	}
-
-	public void setTemado(String temado) {
-		this.temado = temado;
-	}
 
 	public void setThemes(List<Theme> themes) {
 		this.themes = themes;

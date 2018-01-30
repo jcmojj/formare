@@ -3,6 +3,9 @@ package br.com.clinicaformare.model.usuario;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.time.Period;
+import java.time.ZoneId;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.Column;
@@ -13,14 +16,19 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 import org.hibernate.validator.constraints.Email;
+import org.hibernate.validator.constraints.br.CPF;
 
 import br.com.clinicaformare.model.usuario.telefone.Telefone;
 import br.com.clinicaformare.usuario.endereco.Endereco;
+import br.com.clinicaformare.usuario.endereco.Paesci;
 
 @Entity
 public class Usuario implements Serializable {
@@ -31,16 +39,21 @@ public class Usuario implements Serializable {
 	private Long id;
 
 	// Necessário para criação
-	@Email
+	@Email(message = "Não é um endereço de e-mail válido")
 	@Column(nullable = true, unique = true)
 	private String email;
 	@Column(nullable = true, unique = true, length = 15)
-	private String senha;
+	private String password;
 
 	private String nome;
 	private String sobrenome;
-	private LocalDateTime dataNascimento;
+	private String profissao;
+	@Temporal(TemporalType.DATE)
+	private Date dataNascimento  = new Date();
+	@ManyToOne
+	private Paesci localNascimento;
 	@Column(unique = true)
+	@CPF
 	private String cpf;
 	private String rg;
 
@@ -69,14 +82,14 @@ public class Usuario implements Serializable {
 	@JoinTable(name = "Usuario_Endereco", joinColumns = @JoinColumn(name = "Usuario_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "Endereco_id", referencedColumnName = "id"))
 	private List<Endereco> enderecos;
 
-	@Column
-	private LocalDateTime dataCriacao;
-	@Column
-	private LocalDateTime dataAlteracao;
+	@Temporal(TemporalType.TIMESTAMP)
+	private Calendar dataCriacao = Calendar.getInstance();
+	@Temporal(TemporalType.TIMESTAMP)
+	private Calendar dataAlteracao = Calendar.getInstance();
 
 	@Override
 	public String toString() {
-		return "Usuario [id=" + id + ", email=" + email + ", senha=" + senha + ", nome=" + nome + ", sobrenome=" + sobrenome + ", dataNascimento=" + dataNascimento + ", cpf=" + cpf + ", rg=" + rg
+		return "Usuario [id=" + id + ", email=" + email + ", password=" + password + ", nome=" + nome + ", sobrenome=" + sobrenome + ", dataNascimento=" + dataNascimento + ", cpf=" + cpf + ", rg=" + rg
 				+ ", telefones=" + telefones + ", enderecos=" + enderecos + ", Cliente=" + isCliente() + ", Paciente=" + isPaciente() + ", Autorizado=" + isAutorizado() + ", Pagante=" + isPagante()
 				+ ", Equipe=" + isEquipe() + ", Profissional=" + isProfissional() + ", Socia=" + isSocia() + ", Administrador=" + isAdministrador() + ", Secretaria=" + isSecretaria() + "]";
 	}
@@ -89,9 +102,9 @@ public class Usuario implements Serializable {
 		this.id = id;
 	}
 
-	public Usuario(String email, String senha) {
+	public Usuario(String email, String password) {
 		this.email = email;
-		this.senha = senha;
+		this.password = password;
 	}
 
 	public Usuario(String nome) {
@@ -116,12 +129,12 @@ public class Usuario implements Serializable {
 		this.email = email;
 	}
 
-	public String getSenha() {
-		return senha;
+	public String getPassword() {
+		return password;
 	}
 
-	public void setSenha(String senha) {
-		this.senha = senha;
+	public void setPassword(String password) {
+		this.password = password;
 	}
 
 	public String getNome() {
@@ -140,11 +153,11 @@ public class Usuario implements Serializable {
 		this.sobrenome = sobrenome;
 	}
 
-	public LocalDateTime getDataNascimento() {
+	public Date getDataNascimento() {
 		return dataNascimento;
 	}
 
-	public void setDataNascimento(LocalDateTime dataNascimento) {
+	public void setDataNascimento(Date dataNascimento) {
 		this.dataNascimento = dataNascimento;
 	}
 
@@ -172,19 +185,19 @@ public class Usuario implements Serializable {
 		this.telefones = telefones;
 	}
 
-	public LocalDateTime getDataCriacao() {
+	public Calendar getDataCriacao() {
 		return dataCriacao;
 	}
 
-	public void setDataCriacao(LocalDateTime dataCriacao) {
+	public void setDataCriacao(Calendar dataCriacao) {
 		this.dataCriacao = dataCriacao;
 	}
 
-	public LocalDateTime getDataAlteracao() {
+	public Calendar getDataAlteracao() {
 		return dataAlteracao;
 	}
 
-	public void setDataAlteracao(LocalDateTime dataAlteracao) {
+	public void setDataAlteracao(Calendar dataAlteracao) {
 		this.dataAlteracao = dataAlteracao;
 	}
 
@@ -264,7 +277,8 @@ public class Usuario implements Serializable {
 	}
 
 	public Integer getIdade() {
-		return Period.between(dataNascimento.toLocalDate(), LocalDateTime.now().toLocalDate()).getYears();
+		Calendar now = Calendar.getInstance();
+		return Period.between(LocalDateTime.ofInstant(dataNascimento.toInstant(), ZoneId.systemDefault()).toLocalDate(), LocalDateTime.ofInstant(now.toInstant(), ZoneId.systemDefault()).toLocalDate()).getYears();
 	}
 
 	// Getters and Setters dos Booleans
@@ -303,18 +317,27 @@ public class Usuario implements Serializable {
 	public Boolean isSecretaria() {
 		return (secretaria != null) ? true : false;
 	}
+	
+
+	public String getProfissao() {
+		return profissao;
+	}
+
+	public void setProfissao(String profissao) {
+		this.profissao = profissao;
+	}
 
 	// Método Callback para persistir
 	@PrePersist
 	public void quandoCriar() {
-		this.setDataCriacao(LocalDateTime.now());
-		this.setDataAlteracao(LocalDateTime.now());
+		this.setDataCriacao(Calendar.getInstance());
+		this.setDataAlteracao(Calendar.getInstance());
 	}
 
 	// Método Callback para update
 	@PreUpdate
 	public void quandoAtualizar() {
-		this.setDataAlteracao(LocalDateTime.now());
+		this.setDataAlteracao(Calendar.getInstance());
 	}
 
 }

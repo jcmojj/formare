@@ -36,8 +36,8 @@ public class UsuarioBean implements Serializable{
 	public void grava() {
 //		System.out.println("Id - GRAVA: " + usuario.getId());
 		if(this.usuario.getId() == null){
-		usuario.setDataCriacao(LocalDateTime.now());
-		usuario.setDataAlteracao(LocalDateTime.now());
+//		usuario.setDataCriacao(LocalDateTime.now());
+//		usuario.setDataAlteracao(LocalDateTime.now());
 		usuarioDao.adiciona(usuario);
 		}else{
 //			System.out.println("Gravando o usuario");
@@ -47,7 +47,7 @@ public class UsuarioBean implements Serializable{
 //			System.out.println("Senha: " + usuario.getSenha());
 //			System.out.println("DataAlteracao: " + usuario.getDataAlteracao().getTime());
 //			System.out.println("DataCriacao: " + usuario.getDataCriacao().getTime());
-			usuario.setDataAlteracao(LocalDateTime.now());
+//			usuario.setDataAlteracao(LocalDateTime.now());
 			usuarioDao.atualiza(usuario);
 		}
 		this.usuarios = usuarioDao.listaTodos();
@@ -67,7 +67,7 @@ public class UsuarioBean implements Serializable{
 		System.out.println("Removendo a usuario");
 		System.out.println("Id: " + usuario.getId());
 		System.out.println("Email: " + usuario.getEmail());
-		System.out.println("Senha: " + usuario.getSenha());
+		System.out.println("Password: " + usuario.getPassword());
 		System.out.println("DataAlteracao: " + usuario.getDataAlteracao().toString());
 		System.out.println("DataCriacao: " + usuario.getDataCriacao().toString());
 

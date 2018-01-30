@@ -11,18 +11,22 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
+import br.com.clinicaformare.model.usuario.Usuario;
+
 @Entity
 @Table (uniqueConstraints= {@UniqueConstraint(columnNames = {"cidade","estado","pais"})})
 public class Paesci implements Serializable{
 	private static final long serialVersionUID = 1L;
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	private Integer id;
+	private Long id;
 	private String cidade;
 	private String estado;
 	private String pais;
 	@OneToMany(mappedBy="paesci")
 	private List<Endereco> endereco;
+	@OneToMany(mappedBy="localNascimento")
+	private List<Usuario> usuariosLocalNascimento;
 	
 	// Constructor
 	public Paesci() {
@@ -59,6 +63,30 @@ public class Paesci implements Serializable{
 
 	public void setPais(String pais) {
 		this.pais = pais;
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public List<Endereco> getEndereco() {
+		return endereco;
+	}
+
+	public void setEndereco(List<Endereco> endereco) {
+		this.endereco = endereco;
+	}
+
+	public List<Usuario> getUsuariosLocalNascimento() {
+		return usuariosLocalNascimento;
+	}
+
+	public void setUsuariosLocalNascimento(List<Usuario> usuariosLocalNascimento) {
+		this.usuariosLocalNascimento = usuariosLocalNascimento;
 	}
 
 }
