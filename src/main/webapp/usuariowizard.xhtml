@@ -98,7 +98,7 @@
 							<p:message for="dataNascimento" />
 
 							<p:outputLabel for="paisNascimento" value="País de Nascimento" />
-							<p:selectOneMenu value="#{usuarioWizard.paisLong}"
+							<p:selectOneMenu value="#{usuarioWizard.paisNascimentoLong}"
 								id="paisNascimento" converter="javax.faces.Long" required="true"
 								requiredMessage="O país de origem é um campo obrigatório.">
 								<f:ajax execute="@this" render="@form" />
@@ -111,10 +111,10 @@
 
 							<p:outputLabel for="estadoNascimento"
 								value="Estado de Nascimento"
-								rendered="#{usuarioWizard.pais != null}" />
-							<p:selectOneMenu value="#{usuarioWizard.estadoLong}"
+								rendered="#{usuarioWizard.paisNascimento != null}" />
+							<p:selectOneMenu value="#{usuarioWizard.estadoNascimentoLong}"
 								id="estadoNascimento" converter="javax.faces.Long"
-								rendered="#{usuarioWizard.pais != null}" required="true"
+								rendered="#{usuarioWizard.paisNascimento != null}" required="true"
 								requiredMessage="O estado natal é um campo obrigatório.">
 								<f:ajax execute="@this" render="@form" />
 								<f:selectItem itemValue="#{null}"
@@ -123,15 +123,15 @@
 									var="entry" itemValue="#{entry.key}" itemLabel="#{entry.value}" />
 							</p:selectOneMenu>
 							<p:message for="estadoNascimento"
-								rendered="#{usuarioWizard.pais != null}" />
+								rendered="#{usuarioWizard.paisNascimento != null}" />
 
 
 							<p:outputLabel for="cidadeNascimento"
 								value="Cidade de Nascimento"
-								rendered="#{usuarioWizard.pais != null and usuarioWizard.estado != null}" />
-							<p:selectOneMenu value="#{usuarioWizard.cidadeLong}"
+								rendered="#{usuarioWizard.paisNascimento != null and usuarioWizard.estadoNascimento != null}" />
+							<p:selectOneMenu value="#{usuarioWizard.cidadeNascimentoLong}"
 								id="cidadeNascimento" converter="javax.faces.Long"
-								rendered="#{usuarioWizard.pais != null and usuarioWizard.estado != null}"
+								rendered="#{usuarioWizard.paisNascimento != null and usuarioWizard.estadoNascimento != null}"
 								required="true"
 								requiredMessage="A cidade natal é um campo obrigatório.">
 								<f:ajax execute="@this" render="@form" />
@@ -141,7 +141,7 @@
 									var="entry" itemValue="#{entry.key}" itemLabel="#{entry.value}" />
 							</p:selectOneMenu>
 							<p:message for="cidadeNascimento"
-								rendered="#{usuarioWizard.pais != null and usuarioWizard.estado != null}" />
+								rendered="#{usuarioWizard.paisNascimento != null and usuarioWizard.estadoNascimento != null}" />
 						</h:panelGrid>
 					</p:panel>
 				</p:tab>
@@ -156,7 +156,7 @@
 								converter="javax.faces.Long" required="true"
 								requiredMessage="Campo obrigatório.">
 								<f:selectItem itemValue="#{null}"
-									itemLabel="Selecione o logradouro." />
+									itemLabel="Selecione o logradouro" />
 								<f:selectItems value="#{usuarioWizard.logradouros}"
 									var="logradouro" itemValue="#{logradouro.id}"
 									itemLabel="#{logradouro.nome}" />
@@ -200,7 +200,54 @@
 								requiredMessage="Campo obrigatório."/>
 							<p:message for="cepEnderecoResidencial" />
 
+							<p:outputLabel for="paisResidencial" value="País:" />
+							<p:selectOneMenu value="#{usuarioWizard.paisResidencialLong}"
+								id="paisResidencial" converter="javax.faces.Long" required="true"
+								requiredMessage="Campo obrigatório.">
+								<f:ajax execute="@this" render="@form" />
+								<f:selectItem itemValue="#{null}" itemLabel="Selecione um país" />
+								<f:selectItems value="#{usuarioWizard.paisesHash.entrySet()}"
+									var="entry" itemValue="#{entry.key}" itemLabel="#{entry.value}" />
+							</p:selectOneMenu>
+							<p:message for="paisResidencial" />
 
+
+							<p:outputLabel for="estadoResidencial"
+								value="Estado:"
+								rendered="#{usuarioWizard.paisResidencial != null}" />
+							<p:selectOneMenu value="#{usuarioWizard.estadoResidencialLong}"
+								id="estadoResidencial" converter="javax.faces.Long"
+								rendered="#{usuarioWizard.paisResidencial != null}" required="true"
+								requiredMessage="Campo obrigatório.">
+								<f:ajax execute="@this" render="@form" />
+								<f:selectItem itemValue="#{null}"
+									itemLabel="Selecione um estado" />
+								<f:selectItems value="#{usuarioWizard.estadosHash.entrySet()}"
+									var="entry" itemValue="#{entry.key}" itemLabel="#{entry.value}" />
+							</p:selectOneMenu>
+							<p:message for="estadoResidencial"
+								rendered="#{usuarioWizard.paisResidencial != null}" />
+
+
+							<p:outputLabel for="cidadeResidencial"
+								value="Cidade:"
+								rendered="#{usuarioWizard.paisResidencial != null and usuarioWizard.estadoResidencial != null}" />
+							<p:selectOneMenu value="#{usuarioWizard.cidadeResidencialLong}"
+								id="cidadeResidencial" converter="javax.faces.Long"
+								rendered="#{usuarioWizard.paisResidencial != null and usuarioWizard.estadoResidencial != null}"
+								required="true"
+								requiredMessage="Campo obrigatório.">
+								<f:ajax execute="@this" render="@form" />
+								<f:selectItem itemValue="#{null}"
+									itemLabel="Selecione uma cidade" />
+								<f:selectItems value="#{usuarioWizard.cidadesHash.entrySet()}"
+									var="entry" itemValue="#{entry.key}" itemLabel="#{entry.value}" />
+							</p:selectOneMenu>
+							<p:message for="cidadeResidencial"
+								rendered="#{usuarioWizard.paisResidencial != null and usuarioWizard.estadoResidencial != null}" />
+						
+
+<!--  -->
 						</h:panelGrid>
 					</p:panel>
 					<p:panel header="Endereço Comercial">
