@@ -60,52 +60,56 @@
 				</h:panelGroup>
 			</h:panelGroup>
 		</h:panelGroup>
-		<h:panelGroup styleClass="container-cabecalho-logo centraliza"
+		<h:panelGroup styleClass="container-cabecalho-logo"
 			layout="block">
-			<h1>
-				<h:commandLink action="#">
-					<h:graphicImage styleClass="cabecalho-logo" library="img"
-						name="logo.png" />
-				</h:commandLink>
-			</h1>
-			<h:panelGroup styleClass="info-formare-container-cabecalho"
-				layout="block">
-				<p:panelGrid columns="1" styleClass="info-formare ui-noborder">
-					<p:commandLink
-						styleClass="fa fa-phone fa-container-cabecalho-abaixo-superior "
-						action="#">
-						<h:outputText styleClass="" value="   11-55437853" />
-					</p:commandLink>
-					<p:commandLink
-						styleClass="fa fa-whatsapp fa-container-cabecalho-abaixo-superior"
-						action="#">
-						<h:outputText styleClass="" value="   11-991225335" />
-					</p:commandLink>
-					<p:commandLink
-						styleClass="fa fa-map fa-container-cabecalho-abaixo-superior"
-						action="#">
-						<h:outputText styleClass=""
-							value="   Rua Baronesa de Bela Vista, 500" />
-					</p:commandLink>
-				</p:panelGrid>
-			</h:panelGroup>
-			<h:panelGroup styleClass="login-container-cabecalho" layout="block">
-				<p:panelGrid columns="1" styleClass="login-sub-container-cabecalho"
-					cellpadding="5">
-					<p:inputText styleClass="login" id="usuario" value=""
-						placeholder="Usuário" label="Usuário" required="true" />
-					<p:password styleClass="login" id="senha" value="" feedback="false"
-						placeholder="Senha" label="Senha" required="true" />
-					<p:commandLink styleClass="login-novo" style="font-size: 10px;"
-						id="novo" value="Crie agora sua conta Formare" action="#" />
-				</p:panelGrid>
+			<h:panelGroup styleClass="centraliza" layout="block">
+				<h1>
+					<h:commandLink action="#">
+						<h:graphicImage styleClass="cabecalho-logo" library="img"
+							name="logo.png" />
+					</h:commandLink>
+				</h1>
+				<h:panelGroup styleClass="info-formare-container-cabecalho"
+					layout="block">
+					<p:panelGrid columns="1" styleClass="info-formare ui-noborder">
+						<p:commandLink
+							styleClass="fa fa-phone fa-container-cabecalho-abaixo-superior "
+							action="#">
+							<h:outputText styleClass="" value="   11-55437853" />
+						</p:commandLink>
+						<p:commandLink
+							styleClass="fa fa-whatsapp fa-container-cabecalho-abaixo-superior"
+							action="#">
+							<h:outputText styleClass="" value="   11-991225335" />
+						</p:commandLink>
+						<p:commandLink
+							styleClass="fa fa-map fa-container-cabecalho-abaixo-superior"
+							action="#">
+							<h:outputText styleClass=""
+								value="   Rua Baronesa de Bela Vista, 500" />
+						</p:commandLink>
+					</p:panelGrid>
+				</h:panelGroup>
+				<h:panelGroup styleClass="login-container-cabecalho" layout="block">
+					<p:panelGrid columns="1" styleClass="login-sub-container-cabecalho"
+						cellpadding="5">
+						<p:inputText styleClass="login" id="usuario" value=""
+							placeholder="Usuário" label="Usuário" required="true" />
+						<p:password styleClass="login" id="senha" value=""
+							feedback="false" placeholder="Senha" label="Senha"
+							required="true" />
+						<p:commandLink styleClass="login-novo" style="font-size: 10px;"
+							id="novo" value="Crie agora sua conta Formare" action="#" />
+					</p:panelGrid>
+				</h:panelGroup>
 			</h:panelGroup>
 		</h:panelGroup>
+
 		<h:panelGroup styleClass="container-cabecalho-inferior" layout="block">
-			<h:panelGroup styleClass="centraliza" layout="block">
+			<h:panelGroup styleClass="centraliza container-cabecalho-inferior-linhas" layout="block">
 				<ui:include src="menu.xhtml" />
 				<p:growl id="growl" sticky="true" showDetail="true" life="10000" />
-				<p:messages/>
+				<p:messages />
 			</h:panelGroup>
 		</h:panelGroup>
 

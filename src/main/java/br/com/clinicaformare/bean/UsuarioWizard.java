@@ -262,8 +262,8 @@ public class UsuarioWizard implements Serializable {
 	// Endereco Residencial
 	private Long logradouroResidencialId = 0L;
 	
-	private TipoEndereco tipoEnderecoResisidencial = new TipoEndereco(1L);
-	private Endereco enderecoResidencial = new Endereco(tipoEnderecoResisidencial);
+	private TipoEndereco tipoEnderecoResidencial = new TipoEndereco(1L);
+	private Endereco enderecoResidencial = new Endereco(tipoEnderecoResidencial);
 	 
 
 	public Long getLogradouroResidencialId() {
@@ -354,7 +354,107 @@ public class UsuarioWizard implements Serializable {
 		System.out.println("cidade" + cidadeResidencial);
 	}
 	
+	// $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 	
+	
+	// Endereco Comercial
+		private Long logradouroComercialId = 0L;
+		
+		private TipoEndereco tipoEnderecoComercial = new TipoEndereco(2L);
+		private Endereco enderecoComercial = new Endereco(tipoEnderecoComercial);
+		 
+
+		public Long getLogradouroComercialId() {
+			return logradouroComercialId;
+		}
+
+		public void setLogradouroComercialId(Long logradouroComercialId) {
+			this.logradouroComercialId = logradouroComercialId;
+		}
+
+		public Endereco getEnderecoComercial() {
+			return enderecoComercial;
+		}
+
+		public void setEnderecoComercial(Endereco enderecoComercial) {
+			this.enderecoComercial = enderecoComercial;
+		}
+
+		// Endereco Comercial - Pais
+		private String paisComercial;
+		private Long paisComercialLong = 0L;
+		
+		public String getPaisComercial() {
+			return paisComercial;
+		}
+
+		public void setPaisComercial(String paisComercial) {
+			this.paisComercial = paisComercial;
+		}
+
+		public Long getPaisComercialLong() {
+			return paisComercialLong;
+		}
+
+		public void setPaisComercialLong(Long paisComercialLong) {
+			this.estadoComercial = null;
+			this.cidadeComercial = null;
+			this.paisComercialLong = paisComercialLong;
+			paisComercial = paisesHash.get(paisComercialLong);
+			System.out.println("pais" + paisComercial);
+		}
+		// Endereco Comercial - Estado
+		private String estadoComercial;
+		private Long estadoComercialLong = 0L;
+			
+		public String getEstadoComercial() {
+			return estadoComercial;
+		}
+
+		public void setEstadoComercial(String estadoComercial) {
+			this.estadoComercial = estadoComercial;
+		}
+
+		public Long getEstadoComercialLong() {
+			return estadoComercialLong;
+		}
+
+		public void setEstadoComercialLong(Long estadoComercialLong) {
+			System.out.println("TESTE12-");
+			this.cidadeComercial = null;
+			this.estadoComercialLong = estadoComercialLong;
+			System.out.println("TESTE13-" + estadoComercial);
+			estadoComercial = estadosHash.get(estadoComercialLong);
+			System.out.println("TESTE14-" + estadoComercial);
+			System.out.println("estado" + estadoComercial);
+		}
+		
+		
+		// Endereco Comercial - Cidade
+		private String cidadeComercial;
+		private Long cidadeComercialLong = 0L;
+		
+		public String getCidadeComercial() {
+			return cidadeComercial;
+		}
+
+		public void setCidadeComercial(String cidadeComercial) {
+			this.cidadeComercial = cidadeComercial;
+		}
+
+		public Long getCidadeComercialLong() {
+			return cidadeComercialLong;
+		}
+
+		public void setCidadeComercialLong(Long cidadeComercialLong) {
+			this.cidadeComercialLong = cidadeComercialLong;
+			cidadeComercial = cidadesHash.get(cidadeComercialLong);
+			System.out.println("cidade" + cidadeComercial);
+		}
+	
+	
+	
+	//
 	
 	
 	

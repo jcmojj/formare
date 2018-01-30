@@ -245,22 +245,107 @@
 							</p:selectOneMenu>
 							<p:message for="cidadeResidencial"
 								rendered="#{usuarioWizard.paisResidencial != null and usuarioWizard.estadoResidencial != null}" />
-						
-
-<!--  -->
 						</h:panelGrid>
 					</p:panel>
 					<p:panel header="Endereço Comercial">
-						<h:panelGrid columns="2" columnClasses="label, value">
-							<h:outputText value="Endereço: " />
-							<p:inputText value="#{usuarioWizard.endereco.endereco}" />
+						<h:panelGrid columns="3" columnClasses="label, value">
+					
+					
+					<p:outputLabel for="logradouroComercial" value="Logradouro:" />
+							<p:selectOneMenu id="logradouroComercial"
+								value="#{usuarioWizard.logradouroComercialId}"
+								converter="javax.faces.Long" required="true"
+								requiredMessage="Campo obrigatório.">
+								<f:selectItem itemValue="#{null}"
+									itemLabel="Selecione o logradouro" />
+								<f:selectItems value="#{usuarioWizard.logradouros}"
+									var="logradouro" itemValue="#{logradouro.id}"
+									itemLabel="#{logradouro.nome}" />
+							</p:selectOneMenu>
+							<p:message for="logradouroComercial" />
 
-							<h:outputText value="CEP: " />
-							<p:inputText value="#{usuarioWizard.endereco.cep}" />
+							<p:outputLabel for="enderecoComercial" value="Endereço:" />
+							<p:inputText id="enderecoComercial"
+								value="#{usuarioWizard.enderecoComercial.endereco}"
+								required="true"
+								requiredMessage="Campo obrigatório." />
+							<p:message for="enderecoComercial" />
 
-							<h:outputText value="Complemento " />
-							<p:inputText value="#{usuarioWizard.endereco.complemento}" />
+							<p:outputLabel for="numeroEnderecoComercial" value="Número:" />
+							<p:inputText id="numeroEnderecoComercial"
+								value="#{usuarioWizard.enderecoComercial.numero}" 
+								required="true"
+								requiredMessage="Campo obrigatório."/>
+							<p:message for="numeroEnderecoComercial" />
 
+							<p:outputLabel for="complementoEnderecoComercial"
+								value="Complemento:" />
+							<p:inputText id="complementoEnderecoComercial"
+								value="#{usuarioWizard.enderecoComercial.complemento}" 
+								required="true"
+								requiredMessage="Campo obrigatório."/>
+							<p:message for="complementoEnderecoComercial" />
+
+							<p:outputLabel for="bairroEnderecoComercial" value="Bairro:" />
+							<p:inputText id="bairroEnderecoComercial"
+								value="#{usuarioWizard.enderecoComercial.bairro}" 
+								required="true"
+								requiredMessage="Campo obrigatório."/>
+							<p:message for="bairroEnderecoComercial" />
+
+							<p:outputLabel for="cepEnderecoComercial" value="CEP:" />
+							<p:inputMask id="cepEnderecoComercial"
+								value="#{usuarioWizard.enderecoComercial.cep}"
+								mask="99999-999" 
+								required="true"
+								requiredMessage="Campo obrigatório."/>
+							<p:message for="cepEnderecoComercial" />
+
+							<p:outputLabel for="paisComercial" value="País:" />
+							<p:selectOneMenu value="#{usuarioWizard.paisComercialLong}"
+								id="paisComercial" converter="javax.faces.Long" required="true"
+								requiredMessage="Campo obrigatório.">
+								<f:ajax execute="@this" render="@form" />
+								<f:selectItem itemValue="#{null}" itemLabel="Selecione um país" />
+								<f:selectItems value="#{usuarioWizard.paisesHash.entrySet()}"
+									var="entry" itemValue="#{entry.key}" itemLabel="#{entry.value}" />
+							</p:selectOneMenu>
+							<p:message for="paisComercial" />
+
+
+							<p:outputLabel for="estadoComercial"
+								value="Estado:"
+								rendered="#{usuarioWizard.paisComercial != null}" />
+							<p:selectOneMenu value="#{usuarioWizard.estadoComercialLong}"
+								id="estadoComercial" converter="javax.faces.Long"
+								rendered="#{usuarioWizard.paisComercial != null}" required="true"
+								requiredMessage="Campo obrigatório.">
+								<f:ajax execute="@this" render="@form" />
+								<f:selectItem itemValue="#{null}"
+									itemLabel="Selecione um estado" />
+								<f:selectItems value="#{usuarioWizard.estadosHash.entrySet()}"
+									var="entry" itemValue="#{entry.key}" itemLabel="#{entry.value}" />
+							</p:selectOneMenu>
+							<p:message for="estadoComercial"
+								rendered="#{usuarioWizard.paisComercial != null}" />
+
+
+							<p:outputLabel for="cidadeComercial"
+								value="Cidade:"
+								rendered="#{usuarioWizard.paisComercial != null and usuarioWizard.estadoComercial != null}" />
+							<p:selectOneMenu value="#{usuarioWizard.cidadeComercialLong}"
+								id="cidadeComercial" converter="javax.faces.Long"
+								rendered="#{usuarioWizard.paisComercial != null and usuarioWizard.estadoComercial != null}"
+								required="true"
+								requiredMessage="Campo obrigatório.">
+								<f:ajax execute="@this" render="@form" />
+								<f:selectItem itemValue="#{null}"
+									itemLabel="Selecione uma cidade" />
+								<f:selectItems value="#{usuarioWizard.cidadesHash.entrySet()}"
+									var="entry" itemValue="#{entry.key}" itemLabel="#{entry.value}" />
+							</p:selectOneMenu>
+							<p:message for="cidadeComercial"
+								rendered="#{usuarioWizard.paisComercial != null and usuarioWizard.estadoComercial != null}" />
 						</h:panelGrid>
 					</p:panel>
 				</p:tab>
