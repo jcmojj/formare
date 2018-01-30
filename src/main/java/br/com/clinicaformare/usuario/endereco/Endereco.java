@@ -27,6 +27,7 @@ public class Endereco implements Serializable {
 	private String numero;
 	private String complemento;
 	private String cep;
+	private String bairro;
 	@ManyToOne
 	private Paesci paesci;
 	@ManyToMany(mappedBy = "enderecos")
@@ -35,6 +36,11 @@ public class Endereco implements Serializable {
 	// Constructor
 	public Endereco() {
 		super();
+	}
+
+	public Endereco(TipoEndereco tipoEndereco) {
+		this.tipoEndereco = tipoEndereco;
+		this.logradouro = new Logradouro();
 	}
 
 	// Getters and Setters
@@ -100,6 +106,14 @@ public class Endereco implements Serializable {
 
 	public void setUsuarios(List<Usuario> usuarios) {
 		this.usuarios = usuarios;
+	}
+
+	public String getBairro() {
+		return bairro;
+	}
+
+	public void setBairro(String bairro) {
+		this.bairro = bairro;
 	}
 
 }

@@ -17,6 +17,7 @@ import br.com.clinicaformare.daos.usuario.LogradouroDao;
 import br.com.clinicaformare.daos.usuario.PaesciDao;
 import br.com.clinicaformare.daos.usuario.ProfissionalDao;
 import br.com.clinicaformare.daos.usuario.SociaDao;
+import br.com.clinicaformare.daos.usuario.TipoEnderecoDao;
 import br.com.clinicaformare.daos.usuario.TipoProfissionalDao;
 import br.com.clinicaformare.daos.usuario.TipoTelefoneDao;
 import br.com.clinicaformare.daos.usuario.UsuarioDao;
@@ -28,6 +29,7 @@ import br.com.clinicaformare.model.usuario.Usuario;
 import br.com.clinicaformare.model.usuario.telefone.TipoTelefone;
 import br.com.clinicaformare.usuario.endereco.Logradouro;
 import br.com.clinicaformare.usuario.endereco.Paesci;
+import br.com.clinicaformare.usuario.endereco.TipoEndereco;
 
 @Named
 @RequestScoped
@@ -38,6 +40,7 @@ public class StartServer {
 			logradouro();
 			tipoTelefone();
 			paesci();
+			tipoEndereco();
 	}
 	
 	@Inject
@@ -83,6 +86,32 @@ public class StartServer {
 				tipoTelefoneDao.adiciona(new TipoTelefone(tipoTelefone));
 
 				tipoTelefone = br.readLine();
+			}
+			br.close();
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	@Inject
+	private TipoEnderecoDao tipoEnderecoDao;
+
+	@Transactional
+	public void tipoEndereco() {
+		try {
+			InputStream is = new FileInputStream(
+					"/Users/josecarlosoliveira/javaee/eclipse-workspace/formare/src/main/resources/startServer/tipoEndereco");
+			InputStreamReader isr = new InputStreamReader(is);
+			BufferedReader br = new BufferedReader(isr);
+			String tipoEndereco = br.readLine();
+
+			while (tipoEndereco != null) {
+
+				tipoEnderecoDao.adiciona(new TipoEndereco(tipoEndereco));
+
+				tipoEndereco = br.readLine();
 			}
 			br.close();
 		} catch (FileNotFoundException e) {

@@ -15,11 +15,15 @@ import javax.transaction.Transactional;
 import org.primefaces.event.FlowEvent;
 
 import br.com.clinicaformare.daos.usuario.EnderecoDao;
+import br.com.clinicaformare.daos.usuario.LogradouroDao;
 import br.com.clinicaformare.daos.usuario.PaesciDao;
+import br.com.clinicaformare.daos.usuario.TipoEnderecoDao;
 import br.com.clinicaformare.daos.usuario.UsuarioDao;
 import br.com.clinicaformare.model.usuario.Usuario;
 import br.com.clinicaformare.model.usuario.telefone.Telefone;
 import br.com.clinicaformare.usuario.endereco.Endereco;
+import br.com.clinicaformare.usuario.endereco.Logradouro;
+import br.com.clinicaformare.usuario.endereco.TipoEndereco;
 
 @Named
 @ViewScoped
@@ -225,25 +229,64 @@ public class UsuarioWizard implements Serializable {
 	Map<Long, String> cidadesHash = new LinkedHashMap<Long, String>();
 	
 	public Map<Long, String> getCidadesHash() {
-		System.out.println("TESTE8");
 		cidadesHash = new LinkedHashMap<Long, String>();
-		System.out.println("TESTE9");
 		System.out.println("pais:"+pais+"-");
 		System.out.println("estado:"+estado+"-");
 		List<String> cidadesString = paesciDao.cidades(pais,estado);
-		System.out.println("TESTE10-");
 		Long counter = 1L;
 		for (String cidade : cidadesString) {
 			cidadesHash.put(counter, cidade);
 			counter++;
 		}
-		System.out.println("TESTE11-");
 		return cidadesHash;
 	}
 	
-	// Endereco Residencial
+	// Endereco 
 	@Inject
 	EnderecoDao enderecoDao;
+	@Inject
+	LogradouroDao logradouroDao;
+	@Inject
+	TipoEnderecoDao tipoEnderecoDao;
+	
+	public List<Logradouro> getLogradouros() {
+		List<Logradouro> logradouros = logradouroDao.listaTodos();
+		return logradouros;
+	}
+	public List<TipoEndereco> getTiposEndereco() {
+		List<TipoEndereco> tiposEndereco = tipoEnderecoDao.listaTodos();
+		return tiposEndereco;
+	}
+	
+	
+	// Endereco Residencial
+	private Long logradouroResidencialId = 0L;
+	
+	private TipoEndereco tipoEnderecoResisidencial = new TipoEndereco(1L);
+	private Endereco enderecoResidencial = new Endereco(tipoEnderecoResisidencial);
+	 
+
+	public Long getLogradouroResidencialId() {
+		return logradouroResidencialId;
+	}
+
+	public void setLogradouroResidencialId(Long logradouroResidencialId) {
+		this.logradouroResidencialId = logradouroResidencialId;
+	}
+
+	public Endereco getEnderecoResidencial() {
+		return enderecoResidencial;
+	}
+
+	public void setEnderecoResidencial(Endereco enderecoResidencial) {
+		this.enderecoResidencial = enderecoResidencial;
+	}
+
+	
+	
+	
+	
+	
 	
 	
 	

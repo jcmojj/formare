@@ -14,7 +14,7 @@ public class TipoEndereco implements Serializable {
 	private static final long serialVersionUID = 1L;
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer id;
+	private Long id;
 	@Column(unique=true)
 	private String tipo;
 	@OneToOne(mappedBy = "tipoEndereco")
@@ -30,6 +30,11 @@ public class TipoEndereco implements Serializable {
 		super();
 	}
 	
+	public TipoEndereco(Long id) {
+		super();
+		this.id = id;
+	}
+
 	//Getters and Setters
 	public String getTipo() {
 		return tipo;
@@ -45,6 +50,14 @@ public class TipoEndereco implements Serializable {
 
 	public void setEndereco(Endereco telefone) {
 		this.telefone = telefone;
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
 	}
 
 	@Override

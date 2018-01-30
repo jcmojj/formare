@@ -88,23 +88,23 @@
 		<p:tab id="nascimento" title="Nascimento">
 					<p:panel header="Dados de Nascimento">
 						<h:panelGrid columns="3" columnClasses="label, value">
-							
+
 							<p:outputLabel for="dataNascimento" value="Data de Nascimento" />
 							<p:calendar id="dataNascimento"
 								value="#{usuarioWizard.usuario.dataNascimento}" locale="pt"
-								navigator="true" effect="blind" pattern="dd-MMM-yyyy" 
-								required="true" requiredMessage="A data de nascimento é um campo obrigatório."/>
+								navigator="true" effect="blind" pattern="dd-MMM-yyyy"
+								required="true"
+								requiredMessage="A data de nascimento é um campo obrigatório." />
 							<p:message for="dataNascimento" />
 
 							<p:outputLabel for="paisNascimento" value="País de Nascimento" />
 							<p:selectOneMenu value="#{usuarioWizard.paisLong}"
-								converter="javax.faces.Long"
-								required="true" requiredMessage="O país de origem é um campo obrigatório.">
+								id="paisNascimento" converter="javax.faces.Long" required="true"
+								requiredMessage="O país de origem é um campo obrigatório.">
 								<f:ajax execute="@this" render="@form" />
 								<f:selectItem itemValue="#{null}" itemLabel="Selecione um país" />
-								<f:selectItems id="paisNascimento"
-									value="#{usuarioWizard.paisesHash.entrySet()}" var="entry"
-									itemValue="#{entry.key}" itemLabel="#{entry.value}" />
+								<f:selectItems value="#{usuarioWizard.paisesHash.entrySet()}"
+									var="entry" itemValue="#{entry.key}" itemLabel="#{entry.value}" />
 							</p:selectOneMenu>
 							<p:message for="paisNascimento" />
 
@@ -113,14 +113,14 @@
 								value="Estado de Nascimento"
 								rendered="#{usuarioWizard.pais != null}" />
 							<p:selectOneMenu value="#{usuarioWizard.estadoLong}"
-								converter="javax.faces.Long"
-								rendered="#{usuarioWizard.pais != null}"
-								required="true" requiredMessage="O estado natal é um campo obrigatório.">
+								id="estadoNascimento" converter="javax.faces.Long"
+								rendered="#{usuarioWizard.pais != null}" required="true"
+								requiredMessage="O estado natal é um campo obrigatório.">
 								<f:ajax execute="@this" render="@form" />
-								<f:selectItem itemValue="#{null}" itemLabel="Selecione um estado" />
-								<f:selectItems id="estadoNascimento"
-									value="#{usuarioWizard.estadosHash.entrySet()}" var="entry"
-									itemValue="#{entry.key}" itemLabel="#{entry.value}" />
+								<f:selectItem itemValue="#{null}"
+									itemLabel="Selecione um estado" />
+								<f:selectItems value="#{usuarioWizard.estadosHash.entrySet()}"
+									var="entry" itemValue="#{entry.key}" itemLabel="#{entry.value}" />
 							</p:selectOneMenu>
 							<p:message for="estadoNascimento"
 								rendered="#{usuarioWizard.pais != null}" />
@@ -130,14 +130,15 @@
 								value="Cidade de Nascimento"
 								rendered="#{usuarioWizard.pais != null and usuarioWizard.estado != null}" />
 							<p:selectOneMenu value="#{usuarioWizard.cidadeLong}"
-								converter="javax.faces.Long"
+								id="cidadeNascimento" converter="javax.faces.Long"
 								rendered="#{usuarioWizard.pais != null and usuarioWizard.estado != null}"
-								required="true" requiredMessage="A cidade natal é um campo obrigatório.">
+								required="true"
+								requiredMessage="A cidade natal é um campo obrigatório.">
 								<f:ajax execute="@this" render="@form" />
-								<f:selectItem itemValue="#{null}" itemLabel="Selecione uma cidade" />
-								<f:selectItems id="cidadeNascimento"
-									value="#{usuarioWizard.cidadesHash.entrySet()}" var="entry"
-									itemValue="#{entry.key}" itemLabel="#{entry.value}" />
+								<f:selectItem itemValue="#{null}"
+									itemLabel="Selecione uma cidade" />
+								<f:selectItems value="#{usuarioWizard.cidadesHash.entrySet()}"
+									var="entry" itemValue="#{entry.key}" itemLabel="#{entry.value}" />
 							</p:selectOneMenu>
 							<p:message for="cidadeNascimento"
 								rendered="#{usuarioWizard.pais != null and usuarioWizard.estado != null}" />
@@ -147,17 +148,58 @@
 
 				<p:tab id="endereco" title="Endereço">
 					<p:panel header="Endereço Residencial">
-						<h:panelGrid columns="2" columnClasses="label, value">
-						
-						
-							<h:outputText value="Endereço: " />
-							<p:inputText value="#{usuarioWizard.endereco.endereco}" />
+						<h:panelGrid columns="3" columnClasses="label, value">
 
-							<h:outputText value="CEP: " />
-							<p:inputText value="#{usuarioWizard.endereco.cep}" />
+							<p:outputLabel for="logradouroResidencial" value="Logradouro:" />
+							<p:selectOneMenu id="logradouroResidencial"
+								value="#{usuarioWizard.logradouroResidencialId}"
+								converter="javax.faces.Long" required="true"
+								requiredMessage="Campo obrigatório.">
+								<f:selectItem itemValue="#{null}"
+									itemLabel="Selecione o logradouro." />
+								<f:selectItems value="#{usuarioWizard.logradouros}"
+									var="logradouro" itemValue="#{logradouro.id}"
+									itemLabel="#{logradouro.nome}" />
+							</p:selectOneMenu>
+							<p:message for="logradouroResidencial" />
 
-							<h:outputText value="Complemento " />
-							<p:inputText value="#{usuarioWizard.endereco.complemento}" />
+							<p:outputLabel for="enderecoResidencial" value="Endereço:" />
+							<p:inputText id="enderecoResidencial"
+								value="#{usuarioWizard.enderecoResidencial.endereco}"
+								required="true"
+								requiredMessage="Campo obrigatório." />
+							<p:message for="enderecoResidencial" />
+
+							<p:outputLabel for="numeroEnderecoResidencial" value="Número:" />
+							<p:inputText id="numeroEnderecoResidencial"
+								value="#{usuarioWizard.enderecoResidencial.numero}" 
+								required="true"
+								requiredMessage="Campo obrigatório."/>
+							<p:message for="numeroEnderecoResidencial" />
+
+							<p:outputLabel for="complementoEnderecoResidencial"
+								value="Complemento:" />
+							<p:inputText id="complementoEnderecoResidencial"
+								value="#{usuarioWizard.enderecoResidencial.complemento}" 
+								required="true"
+								requiredMessage="Campo obrigatório."/>
+							<p:message for="complementoEnderecoResidencial" />
+
+							<p:outputLabel for="bairroEnderecoResidencial" value="Bairro:" />
+							<p:inputText id="bairroEnderecoResidencial"
+								value="#{usuarioWizard.enderecoResidencial.bairro}" 
+								required="true"
+								requiredMessage="Campo obrigatório."/>
+							<p:message for="bairroEnderecoResidencial" />
+
+							<p:outputLabel for="cepEnderecoResidencial" value="CEP:" />
+							<p:inputMask id="cepEnderecoResidencial"
+								value="#{usuarioWizard.enderecoResidencial.cep}"
+								mask="99999-999" 
+								required="true"
+								requiredMessage="Campo obrigatório."/>
+							<p:message for="cepEnderecoResidencial" />
+
 
 						</h:panelGrid>
 					</p:panel>

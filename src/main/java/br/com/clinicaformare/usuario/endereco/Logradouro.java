@@ -16,9 +16,9 @@ public class Logradouro implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer id;
+	private Long id;
 	@Column(unique = true)
-	private String logradouro;
+	private String nome;
 	@OneToMany(mappedBy = "logradouro")
 	private List<Endereco> endereco;
 
@@ -27,18 +27,34 @@ public class Logradouro implements Serializable {
 		super();
 	}
 
-	public Logradouro(String logradouro) {
+	public Logradouro(String nome) {
 		super();
-		this.logradouro = logradouro;
+		this.nome = nome;
 	}
 
 	// Getters and setters
 	public String getLogradouro() {
-		return logradouro;
+		return nome;
 	}
 
-	public void setLogradouro(String logradouro) {
-		this.logradouro = logradouro;
+	public void setLogradouro(String nome) {
+		this.nome = nome;
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public String getNome() {
+		return nome;
+	}
+
+	public void setNome(String nome) {
+		this.nome = nome;
 	}
 
 }
