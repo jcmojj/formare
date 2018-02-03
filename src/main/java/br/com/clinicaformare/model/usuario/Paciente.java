@@ -1,6 +1,7 @@
 package br.com.clinicaformare.model.usuario;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
@@ -23,7 +24,7 @@ public class Paciente implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	@OneToOne(mappedBy = "paciente")
+	@OneToOne(mappedBy = "paciente")//, cascade = {CascadeType.ALL, CascadeType.MERGE, CascadeType.PERSIST})
 	Usuario usuario;
 	@Temporal(TemporalType.TIMESTAMP)
 	private Calendar dataCriacao;
@@ -32,13 +33,12 @@ public class Paciente implements Serializable {
 
 	@OneToMany(mappedBy = "paciente")
 	private List<Autorizacao> autorizacoesDoDependente;
-	@OneToMany(mappedBy = "paciente")
-	private List<Pacote> pacotes;
+	@OneToMany(mappedBy = "paciente")//, cascade = {CascadeType.ALL, CascadeType.MERGE, CascadeType.PERSIST})
+	private List<Pacote> pacotes  = new ArrayList<>();
 
 	@Override
 	public String toString() {
-		return "Paciente [id=" + id + ", usuario=" + usuario + ", dataCriacao=" + dataCriacao + ", dataAlteracao=" + dataAlteracao + ", autorizacoesDoDependente=" + autorizacoesDoDependente
-				+ ", pacotes=" + pacotes + "]";
+		return "Paciente [id=" + id + ", usuario=" + usuario + ", dataCriacao=" + dataCriacao + ", dataAlteracao=" + dataAlteracao + ", autorizacoesDoDependente=" + autorizacoesDoDependente;
 	}
 
 	// Constructor
@@ -47,6 +47,12 @@ public class Paciente implements Serializable {
 
 	public Paciente(Long id) {
 		this.id = id;
+	}
+
+	public Paciente(Usuario usuario) {
+		super();
+		this.usuario = usuario;
+		usuario.setPaciente(this);
 	}
 
 	// Getters and Setters

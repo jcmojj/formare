@@ -1,0 +1,138 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+<ui:composition template="template/_template.xhtml">
+	<ui:define name="title">
+            Formare - Novo Pacote
+    </ui:define>
+	<ui:define name="content">
+		<h:form id="selecao">
+
+
+			<h:panelGrid columns="3" columnClasses="label, value" cellpadding="5">
+
+				<p:outputLabel for="sociaResponsavel" value="Sócia Responsavel:" />
+				<p:selectOneMenu id="sociaResponsavel"
+					value="#{novoPacoteBean.sociaResponsavelId}"
+					converter="javax.faces.Long" required="true"
+					requiredMessage="Campo obrigatório.">
+					<f:selectItem itemValue="#{null}" itemLabel="Selecione uma sócia" />
+					<f:selectItems value="#{novoPacoteBean.listaUsuariosTipoSocia}"
+						var="usuario" itemValue="#{usuario.id}"
+						itemLabel="#{usuario.nome}" />
+				</p:selectOneMenu>
+				<p:message for="sociaResponsavel" />
+
+				<p:outputLabel for="reponsavelFinanceiro"
+					value="Responsável Financeiro:" />
+				<p:selectOneMenu id="reponsavelFinanceiro"
+					value="#{novoPacoteBean.responsavelFinanceiroId}"
+					converter="javax.faces.Long" required="true"
+					requiredMessage="Campo obrigatório.">
+					<f:selectItem itemValue="#{null}"
+						itemLabel="Selecione uma responsável financeiro" />
+					<f:selectItems
+						value="#{novoPacoteBean.listaTodosUsuarioClienteDoMaisNovoAoMaisVelho}"
+						var="usuario" itemValue="#{usuario.id}"
+						itemLabel="#{usuario.nome}" />
+				</p:selectOneMenu>
+				<p:message for="reponsavelFinanceiro" />
+
+
+				<p:outputLabel for="paciente" value="Paciente:" />
+				<p:selectOneMenu id="paciente" value="#{novoPacoteBean.pacienteId}"
+					converter="javax.faces.Long" required="true"
+					requiredMessage="Campo obrigatório.">
+					<f:selectItem itemValue="#{null}" itemLabel="Selecione um paciente" />
+					<f:selectItems
+						value="#{novoPacoteBean.listaTodosUsuarioClienteDoMaisNovoAoMaisVelho}"
+						var="usuario" itemValue="#{usuario.id}"
+						itemLabel="#{usuario.nome}" />
+				</p:selectOneMenu>
+				<p:message for="paciente" />
+
+
+			</h:panelGrid>
+		</h:form>
+		<h:form id="atendimentos">
+			<p:fieldset legend="Pacote Base" style="margin-bottom:20px">
+
+				<h:panelGrid columns="4" columnClasses="label, value"
+					cellpadding="5">
+					<p:outputLabel for="pacotePadrao" value="Pacote:" />
+					<p:selectOneMenu id="pacotePadrao"
+						value="#{novoPacoteBean.pacotePadraoId}"
+						converter="javax.faces.Long" required="true"
+						requiredMessage="Campo obrigatório.">
+						<f:ajax execute="@form" render="@form :atendimentos" />
+						<f:selectItem itemValue="#{null}"
+							itemLabel="Selecione um pacote padrão" />
+						<f:selectItems value="#{novoPacoteBean.pacotesPadrao}"
+							var="pacote" itemValue="#{pacote.id}" itemLabel="#{pacote.nome}" />
+					</p:selectOneMenu>
+					<p:selectBooleanButton id="mostraDesconto"
+						value="#{novoPacoteBean.mostraDesconto}" 
+						onIcon="ui-icon-check" offIcon="ui-icon-close" 
+						onLabel="S" offLabel="N">
+						<p:ajax update="@form"  />
+					</p:selectBooleanButton>
+					<p:message for="pacotePadrao" />
+				</h:panelGrid>
+
+				<p:dataTable var="atendimentoPadrao"
+					value="#{novoPacoteBean.atendimentosPadrao}"
+					rendered="#{novoPacoteBean.quantidadeAtendimentosPadrao > 0}">
+					<f:facet name="header">
+        							Atendimentos
+    							</f:facet>
+					<p:column headerText="Profissional">
+						<h:outputText value="#{atendimentoPadrao.tipoProfissional.tipo}" />
+					</p:column>
+					<p:column headerText="Desconto" rendered="#{novoPacoteBean.mostraDesconto}">
+						<h:outputText value="#{atendimentoPadrao.desconto}%" />
+					</p:column>
+					<p:column headerText="Preço">
+						<h:outputText value="#{atendimentoPadrao.valorBrutoHora}" >
+						<f:convertNumber type="currency" currencySymbol="R$" />
+						</h:outputText>
+					</p:column>
+					<p:column headerText="Atendimentos">
+						<h:outputText
+							value="#{atendimentoPadrao.quantidadeAtendimentosMensal}" />
+					</p:column>
+					<p:column headerText="Total">
+						<h:outputText value="#{atendimentoPadrao.valorBrutoTotal}" >
+							<f:convertNumber type="currency" currencySymbol="R$" />
+						</h:outputText>
+					</p:column>
+					<p:columnGroup type="footer">
+						<p:row>
+							<p:column colspan="3" footerText="Total: "
+								style="text-align:right" rendered="#{novoPacoteBean.mostraDesconto}"/>
+							<p:column colspan="2" footerText="Total: "
+								style="text-align:right" rendered="#{not novoPacoteBean.mostraDesconto}"/>
+							<p:column footerText="#{novoPacoteBean.totalAtendimentos}" />
+
+							<p:column footerText="R$#{novoPacoteBean.totalValorBrutoTotal}" />
+						</p:row>
+					</p:columnGroup>
+
+
+
+					<f:facet name="footer">
+       							Foram incluídos #{novoPacoteBean.quantidadeAtendimentosPadrao} tipos de atendimentos.
+    							</f:facet>
+				</p:dataTable>
+
+			</p:fieldset>
+		</h:form>
+
+
+
+	</ui:define>
+
+</ui:composition>
+</html>

@@ -1,6 +1,7 @@
 package br.com.clinicaformare.model.atendimento;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Entity;
@@ -12,7 +13,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
 import br.com.clinicaformare.model.usuario.Paciente;
-import br.com.clinicaformare.model.usuario.Pagante;
+import br.com.clinicaformare.model.usuario.ResponsavelFinanceiro;
 import br.com.clinicaformare.model.usuario.Socia;
 
 @Entity
@@ -22,22 +23,23 @@ public class Pacote implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
+	private String nome;
 	@ManyToOne
 	private Socia sociaResponsavel;
 	@ManyToOne
-	private Pagante contratante; // !!! relacao
+	private ResponsavelFinanceiro responsavelFinanceiro; // !!! relacao
 	@OneToOne
 	private Paciente paciente; // deve ser um dependente do contratante !!!relacao
 	// private List<Cliente> pacientesPermitidos;
 
 	@OneToMany(mappedBy = "pacote")
-	private List<AtendimentoPadrao> atendimentosPadrao;
+	private List<AtendimentoPadrao> atendimentosPadrao = new ArrayList<>();
 
-	private boolean ehPacotePadrao;
+	private boolean ehPacotePadrao = false;
 
 	@Override
 	public String toString() {
-		return "Pacote [id=" + id + ", sociaResponsavel=" + sociaResponsavel + ", contratante=" + contratante + ", paciente=" + paciente + ", atendimentosPadrao=" + atendimentosPadrao
+		return "Pacote [id=" + id + ", sociaResponsavel=" + sociaResponsavel + ", contratante=" + responsavelFinanceiro + ", paciente=" + paciente + ", atendimentosPadrao=" + atendimentosPadrao
 				+ ", ehPacotePadrao=" + ehPacotePadrao + "]";
 	}
 
@@ -52,13 +54,34 @@ public class Pacote implements Serializable {
 		this.id = id;
 	}
 
-	public Pacote(Socia sociaResponsavel, Pagante contratante) {
+	public Pacote(Socia sociaResponsavel, ResponsavelFinanceiro responsavelFinanceiro) {
 		super();
 		this.sociaResponsavel = sociaResponsavel;
-		this.contratante = contratante;
+		this.responsavelFinanceiro = responsavelFinanceiro;
+		sociaResponsavel.getPacotes().add(this);
+		responsavelFinanceiro.getPacotes().add(this);
 		ehPacotePadrao = false;
 	}
+	public Pacote(ResponsavelFinanceiro responsavelFinanceiro, Paciente paciente) {
+		super();
+		this.responsavelFinanceiro = responsavelFinanceiro;
+		responsavelFinanceiro.getPacotes().add(this);
+		paciente.getPacotes().add(this);
+		this.paciente = paciente;
+	}
+	
+	
 	// Getters and setters
+
+	
+
+	public String getNome() {
+		return nome;
+	}
+
+	public void setNome(String nome) {
+		this.nome = nome;
+	}
 
 	public Long getId() {
 		return id;
@@ -76,12 +99,12 @@ public class Pacote implements Serializable {
 		this.sociaResponsavel = sociaResponsavel;
 	}
 
-	public Pagante getContratante() {
-		return contratante;
+	public ResponsavelFinanceiro getContratante() {
+		return responsavelFinanceiro;
 	}
 
-	public void setContratante(Pagante contratante) {
-		this.contratante = contratante;
+	public void setContratante(ResponsavelFinanceiro contratante) {
+		this.responsavelFinanceiro = contratante;
 	}
 
 	public Paciente getPaciente() {
@@ -107,5 +130,15 @@ public class Pacote implements Serializable {
 	public void setEhPacotePadrao(boolean ehPacotePadrao) {
 		this.ehPacotePadrao = ehPacotePadrao;
 	}
+
+	public ResponsavelFinanceiro getResponsavelFinanceiro() {
+		return responsavelFinanceiro;
+	}
+
+	public void setResponsavelFinanceiro(ResponsavelFinanceiro responsavelFinanceiro) {
+		this.responsavelFinanceiro = responsavelFinanceiro;
+	}
+
+	
 
 }

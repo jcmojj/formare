@@ -7,23 +7,23 @@
 		<h:panelGroup styleClass="container-cabecalho-superior" layout="block">
 			<h:panelGroup styleClass="centraliza" layout="block">
 				<p:commandLink
-					styleClass="pagina-inicial border-right-light border-left-right"
+					styleClass="pagina-inicial border-right-light border-left-light"
 					action="#">
 					<h:outputText
 						styleClass="fa fa-home fa-container-cabecalho-superior" />
 				</p:commandLink>
-				<p:commandLink styleClass="pagina-inicial" action="#">
+				<p:commandLink styleClass="pagina-inicial no-border " action="#">
 					<h:outputText
 						styleClass="fa fa-facebook-square fa-container-cabecalho-superior" />
 				</p:commandLink>
 				<p:commandLink
-					styleClass="pagina-inicial border-right-light border-left-right"
+					styleClass="pagina-inicial border-right-light border-left-light"
 					action="#">
 					<h:outputText
-						styleClass="fa fa-instagram fa-container-cabecalho-superior order-right-light border-left-right" />
+						styleClass="fa fa-instagram fa-container-cabecalho-superior order-right-light border-left-light" />
 				</p:commandLink>
 				<h:panelGroup
-					styleClass="data-container-cabecalho border-right-light border-left-right"
+					styleClass="data-container-cabecalho border-right-light border-left-light"
 					layout="block">
 
 					<h:outputText styleClass="data" value="Campo Belo" />
@@ -32,7 +32,7 @@
 
 				</h:panelGroup>
 				<h:panelGroup
-					styleClass="usuario-container-cabecalho border-right-light border-left-right"
+					styleClass="usuario-container-cabecalho border-right-light border-left-light"
 					layout="block">
 					<h:outputText styleClass="usuario " value="Jose Carlos Oliveira" />
 					<h:outputText styleClass="usuario" value="Usuário:" />
@@ -42,17 +42,17 @@
 				<h:panelGroup styleClass="logo-final-container-cabecalho"
 					layout="block">
 					<p:commandLink
-						styleClass="logo-final border-right-light border-left-right"
+						styleClass="logo-final border-right-light border-left-light"
 						action="#">
 						<h:outputText
 							styleClass="fa fa-credit-card-alt fa-container-cabecalho-superior" />
 					</p:commandLink>
-					<p:commandLink styleClass="logo-final " action="#">
+					<p:commandLink styleClass="logo-final no-border" action="#">
 						<h:outputText
 							styleClass="fa fa-map-marker fa-container-cabecalho-superior" />
 					</p:commandLink>
 					<p:commandLink
-						styleClass="logo-final border-right-light border-left-right"
+						styleClass="logo-final border-right-light border-left-light"
 						action="#">
 						<h:outputText
 							styleClass="fa fa-child fa-container-cabecalho-superior" />
@@ -60,8 +60,7 @@
 				</h:panelGroup>
 			</h:panelGroup>
 		</h:panelGroup>
-		<h:panelGroup styleClass="container-cabecalho-logo"
-			layout="block">
+		<h:panelGroup styleClass="container-cabecalho-logo" layout="block">
 			<h:panelGroup styleClass="centraliza" layout="block">
 				<h1>
 					<h:commandLink action="#">
@@ -69,9 +68,10 @@
 							name="logo.png" />
 					</h:commandLink>
 				</h1>
+
 				<h:panelGroup styleClass="info-formare-container-cabecalho"
 					layout="block">
-					<p:panelGrid columns="1" styleClass="info-formare ui-noborder">
+					<div class="info-formare ui-noborder">
 						<p:commandLink
 							styleClass="fa fa-phone fa-container-cabecalho-abaixo-superior "
 							action="#">
@@ -88,31 +88,77 @@
 							<h:outputText styleClass=""
 								value="   Rua Baronesa de Bela Vista, 500" />
 						</p:commandLink>
-					</p:panelGrid>
+					</div>
 				</h:panelGroup>
 				<h:panelGroup styleClass="login-container-cabecalho" layout="block">
 					<p:panelGrid columns="1" styleClass="login-sub-container-cabecalho"
 						cellpadding="5">
-						<p:inputText styleClass="login" id="usuario" value=""
-							placeholder="Usuário" label="Usuário" required="true" />
-						<p:password styleClass="login" id="senha" value=""
-							feedback="false" placeholder="Senha" label="Senha"
-							required="true" />
-						<p:commandLink styleClass="login-novo" style="font-size: 10px;"
-							id="novo" value="Crie agora sua conta Formare" action="#" />
+						<p:commandButton id="botaoLogar" value="Conectar" type="button"
+							icon="fa fa-sign-in fa-at-login" styleClass="login-button"
+							onclick="PF('logar').show();" />
+						<p:commandButton id="botaoNovoUsuario" value="Adicionar"
+							actionListener="#{usuarioBean.buttonAction}" update="growl"
+							icon="fa fa-user-plus fa-at-login" styleClass="login-button"
+							title="Adicione um novo usuário"
+							onclick="PF('adicionar').show();" />
 					</p:panelGrid>
 				</h:panelGroup>
 			</h:panelGroup>
 		</h:panelGroup>
 
 		<h:panelGroup styleClass="container-cabecalho-inferior" layout="block">
-			<h:panelGroup styleClass="centraliza container-cabecalho-inferior-linhas" layout="block">
+			<h:panelGroup
+				styleClass="centraliza container-cabecalho-inferior-linhas"
+				layout="block">
 				<ui:include src="menu.xhtml" />
 				<p:growl id="growl" sticky="true" showDetail="true" life="10000" />
 				<p:messages />
 			</h:panelGroup>
 		</h:panelGroup>
 
+		<p:dialog header="Login" widgetVar="logar" modal="true" height="100"
+			focus="usuario" showEffect="clip" resizable="false">
+			<h:panelGrid columns="1" columnClasses="label, value" cellpadding="5">
+				<p:inputText id="usuario" styleClass="login" placeholder="Usuário"
+					label="username" required="true"
+					value="#{userLoginBean.username}" />
+				<p:password id="senha" styleClass="login" feedback="false"
+					placeholder="Senha" label="password" required="true"
+					value="#{userLoginBean.password}" />
+				<f:facet name="footer">
+					<p:commandButton value="Logar" update="growl"
+						action="#{userLoginBean.login}"
+						oncomplete="handleLoginRequest(xhr, status, args)" >
+						<p:ajax/>
+				</p:commandButton>
+				</f:facet>
+			</h:panelGrid>
 
+
+			<!--     <h:outputLabel for="username" value="Username:" />
+            <p:inputText id="username" value="#{userLoginView.username}" required="true" label="username" />
+ 
+            <h:outputLabel for="password" value="Password:" />
+            <p:password id="password" value="#{userLoginView.password}" required="true" label="password" />
+ 
+            <f:facet name="footer">
+                <p:commandButton value="Login" update="growl" actionListener="#{userLoginView.login}"
+                                 oncomplete="handleLoginRequest(xhr, status, args)" />
+            </f:facet>  -->
+
+
+		</p:dialog>
 	</h:form>
+	<script type="text/javascript">
+		function handleLoginRequest(xhr, status, args) {
+			if (args.validationFailed || !args.loggedIn) {
+				PF('logar').jq.effect("shake", {
+					times : 5
+				}, 100);
+			} else {
+				PF('logar').hide();
+				$('#loginLink').fadeOut();
+			}
+		}
+	</script>
 </ui:composition>

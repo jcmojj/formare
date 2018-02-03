@@ -1,29 +1,37 @@
 package br.com.clinicaformare.bean;
 
 import java.io.Serializable;
-import java.time.LocalDateTime;
 import java.util.List;
 
 import javax.enterprise.context.RequestScoped;
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
+import javax.faces.event.ActionEvent;
 import javax.inject.Inject;
 import javax.inject.Named;
 
 import br.com.clinicaformare.daos.usuario.UsuarioDao;
 import br.com.clinicaformare.model.usuario.Usuario;
 
-
-
 @Named
 @RequestScoped
-public class UsuarioBean implements Serializable{
+public class UsuarioBean implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Inject
 	UsuarioDao usuarioDao;
-	
+
+	public void buttonAction(ActionEvent actionEvent) {
+		addMessage("Criando novo usuário!");
+	}
+
+	public void addMessage(String summary) {
+		FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, summary, null);
+		FacesContext.getCurrentInstance().addMessage(null, message);
+	}
+
 	private Usuario usuario = new Usuario();
 	private List<Usuario> usuarios;
-	
 
 	public Usuario getUsuario() {
 		return usuario;
@@ -34,20 +42,20 @@ public class UsuarioBean implements Serializable{
 	}
 
 	public void grava() {
-//		System.out.println("Id - GRAVA: " + usuario.getId());
-		if(this.usuario.getId() == null){
-//		usuario.setDataCriacao(LocalDateTime.now());
-//		usuario.setDataAlteracao(LocalDateTime.now());
-		usuarioDao.adiciona(usuario);
-		}else{
-//			System.out.println("Gravando o usuario");
-//			System.out.println("Id: " + usuario.getId());
-////			System.out.println("Apelido: " + usuario.getPortes());
-//			System.out.println("Email: " + usuario.getEmail());
-//			System.out.println("Senha: " + usuario.getSenha());
-//			System.out.println("DataAlteracao: " + usuario.getDataAlteracao().getTime());
-//			System.out.println("DataCriacao: " + usuario.getDataCriacao().getTime());
-//			usuario.setDataAlteracao(LocalDateTime.now());
+		// System.out.println("Id - GRAVA: " + usuario.getId());
+		if (this.usuario.getId() == null) {
+			// usuario.setDataCriacao(LocalDateTime.now());
+			// usuario.setDataAlteracao(LocalDateTime.now());
+			usuarioDao.adiciona(usuario);
+		} else {
+			// System.out.println("Gravando o usuario");
+			// System.out.println("Id: " + usuario.getId());
+			//// System.out.println("Apelido: " + usuario.getPortes());
+			// System.out.println("Email: " + usuario.getEmail());
+			// System.out.println("Senha: " + usuario.getSenha());
+			// System.out.println("DataAlteracao: " + usuario.getDataAlteracao().getTime());
+			// System.out.println("DataCriacao: " + usuario.getDataCriacao().getTime());
+			// usuario.setDataAlteracao(LocalDateTime.now());
 			usuarioDao.atualiza(usuario);
 		}
 		this.usuarios = usuarioDao.listaTodos();
@@ -56,13 +64,13 @@ public class UsuarioBean implements Serializable{
 	}
 
 	public List<Usuario> getUsuarios() {
-		if(this.usuarios == null){
+		if (this.usuarios == null) {
 			this.usuarios = usuarioDao.listaTodos();
 		}
 		System.out.println("Listando os usuarios");
 		return usuarios;
 	}
-	
+
 	public void remove(Usuario usuario) {
 		System.out.println("Removendo a usuario");
 		System.out.println("Id: " + usuario.getId());
@@ -76,8 +84,7 @@ public class UsuarioBean implements Serializable{
 	}
 
 	/**
-	 * Esse metodo apenas limpa o formulario da forma com que o JSF espera.
-	 * Invoque-o no momento em que precisar do formulario vazio.
+	 * Esse metodo apenas limpa o formulario da forma com que o JSF espera. Invoque-o no momento em que precisar do formulario vazio.
 	 */
 	private void limpaFormularioDoJSF() {
 		this.usuario = new Usuario();

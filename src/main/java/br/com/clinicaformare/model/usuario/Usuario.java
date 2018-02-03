@@ -58,14 +58,14 @@ public class Usuario implements Serializable {
 	private String rg;
 
 	// Relações com tipos de Usuário
-	protected Boolean cliente;
-	protected Boolean equipe;
-	@OneToOne
+	protected Boolean cliente = false;
+	protected Boolean equipe = false;
+	@OneToOne//(cascade = {CascadeType.ALL, CascadeType.MERGE, CascadeType.PERSIST})
 	Paciente paciente;
 	@OneToOne
 	Autorizado autorizado;
-	@OneToOne
-	Pagante pagante;
+	@OneToOne//(cascade = {CascadeType.ALL, CascadeType.MERGE, CascadeType.PERSIST})
+	ResponsavelFinanceiro responsavelFinanceiro;
 	@OneToOne
 	Profissional profissional;
 	@OneToOne
@@ -90,7 +90,7 @@ public class Usuario implements Serializable {
 	@Override
 	public String toString() {
 		return "Usuario [id=" + id + ", email=" + email + ", password=" + password + ", nome=" + nome + ", sobrenome=" + sobrenome + ", dataNascimento=" + dataNascimento + ", cpf=" + cpf + ", rg=" + rg
-				+ ", telefones=" + telefones + ", enderecos=" + enderecos + ", Cliente=" + isCliente() + ", Paciente=" + isPaciente() + ", Autorizado=" + isAutorizado() + ", Pagante=" + isPagante()
+				+ ", telefones=" + telefones + ", enderecos=" + enderecos + ", Cliente=" + isCliente() + ", Paciente=" + isPaciente() + ", Autorizado=" + isAutorizado() + ", ResponsavelFinanceiro=" + isResponsavelFinanceiro()
 				+ ", Equipe=" + isEquipe() + ", Profissional=" + isProfissional() + ", Socia=" + isSocia() + ", Administrador=" + isAdministrador() + ", Secretaria=" + isSecretaria() + "]";
 	}
 
@@ -109,6 +109,10 @@ public class Usuario implements Serializable {
 
 	public Usuario(String nome) {
 		this.nome = nome;
+	}
+	public Usuario(String nome, String sobrenome, String email) {
+		this.nome = nome;
+		this.sobrenome = sobrenome;
 	}
 
 	// Getters and Setters
@@ -215,7 +219,7 @@ public class Usuario implements Serializable {
 	}
 
 	public void setPaciente(Paciente paciente) {
-		this.cliente = (paciente != null) & (autorizado != null) & (pagante != null);
+		this.cliente = (paciente != null) || (autorizado != null) || (responsavelFinanceiro != null);
 		this.paciente = paciente;
 	}
 
@@ -224,17 +228,17 @@ public class Usuario implements Serializable {
 	}
 
 	public void setAutorizado(Autorizado autorizado) {
-		this.cliente = (paciente != null) & (autorizado != null) & (pagante != null);
+		this.cliente = (paciente != null) || (autorizado != null) || (responsavelFinanceiro != null);
 		this.autorizado = autorizado;
 	}
 
-	public Pagante getPagante() {
-		return pagante;
+	public ResponsavelFinanceiro getResponsavelFinanceiro() {
+		return responsavelFinanceiro;
 	}
 
-	public void setPagante(Pagante pagante) {
-		this.cliente = (paciente != null) & (autorizado != null) & (pagante != null);
-		this.pagante = pagante;
+	public void setResponsavelFinanceiro(ResponsavelFinanceiro responsavelFinanceiro) {
+		this.cliente = (paciente != null) || (autorizado != null) || (responsavelFinanceiro != null);
+		this.responsavelFinanceiro = responsavelFinanceiro;
 	}
 
 	public Profissional getProfissional() {
@@ -242,7 +246,7 @@ public class Usuario implements Serializable {
 	}
 
 	public void setProfissional(Profissional profissional) {
-		this.equipe = (profissional != null) & (socia != null) & (administrador != null) & (secretaria != null);
+		this.equipe = (profissional != null) || (socia != null) || (administrador != null) || (secretaria != null);
 		// System.out.println("AQUI3");
 		this.profissional = profissional;
 		// profissional.setUsuario(this);
@@ -254,7 +258,7 @@ public class Usuario implements Serializable {
 	}
 
 	public void setSocia(Socia socia) {
-		this.equipe = (profissional != null) & (socia != null) & (administrador != null) & (secretaria != null);
+		this.equipe = (profissional != null) || (socia != null) || (administrador != null) || (secretaria != null);
 		this.socia = socia;
 	}
 
@@ -263,7 +267,7 @@ public class Usuario implements Serializable {
 	}
 
 	public void setAdministrador(Administrador administrador) {
-		this.equipe = (profissional != null) & (socia != null) & (administrador != null) & (secretaria != null);
+		this.equipe = (profissional != null) || (socia != null) || (administrador != null) || (secretaria != null);
 		this.administrador = administrador;
 	}
 
@@ -272,7 +276,7 @@ public class Usuario implements Serializable {
 	}
 
 	public void setSecretaria(Secretaria secretaria) {
-		this.equipe = (profissional != null) & (socia != null) & (administrador != null) & (secretaria != null);
+		this.equipe = (profissional != null) || (socia != null) || (administrador != null) || (secretaria != null);
 		this.secretaria = secretaria;
 	}
 
@@ -294,8 +298,8 @@ public class Usuario implements Serializable {
 		return (autorizado != null) ? true : false;
 	}
 
-	public Boolean isPagante() {
-		return (pagante != null) ? true : false;
+	public Boolean isResponsavelFinanceiro() {
+		return (responsavelFinanceiro != null) ? true : false;
 	}
 
 	public Boolean isEquipe() {

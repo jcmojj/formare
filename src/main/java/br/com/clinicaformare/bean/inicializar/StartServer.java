@@ -12,17 +12,25 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import javax.transaction.Transactional;
 
+import br.com.clinicaformare.daos.AtendimentoPadraoDao;
+import br.com.clinicaformare.daos.PacoteDao;
 import br.com.clinicaformare.daos.ParametroDao;
 import br.com.clinicaformare.daos.usuario.LogradouroDao;
+import br.com.clinicaformare.daos.usuario.PacienteDao;
 import br.com.clinicaformare.daos.usuario.PaesciDao;
 import br.com.clinicaformare.daos.usuario.ProfissionalDao;
+import br.com.clinicaformare.daos.usuario.ResponsavelFinanceiroDao;
 import br.com.clinicaformare.daos.usuario.SociaDao;
 import br.com.clinicaformare.daos.usuario.TipoEnderecoDao;
 import br.com.clinicaformare.daos.usuario.TipoProfissionalDao;
 import br.com.clinicaformare.daos.usuario.TipoTelefoneDao;
 import br.com.clinicaformare.daos.usuario.UsuarioDao;
 import br.com.clinicaformare.model.Parametro;
+import br.com.clinicaformare.model.atendimento.AtendimentoPadrao;
+import br.com.clinicaformare.model.atendimento.Pacote;
+import br.com.clinicaformare.model.usuario.Paciente;
 import br.com.clinicaformare.model.usuario.Profissional;
+import br.com.clinicaformare.model.usuario.ResponsavelFinanceiro;
 import br.com.clinicaformare.model.usuario.Socia;
 import br.com.clinicaformare.model.usuario.TipoProfissional;
 import br.com.clinicaformare.model.usuario.Usuario;
@@ -37,20 +45,25 @@ public class StartServer {
 
 	@Transactional
 	public void allMainValues() {
-			logradouro();
-			tipoTelefone();
-			paesci();
-			tipoEndereco();
+//		paesci();
+//		logradouro();
+//		tipoTelefone();
+//		tipoEndereco();
+		tipoProfissional();
+		profissional();
+		socia();
+		paciente();
+		atendimentoPadrao();
+		responsavelFinanceiroPaciente();
 	}
-	
+
 	@Inject
 	private LogradouroDao logradouroDao;
 
 	@Transactional
 	public void logradouro() {
 		try {
-			InputStream is = new FileInputStream(
-					"/Users/josecarlosoliveira/javaee/eclipse-workspace/formare/src/main/resources/startServer/logradouro");
+			InputStream is = new FileInputStream("/Users/josecarlosoliveira/javaee/eclipse-workspace/formare/src/main/resources/startServer/logradouro");
 			InputStreamReader isr = new InputStreamReader(is);
 			BufferedReader br = new BufferedReader(isr);
 			String logradouro = br.readLine();
@@ -75,8 +88,7 @@ public class StartServer {
 	@Transactional
 	public void tipoTelefone() {
 		try {
-			InputStream is = new FileInputStream(
-					"/Users/josecarlosoliveira/javaee/eclipse-workspace/formare/src/main/resources/startServer/tipoTelefone");
+			InputStream is = new FileInputStream("/Users/josecarlosoliveira/javaee/eclipse-workspace/formare/src/main/resources/startServer/tipoTelefone");
 			InputStreamReader isr = new InputStreamReader(is);
 			BufferedReader br = new BufferedReader(isr);
 			String tipoTelefone = br.readLine();
@@ -94,15 +106,14 @@ public class StartServer {
 			e.printStackTrace();
 		}
 	}
-	
+
 	@Inject
 	private TipoEnderecoDao tipoEnderecoDao;
 
 	@Transactional
 	public void tipoEndereco() {
 		try {
-			InputStream is = new FileInputStream(
-					"/Users/josecarlosoliveira/javaee/eclipse-workspace/formare/src/main/resources/startServer/tipoEndereco");
+			InputStream is = new FileInputStream("/Users/josecarlosoliveira/javaee/eclipse-workspace/formare/src/main/resources/startServer/tipoEndereco");
 			InputStreamReader isr = new InputStreamReader(is);
 			BufferedReader br = new BufferedReader(isr);
 			String tipoEndereco = br.readLine();
@@ -128,8 +139,7 @@ public class StartServer {
 	public void paesci() {
 		System.out.println("Entrou tb");
 		try {
-			InputStream is = new FileInputStream(
-					"/Users/josecarlosoliveira/javaee/eclipse-workspace/formare/src/main/resources/startServer/paesci");
+			InputStream is = new FileInputStream("/Users/josecarlosoliveira/javaee/eclipse-workspace/formare/src/main/resources/startServer/paesci");
 			InputStreamReader isr = new InputStreamReader(is);
 			BufferedReader br = new BufferedReader(isr);
 			String s = br.readLine();
@@ -159,15 +169,14 @@ public class StartServer {
 			e.printStackTrace();
 		}
 	}
-	
+
 	@Inject
-	private ParametroDao parametroDao ;
+	private ParametroDao parametroDao;
 
 	@Transactional
 	public void parametro() {
 		try {
-			InputStream is = new FileInputStream(
-					"/Users/josecarlosoliveira/javaee/eclipse-workspace/formare/src/main/resources/startServer/parametros");
+			InputStream is = new FileInputStream("/Users/josecarlosoliveira/javaee/eclipse-workspace/formare/src/main/resources/startServer/parametros");
 			InputStreamReader isr = new InputStreamReader(is);
 			BufferedReader br = new BufferedReader(isr);
 			String parametroString = br.readLine();
@@ -182,11 +191,10 @@ public class StartServer {
 				second = parametroString.indexOf(";", first);
 				third = parametroString.indexOf(";", second + 1);
 				lenght = parametroString.length();
-				parametro.setNome			(parametroString.substring(first,second));
-				parametro.setValorPorcentagem	(Double.parseDouble(parametroString.substring(second+1,third)));
-				parametro.setValorReais			(Double.parseDouble(parametroString.substring(third+1,lenght)));
+				parametro.setNome(parametroString.substring(first, second));
+				parametro.setValorPorcentagem(Double.parseDouble(parametroString.substring(second + 1, third)));
+				parametro.setValorReais(Double.parseDouble(parametroString.substring(third + 1, lenght)));
 				parametroDao.adiciona(parametro);
-				
 
 				parametroString = br.readLine();
 			}
@@ -197,15 +205,14 @@ public class StartServer {
 			e.printStackTrace();
 		}
 	}
-	
+
 	@Inject
-	private TipoProfissionalDao tipoProfissionalDao ;
+	private TipoProfissionalDao tipoProfissionalDao;
 
 	@Transactional
 	public void tipoProfissional() {
 		try {
-			InputStream is = new FileInputStream(
-					"/Users/josecarlosoliveira/javaee/eclipse-workspace/formare/src/main/resources/startServer/tipoProfissional");
+			InputStream is = new FileInputStream("/Users/josecarlosoliveira/javaee/eclipse-workspace/formare/src/main/resources/startServer/tipoProfissional");
 			InputStreamReader isr = new InputStreamReader(is);
 			BufferedReader br = new BufferedReader(isr);
 			String tipoProfissionalString = br.readLine();
@@ -213,21 +220,19 @@ public class StartServer {
 			Integer second;
 			Integer third;
 			Integer lenght;
-			String tipo; 
-			Double valorBrutoHora; 
+			String tipo;
+			Double valorBrutoHora;
 			Double valorLiquidoHora;
-			
 
 			while (tipoProfissionalString != null) {
 				first = 0;
 				second = tipoProfissionalString.indexOf(";", first);
 				third = tipoProfissionalString.indexOf(";", second + 1);
 				lenght = tipoProfissionalString.length();
-				tipo = tipoProfissionalString.substring(first,second);
-				valorBrutoHora = Double.parseDouble(tipoProfissionalString.substring(second+1,third));
-				valorLiquidoHora = Double.parseDouble(tipoProfissionalString.substring(third+1,lenght));
+				tipo = tipoProfissionalString.substring(first, second);
+				valorBrutoHora = Double.parseDouble(tipoProfissionalString.substring(second + 1, third));
+				valorLiquidoHora = Double.parseDouble(tipoProfissionalString.substring(third + 1, lenght));
 				tipoProfissionalDao.adiciona(new TipoProfissional(tipo, valorBrutoHora, valorLiquidoHora));
-				
 
 				tipoProfissionalString = br.readLine();
 			}
@@ -238,22 +243,19 @@ public class StartServer {
 			e.printStackTrace();
 		}
 	}
-	
-	
+
 	//
 	@Inject
-	private ProfissionalDao profissionalDao ;
+	private ProfissionalDao profissionalDao;
 
-	
 	@Transactional
 	public void profissional() {
 		try {
-			InputStream is = new FileInputStream(
-					"/Users/josecarlosoliveira/javaee/eclipse-workspace/formare/src/main/resources/startServer/profissionais");
+			InputStream is = new FileInputStream("/Users/josecarlosoliveira/javaee/eclipse-workspace/formare/src/main/resources/startServer/profissionais");
 			InputStreamReader isr = new InputStreamReader(is);
 			BufferedReader br = new BufferedReader(isr);
 			String profissionalString = br.readLine();
-			
+
 			String nome;
 			Long tipoProfissionalId;
 			Integer second;
@@ -262,19 +264,19 @@ public class StartServer {
 			while (profissionalString != null) {
 				second = profissionalString.indexOf(";", 0);
 				lenght = profissionalString.length();
-				nome =		(profissionalString.substring(0,second));
+				nome = (profissionalString.substring(0, second));
 				System.out.println("AQUI9");
-				tipoProfissionalId =			(Long.parseLong(profissionalString.substring(second+1,lenght)));
-				System.out.println("AQUI11" + profissionalString.substring(second+1,lenght));
+				tipoProfissionalId = (Long.parseLong(profissionalString.substring(second + 1, lenght)));
+				System.out.println("AQUI11" + profissionalString.substring(second + 1, lenght));
 				TipoProfissional tipoProfissional = tipoProfissionalDao.buscaPorId(tipoProfissionalId);
 				System.out.println("AQUI12" + tipoProfissional);
 				Profissional profissional = new Profissional(tipoProfissional);
 				System.out.println("AQUI5");
-				
-//				Usuario usuario = new Usuario(nome);
-//				System.out.println("AQUI6 + usuario: " + usuario);
-//				usuario = usuarioDao.adicionaVolta(usuario);
-				
+
+				// Usuario usuario = new Usuario(nome);
+				// System.out.println("AQUI6 + usuario: " + usuario);
+				// usuario = usuarioDao.adicionaVolta(usuario);
+
 				Usuario usuario = adicionaUsuarioComNome(nome);
 				System.out.println("AQUI7 + usuario: " + usuario);
 				profissional.setUsuario(usuario);
@@ -291,10 +293,10 @@ public class StartServer {
 			e.printStackTrace();
 		}
 	}
-	
+
 	@Inject
 	private UsuarioDao usuarioDao;
-	
+
 	@Transactional
 	public Usuario adicionaUsuarioComNome(String nome) {
 		Usuario usuario = new Usuario(nome);
@@ -303,46 +305,45 @@ public class StartServer {
 
 	@Inject
 	private SociaDao sociaDao;
-	
+
 	@Transactional
 	public void socia() {
 		try {
-			InputStream is = new FileInputStream(
-					"/Users/josecarlosoliveira/javaee/eclipse-workspace/formare/src/main/resources/startServer/socias");
+			InputStream is = new FileInputStream("/Users/josecarlosoliveira/javaee/eclipse-workspace/formare/src/main/resources/startServer/socias");
 			InputStreamReader isr = new InputStreamReader(is);
 			BufferedReader br = new BufferedReader(isr);
 			String sociaString = br.readLine();
-			
+
 			String nome;
 			Long tipoProfissionalId;
 			Integer second;
 			Integer lenght;
-//
+			//
 			while (sociaString != null) {
 				second = sociaString.indexOf(";", 0);
 				lenght = sociaString.length();
-				nome =		(sociaString.substring(0,second));
-				System.out.println("AQUI9");
-				tipoProfissionalId =			(Long.parseLong(sociaString.substring(second+1,lenght)));
-				System.out.println("AQUI11" + sociaString.substring(second+1,lenght));
+				nome = (sociaString.substring(0, second));
+				// System.out.println("AQUI9");
+				tipoProfissionalId = (Long.parseLong(sociaString.substring(second + 1, lenght)));
+				// System.out.println("AQUI11" + sociaString.substring(second+1,lenght));
 				TipoProfissional tipoProfissional = tipoProfissionalDao.buscaPorId(tipoProfissionalId);
-				System.out.println("AQUI12" + tipoProfissional);
+				// System.out.println("AQUI12" + tipoProfissional);
 				Socia socia = new Socia(tipoProfissional);
-				System.out.println("AQUI5");
-				
-//				Usuario usuario = new Usuario(nome);
-//				System.out.println("AQUI6 + usuario: " + usuario);
-				System.out.println("AQUI6 + socia: " + socia);
-//				usuario = usuarioDao.adicionaVolta(usuario);
-//				System.out.println("AQUI8 + usuario: " + usuario);
-				
+				// System.out.println("AQUI5");
+
+				// Usuario usuario = new Usuario(nome);
+				// System.out.println("AQUI6 + usuario: " + usuario);
+				// System.out.println("AQUI6 + socia: " + socia);
+				// usuario = usuarioDao.adicionaVolta(usuario);
+				// System.out.println("AQUI8 + usuario: " + usuario);
+
 				Usuario usuario = adicionaUsuarioComNome(nome);
-				System.out.println("AQUI7 + usuario: " + usuario);
+				// System.out.println("AQUI7 + usuario: " + usuario);
 				socia.setUsuario(usuario);
-				System.out.println("AQUI8 + socia: " + socia);
+				// System.out.println("AQUI8 + socia: " + socia);
 				usuario.setSocia(socia);
-				System.out.println("AQUI9 + usuario: " + usuario);
-				System.out.println("AQUI878");
+				// System.out.println("AQUI9 + usuario: " + usuario);
+				// System.out.println("AQUI878");
 				sociaDao.adiciona(socia);
 				usuarioDao.atualiza(usuario);
 				sociaString = br.readLine();
@@ -354,15 +355,265 @@ public class StartServer {
 			e.printStackTrace();
 		}
 	}
-	
+
+	@Transactional
+	public Usuario adicionaUsuarioComNomeSobrenomeEmail(String nome, String sobrenome, String email) {
+		Usuario usuario = new Usuario(nome, sobrenome, email);
+		return usuarioDao.adicionaVolta(usuario);
+	}
+
+	@Inject
+	ResponsavelFinanceiroDao responsavelFinanceiroDao;
+	@Inject
+	PacienteDao pacienteDao;
+	@Inject
+	PacoteDao pacoteDao;
+
+	@Transactional
+	public void responsavelFinanceiroPaciente() {
+		try {
+			InputStream is = new FileInputStream("/Users/josecarlosoliveira/javaee/eclipse-workspace/formare/src/main/resources/startServer/respfinanceiropaciente");
+			InputStreamReader isr = new InputStreamReader(is);
+			BufferedReader br = new BufferedReader(isr);
+			String linha = br.readLine();
+
+			Long id;
+			String nomePai;
+			String sobrenomePai;
+			String emailPai;
+			String nomeFilho;
+			String sobrenomeFilho;
+			String emailFilho;
+			Integer i1;
+			Integer i2;
+			Integer i3;
+			Integer i4;
+			Integer i5;
+			Integer i6;
+			Integer i7;
+			Integer lenght;
+
+			while (linha != null) {
+				i1 = 0;
+				System.out.println("i1");
+				i2 = linha.indexOf(";", i1 + 1);
+				System.out.println("i2-" + i2);
+				i3 = linha.indexOf(" ", i2 + 1);
+				System.out.println("i3-" + i3);
+				i4 = linha.indexOf(";", i3 + 1);
+				System.out.println("i4-" + i4);
+				i5 = linha.indexOf(" ", i4 + 1);
+				System.out.println("i5-" + i5);
+				i6 = linha.indexOf(";", i5 + 1);
+				System.out.println("i6-" + i6);
+				i7 = linha.indexOf(";", i6 + 1);
+				System.out.println("i7-" + i7);
+				lenght = linha.length();
+				System.out.println("i8-" + lenght);
+				id = (Long.parseLong(linha.substring(i1, i2)));
+				System.out.println("i0");
+				nomePai = linha.substring(i2 + 1, i3);
+				System.out.println("ia");
+				sobrenomePai = linha.substring(i3 + 1, i4);
+				System.out.println("ib");
+				nomeFilho = linha.substring(i4 + 1, i5);
+				System.out.println("ic");
+				sobrenomeFilho = linha.substring(i5 + 1, i6);
+				System.out.println("id");
+				emailPai = linha.substring(i6 + 1, i7);
+				System.out.println("ie");
+				emailFilho = linha.substring(i7 + 1, lenght);
+				System.out.println("if");
+
+				// Usuario pai = adicionaUsuarioComNomeSobrenomeEmail(nomePai,sobrenomePai, emailPai);
+				// Usuario filho = adicionaUsuarioComNomeSobrenomeEmail(nomeFilho,sobrenomeFilho, emailFilho);
+
+				// ResponsavelFinanceiro responsavelFinanceiro = responsavelFinanceiroDao.adicionaVolta(new ResponsavelFinanceiro(pai));
+				// System.out.println("1-" + responsavelFinanceiro);
+				// pai.setResponsavelFinanceiro(responsavelFinanceiro);
+				// System.out.println("2-" + pai);
+				// usuarioDao.atualiza(pai);
+				// System.out.println("3-" + pai);
+				//
+				// Paciente paciente = pacienteDao.adicionaVolta(new Paciente(filho));
+				// System.out.println("4-" + paciente);
+				// filho.setPaciente(paciente);
+				// System.out.println("5-" + filho);
+				// usuarioDao.atualiza(filho);
+				// System.out.println("6-" + filho);
+				//
+				// Pacote pacote = pacoteDao.adicionaVolta(new Pacote(responsavelFinanceiro, paciente));
+				// System.out.println("6-" + pacote);
+				// System.out.println("7-" + responsavelFinanceiro);
+				// responsavelFinanceiroDao.atualiza(responsavelFinanceiro);
+				// System.out.println("8-" + responsavelFinanceiro);
+				//
+				// System.out.println("9-" + paciente);
+				// pacienteDao.atualiza(paciente);
+				// System.out.println("10-" + paciente);
+				// System.out.println("11-" + pacote);
+				//
+
+				// responsavelFinanceiro.getPacotes().add(pacote);
+				//// System.out.println("12-" + responsavelFinanceiro);
+				// responsavelFinanceiroDao.atualiza(responsavelFinanceiro);
+				//// System.out.println("13-" + responsavelFinanceiro);
+				// paciente.getPacotes().add(pacote);
+				//// System.out.println("14-" + paciente);
+				// pacienteDao.atualiza(paciente);
+				//// System.out.println("15-" + paciente);
+				// Pacote pacote = pacoteDao.adicionaVolta(new Pacote(responsavelFinanceiro, paciente));
+
+				// Opcao 2
+				Usuario pai = new Usuario(nomePai, sobrenomePai, emailPai);
+				Usuario filho = new Usuario(nomeFilho, sobrenomeFilho, emailFilho);
+				ResponsavelFinanceiro responsavelFinanceiro = new ResponsavelFinanceiro(pai);
+				Paciente paciente = new Paciente(filho);
+				// pai.setResponsavelFinanceiro(responsavelFinanceiro);
+				// filho.setPaciente(paciente);
+				Pacote pacote = new Pacote(responsavelFinanceiro, paciente);
+				responsavelFinanceiroDao.adiciona(responsavelFinanceiro);
+				pacienteDao.adiciona(paciente);
+				usuarioDao.adiciona(pai);
+				usuarioDao.adiciona(filho);
+				pacoteDao.adiciona(pacote);
+
+				System.out.println("Teste");
+				System.out.println(pacote.getPaciente());
+				for (Pacote pacotu : paciente.getPacotes()) {
+					System.out.println(pacotu);
+				}
+				paciente.getPacotes().forEach(n -> System.out.println(n));
+
+				System.out.println(pacote.getResponsavelFinanceiro());
+				responsavelFinanceiro.getPacotes().forEach(n -> System.out.println(n));
+				System.out.println(pai.getResponsavelFinanceiro());
+				System.out.println(responsavelFinanceiro.getUsuario());
+				System.out.println(filho.getPaciente());
+				System.out.println(paciente.getUsuario());
+
+				linha = br.readLine();
+			}
+			br.close();
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
 	@Transactional
 	public void paciente() {
-		
+
 	}
-	
+
+	@Inject
+	AtendimentoPadraoDao atendimentoPadraoDao;
+
 	@Transactional
 	public void atendimentoPadrao() {
-		
+		try {
+			InputStream is = new FileInputStream("/Users/josecarlosoliveira/javaee/eclipse-workspace/formare/src/main/resources/startServer/pacotePadrao");
+			InputStreamReader isr = new InputStreamReader(is);
+			BufferedReader br = new BufferedReader(isr);
+			String linha = br.readLine();
+
+			String nomePacote;
+			Integer quantidadeAtendimentosMensaisSupervisao;
+			Integer quantidadeAtendimentosMensaisTerapeuta;
+			Integer quantidadeAtendimentosMensaisFamilia;
+			Integer quantidadeAtendimentosMensaisPsicologa;
+			Integer quantidadeAtendimentosMensaisPsicologaEspecialista;
+
+			Integer i1;
+			Integer i2;
+			Integer i3;
+			Integer i4;
+			Integer i5;
+			Integer i6;
+			Integer lenght;
+
+			while (linha != null) {
+				i1 = 0;
+				System.out.println("i1");
+				i2 = linha.indexOf(";", i1 + 1);
+				System.out.println("i2-" + i2);
+				i3 = linha.indexOf(";", i2 + 1);
+				System.out.println("i3-" + i3);
+				i4 = linha.indexOf(";", i3 + 1);
+				System.out.println("i4-" + i4);
+				i5 = linha.indexOf(";", i4 + 1);
+				System.out.println("i5-" + i5);
+				i6 = linha.indexOf(";", i5 + 1);
+				System.out.println("i6-" + i6);
+				lenght = linha.length();
+				System.out.println("i8-" + lenght);
+				nomePacote = linha.substring(i1, i2);
+				System.out.println("nomePacote");
+				quantidadeAtendimentosMensaisSupervisao = Integer.parseInt(linha.substring(i2 + 1, i3));
+				System.out.println("quantidadeAtendimentosMensaisSupervisao" + ":" + quantidadeAtendimentosMensaisSupervisao);
+				quantidadeAtendimentosMensaisTerapeuta = Integer.parseInt(linha.substring(i3 + 1, i4));
+				System.out.println("quantidadeAtendimentosMensaisTerapeuta" + ":" + quantidadeAtendimentosMensaisTerapeuta);
+				quantidadeAtendimentosMensaisFamilia = Integer.parseInt(linha.substring(i4 + 1, i5));
+				System.out.println("quantidadeAtendimentosMensaisFamilia" + ":" + quantidadeAtendimentosMensaisFamilia);
+				quantidadeAtendimentosMensaisPsicologa = Integer.parseInt(linha.substring(i5 + 1, i6));
+				System.out.println("quantidadeAtendimentosMensaisPsicologa" + ":" + quantidadeAtendimentosMensaisPsicologa);
+				quantidadeAtendimentosMensaisPsicologaEspecialista = Integer.parseInt(linha.substring(i6 + 1, lenght));
+				System.out.println("quantidadeAtendimentosMensaisPsicologaEspecialista" + ":" + quantidadeAtendimentosMensaisPsicologaEspecialista);
+
+				System.out.println("111" + ":" + 111);
+				Pacote pacote = new Pacote();
+				pacote.setEhPacotePadrao(true);
+				pacote.setNome(nomePacote);
+
+				TipoProfissional tipoProfissionalSupervisao = tipoProfissionalDao.buscaPorTipo("Supervisão");
+				System.out.println(tipoProfissionalSupervisao);
+				AtendimentoPadrao supervisao = new AtendimentoPadrao(quantidadeAtendimentosMensaisSupervisao, tipoProfissionalSupervisao, Double.parseDouble("0"), true);
+				System.out.println("supervisao" + ":" + supervisao);
+				supervisao = atendimentoPadraoDao.adicionaVolta(supervisao);
+				System.out.println("supervisao" + ":" + supervisao);
+				pacote.getAtendimentosPadrao().add(supervisao);
+
+				TipoProfissional tipoProfissionalTerapeuta = tipoProfissionalDao.buscaPorTipo("Terapeuta");
+				System.out.println(tipoProfissionalTerapeuta);
+				AtendimentoPadrao terapeuta = new AtendimentoPadrao(quantidadeAtendimentosMensaisTerapeuta, tipoProfissionalTerapeuta, Double.parseDouble("0"), true);
+				System.out.println("terapeuta" + ":" + terapeuta);
+				terapeuta = atendimentoPadraoDao.adicionaVolta(terapeuta);
+				pacote.getAtendimentosPadrao().add(terapeuta);
+
+				TipoProfissional tipoProfissionalFamilia = tipoProfissionalDao.buscaPorTipo("Família");
+				System.out.println(tipoProfissionalFamilia);
+				AtendimentoPadrao familia = new AtendimentoPadrao(quantidadeAtendimentosMensaisFamilia, tipoProfissionalFamilia, Double.parseDouble("0"), true);
+				System.out.println("familia" + ":" + familia);
+				familia = atendimentoPadraoDao.adicionaVolta(familia);
+				pacote.getAtendimentosPadrao().add(familia);
+
+				TipoProfissional tipoProfissionalPsicologa = tipoProfissionalDao.buscaPorTipo("Psicóloga");
+				System.out.println(tipoProfissionalPsicologa);
+				AtendimentoPadrao psicologa = new AtendimentoPadrao(quantidadeAtendimentosMensaisPsicologa, tipoProfissionalPsicologa, Double.parseDouble("0"), true);
+				System.out.println("psicologa" + ":" + psicologa);
+				psicologa = atendimentoPadraoDao.adicionaVolta(psicologa);
+				pacote.getAtendimentosPadrao().add(psicologa);
+
+				TipoProfissional tipoProfissionalPsicologaEspecialista = tipoProfissionalDao.buscaPorTipo("Psicóloga Especialista");
+				System.out.println(tipoProfissionalPsicologaEspecialista);
+				AtendimentoPadrao psicologaEspecialista = new AtendimentoPadrao(quantidadeAtendimentosMensaisPsicologaEspecialista, tipoProfissionalPsicologaEspecialista, Double.parseDouble("0"),
+						true);
+				System.out.println("psicologaEspecialista" + ":" + psicologaEspecialista);
+				psicologaEspecialista = atendimentoPadraoDao.adicionaVolta(psicologaEspecialista);
+				pacote.getAtendimentosPadrao().add(psicologaEspecialista);
+
+				pacoteDao.adiciona(pacote);
+				pacote.getAtendimentosPadrao().forEach(atendimentoPadrao -> atendimentoPadrao.setPacote(pacote));
+
+				linha = br.readLine();
+			}
+			br.close();
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
-	
+
 }

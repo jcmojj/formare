@@ -1,6 +1,7 @@
 package br.com.clinicaformare.model.usuario;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
@@ -18,12 +19,12 @@ import javax.persistence.TemporalType;
 import br.com.clinicaformare.model.atendimento.Pacote;
 
 @Entity
-public class Pagante implements Serializable {
+public class ResponsavelFinanceiro implements Serializable {
 	private static final long serialVersionUID = 1L;
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	@OneToOne(mappedBy = "pagante")
+	@OneToOne(mappedBy = "responsavelFinanceiro")//,cascade = {CascadeType.ALL, CascadeType.MERGE, CascadeType.PERSIST})
 	Usuario usuario;
 	@Temporal(TemporalType.TIMESTAMP)
 	private Calendar dataCriacao;
@@ -34,21 +35,28 @@ public class Pagante implements Serializable {
 	@OneToMany(mappedBy = "autorizador") // ok
 	private List<Autorizacao> autorizacoes;
 
-	@OneToMany(mappedBy = "contratante")
-	private List<Pacote> pacotes;
+	@OneToMany(mappedBy = "responsavelFinanceiro")//, cascade = {CascadeType.ALL, CascadeType.MERGE, CascadeType.PERSIST})	
+	private List<Pacote> pacotes = new ArrayList<>();
 
 	@Override
 	public String toString() {
-		return "Pagante [id=" + id + ", usuario=" + usuario + ", dataCriacao=" + dataCriacao + ", dataAlteracao=" + dataAlteracao + ", autorizacoes=" + autorizacoes + ", pacotes=" + pacotes + "]";
+		return "ResponsavelFinanceiro [id=" + id + ", usuario=" + usuario + ", dataCriacao=" + dataCriacao + ", dataAlteracao=" + dataAlteracao + ", autorizacoes=" + autorizacoes;
 	}
 
 	// Constructor
-	public Pagante() {
+	public ResponsavelFinanceiro() {
 		super();
 	}
 
-	public Pagante(Long id) {
+	public ResponsavelFinanceiro(Long id) {
 		this.id = id;
+	}
+	
+
+	public ResponsavelFinanceiro(Usuario usuario) {
+		super();
+		this.usuario = usuario;
+		usuario.setResponsavelFinanceiro(this);
 	}
 
 	// Getters and Setters

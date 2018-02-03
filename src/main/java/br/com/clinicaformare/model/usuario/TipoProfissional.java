@@ -30,7 +30,7 @@ public class TipoProfissional implements Serializable {
 	// Constructor
 	@Override
 	public String toString() {
-		return "TipoProfissional [id=" + id + ", tipo=" + tipo + ", valorBrutoHora=" + valorBrutoHora + ", valorLiquidoHora=" + valorLiquidoHora + "]";
+		return "TipoProfissional(" + id + ")=" + tipo ;
 	}
 
 	public TipoProfissional(String tipo, Double valorBrutoHora, Double valorLiquidoHora) {
@@ -38,6 +38,7 @@ public class TipoProfissional implements Serializable {
 		this.tipo = tipo;
 		this.valorBrutoHora = valorBrutoHora;
 		this.valorLiquidoHora = valorLiquidoHora;
+		this.porcentagemLiquidoSobreBruto =  valorLiquidoHora/valorBrutoHora;
 	}
 
 	public TipoProfissional() {
