@@ -11,6 +11,7 @@ import javax.transaction.Transactional;
 
 import br.com.clinicaformare.daos.AtendimentoPadraoDao;
 import br.com.clinicaformare.daos.PacoteDao;
+import br.com.clinicaformare.daos.usuario.TipoProfissionalDao;
 import br.com.clinicaformare.daos.usuario.UsuarioDao;
 import br.com.clinicaformare.model.atendimento.AtendimentoPadrao;
 import br.com.clinicaformare.model.atendimento.Pacote;
@@ -30,6 +31,8 @@ public class NovoPacoteBean implements Serializable {
 	PacoteDao pacoteDao;
 	@Inject
 	AtendimentoPadraoDao atendimentoPadraoDao;
+	@Inject
+	TipoProfissionalDao tipoProfissionalDao;
 
 	private ResponsavelFinanceiro responsavelFinanceiro = new ResponsavelFinanceiro();
 	private Paciente paciente = new Paciente();
@@ -38,44 +41,20 @@ public class NovoPacoteBean implements Serializable {
 	private Long pacienteId = 0L;
 	private Long pacotePadraoId = 0L;
 	private List<AtendimentoPadrao> atendimentosPadrao = new ArrayList<>();
+	// Material e Calcular Desconto
 	private boolean mostraDesconto = true;
+	private boolean mostraSetup = false;
+	private boolean mostraMaterial = false;
+	private Double valorMaterial = 0.0;
+	private Double valorTotalAlterandoDesconto = 0.0;
+	
+	//Especialidade
+	private Long tipoProfissionalId = 0L;
+	private Integer qtdeAtendimento = 0;
+	private List<AtendimentoPadrao> atendimentosEspecialidade = new ArrayList<>();
 	
 	
 	// Getters and Setters
-	
-
-//	public Long getListaTodosUsuarioClienteDoMaisNovoAoMaisVelhoId() {
-//		return listaTodosUsuarioClienteDoMaisNovoAoMaisVelhoId;
-//	}
-//
-//
-//	public void setListaTodosUsuarioClienteDoMaisNovoAoMaisVelhoId(Long listaTodosUsuarioClienteDoMaisNovoAoMaisVelhoId) {
-//		this.listaTodosUsuarioClienteDoMaisNovoAoMaisVelhoId = listaTodosUsuarioClienteDoMaisNovoAoMaisVelhoId;
-//	}
-//
-//
-//	public Long getListaSociasId() {
-//		return listaSociasId;
-//	}
-//
-//
-//	public void setListaSociasId(Long listaSociasId) {
-//		this.listaSociasId = listaSociasId;
-//	}
-//
-//
-
-
-
-//	public Socia getSocia() {
-//		return socia;
-//	}
-//
-//
-//	public void setSocia(Socia socia) {
-//		this.socia = socia;
-//	}
-
 
 	public Long getSociaResponsavelId() {
 		return sociaResponsavelId;
@@ -98,7 +77,6 @@ public class NovoPacoteBean implements Serializable {
 		if(pacotePadraoId == null) {
 			this.atendimentosPadrao.removeIf(aP -> aP.isAtendimentoPadraoDePacote());
 			System.out.println("TESTE1");
-//			this.atendimentosPadrao.forEach(atendimentoPadrao -> atendimentoPadrao.);
 		}else {
 			List<AtendimentoPadrao> atendimentosPadraoDePacote = atendimentoPadraoDao.listaAtendimentosPadraoDePacote(pacotePadraoId);
 			this.atendimentosPadrao.removeIf(aP -> aP.isAtendimentoPadraoDePacote());System.out.println("TESTE2");
@@ -118,15 +96,7 @@ public class NovoPacoteBean implements Serializable {
 			
 			
 			
-//			this.atendimentosPadrao.clear();
-			
-//			this.atendimentosPadrao = new ArrayList<>(atendimentoPadraoDao.listaAtendimentosPadraoDePacote(pacotePadraoId));
-//			System.out.println("PacotePadraoId:"+pacotePadraoId);
-//			this.atendimentosPadrao = atendimentoPadraoDao.listaAtendimentosPadraoDePacote(pacotePadraoId);
-			System.out.println("LISTA");
 			atendimentosPadrao.forEach(atendimentoPadrao -> System.out.println(atendimentoPadrao));
-//			this.atendimentosPadrao.forEach(atendimentoPadrao -> {atendimentoPadrao.setAtendimentoPadraoDePacote(false);atendimentoPadrao.setPacote(null);atendimentoPadrao.setId(0L);});
-//			atendimentosPadrao.forEach(atendimentoPadrao -> System.out.println(atendimentoPadrao));
 		}
 		System.out.println("pacotePadraoId"+":"+pacotePadraoId);
 	}
@@ -187,7 +157,77 @@ public class NovoPacoteBean implements Serializable {
 
 
 	public void setMostraDesconto(boolean mostraDesconto) {
+		System.out.println("Mostra desconto"+":"+mostraDesconto);
 		this.mostraDesconto = mostraDesconto;
+	}
+
+
+	public Long getTipoProfissionalId() {
+		return tipoProfissionalId;
+	}
+
+
+	public void setTipoProfissionalId(Long tipoProfissionalId) {
+		this.tipoProfissionalId = tipoProfissionalId;
+	}
+
+
+	public Integer getQtdeAtendimento() {
+		return qtdeAtendimento;
+	}
+
+
+	public void setQtdeAtendimento(Integer qtdeAtendimento) {
+		this.qtdeAtendimento = qtdeAtendimento;
+	}
+
+
+	public List<AtendimentoPadrao> getAtendimentosEspecialidade() {
+		return atendimentosEspecialidade;
+	}
+
+
+	public void setAtendimentosEspecialidade(List<AtendimentoPadrao> atendimentosEspecialidade) {
+		this.atendimentosEspecialidade = atendimentosEspecialidade;
+	}
+
+
+	public boolean isMostraSetup() {
+		return mostraSetup;
+	}
+
+
+	public void setMostraSetup(boolean mostraSetup) {
+		this.mostraSetup = mostraSetup;
+	}
+	public boolean isMostraMaterial() {
+		return mostraMaterial;
+	}
+
+
+	public void setMostraMaterial(boolean mostraMaterial) {
+		System.out.println("Mostra Material"+":"+mostraMaterial);
+		this.mostraMaterial = mostraMaterial;
+	}
+
+	public Double getValorMaterial() {
+		return valorMaterial;
+	}
+
+
+	public void setValorMaterial(Double valorMaterial) {
+		System.out.println("Atualizar Valor Material"+":"+valorMaterial);
+		this.valorMaterial = valorMaterial;
+	}
+
+
+	public Double getValorTotalAlterandoDesconto() {
+		return valorTotalAlterandoDesconto;
+	}
+
+
+	public void setValorTotalAlterandoDesconto(Double valorTotalAlterandoDesconto) {
+		this.valorTotalAlterandoDesconto = valorTotalAlterandoDesconto;
 	}
 
 
@@ -201,22 +241,28 @@ public class NovoPacoteBean implements Serializable {
 		return usuariosTipoSocia;
 		
 	}
+	public List<TipoProfissional> getTodosTiposProfissional(){
+		return tipoProfissionalDao.listaTodos();
+	}
+			
+
+
+
+	// Atendimento Padrao
 	public List<Pacote> getPacotesPadrao(){
 		return pacoteDao.listaPacotesPadrao();
 	}
 	public Integer getQuantidadeAtendimentosPadrao() {
 		return this.atendimentosPadrao.size();
 	}
-	
-	// Outros
-	public int getTotalAtendimentos() {
+	public int getTotalAtendimentosPadrao() {
 		return atendimentosPadrao.stream().mapToInt(AtendimentoPadrao::getQuantidadeAtendimentosMensal).sum();
 	}
 	
-	public Double getTotalValorBrutoTotal() {
+	public Double getTotalValorBrutoTotalAtendimentosPadrao() {
 		return atendimentosPadrao.stream().mapToDouble(AtendimentoPadrao::getValorBrutoTotal).sum();
 	}
-	public Double getTotalValorLiquidoTotal() {
+	public Double getTotalValorLiquidoTotalAtendimentosPadrao() {
 		return atendimentosPadrao.stream().mapToDouble(AtendimentoPadrao::getValorLiquidoTotal).sum();
 	}
 	
@@ -226,7 +272,43 @@ public class NovoPacoteBean implements Serializable {
 //		FacesMessage msg = new FacesMessage("Salvo com sucesso!", "Bem-Vindo :" + usuario.getNome());
 //		FacesContext.getCurrentInstance().addMessage(null, msg);
 	}
-
+	//Especialidade
+	public void adicionaEspecialidade() {
+		System.out.println("Adicionando ESPECIALIDADE");
+		TipoProfissional tipoProfissional = tipoProfissionalDao.buscaPorId(tipoProfissionalId);
+		AtendimentoPadrao atendimentoEspecialidade = new AtendimentoPadrao(qtdeAtendimento, tipoProfissional, 0.0, false);
+		atendimentosEspecialidade.add(atendimentoEspecialidade);
+		atendimentosEspecialidade.forEach(atendimento -> System.out.println("AtendimentoEspecialidade:"+atendimento));
+	}
+	public Integer getQuantidadeAtendimentosEspecialidade() {
+		return this.atendimentosEspecialidade.size();
+	}
+	public int getTotalAtendimentosEspecialidade() {
+		return atendimentosEspecialidade.stream().mapToInt(AtendimentoPadrao::getQuantidadeAtendimentosMensal).sum();
+	}
 	
+	public Double getTotalValorBrutoTotalAtendimentosEspecialidade() {
+		return atendimentosEspecialidade.stream().mapToDouble(AtendimentoPadrao::getValorBrutoTotal).sum();
+	}
+	public Double getTotalValorLiquidoTotalAtendimentosEspecialidade() {
+		return atendimentosEspecialidade.stream().mapToDouble(AtendimentoPadrao::getValorLiquidoTotal).sum();
+	}
+	public void removeEspecialidade(AtendimentoPadrao atendimentoEspecialidade) {
+		atendimentosEspecialidade.remove(atendimentoEspecialidade);
+	}
+
+	// Alterar Descontos para dar valor Total
+	public void processarValorTotalAlterandoDesconto() {
+		//Double valorTotalComDescontoAtual = getTotalValorBrutoTotalAtendimentosPadrao() + getTotalValorBrutoTotalAtendimentosEspecialidade();
+		//Zerar descontos
+		atendimentosPadrao.forEach(atendimento -> atendimento.setDesconto(0.0));
+		atendimentosEspecialidade.forEach(atendimento -> atendimento.setDesconto(0.0));
+		Double valorTotalSemDesconto = getTotalValorBrutoTotalAtendimentosPadrao() + getTotalValorBrutoTotalAtendimentosEspecialidade();
+		Double desconto = 1 - (valorTotalAlterandoDesconto - valorMaterial)/valorTotalSemDesconto;
+		//Atualizar Desconto
+		atendimentosPadrao.forEach(atendimento -> atendimento.setDesconto(desconto));
+		atendimentosEspecialidade.forEach(atendimento -> atendimento.setDesconto(desconto));
+	
+	}
 
 }

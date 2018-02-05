@@ -279,6 +279,10 @@ html{
 	position: relative;
 	z-index: 1;
 }
-td{
+/* td{
 	text-align:center;
+} */
+.panelGridCenter{
+	margin: 0 auto;
+    /* text-align: center; */
 }

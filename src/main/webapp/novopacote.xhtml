@@ -60,26 +60,31 @@
 		<h:form id="atendimentos">
 			<p:fieldset legend="Pacote Base" style="margin-bottom:20px">
 
-				<h:panelGrid columns="4" columnClasses="label, value"
+				<h:panelGrid columns="5" columnClasses="label, value"
 					cellpadding="5">
-					<p:outputLabel for="pacotePadrao" value="Pacote:" />
+					<p:outputLabel for="pacotePadrao" value="Pacote Base:" />
 					<p:selectOneMenu id="pacotePadrao"
 						value="#{novoPacoteBean.pacotePadraoId}"
 						converter="javax.faces.Long" required="true"
 						requiredMessage="Campo obrigatório.">
-						<f:ajax execute="@form" render="@form :atendimentos" />
+						<p:ajax process="@form" update=":atendimentos :totalizador"/>
 						<f:selectItem itemValue="#{null}"
 							itemLabel="Selecione um pacote padrão" />
 						<f:selectItems value="#{novoPacoteBean.pacotesPadrao}"
 							var="pacote" itemValue="#{pacote.id}" itemLabel="#{pacote.nome}" />
 					</p:selectOneMenu>
-					<p:selectBooleanButton id="mostraDesconto"
-						value="#{novoPacoteBean.mostraDesconto}" 
-						onIcon="ui-icon-check" offIcon="ui-icon-close" 
-						onLabel="S" offLabel="N">
-						<p:ajax update="@form"  />
-					</p:selectBooleanButton>
 					<p:message for="pacotePadrao" />
+					<p:selectBooleanButton id="mostraDesconto"
+						value="#{novoPacoteBean.mostraDesconto}" onIcon="ui-icon-check"
+						offIcon="ui-icon-close" onLabel="DS" offLabel="DN">
+						<p:ajax update=":atendimentos :especialidade" />
+					</p:selectBooleanButton>
+					<p:selectBooleanButton id="mostraMaterial"
+						value="#{novoPacoteBean.mostraMaterial}" onIcon="ui-icon-check"
+						offIcon="ui-icon-close" onLabel="MS" offLabel="MN">
+						<p:ajax update=":material" />
+					</p:selectBooleanButton>
+
 				</h:panelGrid>
 
 				<p:dataTable var="atendimentoPadrao"
@@ -91,32 +96,43 @@
 					<p:column headerText="Profissional">
 						<h:outputText value="#{atendimentoPadrao.tipoProfissional.tipo}" />
 					</p:column>
-					<p:column headerText="Desconto" rendered="#{novoPacoteBean.mostraDesconto}">
-						<h:outputText value="#{atendimentoPadrao.desconto}%" />
-					</p:column>
-					<p:column headerText="Preço">
-						<h:outputText value="#{atendimentoPadrao.valorBrutoHora}" >
-						<f:convertNumber type="currency" currencySymbol="R$" />
+					<p:column headerText="Desconto" style="text-align:center"
+						rendered="#{novoPacoteBean.mostraDesconto}">
+						<h:outputText value="#{atendimentoPadrao.desconto}">
+							<f:convertNumber type="percent" maxFractionDigits="2" minFractionDigits="2"/>
 						</h:outputText>
 					</p:column>
-					<p:column headerText="Atendimentos">
+					<p:column headerText="Preço" style="text-align:center">
+						<h:outputText value="#{atendimentoPadrao.valorBrutoHora}">
+							<f:convertNumber type="currency" currencySymbol="R$" />
+						</h:outputText>
+					</p:column>
+					<p:column headerText="Atendimentos" style="text-align:center">
 						<h:outputText
 							value="#{atendimentoPadrao.quantidadeAtendimentosMensal}" />
 					</p:column>
-					<p:column headerText="Total">
-						<h:outputText value="#{atendimentoPadrao.valorBrutoTotal}" >
+					<p:column headerText="Total" style="text-align:center">
+						<h:outputText value="#{atendimentoPadrao.valorBrutoTotal}">
 							<f:convertNumber type="currency" currencySymbol="R$" />
 						</h:outputText>
 					</p:column>
 					<p:columnGroup type="footer">
 						<p:row>
 							<p:column colspan="3" footerText="Total: "
-								style="text-align:right" rendered="#{novoPacoteBean.mostraDesconto}"/>
+								style="text-align:right"
+								rendered="#{novoPacoteBean.mostraDesconto}" />
 							<p:column colspan="2" footerText="Total: "
-								style="text-align:right" rendered="#{not novoPacoteBean.mostraDesconto}"/>
-							<p:column footerText="#{novoPacoteBean.totalAtendimentos}" />
-
-							<p:column footerText="R$#{novoPacoteBean.totalValorBrutoTotal}" />
+								style="text-align:right"
+								rendered="#{not novoPacoteBean.mostraDesconto}" />
+							<p:column footerText="#{novoPacoteBean.totalAtendimentosPadrao}" />
+							<p:column>
+								<f:facet name="footer">
+									<h:outputText
+										value="#{novoPacoteBean.totalValorBrutoTotalAtendimentosPadrao}">
+										<f:convertNumber type="currency" currencySymbol="R$" />
+									</h:outputText>
+								</f:facet>
+							</p:column>
 						</p:row>
 					</p:columnGroup>
 
@@ -127,6 +143,210 @@
     							</f:facet>
 				</p:dataTable>
 
+			</p:fieldset>
+		</h:form>
+
+		<h:form id="especialidade">
+			<p:fieldset legend="Pacote de Especialidade"
+				style="margin-bottom:20px">
+				<h:panelGrid columns="7" columnClasses="label, value"
+					cellpadding="5">
+					<p:outputLabel for="pacoteEspecialidadeProfissional"
+						value="Profissionais:" />
+					<p:selectOneMenu id="pacoteEspecialidadeProfissional"
+						value="#{novoPacoteBean.tipoProfissionalId}"
+						converter="javax.faces.Long" required="true"
+						requiredMessage="Campo obrigatório.">
+						<p:ajax process="@form" update=":especialidade :atendimentos :totalizador"/>
+						<f:selectItem itemValue="#{null}" itemLabel="Selecione um tipo" />
+						<f:selectItems value="#{novoPacoteBean.todosTiposProfissional}"
+							var="tipoProfissional" itemValue="#{tipoProfissional.id}"
+							itemLabel="#{tipoProfissional.tipo}" />
+					</p:selectOneMenu>
+					<p:message for="pacoteEspecialidadeProfissional" />
+
+					<p:outputLabel for="pacoteEspecialidadeQuantidade"
+						value="Quantidade: " />
+					<p:spinner id="pacoteEspecialidadeQuantidade"
+						value="#{novoPacoteBean.qtdeAtendimento}" stepFactor="1" min="1"
+						max="10" />
+					<p:message for="pacoteEspecialidadeQuantidade" />
+
+					<p:commandButton
+						actionListener="#{novoPacoteBean.adicionaEspecialidade}"
+						id="adicionaEspecialidade" icon="fa fa-plus-square"
+						process="@form" update=":especialidade :totalizador"/>
+				</h:panelGrid>
+
+
+
+
+
+				<p:dataTable var="atendimentoEspecialidade"
+					value="#{novoPacoteBean.atendimentosEspecialidade}"
+					rendered="#{novoPacoteBean.quantidadeAtendimentosEspecialidade > 0}">
+					<f:facet name="header">
+        							Atendimentos de Especialidade
+    							</f:facet>
+					<p:column headerText="Profissional">
+						<h:outputText
+							value="#{atendimentoEspecialidade.tipoProfissional.tipo}" />
+					</p:column>
+					<p:column headerText="Desconto" style="text-align:center"
+						rendered="#{novoPacoteBean.mostraDesconto}">
+						<h:outputText value="#{atendimentoEspecialidade.desconto}">
+							<f:convertNumber type="percent" maxFractionDigits="2" minFractionDigits="2"/>
+						</h:outputText>
+					</p:column>
+					<p:column headerText="Preço" style="text-align:center">
+						<h:outputText value="#{atendimentoEspecialidade.valorBrutoHora}">
+							<f:convertNumber type="currency" currencySymbol="R$" />
+						</h:outputText>
+					</p:column>
+					<p:column headerText="Atendimentos" style="text-align:center">
+						<h:outputText
+							value="#{atendimentoEspecialidade.quantidadeAtendimentosMensal}" />
+					</p:column>
+					<p:column headerText="Total" style="text-align:center">
+						<h:outputText value="#{atendimentoEspecialidade.valorBrutoTotal}">
+							<f:convertNumber type="currency" currencySymbol="R$" />
+						</h:outputText>
+					</p:column>
+					<p:column headerText="Remove">
+						<p:commandButton
+							action="#{noboPacoteBean.removeEspecialidade(atendimentoPadrao)}"
+							icon="fa fa-minus-square">
+							<f:ajax render="@form" />
+						</p:commandButton>
+					</p:column>
+
+					<p:columnGroup type="footer">
+						<p:row>
+							<p:column colspan="3" footerText="Total: "
+								style="text-align:right"
+								rendered="#{novoPacoteBean.mostraDesconto}" />
+							<p:column colspan="2" footerText="Total: "
+								style="text-align:right"
+								rendered="#{not novoPacoteBean.mostraDesconto}" />
+							<p:column
+								footerText="#{novoPacoteBean.totalAtendimentosEspecialidade}" />
+							<p:column>
+								<f:facet name="footer">
+									<h:outputText
+										value="#{novoPacoteBean.totalValorBrutoTotalAtendimentosEspecialidade}">
+										<f:convertNumber type="currency" currencySymbol="R$" />
+									</h:outputText>
+								</f:facet>
+							</p:column>
+							<p:column colspan="1" footerText=" " style="text-align:right"/>
+						</p:row>
+					</p:columnGroup>
+
+					<f:facet name="footer">
+       							Foram incluídos #{novoPacoteBean.quantidadeAtendimentosEspecialidade} tipos de especialidades.
+    							</f:facet>
+				</p:dataTable>
+			</p:fieldset>
+
+
+		</h:form>
+		<h:form id="material">
+			<p:fieldset id="adicional" legend="Adicional"
+				style="margin-bottom:20px"
+				rendered="#{novoPacoteBean.mostraMaterial}">
+
+				<p:panelGrid class="ui-noborder" columns="5"
+					columnClasses="label, value" cellpadding="5">
+					<p:outputLabel for="valorMaterial" value="Definir Valor Material:" />
+					<p:inputNumber id="valorMaterial" symbol="R$ " decimalSeparator=","
+						thousandSeparator="." value="#{novoPacoteBean.valorMaterial}" />
+
+					<p:message for="valorMaterial" />
+					<p:commandButton id="atualizarValorMaterial"
+						icon="fa fa-plus-square">
+						<f:ajax execute="@form" render="@form :totalizador" />
+					</p:commandButton>
+
+					<p:selectBooleanButton id="mostraSetup"
+						value="#{novoPacoteBean.mostraSetup}" onIcon="ui-icon-check"
+						offIcon="ui-icon-close" onLabel="SS" offLabel="SN">
+						<p:ajax update="@form" />
+					</p:selectBooleanButton>
+
+					<p:outputLabel for="valorTotal" value="Alterar Valor Pacote para:"
+						rendered="#{novoPacoteBean.mostraSetup}" />
+					<p:inputNumber id="valorTotal" symbol="R$ " decimalSeparator=","
+						thousandSeparator="."
+						value="#{novoPacoteBean.valorTotalAlterandoDesconto}"
+						rendered="#{novoPacoteBean.mostraSetup}" />
+					<p:message for="valorTotal" />
+					<p:commandButton
+						actionListener="#{novoPacoteBean.processarValorTotalAlterandoDesconto}"
+						id="processarValorTotalAlterandoDesconto" icon="fa fa-calculator"
+						rendered="#{novoPacoteBean.mostraSetup}">
+						<f:ajax execute="@form"
+							render="@form :atendimentos :especialidade :totalizador" />
+					</p:commandButton>
+				</p:panelGrid>
+
+			</p:fieldset>
+		</h:form>
+		<h:form id="totalizador">
+			<p:fieldset legend="Resumo" style="margin-bottom:20px"
+				rendered="#{(novoPacoteBean.quantidadeAtendimentosPadrao >0) or (novoPacoteBean.quantidadeAtendimentosEspecialidade > 0)}">
+				<p:panelGrid styleClass="panelGridCenter">
+					<f:facet name="header">
+						<p:row>
+							<p:column style="text-align:right">Pacotes</p:column>
+							<p:column style="text-align:right">Atendimentos</p:column>
+							<p:column style="text-align:right">Total</p:column>
+						</p:row>
+					</f:facet>
+
+
+					<p:row>
+						<p:column style="text-align:right">Base</p:column>
+						<p:column style="text-align:right">#{novoPacoteBean.totalAtendimentosPadrao}</p:column>
+						<p:column style="text-align:right">
+							<h:outputText
+								value="#{novoPacoteBean.totalValorBrutoTotalAtendimentosPadrao}">
+								<f:convertNumber type="currency" currencySymbol="R$" />
+							</h:outputText>
+						</p:column>
+					</p:row>
+					<p:row>
+						<p:column style="text-align:right">Especialidade</p:column>
+						<p:column style="text-align:right">#{novoPacoteBean.totalAtendimentosEspecialidade}</p:column>
+						<p:column style="text-align:right">
+							<h:outputText
+								value="#{novoPacoteBean.totalValorBrutoTotalAtendimentosEspecialidade}">
+								<f:convertNumber type="currency" currencySymbol="R$" />
+							</h:outputText>
+						</p:column>
+					</p:row>
+					<p:row rendered="#{novoPacoteBean.valorMaterial > 0}">
+						<p:column style="text-align:right">Material</p:column>
+						<p:column style="text-align:right">-</p:column>
+						<p:column style="text-align:right">
+							<h:outputText value="#{novoPacoteBean.valorMaterial}">
+								<f:convertNumber type="currency" currencySymbol="R$" />
+							</h:outputText>
+						</p:column>
+					</p:row>
+					<f:facet name="footer">
+						<p:row>
+							<p:column style="text-align:right">Total:</p:column>
+							<p:column style="text-align:right">#{novoPacoteBean.totalAtendimentosPadrao + novoPacoteBean.totalAtendimentosEspecialidade}</p:column>
+							<p:column style="text-align:right">
+								<h:outputText
+									value="#{novoPacoteBean.totalValorBrutoTotalAtendimentosPadrao + novoPacoteBean.totalValorBrutoTotalAtendimentosEspecialidade + novoPacoteBean.valorMaterial}">
+									<f:convertNumber type="currency" currencySymbol="R$" />
+								</h:outputText>
+							</p:column>
+						</p:row>
+					</f:facet>
+
+				</p:panelGrid>
 			</p:fieldset>
 		</h:form>
 
