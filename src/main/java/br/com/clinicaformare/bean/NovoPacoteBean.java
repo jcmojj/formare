@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.faces.event.ActionEvent;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -47,7 +48,7 @@ public class NovoPacoteBean implements Serializable {
 	private boolean mostraMaterial = false;
 	private Double valorMaterial = 0.0;
 	private Double valorTotalAlterandoDesconto = 0.0;
-	
+	private Double valorDeTodosDescontos = 0.0;
 	//Especialidade
 	private Long tipoProfissionalId = 0L;
 	private Integer qtdeAtendimento = 0;
@@ -230,6 +231,15 @@ public class NovoPacoteBean implements Serializable {
 		this.valorTotalAlterandoDesconto = valorTotalAlterandoDesconto;
 	}
 
+	public Double getValorDeTodosDescontos() {
+		return valorDeTodosDescontos*100;
+	}
+
+
+	public void setValorDeTodosDescontos(Double valorDeTodosDescontos) {
+		this.valorDeTodosDescontos = valorDeTodosDescontos/100;
+	}
+
 
 	// Especificos
 	public List<Usuario> getListaTodosUsuarioClienteDoMaisNovoAoMaisVelho(){
@@ -273,7 +283,7 @@ public class NovoPacoteBean implements Serializable {
 //		FacesContext.getCurrentInstance().addMessage(null, msg);
 	}
 	//Especialidade
-	public void adicionaEspecialidade() {
+	public void adicionaEspecialidade(ActionEvent event) {
 		System.out.println("Adicionando ESPECIALIDADE");
 		TipoProfissional tipoProfissional = tipoProfissionalDao.buscaPorId(tipoProfissionalId);
 		AtendimentoPadrao atendimentoEspecialidade = new AtendimentoPadrao(qtdeAtendimento, tipoProfissional, 0.0, false);
@@ -294,7 +304,11 @@ public class NovoPacoteBean implements Serializable {
 		return atendimentosEspecialidade.stream().mapToDouble(AtendimentoPadrao::getValorLiquidoTotal).sum();
 	}
 	public void removeEspecialidade(AtendimentoPadrao atendimentoEspecialidade) {
+		System.out.println("Imprimindo atendimentosEspecialidade");
+		atendimentosEspecialidade.forEach(atendimento -> System.out.println("Atendimento:"+atendimento));
+		System.out.println("REMOVE:" + atendimentoEspecialidade);
 		atendimentosEspecialidade.remove(atendimentoEspecialidade);
+		atendimentosEspecialidade.forEach(atendimento -> System.out.println("Atendimento:"+atendimento));
 	}
 
 	// Alterar Descontos para dar valor Total
@@ -308,7 +322,11 @@ public class NovoPacoteBean implements Serializable {
 		//Atualizar Desconto
 		atendimentosPadrao.forEach(atendimento -> atendimento.setDesconto(desconto));
 		atendimentosEspecialidade.forEach(atendimento -> atendimento.setDesconto(desconto));
-	
+	}
+	// Zerar todos descontos
+	public void zerarTodosDescontos() {
+		atendimentosPadrao.forEach(atendimento -> atendimento.setDesconto(valorDeTodosDescontos));
+		atendimentosEspecialidade.forEach(atendimento -> atendimento.setDesconto(valorDeTodosDescontos));
 	}
 
 }
