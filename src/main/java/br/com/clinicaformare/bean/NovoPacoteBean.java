@@ -4,11 +4,16 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.transaction.Transactional;
+
+import org.primefaces.context.RequestContext;
+import org.primefaces.event.CellEditEvent;
 
 import br.com.clinicaformare.daos.AtendimentoPadraoDao;
 import br.com.clinicaformare.daos.PacoteDao;
@@ -328,5 +333,29 @@ public class NovoPacoteBean implements Serializable {
 		atendimentosPadrao.forEach(atendimento -> atendimento.setDesconto(valorDeTodosDescontos));
 		atendimentosEspecialidade.forEach(atendimento -> atendimento.setDesconto(valorDeTodosDescontos));
 	}
+	// Modificando Linhas e Colunas
+//	  public void onRowEdit(RowEditEvent event) {
+//	        FacesMessage msg = new FacesMessage("Atendimento Editado", ((AtendimentoPadrao) event.getObject()).getId().toString());
+//	        FacesContext.getCurrentInstance().addMessage(null, msg);
+//	    }
+//	     
+//	    public void onRowCancel(RowEditEvent event) {
+//	        FacesMessage msg = new FacesMessage("Edição Cancelada", ((AtendimentoPadrao) event.getObject()).getId().toString());
+//	        FacesContext.getCurrentInstance().addMessage(null, msg);
+//	    }
+	     
+	    public void onCellEdit(CellEditEvent event) {
+	        Object oldValue = event.getOldValue();
+	        Object newValue = event.getNewValue();
+	         
+	        if(newValue != null && !newValue.equals(oldValue)) {
+	            FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Célula Modificada", "Antes: " + oldValue + ", Agora:" + newValue);
+	            FacesContext.getCurrentInstance().addMessage(null, msg);
+	        }
+	        System.out.println("Entrou no RequestContext.getCurrentInstance()");
+	    }
+	    public void refreshEspecialidade() {
+	    		RequestContext.getCurrentInstance().update(":especialidade");
+	    }
 
 }

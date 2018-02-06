@@ -22,7 +22,7 @@
 					<f:selectItem itemValue="#{null}" itemLabel="Selecione uma sócia" />
 					<f:selectItems value="#{novoPacoteBean.listaUsuariosTipoSocia}"
 						var="usuario" itemValue="#{usuario.id}"
-						itemLabel="#{usuario.nome}" />
+						itemLabel="#{usuario.nome} #{usuario.sobrenome}" />
 				</p:selectOneMenu>
 				<p:message for="sociaResponsavel" />
 
@@ -37,7 +37,7 @@
 					<f:selectItems
 						value="#{novoPacoteBean.listaTodosUsuarioClienteDoMaisNovoAoMaisVelho}"
 						var="usuario" itemValue="#{usuario.id}"
-						itemLabel="#{usuario.nome}" />
+						itemLabel="#{usuario.nome} #{usuario.sobrenome}" />
 				</p:selectOneMenu>
 				<p:message for="reponsavelFinanceiro" />
 
@@ -50,7 +50,7 @@
 					<f:selectItems
 						value="#{novoPacoteBean.listaTodosUsuarioClienteDoMaisNovoAoMaisVelho}"
 						var="usuario" itemValue="#{usuario.id}"
-						itemLabel="#{usuario.nome}" />
+						itemLabel="#{usuario.nome} #{usuario.sobrenome}" />
 				</p:selectOneMenu>
 				<p:message for="paciente" />
 
@@ -91,7 +91,7 @@
 					value="#{novoPacoteBean.atendimentosPadrao}"
 					rendered="#{novoPacoteBean.quantidadeAtendimentosPadrao > 0}">
 					<f:facet name="header">
-        							Atendimentos
+        							Atendimentos Mensais
     							</f:facet>
 					<p:column headerText="Profissional">
 						<h:outputText value="#{atendimentoPadrao.tipoProfissional.tipo}" />
@@ -183,33 +183,58 @@
 
 
 
-
-				<p:dataTable var="atendimentoEspecialidade"
-					value="#{novoPacoteBean.atendimentosEspecialidade}"
+				<p:remoteCommand name="onCellEdit" action="#{novoPacoteBean.refreshEspecialidade}" update=":especialidade :totalizador :material"/>
+				<p:dataTable id="dataTableAtendimentoEspecialidade" var="atendimentoEspecialidade"
+					value="#{novoPacoteBean.atendimentosEspecialidade}" editable="true" editMode="cell"
+					widgetVar="celulaAtendimentoEspecialidade"
 					rendered="#{novoPacoteBean.quantidadeAtendimentosEspecialidade > 0}">
 					<f:facet name="header">
-        							Atendimentos de Especialidade
-    							</f:facet>
-					<p:column headerText="Profissional">
+        							Atendimentos Mensais de Especialidade 
+    					</f:facet>
+    					 <p:ajax event="cellEdit" oncomplete="onCellEdit()" />
+					
+					<p:column headerText="Profissional" >
 						<h:outputText
 							value="#{atendimentoEspecialidade.tipoProfissional.tipo}" />
 					</p:column>
 					<p:column headerText="Desconto" style="text-align:center"
 						rendered="#{novoPacoteBean.mostraDesconto}">
-						<h:outputText value="#{atendimentoEspecialidade.desconto}">
-							<f:convertNumber type="percent" maxFractionDigits="2"
-								minFractionDigits="2" />
-						</h:outputText>
+						<p:cellEditor>
+							<f:facet name="output">
+								<h:outputText value="#{atendimentoEspecialidade.desconto}">
+									<f:convertNumber type="percent" maxFractionDigits="2"
+										minFractionDigits="2" />
+								</h:outputText>
+							</f:facet>
+							<f:facet name="input">
+								<h:inputText value="#{atendimentoEspecialidade.desconto}"
+								style="width:60px;text-align:center">
+									<f:convertNumber type="percent" maxFractionDigits="2"
+										minFractionDigits="2" />
+								</h:inputText>
+							</f:facet>
+						</p:cellEditor>
 					</p:column>
 					<p:column headerText="Preço" style="text-align:center">
 						<h:outputText value="#{atendimentoEspecialidade.valorBrutoHora}">
 							<f:convertNumber type="currency" currencySymbol="R$" />
 						</h:outputText>
 					</p:column>
+
 					<p:column headerText="Atendimentos" style="text-align:center">
-						<h:outputText
-							value="#{atendimentoEspecialidade.quantidadeAtendimentosMensal}" />
+						<p:cellEditor>
+							<f:facet name="output">
+								<h:outputText
+									value="#{atendimentoEspecialidade.quantidadeAtendimentosMensal}" />
+							</f:facet>
+							<f:facet name="input">
+								<p:spinner
+									value="#{atendimentoEspecialidade.quantidadeAtendimentosMensal}"
+									stepFactor="1" min="1" max="10" size="2"/>
+							</f:facet>
+						</p:cellEditor>
 					</p:column>
+
 					<p:column headerText="Total" style="text-align:center">
 						<h:outputText value="#{atendimentoEspecialidade.valorBrutoTotal}">
 							<f:convertNumber type="currency" currencySymbol="R$" />
@@ -224,7 +249,7 @@
 					</p:column>
 
 					<p:columnGroup type="footer">
-						<p:row>
+						<p:row id="footerAtendimentoEspecialidade">
 							<p:column colspan="3" footerText="Total: "
 								style="text-align:right"
 								rendered="#{novoPacoteBean.mostraDesconto}" />
@@ -246,9 +271,16 @@
 					</p:columnGroup>
 
 					<f:facet name="footer">
-       							Foram incluídos #{novoPacoteBean.quantidadeAtendimentosEspecialidade} tipos de especialidades.
+       							Foram incluídos #{novoPacoteBean.quantidadeAtendimentosEspecialidade} tipos de especialidade.
     							</f:facet>
 				</p:dataTable>
+				<p:contextMenu for="dataTableAtendimentoEspecialidade"
+					widgetVar="cMenuEspecialidade">
+					<p:menuitem value="Editar Valor" icon="ui-icon-search"
+						onclick="PF('celulaAtendimentoEspecialidade').showCellEditor();return false;" />
+					<p:menuitem value="Esconder Menu" icon="ui-icon-close"
+						onclick="PF('cMenuEspecialidade').hide()" />
+				</p:contextMenu>
 			</p:fieldset>
 
 
