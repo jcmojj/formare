@@ -322,6 +322,7 @@ public class StartServer {
 			String sociaString = br.readLine();
 
 			String nome;
+			String sobrenome;
 			Long tipoProfissionalId;
 			Integer i1;
 			Integer i2;
@@ -337,9 +338,11 @@ public class StartServer {
 				i3 = sociaString.indexOf(";", i2 + 1);
 				System.out.println("i3-" + i3);
 				lenght = sociaString.length();
-				nome = (sociaString.substring(0, second));
+				System.out.println("lenght-" + lenght);
+				nome = (sociaString.substring(i1, i2));
+				sobrenome = (sociaString.substring(i2+1, i3));
 				// System.out.println("AQUI9");
-				tipoProfissionalId = (Long.parseLong(sociaString.substring(second + 1, lenght)));
+				tipoProfissionalId = (Long.parseLong(sociaString.substring(i3 + 1, lenght)));
 				// System.out.println("AQUI11" + sociaString.substring(second+1,lenght));
 				TipoProfissional tipoProfissional = tipoProfissionalDao.buscaPorId(tipoProfissionalId);
 				// System.out.println("AQUI12" + tipoProfissional);
