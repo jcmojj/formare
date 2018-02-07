@@ -9,18 +9,45 @@
             Formare - Novo Pacote
     </ui:define>
 	<ui:define name="content">
+		<h:form>
+			<p:selectBooleanButton id="mostraPainelControle"
+				value="#{novoPacoteBean.mostraPainelControle}"
+				onIcon="ui-icon-check" offIcon="ui-icon-close" onLabel="Painel"
+				offLabel="Painel">
+				<p:ajax update=":painelControle" />
+			</p:selectBooleanButton>
+		</h:form>
+		<h:form id="painelControle">
+			<h:panelGrid columns="2" columnClasses="label, value" cellpadding="5"
+				rendered="#{novoPacoteBean.mostraPainelControle}">
+				<h:outputText value="Mostrar Desconto: " />
+				<p:inputSwitch id="mostraDesconto" value="#{novoPacoteBean.mostraDesconto}" onLabel="sim" offLabel="não">
+					<p:ajax listener="#{novoPacoteBean.msgDesconto}" update=":atendimentos :especialidade :header:growlCurto" />
+				</p:inputSwitch>
+				
+	
+				<p:selectBooleanButton id="mostraMaterial"
+					value="#{novoPacoteBean.mostraMaterial}" onIcon="ui-icon-check"
+					offIcon="ui-icon-close" onLabel="MS" offLabel="MN">
+					<p:ajax update=":material" />
+				</p:selectBooleanButton>
+			</h:panelGrid>
+		</h:form>
+
+
 		<h:form id="selecao">
 
-
+			<h1>Programa Formare</h1>
 			<h:panelGrid columns="3" columnClasses="label, value" cellpadding="5">
 
-				<p:outputLabel for="sociaResponsavel" value="Sócia Responsavel:" />
+				<p:outputLabel for="sociaResponsavel" value="Tutora Formare:" />
 				<p:selectOneMenu id="sociaResponsavel"
 					value="#{novoPacoteBean.sociaResponsavelId}"
 					converter="javax.faces.Long" required="true"
 					requiredMessage="Campo obrigatório.">
-					<f:selectItem itemValue="#{null}" itemLabel="Selecione uma sócia" />
-					<f:selectItems value="#{novoPacoteBean.listaUsuariosTipoSocia}"
+					<f:selectItem itemValue="#{null}" itemLabel="Selecione uma tutora" />
+					<f:selectItems
+						value="#{novoPacoteBean.listaTodosUsuariosDoTipoSocia}"
 						var="usuario" itemValue="#{usuario.id}"
 						itemLabel="#{usuario.nome} #{usuario.sobrenome}" />
 				</p:selectOneMenu>
@@ -58,32 +85,23 @@
 			</h:panelGrid>
 		</h:form>
 		<h:form id="atendimentos">
-			<p:fieldset legend="Pacote Base" style="margin-bottom:20px">
+			<p:fieldset legend="Programa Base" style="margin-bottom:20px">
 
-				<h:panelGrid columns="5" columnClasses="label, value"
+				<h:panelGrid columns="3" columnClasses="label, value"
 					cellpadding="5">
-					<p:outputLabel for="pacotePadrao" value="Pacote Base:" />
+					<p:outputLabel for="pacotePadrao" value="Programa Base:" />
 					<p:selectOneMenu id="pacotePadrao"
 						value="#{novoPacoteBean.pacotePadraoId}"
 						converter="javax.faces.Long" required="true"
 						requiredMessage="Campo obrigatório.">
 						<p:ajax process="@form" update=":atendimentos :totalizador" />
 						<f:selectItem itemValue="#{null}"
-							itemLabel="Selecione um pacote padrão" />
+							itemLabel="Selecione um programa base" />
 						<f:selectItems value="#{novoPacoteBean.pacotesPadrao}"
 							var="pacote" itemValue="#{pacote.id}" itemLabel="#{pacote.nome}" />
 					</p:selectOneMenu>
 					<p:message for="pacotePadrao" />
-					<p:selectBooleanButton id="mostraDesconto"
-						value="#{novoPacoteBean.mostraDesconto}" onIcon="ui-icon-check"
-						offIcon="ui-icon-close" onLabel="DS" offLabel="DN">
-						<p:ajax update=":atendimentos :especialidade" />
-					</p:selectBooleanButton>
-					<p:selectBooleanButton id="mostraMaterial"
-						value="#{novoPacoteBean.mostraMaterial}" onIcon="ui-icon-check"
-						offIcon="ui-icon-close" onLabel="MS" offLabel="MN">
-						<p:ajax update=":material" />
-					</p:selectBooleanButton>
+
 
 				</h:panelGrid>
 
@@ -148,7 +166,7 @@
 		</h:form>
 
 		<h:form id="especialidade">
-			<p:fieldset legend="Pacote de Especialidade"
+			<p:fieldset legend="Programa de Especialidade"
 				style="margin-bottom:20px">
 				<h:panelGrid columns="7" columnClasses="label, value"
 					cellpadding="5">
@@ -183,17 +201,20 @@
 
 
 
-				<p:remoteCommand name="onCellEdit" action="#{novoPacoteBean.refreshEspecialidade}" update=":especialidade :totalizador :material"/>
-				<p:dataTable id="dataTableAtendimentoEspecialidade" var="atendimentoEspecialidade"
-					value="#{novoPacoteBean.atendimentosEspecialidade}" editable="true" editMode="cell"
-					widgetVar="celulaAtendimentoEspecialidade"
+				<p:remoteCommand name="onCellEdit"
+					action="#{novoPacoteBean.refreshEspecialidade}"
+					update=":especialidade :totalizador :material" />
+				<p:dataTable id="dataTableAtendimentoEspecialidade"
+					var="atendimentoEspecialidade"
+					value="#{novoPacoteBean.atendimentosEspecialidade}" editable="true"
+					editMode="cell" widgetVar="celulaAtendimentoEspecialidade"
 					rendered="#{novoPacoteBean.quantidadeAtendimentosEspecialidade > 0}">
 					<f:facet name="header">
         							Atendimentos Mensais de Especialidade 
     					</f:facet>
-    					 <p:ajax event="cellEdit" oncomplete="onCellEdit()" />
-					
-					<p:column headerText="Profissional" >
+					<p:ajax event="cellEdit" oncomplete="onCellEdit()" />
+
+					<p:column headerText="Profissional">
 						<h:outputText
 							value="#{atendimentoEspecialidade.tipoProfissional.tipo}" />
 					</p:column>
@@ -208,7 +229,7 @@
 							</f:facet>
 							<f:facet name="input">
 								<h:inputText value="#{atendimentoEspecialidade.desconto}"
-								style="width:60px;text-align:center">
+									style="width:60px;text-align:center">
 									<f:convertNumber type="percent" maxFractionDigits="2"
 										minFractionDigits="2" />
 								</h:inputText>
@@ -230,7 +251,7 @@
 							<f:facet name="input">
 								<p:spinner
 									value="#{atendimentoEspecialidade.quantidadeAtendimentosMensal}"
-									stepFactor="1" min="1" max="10" size="2"/>
+									stepFactor="1" min="1" max="10" size="2" />
 							</f:facet>
 						</p:cellEditor>
 					</p:column>
@@ -355,7 +376,7 @@
 				<p:panelGrid styleClass="panelGridCenter">
 					<f:facet name="header">
 						<p:row>
-							<p:column style="text-align:right">Pacotes</p:column>
+							<p:column style="text-align:right">Programa</p:column>
 							<p:column style="text-align:right">Atendimentos</p:column>
 							<p:column style="text-align:right">Total</p:column>
 						</p:row>

@@ -45,16 +45,16 @@ public class StartServer {
 
 	@Transactional
 	public void allMainValues() {
-//		paesci();
-//		logradouro();
-//		tipoTelefone();
-//		tipoEndereco();
-		tipoProfissional();
-		profissional();
-		socia();
-		paciente();
-		atendimentoPadrao();
-		responsavelFinanceiroPaciente();
+//		System.out.println("AllMainValues"+":"+"paesci");paesci();
+//		System.out.println("AllMainValues"+":"+"logradouro");logradouro();
+//		System.out.println("AllMainValues"+":"+"tipoTelefone");tipoTelefone();
+//		System.out.println("AllMainValues"+":"+"tipoEndereco");tipoEndereco();
+		System.out.println("AllMainValues"+":"+"tipoProfissional");tipoProfissional();
+		System.out.println("AllMainValues"+":"+"profissional");profissional();
+		System.out.println("AllMainValues"+":"+"socia");socia();
+		System.out.println("AllMainValues"+":"+"paciente");paciente();
+		System.out.println("AllMainValues"+":"+"atendimentoPadrao");atendimentoPadrao();
+		System.out.println("AllMainValues"+":"+"responsavelFinanceiroPaciente");responsavelFinanceiroPaciente();
 	}
 
 	@Inject
@@ -478,7 +478,6 @@ public class StartServer {
 				usuarioDao.adiciona(filho);
 				pacoteDao.adiciona(pacote);
 
-				System.out.println("Teste");
 				System.out.println(pacote.getPaciente());
 				for (Pacote pacotu : paciente.getPacotes()) {
 					System.out.println(pacotu);
@@ -520,17 +519,17 @@ public class StartServer {
 
 			String nomePacote;
 			Integer quantidadeAtendimentosMensaisSupervisao;
-			Integer quantidadeAtendimentosMensaisTerapeuta;
-			Integer quantidadeAtendimentosMensaisFamilia;
-			Integer quantidadeAtendimentosMensaisPsicologa;
-			Integer quantidadeAtendimentosMensaisPsicologaEspecialista;
+			Integer quantidadeAtendimentosMensaisTerapiaMaster;
+			Integer quantidadeAtendimentosMensaisTerapiaFamiliar;
+//			Integer quantidadeAtendimentosMensaisPsicologa;
+//			Integer quantidadeAtendimentosMensaisPsicologaEspecialista;
 
 			Integer i1;
 			Integer i2;
 			Integer i3;
 			Integer i4;
-			Integer i5;
-			Integer i6;
+//			Integer i5;
+//			Integer i6;
 			Integer lenght;
 
 			while (linha != null) {
@@ -541,27 +540,26 @@ public class StartServer {
 				i3 = linha.indexOf(";", i2 + 1);
 				System.out.println("i3-" + i3);
 				i4 = linha.indexOf(";", i3 + 1);
-				System.out.println("i4-" + i4);
-				i5 = linha.indexOf(";", i4 + 1);
-				System.out.println("i5-" + i5);
-				i6 = linha.indexOf(";", i5 + 1);
-				System.out.println("i6-" + i6);
+//				System.out.println("i4-" + i4);
+//				i5 = linha.indexOf(";", i4 + 1);
+//				System.out.println("i5-" + i5);
+//				i6 = linha.indexOf(";", i5 + 1);
+//				System.out.println("i6-" + i6);
 				lenght = linha.length();
-				System.out.println("i8-" + lenght);
+				System.out.println("lenght-" + lenght);
 				nomePacote = linha.substring(i1, i2);
 				System.out.println("nomePacote");
 				quantidadeAtendimentosMensaisSupervisao = Integer.parseInt(linha.substring(i2 + 1, i3));
 				System.out.println("quantidadeAtendimentosMensaisSupervisao" + ":" + quantidadeAtendimentosMensaisSupervisao);
-				quantidadeAtendimentosMensaisTerapeuta = Integer.parseInt(linha.substring(i3 + 1, i4));
-				System.out.println("quantidadeAtendimentosMensaisTerapeuta" + ":" + quantidadeAtendimentosMensaisTerapeuta);
-				quantidadeAtendimentosMensaisFamilia = Integer.parseInt(linha.substring(i4 + 1, i5));
-				System.out.println("quantidadeAtendimentosMensaisFamilia" + ":" + quantidadeAtendimentosMensaisFamilia);
-				quantidadeAtendimentosMensaisPsicologa = Integer.parseInt(linha.substring(i5 + 1, i6));
-				System.out.println("quantidadeAtendimentosMensaisPsicologa" + ":" + quantidadeAtendimentosMensaisPsicologa);
-				quantidadeAtendimentosMensaisPsicologaEspecialista = Integer.parseInt(linha.substring(i6 + 1, lenght));
-				System.out.println("quantidadeAtendimentosMensaisPsicologaEspecialista" + ":" + quantidadeAtendimentosMensaisPsicologaEspecialista);
+				quantidadeAtendimentosMensaisTerapiaMaster = Integer.parseInt(linha.substring(i3 + 1, i4));
+				System.out.println("quantidadeAtendimentosMensaisTerapeuta" + ":" + quantidadeAtendimentosMensaisTerapiaMaster);
+				quantidadeAtendimentosMensaisTerapiaFamiliar = Integer.parseInt(linha.substring(i4 + 1, lenght));
+				System.out.println("quantidadeAtendimentosMensaisTerapiaFamiliar" + ":" + quantidadeAtendimentosMensaisTerapiaFamiliar);
+//				quantidadeAtendimentosMensaisPsicologa = Integer.parseInt(linha.substring(i5 + 1, i6));
+//				System.out.println("quantidadeAtendimentosMensaisPsicologa" + ":" + quantidadeAtendimentosMensaisPsicologa);
+//				quantidadeAtendimentosMensaisPsicologaEspecialista = Integer.parseInt(linha.substring(i6 + 1, lenght));
+//				System.out.println("quantidadeAtendimentosMensaisPsicologaEspecialista" + ":" + quantidadeAtendimentosMensaisPsicologaEspecialista);
 
-				System.out.println("111" + ":" + 111);
 				Pacote pacote = new Pacote();
 				pacote.setEhPacotePadrao(true);
 				pacote.setNome(nomePacote);
@@ -574,34 +572,34 @@ public class StartServer {
 				System.out.println("supervisao" + ":" + supervisao);
 				pacote.getAtendimentosPadrao().add(supervisao);
 
-				TipoProfissional tipoProfissionalTerapeuta = tipoProfissionalDao.buscaPorTipo("Terapeuta");
-				System.out.println(tipoProfissionalTerapeuta);
-				AtendimentoPadrao terapeuta = new AtendimentoPadrao(quantidadeAtendimentosMensaisTerapeuta, tipoProfissionalTerapeuta, Double.parseDouble("0"), true);
-				System.out.println("terapeuta" + ":" + terapeuta);
-				terapeuta = atendimentoPadraoDao.adicionaVolta(terapeuta);
-				pacote.getAtendimentosPadrao().add(terapeuta);
+				TipoProfissional tipoProfissionalTerapiaMaster = tipoProfissionalDao.buscaPorTipo("Terapia Master");
+				System.out.println(tipoProfissionalTerapiaMaster);
+				AtendimentoPadrao terapiaMaster = new AtendimentoPadrao(quantidadeAtendimentosMensaisTerapiaMaster, tipoProfissionalTerapiaMaster, Double.parseDouble("0"), true);
+				System.out.println("Terapia Master" + ":" + tipoProfissionalTerapiaMaster);
+				terapiaMaster = atendimentoPadraoDao.adicionaVolta(terapiaMaster);
+				pacote.getAtendimentosPadrao().add(terapiaMaster);
 
-				TipoProfissional tipoProfissionalFamilia = tipoProfissionalDao.buscaPorTipo("Família");
-				System.out.println(tipoProfissionalFamilia);
-				AtendimentoPadrao familia = new AtendimentoPadrao(quantidadeAtendimentosMensaisFamilia, tipoProfissionalFamilia, Double.parseDouble("0"), true);
-				System.out.println("familia" + ":" + familia);
-				familia = atendimentoPadraoDao.adicionaVolta(familia);
-				pacote.getAtendimentosPadrao().add(familia);
+				TipoProfissional tipoProfissionalTerapiaFamiliar = tipoProfissionalDao.buscaPorTipo("Terapia Familiar");
+				System.out.println(tipoProfissionalTerapiaFamiliar);
+				AtendimentoPadrao terapiaFamiliar = new AtendimentoPadrao(quantidadeAtendimentosMensaisTerapiaFamiliar, tipoProfissionalTerapiaFamiliar, Double.parseDouble("0"), true);
+				System.out.println("familia" + ":" + terapiaFamiliar);
+				terapiaFamiliar = atendimentoPadraoDao.adicionaVolta(terapiaFamiliar);
+				pacote.getAtendimentosPadrao().add(terapiaFamiliar);
 
-				TipoProfissional tipoProfissionalPsicologa = tipoProfissionalDao.buscaPorTipo("Psicóloga");
-				System.out.println(tipoProfissionalPsicologa);
-				AtendimentoPadrao psicologa = new AtendimentoPadrao(quantidadeAtendimentosMensaisPsicologa, tipoProfissionalPsicologa, Double.parseDouble("0"), true);
-				System.out.println("psicologa" + ":" + psicologa);
-				psicologa = atendimentoPadraoDao.adicionaVolta(psicologa);
-				pacote.getAtendimentosPadrao().add(psicologa);
-
-				TipoProfissional tipoProfissionalPsicologaEspecialista = tipoProfissionalDao.buscaPorTipo("Psicóloga Especialista");
-				System.out.println(tipoProfissionalPsicologaEspecialista);
-				AtendimentoPadrao psicologaEspecialista = new AtendimentoPadrao(quantidadeAtendimentosMensaisPsicologaEspecialista, tipoProfissionalPsicologaEspecialista, Double.parseDouble("0"),
-						true);
-				System.out.println("psicologaEspecialista" + ":" + psicologaEspecialista);
-				psicologaEspecialista = atendimentoPadraoDao.adicionaVolta(psicologaEspecialista);
-				pacote.getAtendimentosPadrao().add(psicologaEspecialista);
+//				TipoProfissional tipoProfissionalPsicologa = tipoProfissionalDao.buscaPorTipo("Psicóloga");
+//				System.out.println(tipoProfissionalPsicologa);
+//				AtendimentoPadrao psicologa = new AtendimentoPadrao(quantidadeAtendimentosMensaisPsicologa, tipoProfissionalPsicologa, Double.parseDouble("0"), true);
+//				System.out.println("psicologa" + ":" + psicologa);
+//				psicologa = atendimentoPadraoDao.adicionaVolta(psicologa);
+//				pacote.getAtendimentosPadrao().add(psicologa);
+//
+//				TipoProfissional tipoProfissionalPsicologaEspecialista = tipoProfissionalDao.buscaPorTipo("Psicóloga Especialista");
+//				System.out.println(tipoProfissionalPsicologaEspecialista);
+//				AtendimentoPadrao psicologaEspecialista = new AtendimentoPadrao(quantidadeAtendimentosMensaisPsicologaEspecialista, tipoProfissionalPsicologaEspecialista, Double.parseDouble("0"),
+//						true);
+//				System.out.println("psicologaEspecialista" + ":" + psicologaEspecialista);
+//				psicologaEspecialista = atendimentoPadraoDao.adicionaVolta(psicologaEspecialista);
+//				pacote.getAtendimentosPadrao().add(psicologaEspecialista);
 
 				pacoteDao.adiciona(pacote);
 				pacote.getAtendimentosPadrao().forEach(atendimentoPadrao -> atendimentoPadrao.setPacote(pacote));

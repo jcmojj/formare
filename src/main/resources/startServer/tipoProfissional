@@ -1,13 +1,21 @@
-Supervisão;400;200
-Terapeuta;300;150
-Família;300;150
-Psicóloga;200;50
-Psicóloga Especialista;200;90
-Fisioterapeuta;200;120
-Fonoaudiologia;200;300
-MusicoTerapia;120;50
-PetTerapia;100;60
-Psicopedagogia;160;100
-Psicomotricidade;220;100
-ReforçoEscolar;100;80
-ReforçoEscolarEspecialista;250;160
+Supervisão;300;240
+Terapia Master;300;240
+Terapia Familiar;300;240
+Psicóloga;300;50
+Psicóloga Especialista;300;75
+Fisioterapeuta;300;100
+Fisioterapeuta Especialista;300;150
+Fonoaudiologa;300;100
+Fonoaudiologa Especialista;300;150
+MusicoTerapeuta;300;70
+MusicoTerapeuta Especialista;300;75
+PetTerapeuta;300;60
+PetTerapeuta Especialista;300;90
+Educador Físico;300;70
+Educador Físico Especialista;300;75
+Psicopedagoga;300;80
+Psicopedagoga Especialista;300;120
+Psicomotricista;300;100
+Psicomotricista Especialista;300;150
+Reforço Escolar;300;80
+Reforço Escolar Especialista;300;120

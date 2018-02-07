@@ -1,5 +1,8 @@
-Especialidade;4;0;1;0;0
-Iniziale;4;4;1;4;4
-Base;4;4;1;12;12
-Intermedio;4;4;1;16;16
-Avanzato;4;8;2;36;16
+Uno;4;0;1
+Due;4;4;1
+Tre;4;8;1
+Quatro;4;0;2
+Cinque;4;4;2
+Sei;4;8;2
+Sete;4;8;4
+Otto;8;8;4

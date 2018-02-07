@@ -22,7 +22,7 @@ public class UsuarioDao extends Dao<Usuario> {
 		
 	}
 
-	public List<Usuario> listaUsuariosTipoSocia() {
+	public List<Usuario> listaTodosUsuariosDoTipoSocia() {
 		String jpql = "select u from Usuario u where u.socia > 0 order by u.nome desc";
 		TypedQuery<Usuario> query = super.getEntityManager().createQuery(jpql,Usuario.class);
 		return query.getResultList();

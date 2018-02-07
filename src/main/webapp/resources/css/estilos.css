@@ -286,3 +286,6 @@ html{
 	margin: 0 auto;
     /* text-align: center; */
 }
+.ui-widget, .ui-widget .ui-widget {
+       font-size: 80% !important;
+}

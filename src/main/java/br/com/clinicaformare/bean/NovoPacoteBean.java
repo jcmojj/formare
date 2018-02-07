@@ -48,6 +48,7 @@ public class NovoPacoteBean implements Serializable {
 	private Long pacotePadraoId = 0L;
 	private List<AtendimentoPadrao> atendimentosPadrao = new ArrayList<>();
 	// Material e Calcular Desconto
+	private boolean mostraPainelControle = true;
 	private boolean mostraDesconto = true;
 	private boolean mostraSetup = false;
 	private boolean mostraMaterial = false;
@@ -221,6 +222,16 @@ public class NovoPacoteBean implements Serializable {
 	}
 
 
+	public boolean isMostraPainelControle() {
+		return mostraPainelControle;
+	}
+
+
+	public void setMostraPainelControle(boolean mostraPainelControle) {
+		this.mostraPainelControle = mostraPainelControle;
+	}
+
+
 	public void setValorMaterial(Double valorMaterial) {
 		System.out.println("Atualizar Valor Material"+":"+valorMaterial);
 		this.valorMaterial = valorMaterial;
@@ -250,8 +261,9 @@ public class NovoPacoteBean implements Serializable {
 	public List<Usuario> getListaTodosUsuarioClienteDoMaisNovoAoMaisVelho(){
 		return usuarioDao.listaTodosUsuarioClienteDoMaisNovoAoMaisVelho();
 	}
-	public List<Usuario> getListaUsuariosTipoSocia(){
-		List<Usuario> usuariosTipoSocia = usuarioDao.listaUsuariosTipoSocia();
+	public List<Usuario> getListaTodosUsuariosDoTipoSocia(){
+		System.out.println("entrou listaTodosUsuariosDoTipoSocia");
+		List<Usuario> usuariosTipoSocia = usuarioDao.listaTodosUsuariosDoTipoSocia();
 		usuariosTipoSocia.forEach(u -> System.out.println(u));
 		return usuariosTipoSocia;
 		
@@ -356,6 +368,11 @@ public class NovoPacoteBean implements Serializable {
 	    }
 	    public void refreshEspecialidade() {
 	    		RequestContext.getCurrentInstance().update(":especialidade");
+	    }
+	    // Mensagens
+	    public void msgDesconto() {
+        String summary = mostraDesconto ? "Desconto será exibido" : "Desconto não será exibido";
+	        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(summary));
 	    }
 
 }
