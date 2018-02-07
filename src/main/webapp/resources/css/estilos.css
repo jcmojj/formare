@@ -287,5 +287,16 @@ html{
     /* text-align: center; */
 }
 .ui-widget, .ui-widget .ui-widget {
-       font-size: 80% !important;
+       font-size: 90% !important;
 }
+.tableAutoWidth{
+	table-layout: auto;
+	/* tableStyle="width:auto" */
+}
+
+.ui-selectonemenu{
+     width: 100% !important;
+}
+.ui-selectonemenu-label{
+     width: 100% !important;
+}  

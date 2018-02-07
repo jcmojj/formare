@@ -2,17 +2,21 @@ package br.com.clinicaformare.model.usuario;
 
 import java.io.Serializable;
 import java.util.Calendar;
+import java.util.List;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+
+import br.com.clinicaformare.model.atendimento.AtendimentoPadrao;
 
 @Entity
 public class Profissional implements Serializable {
@@ -29,6 +33,8 @@ public class Profissional implements Serializable {
 
 	@ManyToOne
 	private TipoProfissional tipoProfissional;
+	@OneToMany(mappedBy = "profissional")
+	private List<AtendimentoPadrao> atendimentosPadrao;
 
 	private Double valorBrutoHora;
 	private Double valorLiquidoHora;
@@ -54,6 +60,7 @@ public class Profissional implements Serializable {
 		this.tipoProfissional = tipoProfissional;
 		this.valorBrutoHora = tipoProfissional.getValorBrutoHora();
 		this.valorLiquidoHora = tipoProfissional.getValorLiquidoHora();
+		this.porcentagemLiquidoSobreBruto = this.valorLiquidoHora/this.valorBrutoHora;
 	}
 
 	// Getters and Setters
@@ -128,6 +135,39 @@ public class Profissional implements Serializable {
 
 	public void setDataAlteracao(Calendar dataAlteracao) {
 		this.dataAlteracao = dataAlteracao;
+	}
+
+	public List<AtendimentoPadrao> getAtendimentosPadrao() {
+		return atendimentosPadrao;
+	}
+
+	public void setAtendimentosPadrao(List<AtendimentoPadrao> atendimentosPadrao) {
+		this.atendimentosPadrao = atendimentosPadrao;
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Profissional other = (Profissional) obj;
+		if (id == null) {
+			if (other.id != null)
+				return false;
+		} else if (!id.equals(other.id))
+			return false;
+		return true;
 	}
 
 	// Método Callback para persistir

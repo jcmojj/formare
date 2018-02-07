@@ -8,6 +8,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 
+import br.com.clinicaformare.model.usuario.Profissional;
+import br.com.clinicaformare.model.usuario.Socia;
 import br.com.clinicaformare.model.usuario.TipoProfissional;
 
 @Entity
@@ -20,20 +22,23 @@ public class AtendimentoPadrao implements Serializable {
 //	@Digits(integer=5, fraction=2)
 //	@Column(nullable= false, precision=7, scale=2) 
 	private Integer quantidadeAtendimentosMensal;
-	@ManyToOne
-	TipoProfissional tipoProfissional;
+
 
 	private Double desconto;
 	private Double valorBrutoHora;
 	private Double valorLiquidoHora;
 	private Double porcentagemLiquidoSobreBruto;
-//	@Transient
-//	private Double valorBrutoTotal;
-//	@Transient
-//	private Double valorLiquidoTotal;
+	private boolean atendimentoPadraoDePacote = false;
+	
 	@ManyToOne
 	private Pacote pacote;
-	private boolean atendimentoPadraoDePacote = false;
+	@ManyToOne
+	TipoProfissional tipoProfissional;
+	@ManyToOne
+	private Profissional profissional;
+	@ManyToOne
+	private Socia socia;
+
 
 	
 
@@ -46,6 +51,15 @@ public class AtendimentoPadrao implements Serializable {
 	// Constructor
 	public AtendimentoPadrao() {
 		super();
+		this.atendimentoPadraoDePacote = false;
+	}
+	public AtendimentoPadrao(AtendimentoPadrao atendimento) {
+		this.quantidadeAtendimentosMensal = atendimento.quantidadeAtendimentosMensal;
+		this.tipoProfissional = atendimento.tipoProfissional;
+		this.desconto = atendimento.desconto;
+		this.valorBrutoHora = atendimento.valorBrutoHora;
+		this.valorLiquidoHora =atendimento.valorLiquidoHora;
+		this.porcentagemLiquidoSobreBruto = atendimento.porcentagemLiquidoSobreBruto;
 		this.atendimentoPadraoDePacote = false;
 	}
 	
@@ -147,6 +161,22 @@ public class AtendimentoPadrao implements Serializable {
 
 	public Double getValorLiquidoTotal() {
 		return valorLiquidoHora*quantidadeAtendimentosMensal;
+	}
+
+	public Profissional getProfissional() {
+		return profissional;
+	}
+
+	public void setProfissional(Profissional profissional) {
+		this.profissional = profissional;
+	}
+
+	public Socia getSocia() {
+		return socia;
+	}
+
+	public void setSocia(Socia socia) {
+		this.socia = socia;
 	}
 
 }

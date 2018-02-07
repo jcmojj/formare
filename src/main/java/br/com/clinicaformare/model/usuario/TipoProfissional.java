@@ -7,6 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 
 import br.com.clinicaformare.model.atendimento.AtendimentoPadrao;
@@ -22,10 +23,14 @@ public class TipoProfissional implements Serializable {
 	private Double valorBrutoHora;
 	private Double valorLiquidoHora;
 	private Double porcentagemLiquidoSobreBruto;
+	private boolean especialista = false;
+	private boolean deSocia = false;
 	@OneToMany(mappedBy = "tipoProfissional")
 	private List<Profissional> profissionais;
 	@OneToMany(mappedBy = "tipoProfissional")
 	private List<AtendimentoPadrao> atendimentosPadrao;
+	@ManyToMany(mappedBy = "tiposProfissionais")
+	private List<Socia> socias;
 
 	// Constructor
 	@Override
@@ -33,12 +38,14 @@ public class TipoProfissional implements Serializable {
 		return "TipoProfissional(" + id + ")=" + tipo ;
 	}
 
-	public TipoProfissional(String tipo, Double valorBrutoHora, Double valorLiquidoHora) {
+	public TipoProfissional(String tipo, Double valorBrutoHora, Double valorLiquidoHora, boolean especialista, boolean deSocia) {
 		super();
 		this.tipo = tipo;
 		this.valorBrutoHora = valorBrutoHora;
 		this.valorLiquidoHora = valorLiquidoHora;
 		this.porcentagemLiquidoSobreBruto =  valorLiquidoHora/valorBrutoHora;
+		this.especialista = especialista;
+		this.deSocia = deSocia;
 	}
 
 	public TipoProfissional() {
@@ -105,4 +112,53 @@ public class TipoProfissional implements Serializable {
 		this.atendimentosPadrao = atendimentosPadrao;
 	}
 
+	public boolean isEspecialista() {
+		return especialista;
+	}
+
+	public void setEspecialista(boolean especialista) {
+		this.especialista = especialista;
+	}
+
+	public boolean isDeSocia() {
+		return deSocia;
+	}
+
+	public void setDeSocia(boolean deSocia) {
+		this.deSocia = deSocia;
+	}
+
+	public List<Socia> getSocias() {
+		return socias;
+	}
+
+	public void setSocias(List<Socia> socias) {
+		this.socias = socias;
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		TipoProfissional other = (TipoProfissional) obj;
+		if (id == null) {
+			if (other.id != null)
+				return false;
+		} else if (!id.equals(other.id))
+			return false;
+		return true;
+	}
+	
 }

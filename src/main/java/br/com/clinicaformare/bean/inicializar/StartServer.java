@@ -6,6 +6,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.List;
 
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
@@ -216,23 +217,40 @@ public class StartServer {
 			InputStreamReader isr = new InputStreamReader(is);
 			BufferedReader br = new BufferedReader(isr);
 			String tipoProfissionalString = br.readLine();
-			Integer first;
-			Integer second;
-			Integer third;
+			Integer i1;
+			Integer i2;
+			Integer i3;
+			Integer i4;
+			Integer i5;
 			Integer lenght;
 			String tipo;
 			Double valorBrutoHora;
 			Double valorLiquidoHora;
+			boolean especialista = false;
+			boolean deSocia = false;
 
 			while (tipoProfissionalString != null) {
-				first = 0;
-				second = tipoProfissionalString.indexOf(";", first);
-				third = tipoProfissionalString.indexOf(";", second + 1);
+				i1 = 0;
+				i2 = tipoProfissionalString.indexOf(";", i1);
+				i3 = tipoProfissionalString.indexOf(";", i2 + 1);
+				i4 = tipoProfissionalString.indexOf(";", i3 + 1);
+				i5 = tipoProfissionalString.indexOf(";", i4 + 1);
 				lenght = tipoProfissionalString.length();
-				tipo = tipoProfissionalString.substring(first, second);
-				valorBrutoHora = Double.parseDouble(tipoProfissionalString.substring(second + 1, third));
-				valorLiquidoHora = Double.parseDouble(tipoProfissionalString.substring(third + 1, lenght));
-				tipoProfissionalDao.adiciona(new TipoProfissional(tipo, valorBrutoHora, valorLiquidoHora));
+				tipo = tipoProfissionalString.substring(i1, i2);
+				valorBrutoHora = Double.parseDouble(tipoProfissionalString.substring(i2 + 1, i3));
+				valorLiquidoHora = Double.parseDouble(tipoProfissionalString.substring(i3 + 1, i4));
+
+				if(Integer.parseInt(tipoProfissionalString.substring(i4 + 1, i5)) == 1) {
+					especialista = true;
+				}else{
+					especialista = false;
+				}
+				if(Integer.parseInt(tipoProfissionalString.substring(i5 + 1, lenght)) == 1) {
+					deSocia = true;
+				}else{
+					deSocia = false;
+				}
+				tipoProfissionalDao.adiciona(new TipoProfissional(tipo, valorBrutoHora, valorLiquidoHora, especialista, deSocia));
 
 				tipoProfissionalString = br.readLine();
 			}
@@ -265,23 +283,12 @@ public class StartServer {
 				second = profissionalString.indexOf(";", 0);
 				lenght = profissionalString.length();
 				nome = (profissionalString.substring(0, second));
-				System.out.println("AQUI9");
 				tipoProfissionalId = (Long.parseLong(profissionalString.substring(second + 1, lenght)));
-				System.out.println("AQUI11" + profissionalString.substring(second + 1, lenght));
 				TipoProfissional tipoProfissional = tipoProfissionalDao.buscaPorId(tipoProfissionalId);
-				System.out.println("AQUI12" + tipoProfissional);
 				Profissional profissional = new Profissional(tipoProfissional);
-				System.out.println("AQUI5");
-
-				// Usuario usuario = new Usuario(nome);
-				// System.out.println("AQUI6 + usuario: " + usuario);
-				// usuario = usuarioDao.adicionaVolta(usuario);
-
 				Usuario usuario = adicionaUsuarioComNome(nome);
-				System.out.println("AQUI7 + usuario: " + usuario);
 				profissional.setUsuario(usuario);
 				usuario.setProfissional(profissional);
-				System.out.println("AQUI8");
 				profissionalDao.adiciona(profissional);
 				usuarioDao.atualiza(usuario);
 				profissionalString = br.readLine();
@@ -316,11 +323,19 @@ public class StartServer {
 
 			String nome;
 			Long tipoProfissionalId;
+			Integer i1;
+			Integer i2;
+			Integer i3;
 			Integer second;
 			Integer lenght;
 			//
 			while (sociaString != null) {
-				second = sociaString.indexOf(";", 0);
+				i1 = 0;
+				System.out.println("i1");
+				i2 = sociaString.indexOf(";", i1 + 1);
+				System.out.println("i2-" + i2);
+				i3 = sociaString.indexOf(";", i2 + 1);
+				System.out.println("i3-" + i3);
 				lenght = sociaString.length();
 				nome = (sociaString.substring(0, second));
 				// System.out.println("AQUI9");
@@ -614,4 +629,9 @@ public class StartServer {
 		}
 	}
 
+	public void teste() {
+		String tipoProfissional = "Fisioterapeuta";
+		List<Usuario> listaUsuarioComTipoProfissionalEEspecialidade = usuarioDao.listaUsuarioComTipoProfissionalEEspecialidade(tipoProfissional, false);
+		listaUsuarioComTipoProfissionalEEspecialidade.forEach(Usuario ->System.out.println(Usuario));
+	}
 }
