@@ -17,6 +17,7 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 import br.com.clinicaformare.model.atendimento.Pacote;
+import br.com.clinicaformare.model.financeiro.Pagamento;
 
 @Entity
 public class ResponsavelFinanceiro implements Serializable {
@@ -37,7 +38,10 @@ public class ResponsavelFinanceiro implements Serializable {
 
 	@OneToMany(mappedBy = "responsavelFinanceiro")//, cascade = {CascadeType.ALL, CascadeType.MERGE, CascadeType.PERSIST})	
 	private List<Pacote> pacotes = new ArrayList<>();
-
+	@OneToMany(mappedBy = "responsavelFinanceiro")
+	private List<Pagamento> pagamentos  = new ArrayList<>();
+	
+	
 	@Override
 	public String toString() {
 		return "ResponsavelFinanceiro [id=" + id + ", usuario=" + usuario + ", dataCriacao=" + dataCriacao + ", dataAlteracao=" + dataAlteracao + ", autorizacoes=" + autorizacoes;
@@ -106,6 +110,14 @@ public class ResponsavelFinanceiro implements Serializable {
 
 	public void setDataAlteracao(Calendar dataAlteracao) {
 		this.dataAlteracao = dataAlteracao;
+	}
+
+	public List<Pagamento> getPagamentos() {
+		return pagamentos;
+	}
+
+	public void setPagamentos(List<Pagamento> pagamentos) {
+		this.pagamentos = pagamentos;
 	}
 
 	@Override

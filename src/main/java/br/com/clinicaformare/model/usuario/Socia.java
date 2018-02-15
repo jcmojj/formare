@@ -1,6 +1,7 @@
 package br.com.clinicaformare.model.usuario;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
@@ -11,7 +12,6 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.PrePersist;
@@ -30,8 +30,7 @@ public class Socia implements Serializable {
 	private Long id;
 	@OneToOne(mappedBy = "socia")
 	Usuario usuario;
-	@ManyToOne
-	TipoProfissional tipoProfissional;
+
 	@Temporal(TemporalType.TIMESTAMP)
 	private Calendar dataCriacao;
 	@Temporal(TemporalType.TIMESTAMP)
@@ -41,15 +40,16 @@ public class Socia implements Serializable {
 	@OneToMany(mappedBy = "sociaResponsavel")
 	private List<Pacote> pacotes;
 	@OneToMany(mappedBy = "socia")
-	private List<AtendimentoPadrao> atendimentosPadrao;
-	@JoinTable(name = "Socia_TipoProfissional", joinColumns = @JoinColumn(name = "Socia_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "TipoProfissional_id", referencedColumnName = "id"))
+	private List<AtendimentoPadrao> atendimentosPadrao = new ArrayList<>();
+	@JoinTable(name = "Socia_TipoSocia", joinColumns = @JoinColumn(name = "Socia_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "TipoSocia_id", referencedColumnName = "id"))
 	@ManyToMany
-	private List<TipoProfissional> tiposProfissionais;
+	private List<TipoSocia> tiposSocia = new ArrayList<>();
+
+
 
 	@Override
 	public String toString() {
-		return "Socia [id=" + id + ", usuario=" + usuario + ", tipoProfissional=" + tipoProfissional + ", dataCriacao=" + dataCriacao + ", dataAlteracao=" + dataAlteracao + ", pacotes=" + pacotes
-				+ "]";
+		return "Socia [id=" + id + ", usuario[id]=" + usuario.getId() + "]";
 	}
 
 	// Constructor
@@ -59,9 +59,7 @@ public class Socia implements Serializable {
 	public Socia(Long id) {
 		this.id = id;
 	}
-	public Socia(TipoProfissional tipoProfissional) {
-		this.tipoProfissional = tipoProfissional;
-	}
+
 
 	// Getters and setters
 
@@ -106,14 +104,6 @@ public class Socia implements Serializable {
 		this.dataAlteracao = dataAlteracao;
 	}
 
-	public TipoProfissional getTipoProfissional() {
-		return tipoProfissional;
-	}
-
-	public void setTipoProfissional(TipoProfissional tipoProfissional) {
-		this.tipoProfissional = tipoProfissional;
-	}
-
 	public List<AtendimentoPadrao> getAtendimentosPadrao() {
 		return atendimentosPadrao;
 	}
@@ -122,13 +112,14 @@ public class Socia implements Serializable {
 		this.atendimentosPadrao = atendimentosPadrao;
 	}
 
-	public List<TipoProfissional> getTiposProfissionais() {
-		return tiposProfissionais;
+	public List<TipoSocia> getTiposSocias() {
+		return tiposSocia;
 	}
 
-	public void setTiposProfissionais(List<TipoProfissional> tiposProfissionais) {
-		this.tiposProfissionais = tiposProfissionais;
+	public void setTiposSocias(List<TipoSocia> tiposSocia) {
+		this.tiposSocia = tiposSocia;
 	}
+	
 
 	@Override
 	public int hashCode() {

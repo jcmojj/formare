@@ -18,7 +18,7 @@
 			</p:selectBooleanButton>
 		</h:form>
 		<h:form id="painelControle">
-			<h:panelGrid columns="4" columnClasses="label, value" cellpadding="5"
+			<h:panelGrid columns="6" columnClasses="label, value" cellpadding="5"
 				rendered="#{novoPacoteBean.mostraPainelControle}">
 
 				<p:outputLabel for="mostraDesconto" value="Mostrar Desconto: " />
@@ -26,9 +26,11 @@
 					value="#{novoPacoteBean.mostraDesconto}" onLabel="sim"
 					offLabel="não">
 					<p:ajax listener="#{novoPacoteBean.msgDesconto}"
-						update=":atendimentos :especialidade :header:growlCurto" />
+						update=":atendimentos :especialidade :totalizador :header:growlCurto" />
 				</p:inputSwitch>
 				<p:message for="mostraDesconto" />
+				<h:outputText value="" />
+				<h:outputText value="" />
 				<h:outputText value="" />
 
 
@@ -40,6 +42,9 @@
 				</p:inputSwitch>
 				<p:message for="mostraFee" />
 				<h:outputText value="" />
+				<h:outputText value="" />
+				<h:outputText value="" />
+
 
 				<p:outputLabel for="valorTotalAlterandoDesconto"
 					value="Alterar valor pacote para:" />
@@ -53,7 +58,11 @@
 					<f:ajax execute=":processarValorTotalAlterandoDesconto"
 						render="@form :atendimentos :especialidade :totalizador" />
 				</p:commandButton>
-
+				<p:outputLabel for="valorPrograma" value="Valor total progama: " />
+				<h:outputText id="valorPrograma"
+					value="#{novoPacoteBean.valorTotalAlterandoDesconto}">
+					<f:convertNumber type="currency" currencySymbol="R$" />
+				</h:outputText>
 
 				<p:outputLabel for="alterarTodosDescontos"
 					value="Alterar todos descontos para:" />
@@ -68,8 +77,15 @@
 					<f:ajax execute=":processarZerarTodosDescontos"
 						render="@form :atendimentos :especialidade :totalizador" />
 				</p:commandButton>
-
+				<p:outputLabel for="descontoPrograma"
+					value="Desconto total programa:" />
+				<h:outputText id="descontoPrograma"
+					value="#{novoPacoteBean.valorDeTodosDescontos/100}">
+					<f:convertNumber type="percent" maxFractionDigits="2"
+						minFractionDigits="2" />
+				</h:outputText>
 			</h:panelGrid>
+
 		</h:form>
 
 
@@ -79,15 +95,14 @@
 			<h:panelGrid columns="3" columnClasses="label, value" cellpadding="5">
 
 				<p:outputLabel for="sociaResponsavel" value="Tutora Formare:" />
-				<p:selectOneMenu id="sociaResponsavel"
-					autoWidth="true"
-					value="#{novoPacoteBean.sociaResponsavelId}"
-					converter="javax.faces.Long" required="true"
+				<p:selectOneMenu id="sociaResponsavel" autoWidth="true"
+					value="#{novoPacoteBean.sociaResponsavel}"
+					converter="#{sociaConverter}" required="true"
 					requiredMessage="Campo obrigatório.">
 					<f:selectItem itemValue="#{null}" itemLabel="Selecione uma tutora" />
 					<f:selectItems
 						value="#{novoPacoteBean.listaTodosUsuariosDoTipoSocia}"
-						var="usuario" itemValue="#{usuario.id}"
+						var="usuario" itemValue="#{usuario.socia}"
 						itemLabel="#{usuario.nome} #{usuario.sobrenome}" />
 				</p:selectOneMenu>
 				<p:message for="sociaResponsavel" />
@@ -95,27 +110,28 @@
 				<p:outputLabel for="reponsavelFinanceiro"
 					value="Responsável Financeiro:" />
 				<p:selectOneMenu id="reponsavelFinanceiro"
-					value="#{novoPacoteBean.responsavelFinanceiroId}"
-					converter="javax.faces.Long" required="true"
+					value="#{novoPacoteBean.usuarioResponsavelFinanceiro}"
+					converter="#{usuarioConverter}" required="true"
 					requiredMessage="Campo obrigatório.">
 					<f:selectItem itemValue="#{null}"
 						itemLabel="Selecione uma responsável financeiro" />
 					<f:selectItems
 						value="#{novoPacoteBean.listaTodosUsuarioClienteDoMaisNovoAoMaisVelho}"
-						var="usuario" itemValue="#{usuario.id}"
+						var="usuario" itemValue="#{usuario}"
 						itemLabel="#{usuario.nome} #{usuario.sobrenome}" />
 				</p:selectOneMenu>
 				<p:message for="reponsavelFinanceiro" />
 
 
 				<p:outputLabel for="paciente" value="Paciente:" />
-				<p:selectOneMenu id="paciente" value="#{novoPacoteBean.pacienteId}"
-					converter="javax.faces.Long" required="true"
+				<p:selectOneMenu id="paciente"
+					value="#{novoPacoteBean.usuarioPaciente}"
+					converter="#{usuarioConverter}" required="true"
 					requiredMessage="Campo obrigatório.">
 					<f:selectItem itemValue="#{null}" itemLabel="Selecione um paciente" />
 					<f:selectItems
 						value="#{novoPacoteBean.listaTodosUsuarioClienteDoMaisNovoAoMaisVelho}"
-						var="usuario" itemValue="#{usuario.id}"
+						var="usuario" itemValue="#{usuario}"
 						itemLabel="#{usuario.nome} #{usuario.sobrenome}" />
 				</p:selectOneMenu>
 				<p:message for="paciente" />
@@ -123,6 +139,7 @@
 
 			</h:panelGrid>
 		</h:form>
+
 		<h:form id="atendimentos">
 			<p:fieldset legend="Programa Base" style="margin-bottom:20px">
 
@@ -130,14 +147,14 @@
 					cellpadding="5">
 					<p:outputLabel for="pacotePadrao" value="Programa Base:" />
 					<p:selectOneMenu id="pacotePadrao"
-						value="#{novoPacoteBean.pacotePadraoId}"
-						converter="javax.faces.Long" required="true"
+						value="#{novoPacoteBean.pacotePadrao}"
+						converter="#{pacoteConverter}" required="true"
 						requiredMessage="Campo obrigatório.">
 						<p:ajax process="@form" update=":atendimentos :totalizador" />
 						<f:selectItem itemValue="#{null}"
 							itemLabel="Selecione um programa base" />
 						<f:selectItems value="#{novoPacoteBean.pacotesPadrao}"
-							var="pacote" itemValue="#{pacote.id}" itemLabel="#{pacote.nome}" />
+							var="pacote" itemValue="#{pacote}" itemLabel="#{pacote.nome}" />
 					</p:selectOneMenu>
 					<p:message for="pacotePadrao" />
 
@@ -145,31 +162,28 @@
 				</h:panelGrid>
 
 				<p:dataTable var="atendimentoPadrao"
-					
 					value="#{novoPacoteBean.atendimentosPadrao}"
 					rendered="#{novoPacoteBean.quantidadeAtendimentosPadrao > 0}">
 					<f:facet name="header">
         							Atendimentos Mensais
     							</f:facet>
-					<p:column headerText="Profissional">
-						<h:outputText value="#{atendimentoPadrao.tipoProfissional.tipo}" />
+					<p:column headerText="Atendimento">
+						<h:outputText value="#{atendimentoPadrao.tipoSocia.tipo}" />
 					</p:column>
-					
+
 					<p:column headerText="Terapia">
-						<p:selectOneMenu
-							value="#{atendimentoPadrao.socia}"
-							converter="sociaConverter" required="true"
+						<p:selectOneMenu value="#{atendimentoPadrao.socia}"
+							converter="#{sociaConverter}" required="true"
 							requiredMessage="Campo obrigatório.">
-							<p:ajax process="@form"
-								update=":atendimentos" />
+							<p:ajax process="@form" update=":atendimentos" />
 							<f:selectItem itemValue="#{null}" itemLabel="Selecione" />
 							<f:selectItems
-								value="#{novoPacoteBean.listaTodosUsuariosDoTipoSocia}"
+								value="#{novoPacoteBean.getListaTodosUsuariosSociaDoTipo(atendimentoPadrao.tipoSocia)}"
 								var="usuario" itemValue="#{usuario.socia}"
-								itemLabel="#{usuario.nome} #{usuario.sobrenome}" />
+								itemLabel="#{usuario.nome}" />
 						</p:selectOneMenu>
 					</p:column>
-					
+
 					<p:column headerText="Desconto" style="text-align:center"
 						rendered="#{novoPacoteBean.mostraDesconto}">
 						<h:outputText value="#{atendimentoPadrao.desconto}">
@@ -193,10 +207,10 @@
 					</p:column>
 					<p:columnGroup type="footer">
 						<p:row>
-							<p:column colspan="3" footerText="Total: "
+							<p:column colspan="4" footerText="Total: "
 								style="text-align:right"
 								rendered="#{novoPacoteBean.mostraDesconto}" />
-							<p:column colspan="2" footerText="Total: "
+							<p:column colspan="3" footerText="Total: "
 								style="text-align:right"
 								rendered="#{not novoPacoteBean.mostraDesconto}" />
 							<p:column footerText="#{novoPacoteBean.totalAtendimentosPadrao}" />
@@ -221,25 +235,54 @@
 			</p:fieldset>
 		</h:form>
 
+
 		<h:form id="especialidade">
 			<p:fieldset legend="Programa de Especialidade"
 				style="margin-bottom:20px">
+
 				<h:panelGrid columns="7" columnClasses="label, value"
 					cellpadding="5">
-					<p:outputLabel for="pacoteEspecialidadeProfissional"
-						value="Profissionais:" />
-					<p:selectOneMenu id="pacoteEspecialidadeProfissional"
-						value="#{novoPacoteBean.tipoProfissionalId}"
-						converter="javax.faces.Long" required="true"
+
+
+
+
+					<p:outputLabel for="areasDeProfissionaisExistentes" value="Áreas: " />
+					<p:selectOneMenu id="areasDeProfissionaisExistentes"
+						value="#{novoPacoteBean.tipoProfissionalString}" required="true"
+						requiredMessage="Campo obrigatório.">
+						<p:ajax process="@this"
+							update="selecionaProfissional" />
+						<f:selectItem itemValue="#{null}" itemLabel="Selecione uma área" />
+						<f:selectItems
+							value="#{novoPacoteBean.listaStringDeTiposDeProfissionalExistentes}"
+							var="string" itemValue="#{string}" itemLabel="#{string}" />
+					</p:selectOneMenu>
+					<p:message for="areasDeProfissionaisExistentes" />
+
+					<h:outputText for="especialista" value="XP: " />
+					<p:selectBooleanCheckbox id="especialista"
+						value="#{novoPacoteBean.especialista}">
+						<p:ajax process="@this"
+							update="selecionaProfissional" />
+					</p:selectBooleanCheckbox>
+					<p:message for="especialista" />
+					<h:outputText value="" />
+
+					<p:outputLabel for="selecionaProfissional" value="Profissionais:" />
+					<p:selectOneMenu id="selecionaProfissional"
+						value="#{novoPacoteBean.usuarioProfissional}"
+						converter="#{usuarioConverter}" required="true"
 						requiredMessage="Campo obrigatório.">
 						<p:ajax process="@form"
 							update=":especialidade :atendimentos :totalizador" />
-						<f:selectItem itemValue="#{null}" itemLabel="Selecione um tipo" />
-						<f:selectItems value="#{novoPacoteBean.todosTiposProfissional}"
-							var="tipoProfissional" itemValue="#{tipoProfissional.id}"
-							itemLabel="#{tipoProfissional.tipo}" />
+						<f:selectItem itemValue="#{null}" itemLabel="Selecione um profissional" />
+						<f:selectItems
+							value="#{novoPacoteBean.listaUsuarioComTipoProfissionalEEspecialidade}"
+							var="usuario" itemValue="#{usuario}" itemLabel="#{usuario.nome}" />
 					</p:selectOneMenu>
-					<p:message for="pacoteEspecialidadeProfissional" />
+					<p:message for="selecionaProfissional" /> 
+
+
 
 					<p:outputLabel for="pacoteEspecialidadeQuantidade"
 						value="Quantidade: " />
@@ -274,6 +317,11 @@
 						<h:outputText
 							value="#{atendimentoEspecialidade.tipoProfissional.tipo}" />
 					</p:column>
+					<p:column headerText="Nome">
+						<h:outputText
+							value="#{atendimentoEspecialidade.profissional.usuario.nome}" />
+					</p:column>
+					
 					<p:column headerText="Desconto" style="text-align:center"
 						rendered="#{novoPacoteBean.mostraDesconto}">
 						<p:cellEditor>
@@ -327,10 +375,10 @@
 
 					<p:columnGroup type="footer">
 						<p:row id="footerAtendimentoEspecialidade">
-							<p:column colspan="3" footerText="Total: "
+							<p:column colspan="4" footerText="Total: "
 								style="text-align:right"
 								rendered="#{novoPacoteBean.mostraDesconto}" />
-							<p:column colspan="2" footerText="Total: "
+							<p:column colspan="3" footerText="Total: "
 								style="text-align:right"
 								rendered="#{not novoPacoteBean.mostraDesconto}" />
 							<p:column
@@ -419,6 +467,7 @@
 					</p:row>
 					<p:row rendered="#{novoPacoteBean.valorFee > 0}">
 						<p:column style="text-align:right">Fee</p:column>
+						<p:column style="text-align:right">-</p:column>
 						<p:column style="text-align:right">-</p:column>
 						<p:column style="text-align:right">
 							<h:outputText value="#{novoPacoteBean.valorFee}">

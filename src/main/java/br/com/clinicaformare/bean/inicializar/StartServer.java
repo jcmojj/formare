@@ -6,7 +6,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.util.List;
+import java.math.BigDecimal;
 
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
@@ -15,7 +15,13 @@ import javax.transaction.Transactional;
 
 import br.com.clinicaformare.daos.AtendimentoPadraoDao;
 import br.com.clinicaformare.daos.PacoteDao;
-import br.com.clinicaformare.daos.ParametroDao;
+import br.com.clinicaformare.daos.financeiro.operacao.BancoDao;
+import br.com.clinicaformare.daos.financeiro.operacao.ColetorTarifaOperacaoFinanceiraDao;
+import br.com.clinicaformare.daos.financeiro.operacao.FormaTransferenciaOperacaoFinanceiraDao;
+import br.com.clinicaformare.daos.financeiro.operacao.OperadorFinanceiroDao;
+import br.com.clinicaformare.daos.financeiro.operacao.TarifaOperacaoFinanceiraDao;
+import br.com.clinicaformare.daos.financeiro.operacao.TipoContaOperacaoFinanceiraDao;
+import br.com.clinicaformare.daos.financeiro.operacao.TipoTarifaOperacaoFinanceiraDao;
 import br.com.clinicaformare.daos.usuario.LogradouroDao;
 import br.com.clinicaformare.daos.usuario.PacienteDao;
 import br.com.clinicaformare.daos.usuario.PaesciDao;
@@ -24,21 +30,30 @@ import br.com.clinicaformare.daos.usuario.ResponsavelFinanceiroDao;
 import br.com.clinicaformare.daos.usuario.SociaDao;
 import br.com.clinicaformare.daos.usuario.TipoEnderecoDao;
 import br.com.clinicaformare.daos.usuario.TipoProfissionalDao;
+import br.com.clinicaformare.daos.usuario.TipoSociaDao;
 import br.com.clinicaformare.daos.usuario.TipoTelefoneDao;
 import br.com.clinicaformare.daos.usuario.UsuarioDao;
-import br.com.clinicaformare.model.Parametro;
 import br.com.clinicaformare.model.atendimento.AtendimentoPadrao;
 import br.com.clinicaformare.model.atendimento.Pacote;
+import br.com.clinicaformare.model.financeiro.operador.Banco;
+import br.com.clinicaformare.model.financeiro.operador.ColetorTarifaOperacaoFinanceira;
+import br.com.clinicaformare.model.financeiro.operador.FormaTransferenciaOperacaoFinanceira;
+import br.com.clinicaformare.model.financeiro.operador.OperadorFinanceiro;
+import br.com.clinicaformare.model.financeiro.operador.TarifaOperacaoFinanceira;
+import br.com.clinicaformare.model.financeiro.operador.TipoContaOperacaoFinanceira;
+import br.com.clinicaformare.model.financeiro.operador.TipoTarifaOperacaoFinanceira;
 import br.com.clinicaformare.model.usuario.Paciente;
 import br.com.clinicaformare.model.usuario.Profissional;
 import br.com.clinicaformare.model.usuario.ResponsavelFinanceiro;
 import br.com.clinicaformare.model.usuario.Socia;
 import br.com.clinicaformare.model.usuario.TipoProfissional;
+import br.com.clinicaformare.model.usuario.TipoSocia;
 import br.com.clinicaformare.model.usuario.Usuario;
 import br.com.clinicaformare.model.usuario.telefone.TipoTelefone;
 import br.com.clinicaformare.usuario.endereco.Logradouro;
 import br.com.clinicaformare.usuario.endereco.Paesci;
 import br.com.clinicaformare.usuario.endereco.TipoEndereco;
+import br.com.clinicaformare.util.CalculadoraParametro;
 
 @Named
 @RequestScoped
@@ -46,16 +61,46 @@ public class StartServer {
 
 	@Transactional
 	public void allMainValues() {
-//		System.out.println("AllMainValues"+":"+"paesci");paesci();
-//		System.out.println("AllMainValues"+":"+"logradouro");logradouro();
-//		System.out.println("AllMainValues"+":"+"tipoTelefone");tipoTelefone();
-//		System.out.println("AllMainValues"+":"+"tipoEndereco");tipoEndereco();
-		System.out.println("AllMainValues"+":"+"tipoProfissional");tipoProfissional();
-		System.out.println("AllMainValues"+":"+"profissional");profissional();
-		System.out.println("AllMainValues"+":"+"socia");socia();
-		System.out.println("AllMainValues"+":"+"paciente");paciente();
-		System.out.println("AllMainValues"+":"+"atendimentoPadrao");atendimentoPadrao();
-		System.out.println("AllMainValues"+":"+"responsavelFinanceiroPaciente");responsavelFinanceiroPaciente();
+		// System.out.println("AllMainValues"+":"+"paesci");paesci();
+		// System.out.println("AllMainValues"+":"+"logradouro");logradouro();
+		// System.out.println("AllMainValues"+":"+"tipoTelefone");tipoTelefone();
+		// System.out.println("AllMainValues"+":"+"tipoEndereco");tipoEndereco();
+		System.out.println("AllMainValues" + ":" + "tipoProfissional");
+		tipoProfissional();
+		System.out.println("AllMainValues" + ":" + "profissional");
+		profissional();
+		System.out.println("AllMainValues" + ":" + "tipoSocia");
+		tipoSocia();
+		System.out.println("AllMainValues" + ":" + "socia");
+		socia();
+		System.out.println("AllMainValues" + ":" + "paciente");
+		paciente();
+		System.out.println("AllMainValues" + ":" + "atendimentoPadrao");
+		atendimentoPadrao();
+		System.out.println("AllMainValues" + ":" + "responsavelFinanceiroPaciente");
+		responsavelFinanceiroPaciente();
+		System.out.println("AllMainValues" + ":" + "banco");
+		banco();
+		System.out.println("AllMainValues" + ":" + "operacaoFinanceira");
+		operacaoFinanceira();
+		System.out.println("AllMainValues" + ":" + "operacaoFinanceiraTarifa");
+		operacaoFinanceiraTarifa();
+		System.out.println("AllMainValues" + ":" + "calculadoraParametrosTeste");
+		calculadoraParametrosTeste();
+
+	}
+
+	@Transactional
+	public void allMainFinanceValues() {
+		System.out.println("AllMainValues" + ":" + "banco");
+		banco();
+		System.out.println("AllMainValues" + ":" + "operacaoFinanceira");
+		operacaoFinanceira();
+		System.out.println("AllMainValues" + ":" + "operacaoFinanceiraTarifa");
+		operacaoFinanceiraTarifa();
+		System.out.println("AllMainValues" + ":" + "calculadoraParametrosTeste");
+		calculadoraParametrosTeste();
+
 	}
 
 	@Inject
@@ -172,42 +217,6 @@ public class StartServer {
 	}
 
 	@Inject
-	private ParametroDao parametroDao;
-
-	@Transactional
-	public void parametro() {
-		try {
-			InputStream is = new FileInputStream("/Users/josecarlosoliveira/javaee/eclipse-workspace/formare/src/main/resources/startServer/parametros");
-			InputStreamReader isr = new InputStreamReader(is);
-			BufferedReader br = new BufferedReader(isr);
-			String parametroString = br.readLine();
-			Integer first;
-			Integer second;
-			Integer third;
-			Integer lenght;
-
-			while (parametroString != null) {
-				Parametro parametro = new Parametro();
-				first = 0;
-				second = parametroString.indexOf(";", first);
-				third = parametroString.indexOf(";", second + 1);
-				lenght = parametroString.length();
-				parametro.setNome(parametroString.substring(first, second));
-				parametro.setValorPorcentagem(Double.parseDouble(parametroString.substring(second + 1, third)));
-				parametro.setValorReais(Double.parseDouble(parametroString.substring(third + 1, lenght)));
-				parametroDao.adiciona(parametro);
-
-				parametroString = br.readLine();
-			}
-			br.close();
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
-
-	@Inject
 	private TipoProfissionalDao tipoProfissionalDao;
 
 	@Transactional
@@ -221,36 +230,29 @@ public class StartServer {
 			Integer i2;
 			Integer i3;
 			Integer i4;
-			Integer i5;
 			Integer lenght;
 			String tipo;
 			Double valorBrutoHora;
 			Double valorLiquidoHora;
 			boolean especialista = false;
-			boolean deSocia = false;
 
 			while (tipoProfissionalString != null) {
 				i1 = 0;
 				i2 = tipoProfissionalString.indexOf(";", i1);
 				i3 = tipoProfissionalString.indexOf(";", i2 + 1);
 				i4 = tipoProfissionalString.indexOf(";", i3 + 1);
-				i5 = tipoProfissionalString.indexOf(";", i4 + 1);
 				lenght = tipoProfissionalString.length();
 				tipo = tipoProfissionalString.substring(i1, i2);
 				valorBrutoHora = Double.parseDouble(tipoProfissionalString.substring(i2 + 1, i3));
 				valorLiquidoHora = Double.parseDouble(tipoProfissionalString.substring(i3 + 1, i4));
 
-				if(Integer.parseInt(tipoProfissionalString.substring(i4 + 1, i5)) == 1) {
+				if (Integer.parseInt(tipoProfissionalString.substring(i4 + 1, lenght)) == 1) {
 					especialista = true;
-				}else{
+				} else {
 					especialista = false;
 				}
-				if(Integer.parseInt(tipoProfissionalString.substring(i5 + 1, lenght)) == 1) {
-					deSocia = true;
-				}else{
-					deSocia = false;
-				}
-				tipoProfissionalDao.adiciona(new TipoProfissional(tipo, valorBrutoHora, valorLiquidoHora, especialista, deSocia));
+
+				tipoProfissionalDao.adiciona(new TipoProfissional(tipo, valorBrutoHora, valorLiquidoHora, especialista));
 
 				tipoProfissionalString = br.readLine();
 			}
@@ -275,22 +277,32 @@ public class StartServer {
 			String profissionalString = br.readLine();
 
 			String nome;
+			String sobrenome;
+			String email;
 			Long tipoProfissionalId;
-			Integer second;
+			Integer i1 = 0;
+			Integer i2;
+			Integer i3;
+			Integer i4;
 			Integer lenght;
 
 			while (profissionalString != null) {
-				second = profissionalString.indexOf(";", 0);
+				i2 = profissionalString.indexOf(" ", 0);
+				i3 = profissionalString.indexOf(";", i2 + 1);
+				i4 = profissionalString.indexOf(";", i3 + 1);
 				lenght = profissionalString.length();
-				nome = (profissionalString.substring(0, second));
-				tipoProfissionalId = (Long.parseLong(profissionalString.substring(second + 1, lenght)));
+				nome = (profissionalString.substring(i1, i2));
+				sobrenome = (profissionalString.substring(i2 + 1, i3));
+				tipoProfissionalId = (Long.parseLong(profissionalString.substring(i3 + 1, i4)));
+				email = (profissionalString.substring(i4 + 1, lenght));
 				TipoProfissional tipoProfissional = tipoProfissionalDao.buscaPorId(tipoProfissionalId);
 				Profissional profissional = new Profissional(tipoProfissional);
-				Usuario usuario = adicionaUsuarioComNome(nome);
-				profissional.setUsuario(usuario);
-				usuario.setProfissional(profissional);
+				Usuario usuarioProfissional = new Usuario(nome, sobrenome, email);
+				usuarioProfissional = usuarioDao.adicionaVolta(usuarioProfissional);
+				profissional.setUsuario(usuarioProfissional);
+				usuarioProfissional.setProfissional(profissional);
 				profissionalDao.adiciona(profissional);
-				usuarioDao.atualiza(usuario);
+
 				profissionalString = br.readLine();
 			}
 			br.close();
@@ -304,12 +316,52 @@ public class StartServer {
 	@Inject
 	private UsuarioDao usuarioDao;
 
+	// @Transactional
+	// public Usuario adicionaUsuarioComNome(String nome) {
+	// Usuario usuario = new Usuario(nome);
+	// return usuarioDao.adicionaVolta(usuario);
+	// }
+
+	//
+
+	@Inject
+	private TipoSociaDao tipoSociaDao;
+
 	@Transactional
-	public Usuario adicionaUsuarioComNome(String nome) {
-		Usuario usuario = new Usuario(nome);
-		return usuarioDao.adicionaVolta(usuario);
+	public void tipoSocia() {
+		try {
+			InputStream is = new FileInputStream("/Users/josecarlosoliveira/javaee/eclipse-workspace/formare/src/main/resources/startServer/tipoSocia");
+			InputStreamReader isr = new InputStreamReader(is);
+			BufferedReader br = new BufferedReader(isr);
+			String tipoSociaString = br.readLine();
+			Integer i1;
+			Integer i2;
+			Integer i3;
+			Integer lenght;
+			String tipo;
+			Double valorBrutoHora;
+			Double valorLiquidoHora;
+
+			while (tipoSociaString != null) {
+				i1 = 0;
+				i2 = tipoSociaString.indexOf(";", i1);
+				i3 = tipoSociaString.indexOf(";", i2 + 1);
+				lenght = tipoSociaString.length();
+				tipo = tipoSociaString.substring(i1, i2);
+				valorBrutoHora = Double.parseDouble(tipoSociaString.substring(i2 + 1, i3));
+				valorLiquidoHora = Double.parseDouble(tipoSociaString.substring(i3 + 1, lenght));
+				tipoSociaDao.adiciona(new TipoSocia(tipo, valorBrutoHora, valorLiquidoHora));
+				tipoSociaString = br.readLine();
+			}
+			br.close();
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
+	//
 	@Inject
 	private SociaDao sociaDao;
 
@@ -323,47 +375,39 @@ public class StartServer {
 
 			String nome;
 			String sobrenome;
-			Long tipoProfissionalId;
+			String email;
+			Long tipo1SociaId;
+			Long tipo2SociaId;
 			Integer i1;
 			Integer i2;
 			Integer i3;
-			Integer second;
+			Integer i4;
+			Integer i5;
 			Integer lenght;
 			//
 			while (sociaString != null) {
 				i1 = 0;
-				System.out.println("i1");
 				i2 = sociaString.indexOf(";", i1 + 1);
-				System.out.println("i2-" + i2);
 				i3 = sociaString.indexOf(";", i2 + 1);
-				System.out.println("i3-" + i3);
+				i4 = sociaString.indexOf(";", i3 + 1);
+				i5 = sociaString.indexOf(";", i4 + 1);
 				lenght = sociaString.length();
-				System.out.println("lenght-" + lenght);
 				nome = (sociaString.substring(i1, i2));
-				sobrenome = (sociaString.substring(i2+1, i3));
-				// System.out.println("AQUI9");
-				tipoProfissionalId = (Long.parseLong(sociaString.substring(i3 + 1, lenght)));
-				// System.out.println("AQUI11" + sociaString.substring(second+1,lenght));
-				TipoProfissional tipoProfissional = tipoProfissionalDao.buscaPorId(tipoProfissionalId);
-				// System.out.println("AQUI12" + tipoProfissional);
-				Socia socia = new Socia(tipoProfissional);
-				// System.out.println("AQUI5");
+				sobrenome = (sociaString.substring(i2 + 1, i3));
+				tipo1SociaId = (Long.parseLong(sociaString.substring(i3 + 1, i4)));
+				tipo2SociaId = (Long.parseLong(sociaString.substring(i4 + 1, i5)));
+				email = (sociaString.substring(i5, lenght));
+				Usuario usuarioSocia = new Usuario(nome, sobrenome, email);
+				usuarioSocia = usuarioDao.adicionaVolta(usuarioSocia);
 
-				// Usuario usuario = new Usuario(nome);
-				// System.out.println("AQUI6 + usuario: " + usuario);
-				// System.out.println("AQUI6 + socia: " + socia);
-				// usuario = usuarioDao.adicionaVolta(usuario);
-				// System.out.println("AQUI8 + usuario: " + usuario);
-
-				Usuario usuario = adicionaUsuarioComNome(nome);
-				// System.out.println("AQUI7 + usuario: " + usuario);
-				socia.setUsuario(usuario);
-				// System.out.println("AQUI8 + socia: " + socia);
-				usuario.setSocia(socia);
-				// System.out.println("AQUI9 + usuario: " + usuario);
-				// System.out.println("AQUI878");
-				sociaDao.adiciona(socia);
-				usuarioDao.atualiza(usuario);
+				TipoSocia tipoSocia1 = tipoSociaDao.buscaPorId(tipo1SociaId);
+				TipoSocia tipoSocia2 = tipoSociaDao.buscaPorId(tipo2SociaId);
+				Socia socia = new Socia();
+				socia = sociaDao.adicionaVolta(socia);
+				usuarioSocia.setSocia(socia);
+				socia.getTiposSocias().add(tipoSocia1);
+				socia.getTiposSocias().add(tipoSocia2);
+				socia.setUsuario(usuarioSocia);
 				sociaString = br.readLine();
 			}
 			br.close();
@@ -539,30 +583,20 @@ public class StartServer {
 			Integer quantidadeAtendimentosMensaisSupervisao;
 			Integer quantidadeAtendimentosMensaisTerapiaMaster;
 			Integer quantidadeAtendimentosMensaisTerapiaFamiliar;
-//			Integer quantidadeAtendimentosMensaisPsicologa;
-//			Integer quantidadeAtendimentosMensaisPsicologaEspecialista;
+			// Integer quantidadeAtendimentosMensaisPsicologa;
+			// Integer quantidadeAtendimentosMensaisPsicologaEspecialista;
 
 			Integer i1;
 			Integer i2;
 			Integer i3;
 			Integer i4;
-//			Integer i5;
-//			Integer i6;
 			Integer lenght;
 
 			while (linha != null) {
 				i1 = 0;
-				System.out.println("i1");
 				i2 = linha.indexOf(";", i1 + 1);
-				System.out.println("i2-" + i2);
 				i3 = linha.indexOf(";", i2 + 1);
-				System.out.println("i3-" + i3);
 				i4 = linha.indexOf(";", i3 + 1);
-//				System.out.println("i4-" + i4);
-//				i5 = linha.indexOf(";", i4 + 1);
-//				System.out.println("i5-" + i5);
-//				i6 = linha.indexOf(";", i5 + 1);
-//				System.out.println("i6-" + i6);
 				lenght = linha.length();
 				System.out.println("lenght-" + lenght);
 				nomePacote = linha.substring(i1, i2);
@@ -573,54 +607,36 @@ public class StartServer {
 				System.out.println("quantidadeAtendimentosMensaisTerapeuta" + ":" + quantidadeAtendimentosMensaisTerapiaMaster);
 				quantidadeAtendimentosMensaisTerapiaFamiliar = Integer.parseInt(linha.substring(i4 + 1, lenght));
 				System.out.println("quantidadeAtendimentosMensaisTerapiaFamiliar" + ":" + quantidadeAtendimentosMensaisTerapiaFamiliar);
-//				quantidadeAtendimentosMensaisPsicologa = Integer.parseInt(linha.substring(i5 + 1, i6));
-//				System.out.println("quantidadeAtendimentosMensaisPsicologa" + ":" + quantidadeAtendimentosMensaisPsicologa);
-//				quantidadeAtendimentosMensaisPsicologaEspecialista = Integer.parseInt(linha.substring(i6 + 1, lenght));
-//				System.out.println("quantidadeAtendimentosMensaisPsicologaEspecialista" + ":" + quantidadeAtendimentosMensaisPsicologaEspecialista);
+				// quantidadeAtendimentosMensaisPsicologa = Integer.parseInt(linha.substring(i5 + 1, i6));
+				// System.out.println("quantidadeAtendimentosMensaisPsicologa" + ":" + quantidadeAtendimentosMensaisPsicologa);
+				// quantidadeAtendimentosMensaisPsicologaEspecialista = Integer.parseInt(linha.substring(i6 + 1, lenght));
+				// System.out.println("quantidadeAtendimentosMensaisPsicologaEspecialista" + ":" + quantidadeAtendimentosMensaisPsicologaEspecialista);
 
 				Pacote pacote = new Pacote();
+				pacote = pacoteDao.adicionaVolta(pacote);
 				pacote.setEhPacotePadrao(true);
 				pacote.setNome(nomePacote);
 
-				TipoProfissional tipoProfissionalSupervisao = tipoProfissionalDao.buscaPorTipo("Supervisão");
-				System.out.println(tipoProfissionalSupervisao);
-				AtendimentoPadrao supervisao = new AtendimentoPadrao(quantidadeAtendimentosMensaisSupervisao, tipoProfissionalSupervisao, Double.parseDouble("0"), true);
-				System.out.println("supervisao" + ":" + supervisao);
+				TipoSocia tipoSociaSupervisao = tipoSociaDao.buscaPorTipo("Supervisão");
+				AtendimentoPadrao supervisao = new AtendimentoPadrao(quantidadeAtendimentosMensaisSupervisao, tipoSociaSupervisao, 0.0, true);
 				supervisao = atendimentoPadraoDao.adicionaVolta(supervisao);
-				System.out.println("supervisao" + ":" + supervisao);
+				supervisao.setPacote(pacote);
 				pacote.getAtendimentosPadrao().add(supervisao);
 
-				TipoProfissional tipoProfissionalTerapiaMaster = tipoProfissionalDao.buscaPorTipo("Terapia Master");
-				System.out.println(tipoProfissionalTerapiaMaster);
-				AtendimentoPadrao terapiaMaster = new AtendimentoPadrao(quantidadeAtendimentosMensaisTerapiaMaster, tipoProfissionalTerapiaMaster, Double.parseDouble("0"), true);
-				System.out.println("Terapia Master" + ":" + tipoProfissionalTerapiaMaster);
+				TipoSocia tipoSociaTerapiaMaster = tipoSociaDao.buscaPorTipo("Terapia Master");
+				AtendimentoPadrao terapiaMaster = new AtendimentoPadrao(quantidadeAtendimentosMensaisTerapiaMaster, tipoSociaTerapiaMaster, 0.0, true);
 				terapiaMaster = atendimentoPadraoDao.adicionaVolta(terapiaMaster);
+				terapiaMaster.setPacote(pacote);
 				pacote.getAtendimentosPadrao().add(terapiaMaster);
 
-				TipoProfissional tipoProfissionalTerapiaFamiliar = tipoProfissionalDao.buscaPorTipo("Terapia Familiar");
-				System.out.println(tipoProfissionalTerapiaFamiliar);
-				AtendimentoPadrao terapiaFamiliar = new AtendimentoPadrao(quantidadeAtendimentosMensaisTerapiaFamiliar, tipoProfissionalTerapiaFamiliar, Double.parseDouble("0"), true);
-				System.out.println("familia" + ":" + terapiaFamiliar);
+				TipoSocia tipoSociaTerapiaFamiliar = tipoSociaDao.buscaPorTipo("Terapia Familiar");
+				AtendimentoPadrao terapiaFamiliar = new AtendimentoPadrao(quantidadeAtendimentosMensaisTerapiaFamiliar, tipoSociaTerapiaFamiliar, 0.0, true);
 				terapiaFamiliar = atendimentoPadraoDao.adicionaVolta(terapiaFamiliar);
+				terapiaFamiliar.setPacote(pacote);
 				pacote.getAtendimentosPadrao().add(terapiaFamiliar);
 
-//				TipoProfissional tipoProfissionalPsicologa = tipoProfissionalDao.buscaPorTipo("Psicóloga");
-//				System.out.println(tipoProfissionalPsicologa);
-//				AtendimentoPadrao psicologa = new AtendimentoPadrao(quantidadeAtendimentosMensaisPsicologa, tipoProfissionalPsicologa, Double.parseDouble("0"), true);
-//				System.out.println("psicologa" + ":" + psicologa);
-//				psicologa = atendimentoPadraoDao.adicionaVolta(psicologa);
-//				pacote.getAtendimentosPadrao().add(psicologa);
-//
-//				TipoProfissional tipoProfissionalPsicologaEspecialista = tipoProfissionalDao.buscaPorTipo("Psicóloga Especialista");
-//				System.out.println(tipoProfissionalPsicologaEspecialista);
-//				AtendimentoPadrao psicologaEspecialista = new AtendimentoPadrao(quantidadeAtendimentosMensaisPsicologaEspecialista, tipoProfissionalPsicologaEspecialista, Double.parseDouble("0"),
-//						true);
-//				System.out.println("psicologaEspecialista" + ":" + psicologaEspecialista);
-//				psicologaEspecialista = atendimentoPadraoDao.adicionaVolta(psicologaEspecialista);
-//				pacote.getAtendimentosPadrao().add(psicologaEspecialista);
-
-				pacoteDao.adiciona(pacote);
-				pacote.getAtendimentosPadrao().forEach(atendimentoPadrao -> atendimentoPadrao.setPacote(pacote));
+				// pacoteDao.adiciona(pacote);
+				// pacote.getAtendimentosPadrao().forEach(atendimentoPadrao -> atendimentoPadrao.setPacote(final pacote));
 
 				linha = br.readLine();
 			}
@@ -633,8 +649,453 @@ public class StartServer {
 	}
 
 	public void teste() {
-		String tipoProfissional = "Fisioterapeuta";
-		List<Usuario> listaUsuarioComTipoProfissionalEEspecialidade = usuarioDao.listaUsuarioComTipoProfissionalEEspecialidade(tipoProfissional, false);
-		listaUsuarioComTipoProfissionalEEspecialidade.forEach(Usuario ->System.out.println(Usuario));
+//		String tipoProfissional = "Fisioterapeuta";
+//		List<Usuario> listaUsuarioComTipoProfissionalEEspecialidade = usuarioDao.listaUsuarioComTipoProfissionalEEspecialidade(tipoProfissional, false);
+//		listaUsuarioComTipoProfissionalEEspecialidade.forEach(Usuario -> System.out.println(Usuario));
+//		System.out.println("paciente - 1");
+//		Paciente pac = pacienteDao.buscaPorId(1L);
+//		System.out.println("paciente - 2");
+//		pac = pacienteDao.buscaPorId(1L);
+//		System.out.println("Tarifa Operacional - 1");
+//		TarifaOperacaoFinanceira tar = tarifaOperacaoFinanceiraDao.buscaPorId(1L);
+//		System.out.println("Tarifa Operacional - 2");
+//		tar = tarifaOperacaoFinanceiraDao.buscaPorId(1L);
+		
+		System.out.println("teste - 1-LISTAR");
+		tarifaOperacaoFinanceiraDao.listarTarifaOperacaoFinanceira();
+		System.out.println("teste - 2-LISTAR");
+		tarifaOperacaoFinanceiraDao.listarTarifaOperacaoFinanceira();
+		System.out.println("teste - 3-LISTAR");
+		tarifaOperacaoFinanceiraDao.listarTarifaOperacaoFinanceira();
+		System.out.println("teste - 11");
+		ColetorTarifaOperacaoFinanceira coletor = coletorTarifaDao.getCacaio();
+		System.out.println("teste - 1");
+		tarifaOperacaoFinanceiraDao.tarifaFixaInternaEntreSubContasIugu(coletor);
+		System.out.println("teste - 2");
+		tarifaOperacaoFinanceiraDao.tarifaFixaInternaEntreSubContasIugu(coletor);
+		System.out.println("teste - 3");
+		tarifaOperacaoFinanceiraDao.tarifaFixaInternaEntreSubContasIugu(coletor);
+		System.out.println("teste - 44");
+		coletor = coletorTarifaDao.getImposto();
+		System.out.println("teste - 4");
+		tarifaOperacaoFinanceiraDao.tarifaFixaInternaEntreSubContasIugu(coletor);
+		System.out.println("teste - 5");
+		tarifaOperacaoFinanceiraDao.tarifaFixaInternaEntreSubContasIugu(coletor);
+		System.out.println("teste - 6");
+		tarifaOperacaoFinanceiraDao.tarifaFixaInternaEntreSubContasIugu(coletor);
+		
+		
 	}
+
+	@Inject
+	private BancoDao bancoDao;
+
+	@Transactional
+	public void banco() {
+		try {
+			InputStream is = new FileInputStream("/Users/josecarlosoliveira/javaee/eclipse-workspace/formare/src/main/resources/startServer/banco");
+			InputStreamReader isr = new InputStreamReader(is);
+			BufferedReader br = new BufferedReader(isr);
+			String linha = br.readLine();
+
+			String codigoCompensacao;
+			String nome;
+			String email;
+			Integer i1;
+			Integer i2;
+			Integer i3;
+			Integer lenght;
+			Banco banco;
+
+			while (linha != null) {
+				i1 = 0;
+				i2 = linha.indexOf(";", i1 + 1);
+				i3 = linha.indexOf(";", i2 + 1);
+				lenght = linha.length();
+
+				codigoCompensacao = (linha.substring(i1, i2));
+				nome = (linha.substring(i2 + 1, i3));
+				email = (linha.substring(i3 + 1, lenght));
+				banco = new Banco(nome, codigoCompensacao, email);
+				bancoDao.adiciona(banco);
+
+				linha = br.readLine();
+			}
+			br.close();
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	@Inject
+	private OperadorFinanceiroDao operadorFinanceiroDao;
+	@Inject
+	private FormaTransferenciaOperacaoFinanceiraDao formaTransferenciaOperacaoFinanceiraDao;
+	@Inject
+	private TipoContaOperacaoFinanceiraDao tipoContaOperacaoFinanceiraDao;
+	@Inject
+	private TipoTarifaOperacaoFinanceiraDao tipoTarifaOperacaoFinanceiraDao;
+	@Inject
+	private ColetorTarifaOperacaoFinanceiraDao coletorTarifaOperacaoFinanceiraDao;
+	@Inject
+	private TarifaOperacaoFinanceiraDao tarifaOperacaoFinanceiraDao;
+
+	@Transactional
+	public void operacaoFinanceira() {
+		try {
+			InputStream is = new FileInputStream("/Users/josecarlosoliveira/javaee/eclipse-workspace/formare/src/main/resources/startServer/operacaoFinanceira");
+			InputStreamReader isr = new InputStreamReader(is);
+			BufferedReader br = new BufferedReader(isr);
+			String linha = br.readLine();
+
+			Integer pos1 = 0;
+			Integer pos2 = linha.indexOf(";", 0);
+			Integer total = Integer.parseInt(linha.substring(pos1, pos2));
+			String nome;
+			OperadorFinanceiro operadorFinanceiro;
+			for (int i = 0; i < total; i++) {
+				pos1 = pos2 + 1;
+				pos2 = linha.indexOf(";", pos1);
+				nome = linha.substring(pos1, pos2);
+				operadorFinanceiro = new OperadorFinanceiro(nome);
+				if (nome.equals("Iugu")) {
+					operadorFinanceiro.setOperadorFinanceiroPadrao(true);
+				}
+				operadorFinanceiroDao.adiciona(operadorFinanceiro);
+			}
+			linha = br.readLine();
+
+			pos1 = 0;
+			pos2 = linha.indexOf(";", 0);
+			total = Integer.parseInt(linha.substring(pos1, pos2));
+			FormaTransferenciaOperacaoFinanceira formaTransferenciaOperacaoFinanceira;
+			for (int i = 0; i < total; i++) {
+				pos1 = pos2 + 1;
+				pos2 = linha.indexOf(";", pos1);
+				nome = linha.substring(pos1, pos2);
+				formaTransferenciaOperacaoFinanceira = new FormaTransferenciaOperacaoFinanceira(nome);
+				formaTransferenciaOperacaoFinanceiraDao.adiciona(formaTransferenciaOperacaoFinanceira);
+			}
+			linha = br.readLine();
+
+			pos1 = 0;
+			pos2 = linha.indexOf(";", 0);
+			total = Integer.parseInt(linha.substring(pos1, pos2));
+			TipoContaOperacaoFinanceira tipoContaOperacaoFinanceira;
+			for (int i = 0; i < total; i++) {
+				pos1 = pos2 + 1;
+				pos2 = linha.indexOf(";", pos1);
+				nome = linha.substring(pos1, pos2);
+				tipoContaOperacaoFinanceira = new TipoContaOperacaoFinanceira(nome);
+				tipoContaOperacaoFinanceiraDao.adiciona(tipoContaOperacaoFinanceira);
+			}
+			linha = br.readLine();
+
+			pos1 = 0;
+			pos2 = linha.indexOf(";", 0);
+			total = Integer.parseInt(linha.substring(pos1, pos2));
+			TipoTarifaOperacaoFinanceira tipoTarifaOperacaoFinanceira;
+			for (int i = 0; i < total; i++) {
+				pos1 = pos2 + 1;
+				pos2 = linha.indexOf(";", pos1);
+				nome = linha.substring(pos1, pos2);
+				tipoTarifaOperacaoFinanceira = new TipoTarifaOperacaoFinanceira(nome);
+				tipoTarifaOperacaoFinanceiraDao.adiciona(tipoTarifaOperacaoFinanceira);
+			}
+			linha = br.readLine();
+
+			pos1 = 0;
+			pos2 = linha.indexOf(";", 0);
+			total = Integer.parseInt(linha.substring(pos1, pos2));
+			ColetorTarifaOperacaoFinanceira coletorTarifaOperacaoFinanceira;
+			for (int i = 0; i < total; i++) {
+				pos1 = pos2 + 1;
+				pos2 = linha.indexOf(";", pos1);
+				nome = linha.substring(pos1, pos2);
+				coletorTarifaOperacaoFinanceira = new ColetorTarifaOperacaoFinanceira(nome);
+				coletorTarifaOperacaoFinanceiraDao.adiciona(coletorTarifaOperacaoFinanceira);
+				System.out.println("AQUI1");
+			}
+			System.out.println("AQUI2");
+			linha = br.readLine();
+
+			br.close();
+		} catch (
+
+		FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	@Transactional
+	public void operacaoFinanceiraTarifa() {
+		try {
+			InputStream is = new FileInputStream("/Users/josecarlosoliveira/javaee/eclipse-workspace/formare/src/main/resources/startServer/operacaoFinanceiraTarifa");
+			InputStreamReader isr = new InputStreamReader(is);
+			BufferedReader br = new BufferedReader(isr);
+			String linha = br.readLine();
+			Integer i1;
+			Integer i2;
+			Integer i3;
+			Integer i4;
+			Integer i5;
+			Integer i6;
+			Integer i7;
+			Integer i8;
+			Integer lenght;
+			OperadorFinanceiro operadorFinanceiro;
+			FormaTransferenciaOperacaoFinanceira formaTransferenciaOperacaoFinanceira;
+			TipoTarifaOperacaoFinanceira tipoTarifaOperacaoFinanceira;
+
+			TipoContaOperacaoFinanceira tipoContaOrigem;
+			TipoContaOperacaoFinanceira tipoContaDestino;
+			// TipoTarifaOperacaoFinanceira tipoTarifaOperacaoFinanceira;
+			ColetorTarifaOperacaoFinanceira imposto;
+			ColetorTarifaOperacaoFinanceira iugu;
+			ColetorTarifaOperacaoFinanceira cacaio;
+			BigDecimal tarifaImposto;
+			BigDecimal tarifaIugu;
+			BigDecimal tarifaCacaio;
+
+			while (linha != null) {
+				while (linha.indexOf(";", 0) == 0) {
+					System.out.println("linha.indexOf(\";\", 0)" + ":" + linha.indexOf(";", 0));
+					linha = br.readLine();
+				}
+				i1 = 0;
+				i2 = linha.indexOf(";", i1 + 1);
+				i3 = linha.indexOf(";", i2 + 1);
+				i4 = linha.indexOf(";", i3 + 1);
+				i5 = linha.indexOf(";", i4 + 1);
+				i6 = linha.indexOf(";", i5 + 1);
+				i7 = linha.indexOf(";", i6 + 1);
+				i8 = linha.indexOf(";", i7 + 1);
+				lenght = linha.length();
+
+				String operadorFinanceiroString = linha.substring(i1, i2);
+				System.out.println("operadorFinanceiroString" + ": " + operadorFinanceiroString);
+				operadorFinanceiro = operadorFinanceiroDao.getOperadorByOperadorString(operadorFinanceiroString);
+
+				String formaTransferenciaOperacaoFinanceiraString = linha.substring(i2 + 1, i3);
+				System.out.println("formaTransferenciaOperacaoFinanceiraString" + ": " + formaTransferenciaOperacaoFinanceiraString);
+				formaTransferenciaOperacaoFinanceira = formaTransferenciaOperacaoFinanceiraDao.getFormaByFormaString(formaTransferenciaOperacaoFinanceiraString);
+
+				String tipoContaOrigemString = linha.substring(i3 + 1, i4);
+				System.out.println("tipoContaOrigemString" + ": " + tipoContaOrigemString);
+				tipoContaOrigem = tipoContaOperacaoFinanceiraDao.getTipoByTipoString(tipoContaOrigemString);
+
+				String tipoContaDestinoString = linha.substring(i4 + 1, i5);
+				System.out.println("tipoContaDestinoStringo" + ": " + tipoContaDestinoString);
+				tipoContaDestino = tipoContaOperacaoFinanceiraDao.getTipoByTipoString(tipoContaDestinoString);
+
+				String tipoTarifaOperacaoFinanceiraString = linha.substring(i5 + 1, i6);
+				System.out.println("tipoTarifaOperacaoFinanceiraString" + ": " + tipoTarifaOperacaoFinanceiraString);
+				tipoTarifaOperacaoFinanceira = tipoTarifaOperacaoFinanceiraDao.getTipoByTipoString(tipoTarifaOperacaoFinanceiraString);
+
+				tarifaImposto = new BigDecimal(linha.substring(i6 + 1, i7));
+				tarifaIugu = new BigDecimal(linha.substring(i7 + 1, i8));
+				tarifaCacaio = new BigDecimal(linha.substring(i8 + 1, lenght));
+
+				imposto = coletorTarifaOperacaoFinanceiraDao.getColetorByColetorString("Imposto");
+				iugu = coletorTarifaOperacaoFinanceiraDao.getColetorByColetorString("Iugu");
+				cacaio = coletorTarifaOperacaoFinanceiraDao.getColetorByColetorString("Cacaio");
+
+				TarifaOperacaoFinanceira tarifa = new TarifaOperacaoFinanceira();
+				tarifa.setOperadorFinanceiro(operadorFinanceiro);
+				tarifa.setFormaTransferencia(formaTransferenciaOperacaoFinanceira);
+				tarifa.setTipoContaOrigem(tipoContaOrigem);
+				tarifa.setTipoContaDestino(tipoContaDestino);
+				tarifa.setTipoTarifa(tipoTarifaOperacaoFinanceira);
+				tarifa.setColetorTarifa(imposto);
+				tarifa.setValor(tarifaImposto);
+				System.out.println("tarifa" + ": " + tarifa);
+				tarifaOperacaoFinanceiraDao.adiciona(tarifa);
+
+				tarifa = new TarifaOperacaoFinanceira();
+				tarifa.setOperadorFinanceiro(operadorFinanceiro);
+				tarifa.setFormaTransferencia(formaTransferenciaOperacaoFinanceira);
+				tarifa.setTipoContaOrigem(tipoContaOrigem);
+				tarifa.setTipoContaDestino(tipoContaDestino);
+				tarifa.setTipoTarifa(tipoTarifaOperacaoFinanceira);
+				tarifa.setColetorTarifa(iugu);
+				tarifa.setValor(tarifaIugu);
+				System.out.println("tarifa" + ": " + tarifa);
+				tarifaOperacaoFinanceiraDao.adiciona(tarifa);
+
+				tarifa = new TarifaOperacaoFinanceira();
+				tarifa.setOperadorFinanceiro(operadorFinanceiro);
+				tarifa.setFormaTransferencia(formaTransferenciaOperacaoFinanceira);
+				tarifa.setTipoContaOrigem(tipoContaOrigem);
+				tarifa.setTipoContaDestino(tipoContaDestino);
+				tarifa.setTipoTarifa(tipoTarifaOperacaoFinanceira);
+				tarifa.setColetorTarifa(cacaio);
+				tarifa.setValor(tarifaCacaio);
+				System.out.println("tarifa" + ": " + tarifa);
+				tarifaOperacaoFinanceiraDao.adiciona(tarifa);
+
+				linha = br.readLine();
+			} // fim do while
+
+			br.close();
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	@Inject
+	CalculadoraParametro calculadora;
+	@Inject
+	private ColetorTarifaOperacaoFinanceiraDao coletorTarifaDao;
+
+	// @Transactional
+	public void calculadoraParametrosTeste() {
+		System.out.println(calculadora.getOperadorFinanceiro());
+
+		// Tarifa Entre Subcontas Iugu
+		System.out.println("todasTarifasFixaInternaEntreSubContasIugu" + ": " + calculadora.todasTarifasFixaInternaEntreSubContasIugu());
+		System.out.println("tarifaFixaInternaEntreSubContasIugu.getCacaio" + ": " + calculadora.tarifaFixaInternaEntreSubContasIugu(coletorTarifaDao.getCacaio()));
+		System.out.println("tarifaFixaInternaEntreSubContasIugu.getImposto" + ": " + calculadora.tarifaFixaInternaEntreSubContasIugu(coletorTarifaDao.getImposto()));
+		System.out.println("tarifaFixaInternaEntreSubContasIugu.getIugu" + ": " + calculadora.tarifaFixaInternaEntreSubContasIugu(coletorTarifaDao.getIugu()));
+
+		System.out.println("todasTarifasPorcentagemInternaEntreSubContasIugu" + ": " + calculadora.todasTarifasPorcentagemInternaEntreSubContasIugu());
+		System.out.println("tarifaPorcentagemInternaEntreSubContasIugu.getCacaio" + ": " + calculadora.tarifaPorcentagemInternaEntreSubContasIugu(coletorTarifaDao.getCacaio()));
+		System.out.println("tarifaPorcentagemInternaEntreSubContasIugu.getImposto" + ": " + calculadora.tarifaPorcentagemInternaEntreSubContasIugu(coletorTarifaDao.getImposto()));
+		System.out.println("tarifaPorcentagemInternaEntreSubContasIugu.getIugu" + ": " + calculadora.tarifaPorcentagemInternaEntreSubContasIugu(coletorTarifaDao.getIugu()));
+
+		// Tarifa Entre Conta Master e Subcontas Iugu
+		System.out.println("todasTarifasFixaInternaEntreMasterIuguESubcontaIugu" + ": " + calculadora.todasTarifasFixaInternaEntreMasterIuguESubcontaIugu());
+		System.out.println("tarifaFixaInternaEntreMasterIuguESubcontaIugu.getCacaio" + ": " + calculadora.tarifaFixaInternaEntreMasterIuguESubcontaIugu(coletorTarifaDao.getCacaio()));
+		System.out.println("tarifaFixaInternaEntreMasterIuguESubcontaIugu.getImposto" + ": " + calculadora.tarifaFixaInternaEntreMasterIuguESubcontaIugu(coletorTarifaDao.getImposto()));
+		System.out.println("tarifaFixaInternaEntreMasterIuguESubcontaIugu.getIugu" + ": " + calculadora.tarifaFixaInternaEntreMasterIuguESubcontaIugu(coletorTarifaDao.getIugu()));
+
+		System.out.println("todasTarifasPorcentagemInternaEntreMasterIuguESubcontaIugu" + ": " + calculadora.todasTarifasPorcentagemInternaEntreMasterIuguESubcontaIugu());
+		System.out.println("tarifaPorcentagemInternaEntreMasterIuguESubcontaIugu.getCacaio" + ": " + calculadora.tarifaPorcentagemInternaEntreMasterIuguESubcontaIugu(coletorTarifaDao.getCacaio()));
+		System.out.println("tarifaPorcentagemInternaEntreMasterIuguESubcontaIugu.getImposto" + ": " + calculadora.tarifaPorcentagemInternaEntreMasterIuguESubcontaIugu(coletorTarifaDao.getImposto()));
+		System.out.println("tarifaPorcentagemInternaEntreMasterIuguESubcontaIugu.getIugu" + ": " + calculadora.tarifaPorcentagemInternaEntreMasterIuguESubcontaIugu(coletorTarifaDao.getIugu()));
+
+		// Tarifa Entre Subconta e Conta Master Iugu
+		System.out.println("todasTarifasFixaInternaEntreSubcontaIuguEMasterIugu" + ": " + calculadora.todasTarifasFixaInternaEntreSubcontaIuguEMasterIugu());
+		System.out.println("tarifaFixaInternaEntreSubcontaIuguEMasterIugu.getCacaio" + ": " + calculadora.tarifaFixaInternaEntreSubcontaIuguEMasterIugu(coletorTarifaDao.getCacaio()));
+		System.out.println("tarifaFixaInternaEntreSubcontaIuguEMasterIugu.getImposto" + ": " + calculadora.tarifaFixaInternaEntreSubcontaIuguEMasterIugu(coletorTarifaDao.getImposto()));
+		System.out.println("tarifaFixaInternaEntreSubcontaIuguEMasterIugu.getIugu" + ": " + calculadora.tarifaFixaInternaEntreSubcontaIuguEMasterIugu(coletorTarifaDao.getIugu()));
+
+		System.out.println("todasTarifasPorcentagemInternaEntreSubcontaIuguEMasterIugu" + ": " + calculadora.todasTarifasPorcentagemInternaEntreSubcontaIuguEMasterIugu());
+		System.out.println("tarifaPorcentagemInternaEntreSubcontaIuguEMasterIugu.getCacaio" + ": " + calculadora.tarifaPorcentagemInternaEntreSubcontaIuguEMasterIugu(coletorTarifaDao.getCacaio()));
+		System.out.println("tarifaPorcentagemInternaEntreSubcontaIuguEMasterIugu.getImposto" + ": " + calculadora.tarifaPorcentagemInternaEntreSubcontaIuguEMasterIugu(coletorTarifaDao.getImposto()));
+		System.out.println("tarifaPorcentagemInternaEntreSubcontaIuguEMasterIugu.getIugu" + ": " + calculadora.tarifaPorcentagemInternaEntreSubcontaIuguEMasterIugu(coletorTarifaDao.getIugu()));
+
+		
+		// Tarifa de Saque Subconta - Conta Bancária
+		System.out.println("todasTarifasFixaSaqueSubcontaContaBancaria" + ": " + calculadora.todasTarifasFixaSaqueSubcontaContaBancaria());
+		System.out.println("tarifaFixaSaqueSubcontaContaBancaria.getCacaio" + ": " + calculadora.tarifaFixaSaqueSubcontaContaBancaria(coletorTarifaDao.getCacaio()));
+		System.out.println("tarifaFixaSaqueSubcontaContaBancaria.getImposto" + ": " + calculadora.tarifaFixaSaqueSubcontaContaBancaria(coletorTarifaDao.getImposto()));
+		System.out.println("tarifaFixaSaqueSubcontaContaBancaria.getIugu" + ": " + calculadora.tarifaFixaSaqueSubcontaContaBancaria(coletorTarifaDao.getIugu()));
+
+		System.out.println("todasTarifasPorcentagemSaqueSubcontaContaBancaria" + ": " + calculadora.todasTarifasPorcentagemSaqueSubcontaContaBancaria());
+		System.out.println("tarifaPorcentagemSaqueSubcontaContaBancaria.getCacaio" + ": " + calculadora.tarifaPorcentagemSaqueSubcontaContaBancaria(coletorTarifaDao.getCacaio()));
+		System.out.println("tarifaPorcentagemSaqueSubcontaContaBancaria.getImposto" + ": " + calculadora.tarifaPorcentagemSaqueSubcontaContaBancaria(coletorTarifaDao.getImposto()));
+		System.out.println("tarifaPorcentagemSaqueSubcontaContaBancaria.getIugu" + ": " + calculadora.tarifaPorcentagemSaqueSubcontaContaBancaria(coletorTarifaDao.getIugu()));
+
+		// Tarifa de Saque Conta Master - Conta Bancária
+		System.out.println("todasTarifasFixaSaqueContaMasterIuguContaBancaria" + ": " + calculadora.todasTarifasFixaSaqueContaMasterIuguContaBancaria());
+		System.out.println("tarifaFixaSaqueContaMasterIuguContaBancaria.getCacaio" + ": " + calculadora.tarifaFixaSaqueContaMasterIuguContaBancaria(coletorTarifaDao.getCacaio()));
+		System.out.println("tarifaFixaSaqueContaMasterIuguContaBancaria.getImposto" + ": " + calculadora.tarifaFixaSaqueContaMasterIuguContaBancaria(coletorTarifaDao.getImposto()));
+		System.out.println("tarifaFixaSaqueContaMasterIuguContaBancaria.getIugu" + ": " + calculadora.tarifaFixaSaqueContaMasterIuguContaBancaria(coletorTarifaDao.getIugu()));
+
+		System.out.println("todasTarifasPorcentagemSaqueContaMasterIuguContaBancaria" + ": " + calculadora.todasTarifasPorcentagemSaqueContaMasterIuguContaBancaria());
+		System.out.println("tarifaPorcentagemSaqueContaMasterIuguContaBancaria.getCacaio" + ": " + calculadora.tarifaPorcentagemSaqueContaMasterIuguContaBancaria(coletorTarifaDao.getCacaio()));
+		System.out.println("tarifaPorcentagemSaqueContaMasterIuguContaBancaria.getImposto" + ": " + calculadora.tarifaPorcentagemSaqueContaMasterIuguContaBancaria(coletorTarifaDao.getImposto()));
+		System.out.println("tarifaPorcentagemSaqueContaMasterIuguContaBancaria.getIugu" + ": " + calculadora.tarifaPorcentagemSaqueContaMasterIuguContaBancaria(coletorTarifaDao.getIugu()));
+
+		// Tarifa de Deposito na Conta Master Iugu - Cartão de Crédito
+		System.out.println("todasTarifasFixaDepositoCartaoDeCredito" + ": " + calculadora.todasTarifasFixaDepositoCartaoDeCredito());
+		System.out.println("tarifaFixaDepositoCartaoDeCredito.getCacaio" + ": " + calculadora.tarifaFixaDepositoCartaoDeCredito(coletorTarifaDao.getCacaio()));
+		System.out.println("tarifaFixaDepositoCartaoDeCredito.getImposto" + ": " + calculadora.tarifaFixaDepositoCartaoDeCredito(coletorTarifaDao.getImposto()));
+		System.out.println("tarifaFixaDepositoCartaoDeCredito.getIugu" + ": " + calculadora.tarifaFixaDepositoCartaoDeCredito(coletorTarifaDao.getIugu()));
+
+		System.out.println("todasTarifasPorcentagemDepositoCartaoDeCredito" + ": " + calculadora.todasTarifasPorcentagemDepositoCartaoDeCredito());
+		System.out.println("tarifaPorcentagemDepositoCartaoDeCredito.getCacaio" + ": " + calculadora.tarifaPorcentagemDepositoCartaoDeCredito(coletorTarifaDao.getCacaio()));
+		System.out.println("tarifaPorcentagemDepositoCartaoDeCredito.getImposto" + ": " + calculadora.tarifaPorcentagemDepositoCartaoDeCredito(coletorTarifaDao.getImposto()));
+		System.out.println("tarifaPorcentagemDepositoCartaoDeCredito.getIugu" + ": " + calculadora.tarifaPorcentagemDepositoCartaoDeCredito(coletorTarifaDao.getIugu()));
+
+		
+		// Tarifa de Deposito na Conta Master Iugu - Boleto
+		System.out.println("todasTarifasFixaDepositoBoleto" + ": " + calculadora.todasTarifasFixaDepositoBoleto());
+		System.out.println("tarifaFixaDepositoBoleto.getCacaio" + ": " + calculadora.tarifaFixaDepositoBoleto(coletorTarifaDao.getCacaio()));
+		System.out.println("tarifaFixamDepositoBoleto.getImposto" + ": " + calculadora.tarifaFixaDepositoBoleto(coletorTarifaDao.getImposto()));
+		System.out.println("tarifaFixamDepositoBoleto.getIugu" + ": " + calculadora.tarifaFixaDepositoBoleto(coletorTarifaDao.getIugu()));
+
+		System.out.println("todasTarifasPorcentagemDepositoBoleto" + ": " + calculadora.todasTarifasPorcentagemDepositoBoleto());
+		System.out.println("tarifaPorcentagemDepositoBoleto.getCacaio" + ": " + calculadora.tarifaPorcentagemDepositoBoleto(coletorTarifaDao.getCacaio()));
+		System.out.println("tarifaPorcentagemDepositoBoleto.getImposto" + ": " + calculadora.tarifaPorcentagemDepositoBoleto(coletorTarifaDao.getImposto()));
+		System.out.println("tarifaPorcentagemDepositoBoleto.getIugu" + ": " + calculadora.tarifaPorcentagemDepositoBoleto(coletorTarifaDao.getIugu()));
+		
+		
+		// Tarifa de Deposito na Conta Master Itau - Transferencia Bancaria
+		System.out.println("todasTarifasFixaDepositoContaBancariaNoItau" + ": " + calculadora.todasTarifasFixaDepositoContaBancariaNoItau());
+		System.out.println("tarifaFixaDepositoContaBancariaNoItau.getCacaio" + ": " + calculadora.tarifaFixaDepositoContaBancariaNoItau(coletorTarifaDao.getCacaio()));
+		System.out.println("tarifaFixaDepositoContaBancariaNoItau.getImposto" + ": " + calculadora.tarifaFixaDepositoContaBancariaNoItau(coletorTarifaDao.getImposto()));
+		System.out.println("tarifaFixaDepositoContaBancariaNoItau.getIugu" + ": " + calculadora.tarifaFixaDepositoContaBancariaNoItau(coletorTarifaDao.getIugu()));
+
+		System.out.println("todasTarifasPorcentagemDepositoContaBancariaNoItau" + ": " + calculadora.todasTarifasPorcentagemDepositoContaBancariaNoItau());
+		System.out.println("tarifaPorcentagemDepositoContaBancariaNoItau.getCacaio" + ": " + calculadora.tarifaPorcentagemDepositoContaBancariaNoItau(coletorTarifaDao.getCacaio()));
+		System.out.println("tarifaPorcentagemDepositoContaBancariaNoItau.getImposto" + ": " + calculadora.tarifaPorcentagemDepositoContaBancariaNoItau(coletorTarifaDao.getImposto()));
+		System.out.println("tarifaPorcentagemDepositoContaBancariaNoItau.getIugu" + ": " + calculadora.tarifaPorcentagemDepositoContaBancariaNoItau(coletorTarifaDao.getIugu()));		
+		
+		
+		
+		// Tarifa de Deposito na Conta Master Itau - Boleto
+		System.out.println("todasTarifasFixaDepositoBoletoNoItau" + ": " + calculadora.todasTarifasFixaDepositoBoletoNoItau());
+		System.out.println("tarifaFixaDepositoBoletoNoItau.getCacaio" + ": " + calculadora.tarifaFixaDepositoBoletoNoItau(coletorTarifaDao.getCacaio()));
+		System.out.println("tarifaFixaDepositoBoletoNoItau.getImposto" + ": " + calculadora.tarifaFixaDepositoBoletoNoItau(coletorTarifaDao.getImposto()));
+		System.out.println("tarifaFixaDepositoBoletoNoItau.getIugu" + ": " + calculadora.tarifaFixaDepositoBoletoNoItau(coletorTarifaDao.getIugu()));
+
+		System.out.println("todasTarifasPorcentagemDepositoBoletoNoItau" + ": " + calculadora.todasTarifasPorcentagemDepositoBoletoNoItau());
+		System.out.println("tarifaPorcentagemDepositoBoletoNoItau.getCacaio" + ": " + calculadora.tarifaPorcentagemDepositoBoletoNoItau(coletorTarifaDao.getCacaio()));
+		System.out.println("tarifaPorcentagemDepositoBoletoNoItau.getImposto" + ": " + calculadora.tarifaPorcentagemDepositoBoletoNoItau(coletorTarifaDao.getImposto()));
+		System.out.println("tarifaPorcentagemDepositoBoletoNoItau.getIugu" + ": " + calculadora.tarifaPorcentagemDepositoBoletoNoItau(coletorTarifaDao.getIugu()));	
+	}
+
+	// @Inject
+	// private ParametroFormareDao parametroFormareDao;
+	//
+	// @Transactional
+	// public void parametro() {
+	// try {
+	// InputStream is = new FileInputStream("/Users/josecarlosoliveira/javaee/eclipse-workspace/formare/src/main/resources/startServer/parametros");
+	// InputStreamReader isr = new InputStreamReader(is);
+	// BufferedReader br = new BufferedReader(isr);
+	// String parametroString = br.readLine();
+	// Integer first;
+	// Integer second;
+	// Integer third;
+	// Integer lenght;
+	//
+	// while (parametroString != null) {
+	// ParametroFormare parametro = new ParametroFormare();
+	// first = 0;
+	// second = parametroString.indexOf(";", first);
+	// third = parametroString.indexOf(";", second + 1);
+	// lenght = parametroString.length();
+	// parametro.setNome(parametroString.substring(first, second));
+	// parametro.setValorPorcentagem(Double.parseDouble(parametroString.substring(second + 1, third)));
+	// parametro.setValorReais(Double.parseDouble(parametroString.substring(third + 1, lenght)));
+	// ParametroFormareDao.adiciona(parametro);
+	//
+	// parametroString = br.readLine();
+	// }
+	// br.close();
+	// } catch (FileNotFoundException e) {
+	// e.printStackTrace();
+	// } catch (IOException e) {
+	// e.printStackTrace();
+	// }
+	// }
+
 }

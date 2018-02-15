@@ -1,19 +1,19 @@
 package br.com.clinicaformare.model.usuario;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 
 import br.com.clinicaformare.model.atendimento.AtendimentoPadrao;
 
 @Entity
-public class TipoProfissional implements Serializable {
+public class TipoProfissional implements Serializable, TipoHorista {
 	private static final long serialVersionUID = 2L;
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,13 +24,11 @@ public class TipoProfissional implements Serializable {
 	private Double valorLiquidoHora;
 	private Double porcentagemLiquidoSobreBruto;
 	private boolean especialista = false;
-	private boolean deSocia = false;
 	@OneToMany(mappedBy = "tipoProfissional")
-	private List<Profissional> profissionais;
+	private List<Profissional> profissionais = new ArrayList<>();
 	@OneToMany(mappedBy = "tipoProfissional")
-	private List<AtendimentoPadrao> atendimentosPadrao;
-	@ManyToMany(mappedBy = "tiposProfissionais")
-	private List<Socia> socias;
+	private List<AtendimentoPadrao> atendimentosPadrao = new ArrayList<>();
+
 
 	// Constructor
 	@Override
@@ -38,14 +36,13 @@ public class TipoProfissional implements Serializable {
 		return "TipoProfissional(" + id + ")=" + tipo ;
 	}
 
-	public TipoProfissional(String tipo, Double valorBrutoHora, Double valorLiquidoHora, boolean especialista, boolean deSocia) {
+	public TipoProfissional(String tipo, Double valorBrutoHora, Double valorLiquidoHora, boolean especialista) {
 		super();
 		this.tipo = tipo;
 		this.valorBrutoHora = valorBrutoHora;
 		this.valorLiquidoHora = valorLiquidoHora;
 		this.porcentagemLiquidoSobreBruto =  valorLiquidoHora/valorBrutoHora;
 		this.especialista = especialista;
-		this.deSocia = deSocia;
 	}
 
 	public TipoProfissional() {
@@ -120,21 +117,6 @@ public class TipoProfissional implements Serializable {
 		this.especialista = especialista;
 	}
 
-	public boolean isDeSocia() {
-		return deSocia;
-	}
-
-	public void setDeSocia(boolean deSocia) {
-		this.deSocia = deSocia;
-	}
-
-	public List<Socia> getSocias() {
-		return socias;
-	}
-
-	public void setSocias(List<Socia> socias) {
-		this.socias = socias;
-	}
 
 	@Override
 	public int hashCode() {

@@ -287,16 +287,20 @@ html{
     /* text-align: center; */
 }
 .ui-widget, .ui-widget .ui-widget {
-       font-size: 90% !important;
+       font-size: 100% !important;
 }
 .tableAutoWidth{
 	table-layout: auto;
 	/* tableStyle="width:auto" */
 }
+.ui-datatable, .ui-datatable table, .ui-datatable-table-wrapper {
+    table-layout: auto  !important;
+    font-size: 80% !important;
+}
 
 .ui-selectonemenu{
-     width: 100% !important;
+     width: 80% !important;
 }
-.ui-selectonemenu-label{
-     width: 100% !important;
-}  
+/* .ui-selectonemenu-label{
+     width: 80% !important;
+}   */

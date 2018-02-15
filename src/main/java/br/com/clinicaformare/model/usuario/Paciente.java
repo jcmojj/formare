@@ -17,6 +17,7 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 import br.com.clinicaformare.model.atendimento.Pacote;
+import br.com.clinicaformare.model.financeiro.Pagamento;
 
 @Entity
 public class Paciente implements Serializable {
@@ -32,9 +33,13 @@ public class Paciente implements Serializable {
 	private Calendar dataAlteracao;
 
 	@OneToMany(mappedBy = "paciente")
-	private List<Autorizacao> autorizacoesDoDependente;
+	private List<Autorizacao> autorizacoesDoDependente  = new ArrayList<>();
 	@OneToMany(mappedBy = "paciente")//, cascade = {CascadeType.ALL, CascadeType.MERGE, CascadeType.PERSIST})
 	private List<Pacote> pacotes  = new ArrayList<>();
+	
+	@OneToMany(mappedBy = "paciente")
+	private List<Pagamento> pagamentos  = new ArrayList<>();
+	
 
 	@Override
 	public String toString() {
@@ -102,6 +107,14 @@ public class Paciente implements Serializable {
 
 	public void setDataAlteracao(Calendar dataAlteracao) {
 		this.dataAlteracao = dataAlteracao;
+	}
+
+	public List<Pagamento> getPagamentos() {
+		return pagamentos;
+	}
+
+	public void setPagamentos(List<Pagamento> pagamentos) {
+		this.pagamentos = pagamentos;
 	}
 
 	@Override

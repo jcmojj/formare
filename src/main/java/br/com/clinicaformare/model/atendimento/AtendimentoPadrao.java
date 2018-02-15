@@ -10,7 +10,9 @@ import javax.persistence.ManyToOne;
 
 import br.com.clinicaformare.model.usuario.Profissional;
 import br.com.clinicaformare.model.usuario.Socia;
+import br.com.clinicaformare.model.usuario.TipoHorista;
 import br.com.clinicaformare.model.usuario.TipoProfissional;
+import br.com.clinicaformare.model.usuario.TipoSocia;
 
 @Entity
 public class AtendimentoPadrao implements Serializable {
@@ -24,7 +26,7 @@ public class AtendimentoPadrao implements Serializable {
 	private Integer quantidadeAtendimentosMensal;
 
 
-	private Double desconto;
+	private Double desconto = 0.0;
 	private Double valorBrutoHora;
 	private Double valorLiquidoHora;
 	private Double porcentagemLiquidoSobreBruto;
@@ -37,9 +39,10 @@ public class AtendimentoPadrao implements Serializable {
 	@ManyToOne
 	private Profissional profissional;
 	@ManyToOne
+	TipoSocia tipoSocia;
+	@ManyToOne
 	private Socia socia;
-
-
+	
 	
 
 	@Override
@@ -53,26 +56,33 @@ public class AtendimentoPadrao implements Serializable {
 		super();
 		this.atendimentoPadraoDePacote = false;
 	}
-	public AtendimentoPadrao(AtendimentoPadrao atendimento) {
-		this.quantidadeAtendimentosMensal = atendimento.quantidadeAtendimentosMensal;
-		this.tipoProfissional = atendimento.tipoProfissional;
-		this.desconto = atendimento.desconto;
-		this.valorBrutoHora = atendimento.valorBrutoHora;
-		this.valorLiquidoHora =atendimento.valorLiquidoHora;
-		this.porcentagemLiquidoSobreBruto = atendimento.porcentagemLiquidoSobreBruto;
-		this.atendimentoPadraoDePacote = false;
+	public AtendimentoPadrao(AtendimentoPadrao atendimentoPadrao) {
+		this.quantidadeAtendimentosMensal = atendimentoPadrao.quantidadeAtendimentosMensal;
+		this.desconto = atendimentoPadrao.desconto;
+		this.valorBrutoHora = atendimentoPadrao.valorBrutoHora;
+		this.valorLiquidoHora = atendimentoPadrao.valorLiquidoHora;
+		this.porcentagemLiquidoSobreBruto = atendimentoPadrao.porcentagemLiquidoSobreBruto;
+		this.atendimentoPadraoDePacote = atendimentoPadrao.atendimentoPadraoDePacote;
 	}
 	
-	public AtendimentoPadrao(Integer quantidadeAtendimentosMensal, TipoProfissional tipoProfissional, Double desconto, boolean atendimentoPadraoDePacotes) {
-		super();System.out.println("AQUI1");
-		this.quantidadeAtendimentosMensal = quantidadeAtendimentosMensal;System.out.println("AQUI2");
-		this.tipoProfissional = tipoProfissional;System.out.println("AQUI3");
-		this.valorBrutoHora = tipoProfissional.getValorBrutoHora() * (1 - desconto);System.out.println("AQUI4");
-		this.valorLiquidoHora = tipoProfissional.getPorcentagemLiquidoSobreBruto() * this.valorBrutoHora;System.out.println("AQUI5");
+	public AtendimentoPadrao(Integer quantidadeAtendimentosMensal, TipoHorista tipo, Double desconto, boolean atendimentoPadraoDePacotes) {
+		super();
+		if(tipo instanceof TipoProfissional) {
+			this.tipoProfissional = (TipoProfissional) tipo;
+		}
+		if(tipo instanceof TipoSocia) {
+			this.tipoSocia = (TipoSocia) tipo;
+		}
+		this.quantidadeAtendimentosMensal = quantidadeAtendimentosMensal;
+		this.valorBrutoHora = tipo.getValorBrutoHora() * (1 - desconto);
+		this.valorLiquidoHora = tipo.getPorcentagemLiquidoSobreBruto() * this.valorBrutoHora;
 		this.porcentagemLiquidoSobreBruto = this.valorLiquidoHora / this.valorBrutoHora;
 		atendimentoPadraoDePacote = atendimentoPadraoDePacotes; System.out.println("AQUI6: "+atendimentoPadraoDePacote);
 		this.desconto = desconto;
+
+		
 	}
+
 
 	// Getters and Setters
 	public Long getId() {
@@ -100,14 +110,31 @@ public class AtendimentoPadrao implements Serializable {
 	}
 
 	// Getters and Setter modificados - valores Bruto, Liquido, Razao L/B, Desconto
-
+	public Double getValorBrutoHoraSemDesconto() {
+		return this.getTipoHorista().getValorBrutoHora();	
+	}
+	public Double getValorLiquidoHoraSemDesconto() {
+		return this.getTipoHorista().getValorBrutoHora();	
+	}
+	public TipoHorista getTipoHorista() {
+		if(tipoProfissional != null) {
+			System.out.println("TipoHorista = Profissional");
+			return this.tipoProfissional;
+		}
+		if(tipoSocia != null ) {
+			System.out.println("TipoHorista = Socia");
+			return this.tipoSocia;
+		}
+		System.out.println("TipoHorista = nenhum");
+		return null;
+	}
 	public Double getValorBrutoHora() {
 		return valorBrutoHora;
 	}
 
 	public void setValorBrutoHora(Double valorBrutoHora) { // mexeu no bruto --> mexe no desconto e no valor liquido do tipoProfissional
 		this.valorBrutoHora = valorBrutoHora;
-		this.desconto = 1 - this.valorBrutoHora / this.tipoProfissional.getValorBrutoHora();
+		this.desconto = 1 - this.valorBrutoHora / this.getTipoHorista().getValorBrutoHora();
 		this.valorLiquidoHora = this.valorBrutoHora * this.porcentagemLiquidoSobreBruto;
 	}
 
@@ -179,4 +206,38 @@ public class AtendimentoPadrao implements Serializable {
 		this.socia = socia;
 	}
 
+	public TipoSocia getTipoSocia() {
+		return tipoSocia;
+	}
+
+	public void setTipoSocia(TipoSocia tipoSocia) {
+		this.tipoSocia = tipoSocia;
+	}
+
+
+	
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		AtendimentoPadrao other = (AtendimentoPadrao) obj;
+		if (id == null) {
+			if (other.id != null)
+				return false;
+		} else if (!id.equals(other.id))
+			return false;
+		return true;
+	}
 }

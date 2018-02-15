@@ -111,9 +111,9 @@
 				styleClass="centraliza container-cabecalho-inferior-linhas"
 				layout="block">
 				<ui:include src="menu.xhtml" />
-				<p:growl id="growlSticky" sticky="true" showDetail="true"/>
-				<p:growl id="growlLongo" showDetail="true" life="5000" />
-				<p:growl id="growlCurto" showDetail="true" life="2000" />
+				<p:growl id="growlSticky" globalOnly="true" sticky="true" showDetail="true"/>
+				<p:growl id="growlLongo"  globalOnly="true"  showDetail="true" life="5000" />
+				<p:growl id="growlCurto"  globalOnly="true"  showDetail="true" life="2000" />
 				<p:messages />
 			</h:panelGroup>
 		</h:panelGroup>

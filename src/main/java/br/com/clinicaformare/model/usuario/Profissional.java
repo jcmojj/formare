@@ -26,6 +26,7 @@ public class Profissional implements Serializable {
 	private Long id;
 	@OneToOne(mappedBy = "profissional")
 	Usuario usuario;
+	
 	@Temporal(TemporalType.TIMESTAMP)
 	private Calendar dataCriacao;
 	@Temporal(TemporalType.TIMESTAMP)

@@ -18,22 +18,23 @@ public class TipoProfissionalDao extends Dao<TipoProfissional> {
 		super(TipoProfissional.class);
 	}
 
-	public TipoProfissional buscaPorTipo(String tipo) {
-		String jpql = "select t from TipoProfissional t where t.tipo = :tipo";
+	public TipoProfissional buscaPorTipoEEspecialista(String tipo, boolean especialista) {
+		String jpql = "select t from TipoProfissional t where t.tipo = :tipo and t.especialista = :especialista";
 		TypedQuery<TipoProfissional> query = super.getEntityManager().createQuery(jpql,TipoProfissional.class);
 		query.setParameter("tipo", tipo);
+		query.setParameter("especialista", especialista);
 		return query.getSingleResult();
 	
 	}
-	public List<String> listaStringDeTiposProfissionalDeSocia() {
-		String jpql = "select tipoProfissional.tipo from TipoProfissional tipoProfissional" + " where tipoProfissional.deSocia is true ";
-		TypedQuery<String> query = super.getEntityManager().createQuery(jpql, String.class);
-		return query.getResultList();
-	}
+//	public List<String> listaStringDeTiposProfissionalDeSocia() {
+//		String jpql = "select tipoProfissional.tipo from TipoProfissional tipoProfissional" + " where tipoProfissional.deSocia is true ";
+//		TypedQuery<String> query = super.getEntityManager().createQuery(jpql, String.class);
+//		return query.getResultList();
+//	}
 
 	public List<String> listaStringDeTiposDeProfissionalExistentes() {
-		String jpql = "select tipoProfissional.tipo from TipoProfissional tipoProfissional" + " join tipoProfissional.profissionais profissional "
-				+ " where tipoProfissional.deSocia is false ";
+		String jpql = "select tipoProfissional.tipo from TipoProfissional tipoProfissional" + " join tipoProfissional.profissionais profissional ";
+//				+ " where tipoProfissional.deSocia is false ";
 		TypedQuery<String> query = super.getEntityManager().createQuery(jpql, String.class);
 		Set<String> set = new HashSet<>(query.getResultList());
 		List<String> list = new ArrayList<>(set);

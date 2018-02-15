@@ -1,0 +1,27 @@
+;-->
+;--> Operação Interna Entre Contas Iugu - Subconta e Conta Master Iugu
+Iugu;Subcontas;Subconta;Subconta;Fixa;0;0;0
+Iugu;Subcontas;Subconta;Subconta;Porcentagem;0;0;0
+Iugu;Split;Conta Master Iugu;Subconta;Fixa;0;0;0
+Iugu;Split;Conta Master Iugu;Subconta;Porcentagem;0;0;0
+Iugu;Extorno;Subconta;Conta Master Iugu;Fixa;0;0;0
+Iugu;Extorno;Subconta;Conta Master Iugu;Porcentagem;0;0;0
+;-->
+;--> Saque de Valor da Iugu - SubConta/Conta Master Iugu e Conta Bancária
+Iugu;Saque;Subconta;Conta Bancária;Fixa;0;2;0
+Iugu;Saque;Subconta;Conta Bancária;Porcentagem;0;0;0
+Iugu;Saque;Conta Master Iugu;Conta Master Itaú;Fixa;0;0;0
+Iugu;Saque;Conta Master Iugu;Conta Master Itaú;Porcentagem;0;0;0
+;-->
+;-->Entrada de Valor Na Iugu - Boleto/Cartão de Crédito e Conta Master Iugu
+Iugu;Depósito;Cartão de Crédito;Conta Master Iugu;Fixa;0;0;0
+Iugu;Depósito;Cartão de Crédito;Conta Master Iugu;Porcentagem;13.5;2.51;2.5
+Iugu;Depósito;Boleto;Conta Master Iugu;Fixa;0;1.28;0
+Iugu;Depósito;Boleto;Conta Master Iugu;Porcentagem;13.3;0;2.5
+;-->
+;-->Entrada de Valor No Itaú - Boleto/Transferência e Conta Master Itaú
+;--> Será feita entrada do valor na conta Iugu via boleto--> Sem saída de pagamento fora da Iugu
+Itaú;Depósito;Conta Bancária;Conta Master Itaú;Fixa;0;0;0
+Itaú;Depósito;Conta Bancária;Conta Master Itaú;Porcentagem;0;0;0
+Itaú;Depósito;Boleto;Conta Master Itaú;Fixa;0;0;0
+Itaú;Depósito;Boleto;Conta Master Itaú;Porcentagem;0;0;0

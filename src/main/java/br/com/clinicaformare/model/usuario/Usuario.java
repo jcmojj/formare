@@ -61,19 +61,20 @@ public class Usuario implements Serializable {
 	protected Boolean cliente = false;
 	protected Boolean equipe = false;
 	@OneToOne//(cascade = {CascadeType.ALL, CascadeType.MERGE, CascadeType.PERSIST})
-	Paciente paciente;
+	private Paciente paciente;
 	@OneToOne
-	Autorizado autorizado;
+	private Autorizado autorizado;
 	@OneToOne//(cascade = {CascadeType.ALL, CascadeType.MERGE, CascadeType.PERSIST})
-	ResponsavelFinanceiro responsavelFinanceiro;
+	private ResponsavelFinanceiro responsavelFinanceiro;
 	@OneToOne
-	Profissional profissional;
+	private Profissional profissional;
 	@OneToOne
-	Socia socia;
+	private Socia socia;
 	@OneToOne
-	Administrador administrador;
+	private Administrador administrador;
 	@OneToOne
-	Secretaria secretaria;
+	private Secretaria secretaria;
+
 
 	@ManyToMany // Join para criar uma tabela única em relacionamento many to many
 	@JoinTable(name = "Usuario_Telefone", joinColumns = @JoinColumn(name = "Usuario_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "Telefone_id", referencedColumnName = "id"))
@@ -107,9 +108,9 @@ public class Usuario implements Serializable {
 		this.password = password;
 	}
 
-	public Usuario(String nome) {
-		this.nome = nome;
-	}
+//	public Usuario(String nome) {
+//		this.nome = nome;
+//	}
 	public Usuario(String nome, String sobrenome, String email) {
 		this.nome = nome;
 		this.sobrenome = sobrenome;
@@ -212,8 +213,16 @@ public class Usuario implements Serializable {
 	public void setEnderecos(List<Endereco> enderecos) {
 		this.enderecos = enderecos;
 	}
-	// Getters and Setters das Relacoes
+	
+	public Paesci getLocalNascimento() {
+		return localNascimento;
+	}
 
+	public void setLocalNascimento(Paesci localNascimento) {
+		this.localNascimento = localNascimento;
+	}
+
+	// Getters and Setters das Relacoes
 	public Paciente getPaciente() {
 		return paciente;
 	}

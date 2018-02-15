@@ -3,13 +3,13 @@ package br.com.clinicaformare.model.conversores;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
-import javax.faces.convert.FacesConverter;
 import javax.inject.Inject;
+import javax.inject.Named;
 
 import br.com.clinicaformare.daos.usuario.SociaDao;
 import br.com.clinicaformare.model.usuario.Socia;
 
-@FacesConverter("sociaConverter")
+@Named
 public class SociaConverter implements Converter{
 	
 	@Inject

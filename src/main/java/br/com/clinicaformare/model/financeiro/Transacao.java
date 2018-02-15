@@ -1,4 +1,4 @@
-package br.com.clinicaformare.model.transacao;
+package br.com.clinicaformare.model.financeiro;
 
 //@Entity
 public class Transacao {

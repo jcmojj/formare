@@ -3,13 +3,13 @@ package br.com.clinicaformare.model.conversores;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
-import javax.faces.convert.FacesConverter;
 import javax.inject.Inject;
+import javax.inject.Named;
 
 import br.com.clinicaformare.daos.usuario.PacienteDao;
 import br.com.clinicaformare.model.usuario.Paciente;
 
-@FacesConverter("pacienteConverter")
+@Named
 public class PacienteConverter implements Converter{
 	
 	@Inject
@@ -26,6 +26,7 @@ public class PacienteConverter implements Converter{
 
 	@Override
 	public String getAsString(FacesContext context, UIComponent component, Object object) {
+		if(object == null) return null;
 		Paciente paciente = (Paciente) object;
 		if(paciente == null || paciente.getId() == null) {
 			return null;

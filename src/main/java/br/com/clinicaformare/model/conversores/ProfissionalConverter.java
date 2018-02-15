@@ -3,13 +3,13 @@ package br.com.clinicaformare.model.conversores;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
-import javax.faces.convert.FacesConverter;
 import javax.inject.Inject;
+import javax.inject.Named;
 
 import br.com.clinicaformare.daos.usuario.ProfissionalDao;
 import br.com.clinicaformare.model.usuario.Profissional;
 
-@FacesConverter("profissionalConverter")
+@Named
 public class ProfissionalConverter implements Converter{
 	
 	@Inject
@@ -26,6 +26,7 @@ public class ProfissionalConverter implements Converter{
 
 	@Override
 	public String getAsString(FacesContext context, UIComponent component, Object object) {
+		if(object == null) return null;
 		Profissional profissional = (Profissional) object;
 		if(profissional == null || profissional.getId() == null) {
 			return null;

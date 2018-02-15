@@ -1,21 +1,18 @@
-Supervisão;300;240;1;1
-Terapia Master;300;240;1;1
-Terapia Familiar;300;240;1;1
-Psicóloga;300;50;0;0
-Psicóloga;300;75;1;0
-Fisioterapeuta;300;100;0;0
-Fisioterapeuta;300;150;1;0
-Fonoaudiologa;300;100;0;0
-Fonoaudiologa;300;150;1;0
-MusicoTerapeuta;300;70;0;0
-MusicoTerapeuta;300;100;1;0
-PetTerapeuta;300;60;0;0
-PetTerapeuta;300;90;1;0
-Educador Físico;300;70;0;0
-Educador Físico;300;100;1;0
-Psicopedagoga;300;80;0;0
-Psicopedagoga;300;120;1;0
-Psicomotricista;300;100;0;0
-Psicomotricista;300;150;1;0
-Reforço Escolar;300;80;0;0
-Reforço Escolar;300;120;1;0
+Psicóloga;300;50;0
+Psicóloga;300;75;1
+Fisioterapeuta;300;100;0
+Fisioterapeuta;300;150;1
+Fonoaudiologa;300;100;0
+Fonoaudiologa;300;150;1
+MusicoTerapeuta;300;70;0
+MusicoTerapeuta;300;100;1
+PetTerapeuta;300;60;0
+PetTerapeuta;300;90;1
+Educador Físico;300;70;0
+Educador Físico;300;100;1
+Psicopedagoga;300;80;0
+Psicopedagoga;300;120;1
+Psicomotricista;300;100;0
+Psicomotricista;300;150;1
+Reforço Escolar;300;80;0
+Reforço Escolar;300;120;1

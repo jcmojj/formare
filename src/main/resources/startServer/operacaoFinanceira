@@ -1,0 +1,5 @@
+2;Iugu;Itaú;Operador Financeiro
+5;Split;Extorno;Subcontas;Saque;Depósito;Forma de Transferência da Operação Financeira
+6;Conta Bancária;Conta Master Iugu;Conta Master Itaú;Subconta;Cartão de Crédito;Boleto;Tipo Conta Operacao Financeira
+2;Fixa;Porcentagem;Tipo de Tarifa Operação Financeira
+3;Imposto;Iugu;Cacaio; Coletor Tarifa

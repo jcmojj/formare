@@ -10,22 +10,38 @@
 <h:head>
 </h:head>
 <h:body>
-<h:form> 
-<h2>Populate Entitiese</h2>
+<h:form>
+<h2>Populate Entities Todos</h2>
 <h:commandLink action="#{startServer.allMainValues}" value="Todos" /><br /><br />
+</h:form>
+<h:form> 
+<h2>Populate Entities Usuario</h2>
 <h:commandLink action="#{startServer.paesci}" value="Paesci" /><br />
 <h:commandLink action="#{startServer.logradouro}" value="Logradouro" /><br />
 <h:commandLink action="#{startServer.tipoTelefone}" value="Tipo Telefone" /><br />
 <h:commandLink action="#{startServer.tipoEndereco}" value="Tipo Endereco" /><br />
-<h:commandLink action="#{startServer.parametro}" value="Parametro" /><br />
 <h:commandLink action="#{startServer.tipoProfissional}" value="Tipo Profissional" /><br />
 <h:commandLink action="#{startServer.profissional}" value="Profissional" /><br />
+<h:commandLink action="#{startServer.tipoSocia}" value="Tipo Socia" /><br />
 <h:commandLink action="#{startServer.socia}" value="Socia" /><br />
 <h:commandLink action="#{startServer.paciente}" value="Paciente" /><br />
 <h:commandLink action="#{startServer.atendimentoPadrao}" value="Atendimento Padrão" /><br />
 <h:commandLink action="#{startServer.responsavelFinanceiroPaciente}" value="Responsável Financeiro Paciente" /><br />
 <h:commandLink action="#{startServer.teste}" value="Teste" /><br />
 </h:form>
+<h:form>
+<h2>Populate Entities Todos Financeiro</h2>
+<h:commandLink action="#{startServer.allMainFinanceValues}" value="Todos Financeiros" /><br /><br />
+</h:form>
+<h:form> 
+<h2>Populate Entities Financeiro</h2>
+<h:commandLink action="#{startServer.banco}" value="Banco" /><br />
+<h:commandLink action="#{startServer.operacaoFinanceira}" value="Operacao Financeira" /><br />
+<h:commandLink action="#{startServer.operacaoFinanceiraTarifa}" value="Operacao Financeira Tarifa" /><br />
+<h:commandLink action="#{startServer.calculadoraParametrosTeste}" value="Calculadora Parametros Teste" /><br />
+</h:form>
+
+
 <h:form>
 <h2>Coletar Base de Arquivos de Dados de Sites</h2>
 
