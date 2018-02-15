@@ -76,70 +76,21 @@ public class TarifaOperacaoFinanceiraDao extends Dao<TarifaOperacaoFinanceira> {
 							.filter(t -> t.getTipoTarifa() == tipoTarifa)
 							.mapToDouble(t -> t.getValor().doubleValue())
 							.sum();
-							return new BigDecimal(total).setScale(4, RoundingMode.HALF_UP);
+							return new BigDecimal(total).setScale(2, RoundingMode.HALF_UP);
 	}
 
-	// @Inject
-	// Cache cache;
-	// public BigDecimal todasTarifasFixaInternaEntreSubContasIugu2() {
-	// List<TarifaOperacaoFinanceira> tarifasOperacaoFinanceira = super.listaTodos();
-	// tarifasOperacaoFinanceira.forEach(u -> System.out.println(u));
-	//
-	// cache.
-	// return new BigDecimal("0");
-	//
-	// }
 
 	// Tarifa Entre Subcontas Iugu
 	public BigDecimal todasTarifasFixaInternaEntreSubContasIugu() {
-//		String jpql = "select sum(tarifa.valor) from TarifaOperacaoFinanceira tarifa where " + "tarifa.operadorFinanceiro = :operadorFinanceiro and "
-//				+ "tarifa.formaTransferencia = :formaTransferencia and " + "tarifa.tipoContaOrigem = :tipoContaOrigem and " + "tarifa.tipoContaDestino = :tipoContaDestino and "
-//				+ "tarifa.tipoTarifa = :tipoTarifa ";
-//		TypedQuery<BigDecimal> query = this.manager.createQuery(jpql, BigDecimal.class);
-//		// TypedQuery<BigDecimal> query = manager.createNamedQuery(TarifaOperacaoFinanceira.SELECIONAR_TARIFA,BigDecimal.class);
-//		// query.setHint("org.hibernate.cacheable",true);
-//		query.setParameter("operadorFinanceiro", operadorFinanceiroDao.getOperadorFinanceiroPadrao());
-//		query.setParameter("formaTransferencia", formaTransferenciaDao.getSubcontas());
-//		query.setParameter("tipoContaOrigem", tipoContaDao.getSubconta());
-//		query.setParameter("tipoContaDestino", tipoContaDao.getSubconta());
-//		query.setParameter("tipoTarifa", tipoTarifaDao.getFixa());
-//		// query.setParameter("coletorTarifa", coletorTarifa);
-//		//// query.setCacheable(true);
-//
-//		return query.getSingleResult();
-		
 		System.out.println("---"+"todasTarifasFixaInternaEntreSubContasIugu"+"---");
 		return this.getTarifaFromAllColetor(	operadorFinanceiroDao.getOperadorFinanceiroPadrao(),
 								formaTransferenciaDao.getSubcontas(),
 								tipoContaDao.getSubconta(),
 								tipoContaDao.getSubconta(),
 								tipoTarifaDao.getFixa());
-//		,
-//								null);
 	}
 
 	public BigDecimal tarifaFixaInternaEntreSubContasIugu(ColetorTarifaOperacaoFinanceira coletorTarifa) {
-//		// String jpql = "select sum(tarifa.valor) from TarifaOperacaoFinanceira tarifa where " + "tarifa.operadorFinanceiro = :operadorFinanceiro and "
-//		// + "tarifa.formaTransferencia = :formaTransferencia and " + "tarifa.tipoContaOrigem = :tipoContaOrigem and " + "tarifa.tipoContaDestino = :tipoContaDestino and "
-//		// + "tarifa.tipoTarifa = :tipoTarifa and " + "tarifa.coletorTarifa = :coletorTarifa";
-//		//
-//		TypedQuery<BigDecimal> query = manager.createNamedQuery(TarifaOperacaoFinanceira.SELECIONAR_TARIFA, BigDecimal.class);
-//		// query.setHint("org.hibernate.cacheable",true);
-//		query.setParameter("operadorFinanceiro", operadorFinanceiroDao.getOperadorFinanceiroPadrao());
-//		query.setParameter("formaTransferencia", formaTransferenciaDao.getSubcontas());
-//		query.setParameter("tipoContaOrigem", tipoContaDao.getSubconta());
-//		query.setParameter("tipoContaDestino", tipoContaDao.getSubconta());
-//		query.setParameter("tipoTarifa", tipoTarifaDao.getFixa());
-//		query.setParameter("coletorTarifa", coletorTarifa);
-//
-//		// TypedQuery<BigDecimal> query = this.manager.createQuery(jpql, BigDecimal.class);
-//		// query.setParameter("operadorFinanceiro", operadorFinanceiroDao.getOperadorFinanceiroPadrao());
-//		// query.setParameter("formaTransferencia", formaTransferenciaDao.getSubcontas());
-//		// query.setParameter("tipoContaOrigem", tipoContaDao.getSubconta());
-//		// query.setParameter("tipoContaDestino", tipoContaDao.getSubconta());
-//		// query.setParameter("tipoTarifa", tipoTarifaDao.getFixa());
-//		// query.setParameter("coletorTarifa", coletorTarifa);
-//		return query.getSingleResult();
 		System.out.println("---"+"tarifaFixaInternaEntreSubContasIugu"+"---");
 		return this.getTarifa(	operadorFinanceiroDao.getOperadorFinanceiroPadrao(),
 								formaTransferenciaDao.getSubcontas(),
@@ -291,319 +242,285 @@ public class TarifaOperacaoFinanceiraDao extends Dao<TarifaOperacaoFinanceira> {
 
 	// Tarifa de Saque Subconta - Conta Bancária
 	public BigDecimal todasTarifasFixaSaqueSubcontaContaBancaria() {
-		String jpql = "select sum(tarifa.valor) from TarifaOperacaoFinanceira tarifa where " + "tarifa.operadorFinanceiro = :operadorFinanceiro and "
-				+ "tarifa.formaTransferencia = :formaTransferencia and " + "tarifa.tipoContaOrigem = :tipoContaOrigem and " + "tarifa.tipoContaDestino = :tipoContaDestino and "
-				+ "tarifa.tipoTarifa = :tipoTarifa ";
-		TypedQuery<BigDecimal> query = this.manager.createQuery(jpql, BigDecimal.class);
-		query.setParameter("operadorFinanceiro", operadorFinanceiroDao.getOperadorFinanceiroPadrao());
-		query.setParameter("formaTransferencia", formaTransferenciaDao.getSaque());
-		query.setParameter("tipoContaOrigem", tipoContaDao.getSubconta());
-		query.setParameter("tipoContaDestino", tipoContaDao.getContaBancaria());
-		query.setParameter("tipoTarifa", tipoTarifaDao.getFixa());
-		return query.getSingleResult();
-	}
-
-	public BigDecimal tarifaFixaSaqueSubcontaContaBancaria(ColetorTarifaOperacaoFinanceira coletorTarifa) {
-		String jpql = "select sum(tarifa.valor) from TarifaOperacaoFinanceira tarifa where " + "tarifa.operadorFinanceiro = :operadorFinanceiro and "
-				+ "tarifa.formaTransferencia = :formaTransferencia and " + "tarifa.tipoContaOrigem = :tipoContaOrigem and " + "tarifa.tipoContaDestino = :tipoContaDestino and "
-				+ "tarifa.tipoTarifa = :tipoTarifa and " + "tarifa.coletorTarifa = :coletorTarifa";
-		TypedQuery<BigDecimal> query = this.manager.createQuery(jpql, BigDecimal.class);
-		query.setParameter("operadorFinanceiro", operadorFinanceiroDao.getOperadorFinanceiroPadrao());
-		query.setParameter("formaTransferencia", formaTransferenciaDao.getSaque());
-		query.setParameter("tipoContaOrigem", tipoContaDao.getSubconta());
-		query.setParameter("tipoContaDestino", tipoContaDao.getContaBancaria());
-		query.setParameter("tipoTarifa", tipoTarifaDao.getFixa());
-		query.setParameter("coletorTarifa", coletorTarifa);
-		return query.getSingleResult();
-	}
-
-	public BigDecimal todasTarifasPorcentagemSaqueSubcontaContaBancaria() {
-		String jpql = "select sum(tarifa.valor) from TarifaOperacaoFinanceira tarifa where " + "tarifa.operadorFinanceiro = :operadorFinanceiro and "
-				+ "tarifa.formaTransferencia = :formaTransferencia and " + "tarifa.tipoContaOrigem = :tipoContaOrigem and " + "tarifa.tipoContaDestino = :tipoContaDestino and "
-				+ "tarifa.tipoTarifa = :tipoTarifa ";
-		TypedQuery<BigDecimal> query = this.manager.createQuery(jpql, BigDecimal.class);
-		query.setParameter("operadorFinanceiro", operadorFinanceiroDao.getOperadorFinanceiroPadrao());
-		query.setParameter("formaTransferencia", formaTransferenciaDao.getSaque());
-		query.setParameter("tipoContaOrigem", tipoContaDao.getSubconta());
-		query.setParameter("tipoContaDestino", tipoContaDao.getContaBancaria());
-		query.setParameter("tipoTarifa", tipoTarifaDao.getPorcentagem());
-		return query.getSingleResult();
-	}
-
-	public BigDecimal tarifaPorcentagemSaqueSubcontaContaBancaria(ColetorTarifaOperacaoFinanceira coletorTarifa) {
-		String jpql = "select sum(tarifa.valor) from TarifaOperacaoFinanceira tarifa where " + "tarifa.operadorFinanceiro = :operadorFinanceiro and "
-				+ "tarifa.formaTransferencia = :formaTransferencia and " + "tarifa.tipoContaOrigem = :tipoContaOrigem and " + "tarifa.tipoContaDestino = :tipoContaDestino and "
-				+ "tarifa.tipoTarifa = :tipoTarifa and " + "tarifa.coletorTarifa = :coletorTarifa";
-		TypedQuery<BigDecimal> query = this.manager.createQuery(jpql, BigDecimal.class);
-		query.setParameter("operadorFinanceiro", operadorFinanceiroDao.getOperadorFinanceiroPadrao());
-		query.setParameter("formaTransferencia", formaTransferenciaDao.getSaque());
-		query.setParameter("tipoContaOrigem", tipoContaDao.getSubconta());
-		query.setParameter("tipoContaDestino", tipoContaDao.getContaBancaria());
-		query.setParameter("tipoTarifa", tipoTarifaDao.getPorcentagem());
-		query.setParameter("coletorTarifa", coletorTarifa);
-		return query.getSingleResult();
-	}
-
-	// Tarifa de Saque Conta Master - Conta Master Itau
-	public BigDecimal todasTarifasFixaSaqueContaMasterIuguContaBancaria() {
-		String jpql = "select sum(tarifa.valor) from TarifaOperacaoFinanceira tarifa where " + "tarifa.operadorFinanceiro = :operadorFinanceiro and "
-				+ "tarifa.formaTransferencia = :formaTransferencia and " + "tarifa.tipoContaOrigem = :tipoContaOrigem and " + "tarifa.tipoContaDestino = :tipoContaDestino and "
-				+ "tarifa.tipoTarifa = :tipoTarifa ";
-		TypedQuery<BigDecimal> query = this.manager.createQuery(jpql, BigDecimal.class);
-		query.setParameter("operadorFinanceiro", operadorFinanceiroDao.getOperadorFinanceiroPadrao());
-		query.setParameter("formaTransferencia", formaTransferenciaDao.getSaque());
-		query.setParameter("tipoContaOrigem", tipoContaDao.getContaMasterIugu());
-		query.setParameter("tipoContaDestino", tipoContaDao.getContaMasterItau());
-		query.setParameter("tipoTarifa", tipoTarifaDao.getFixa());
-		return query.getSingleResult();
-	}
-
-	public BigDecimal tarifaFixaSaqueContaMasterIuguContaBancaria(ColetorTarifaOperacaoFinanceira coletorTarifa) {
-		String jpql = "select sum(tarifa.valor) from TarifaOperacaoFinanceira tarifa where " + "tarifa.operadorFinanceiro = :operadorFinanceiro and "
-				+ "tarifa.formaTransferencia = :formaTransferencia and " + "tarifa.tipoContaOrigem = :tipoContaOrigem and " + "tarifa.tipoContaDestino = :tipoContaDestino and "
-				+ "tarifa.tipoTarifa = :tipoTarifa and " + "tarifa.coletorTarifa = :coletorTarifa";
-		TypedQuery<BigDecimal> query = this.manager.createQuery(jpql, BigDecimal.class);
-		query.setParameter("operadorFinanceiro", operadorFinanceiroDao.getOperadorFinanceiroPadrao());
-		query.setParameter("formaTransferencia", formaTransferenciaDao.getSaque());
-		query.setParameter("tipoContaOrigem", tipoContaDao.getContaMasterIugu());
-		query.setParameter("tipoContaDestino", tipoContaDao.getContaMasterItau());
-		query.setParameter("tipoTarifa", tipoTarifaDao.getFixa());
-		query.setParameter("coletorTarifa", coletorTarifa);
-		return query.getSingleResult();
-	}
-
-	public BigDecimal todasTarifasPorcentagemSaqueContaMasterIuguContaBancaria() {
-		String jpql = "select sum(tarifa.valor) from TarifaOperacaoFinanceira tarifa where " + "tarifa.operadorFinanceiro = :operadorFinanceiro and "
-				+ "tarifa.formaTransferencia = :formaTransferencia and " + "tarifa.tipoContaOrigem = :tipoContaOrigem and " + "tarifa.tipoContaDestino = :tipoContaDestino and "
-				+ "tarifa.tipoTarifa = :tipoTarifa ";
-		TypedQuery<BigDecimal> query = this.manager.createQuery(jpql, BigDecimal.class);
-		query.setParameter("operadorFinanceiro", operadorFinanceiroDao.getOperadorFinanceiroPadrao());
-		query.setParameter("formaTransferencia", formaTransferenciaDao.getSaque());
-		query.setParameter("tipoContaOrigem", tipoContaDao.getContaMasterIugu());
-		query.setParameter("tipoContaDestino", tipoContaDao.getContaMasterItau());
-		query.setParameter("tipoTarifa", tipoTarifaDao.getPorcentagem());
-		return query.getSingleResult();
-	}
-
-	public BigDecimal tarifaPorcentagemSaqueContaMasterIuguContaBancaria(ColetorTarifaOperacaoFinanceira coletorTarifa) {
-		String jpql = "select sum(tarifa.valor) from TarifaOperacaoFinanceira tarifa where " + "tarifa.operadorFinanceiro = :operadorFinanceiro and "
-				+ "tarifa.formaTransferencia = :formaTransferencia and " + "tarifa.tipoContaOrigem = :tipoContaOrigem and " + "tarifa.tipoContaDestino = :tipoContaDestino and "
-				+ "tarifa.tipoTarifa = :tipoTarifa and " + "tarifa.coletorTarifa = :coletorTarifa";
-		TypedQuery<BigDecimal> query = this.manager.createQuery(jpql, BigDecimal.class);
-		query.setParameter("operadorFinanceiro", operadorFinanceiroDao.getOperadorFinanceiroPadrao());
-		query.setParameter("formaTransferencia", formaTransferenciaDao.getSaque());
-		query.setParameter("tipoContaOrigem", tipoContaDao.getContaMasterIugu());
-		query.setParameter("tipoContaDestino", tipoContaDao.getContaMasterItau());
-		query.setParameter("tipoTarifa", tipoTarifaDao.getPorcentagem());
-		query.setParameter("coletorTarifa", coletorTarifa);
-		return query.getSingleResult();
-	}
-
-	// Tarifa de Deposito na Conta Master Iugu - Cartão de Crédito
-	public BigDecimal todasTarifasFixaDepositoCartaoDeCredito() {
-		String jpql = "select sum(tarifa.valor) from TarifaOperacaoFinanceira tarifa where " + "tarifa.operadorFinanceiro = :operadorFinanceiro and "
-				+ "tarifa.formaTransferencia = :formaTransferencia and " + "tarifa.tipoContaOrigem = :tipoContaOrigem and " + "tarifa.tipoContaDestino = :tipoContaDestino and "
-				+ "tarifa.tipoTarifa = :tipoTarifa ";
-		TypedQuery<BigDecimal> query = this.manager.createQuery(jpql, BigDecimal.class);
-		query.setParameter("operadorFinanceiro", operadorFinanceiroDao.getOperadorFinanceiroPadrao());
-		query.setParameter("formaTransferencia", formaTransferenciaDao.getDeposito());
-		query.setParameter("tipoContaOrigem", tipoContaDao.getCartaoDeCredito());
-		query.setParameter("tipoContaDestino", tipoContaDao.getContaMasterIugu());
-		query.setParameter("tipoTarifa", tipoTarifaDao.getFixa());
-		return query.getSingleResult();
-	}
-
-	public BigDecimal tarifaFixaDepositoCartaoDeCredito(ColetorTarifaOperacaoFinanceira coletorTarifa) {
-		String jpql = "select sum(tarifa.valor) from TarifaOperacaoFinanceira tarifa where " + "tarifa.operadorFinanceiro = :operadorFinanceiro and "
-				+ "tarifa.formaTransferencia = :formaTransferencia and " + "tarifa.tipoContaOrigem = :tipoContaOrigem and " + "tarifa.tipoContaDestino = :tipoContaDestino and "
-				+ "tarifa.tipoTarifa = :tipoTarifa and " + "tarifa.coletorTarifa = :coletorTarifa";
-		TypedQuery<BigDecimal> query = this.manager.createQuery(jpql, BigDecimal.class);
-		query.setParameter("operadorFinanceiro", operadorFinanceiroDao.getOperadorFinanceiroPadrao());
-		query.setParameter("formaTransferencia", formaTransferenciaDao.getDeposito());
-		query.setParameter("tipoContaOrigem", tipoContaDao.getCartaoDeCredito());
-		query.setParameter("tipoContaDestino", tipoContaDao.getContaMasterIugu());
-		query.setParameter("tipoTarifa", tipoTarifaDao.getFixa());
-		query.setParameter("coletorTarifa", coletorTarifa);
-		return query.getSingleResult();
-	}
-
-	public BigDecimal todasTarifasPorcentagemDepositoCartaoDeCredito() {
-		String jpql = "select sum(tarifa.valor) from TarifaOperacaoFinanceira tarifa where " + "tarifa.operadorFinanceiro = :operadorFinanceiro and "
-				+ "tarifa.formaTransferencia = :formaTransferencia and " + "tarifa.tipoContaOrigem = :tipoContaOrigem and " + "tarifa.tipoContaDestino = :tipoContaDestino and "
-				+ "tarifa.tipoTarifa = :tipoTarifa ";
-		TypedQuery<BigDecimal> query = this.manager.createQuery(jpql, BigDecimal.class);
-		query.setParameter("operadorFinanceiro", operadorFinanceiroDao.getOperadorFinanceiroPadrao());
-		query.setParameter("formaTransferencia", formaTransferenciaDao.getDeposito());
-		query.setParameter("tipoContaOrigem", tipoContaDao.getCartaoDeCredito());
-		query.setParameter("tipoContaDestino", tipoContaDao.getContaMasterIugu());
-		query.setParameter("tipoTarifa", tipoTarifaDao.getPorcentagem());
-		return query.getSingleResult();
-	}
-
-	public BigDecimal tarifaPorcentagemDepositoCartaoDeCredito(ColetorTarifaOperacaoFinanceira coletorTarifa) {
-		String jpql = "select sum(tarifa.valor) from TarifaOperacaoFinanceira tarifa where " + "tarifa.operadorFinanceiro = :operadorFinanceiro and "
-				+ "tarifa.formaTransferencia = :formaTransferencia and " + "tarifa.tipoContaOrigem = :tipoContaOrigem and " + "tarifa.tipoContaDestino = :tipoContaDestino and "
-				+ "tarifa.tipoTarifa = :tipoTarifa and " + "tarifa.coletorTarifa = :coletorTarifa";
-		TypedQuery<BigDecimal> query = this.manager.createQuery(jpql, BigDecimal.class);
-		query.setParameter("operadorFinanceiro", operadorFinanceiroDao.getOperadorFinanceiroPadrao());
-		query.setParameter("formaTransferencia", formaTransferenciaDao.getDeposito());
-		query.setParameter("tipoContaOrigem", tipoContaDao.getCartaoDeCredito());
-		query.setParameter("tipoContaDestino", tipoContaDao.getContaMasterIugu());
-		query.setParameter("tipoTarifa", tipoTarifaDao.getPorcentagem());
-		query.setParameter("coletorTarifa", coletorTarifa);
-		return query.getSingleResult();
-	}
-
-	// Tarifa de Deposito na Conta Master Iugu - Boleto
-	public BigDecimal todasTarifasFixaDepositoBoleto() {
-		String jpql = "select sum(tarifa.valor) from TarifaOperacaoFinanceira tarifa where " + "tarifa.operadorFinanceiro = :operadorFinanceiro and "
-				+ "tarifa.formaTransferencia = :formaTransferencia and " + "tarifa.tipoContaOrigem = :tipoContaOrigem and " + "tarifa.tipoContaDestino = :tipoContaDestino and "
-				+ "tarifa.tipoTarifa = :tipoTarifa ";
-		TypedQuery<BigDecimal> query = this.manager.createQuery(jpql, BigDecimal.class);
-		query.setParameter("operadorFinanceiro", operadorFinanceiroDao.getOperadorFinanceiroPadrao());
-		query.setParameter("formaTransferencia", formaTransferenciaDao.getDeposito());
-		query.setParameter("tipoContaOrigem", tipoContaDao.getBoleto());
-		query.setParameter("tipoContaDestino", tipoContaDao.getContaMasterIugu());
-		query.setParameter("tipoTarifa", tipoTarifaDao.getFixa());
-		return query.getSingleResult();
-	}
-
-	public BigDecimal tarifaFixaDepositoBoleto(ColetorTarifaOperacaoFinanceira coletorTarifa) {
-		String jpql = "select sum(tarifa.valor) from TarifaOperacaoFinanceira tarifa where " + "tarifa.operadorFinanceiro = :operadorFinanceiro and "
-				+ "tarifa.formaTransferencia = :formaTransferencia and " + "tarifa.tipoContaOrigem = :tipoContaOrigem and " + "tarifa.tipoContaDestino = :tipoContaDestino and "
-				+ "tarifa.tipoTarifa = :tipoTarifa and " + "tarifa.coletorTarifa = :coletorTarifa";
-		TypedQuery<BigDecimal> query = this.manager.createQuery(jpql, BigDecimal.class);
-		query.setParameter("operadorFinanceiro", operadorFinanceiroDao.getOperadorFinanceiroPadrao());
-		query.setParameter("formaTransferencia", formaTransferenciaDao.getDeposito());
-		query.setParameter("tipoContaOrigem", tipoContaDao.getBoleto());
-		query.setParameter("tipoContaDestino", tipoContaDao.getContaMasterIugu());
-		query.setParameter("tipoTarifa", tipoTarifaDao.getFixa());
-		query.setParameter("coletorTarifa", coletorTarifa);
-		return query.getSingleResult();
-	}
-
-	public BigDecimal todasTarifasPorcentagemDepositoBoleto() {
-		String jpql = "select sum(tarifa.valor) from TarifaOperacaoFinanceira tarifa where " + "tarifa.operadorFinanceiro = :operadorFinanceiro and "
-				+ "tarifa.formaTransferencia = :formaTransferencia and " + "tarifa.tipoContaOrigem = :tipoContaOrigem and " + "tarifa.tipoContaDestino = :tipoContaDestino and "
-				+ "tarifa.tipoTarifa = :tipoTarifa ";
-		TypedQuery<BigDecimal> query = this.manager.createQuery(jpql, BigDecimal.class);
-		query.setParameter("operadorFinanceiro", operadorFinanceiroDao.getOperadorFinanceiroPadrao());
-		query.setParameter("formaTransferencia", formaTransferenciaDao.getDeposito());
-		query.setParameter("tipoContaOrigem", tipoContaDao.getBoleto());
-		query.setParameter("tipoContaDestino", tipoContaDao.getContaMasterIugu());
-		query.setParameter("tipoTarifa", tipoTarifaDao.getPorcentagem());
-		return query.getSingleResult();
-	}
-
-	public BigDecimal tarifaPorcentagemDepositoBoleto(ColetorTarifaOperacaoFinanceira coletorTarifa) {
-		String jpql = "select sum(tarifa.valor) from TarifaOperacaoFinanceira tarifa where " + "tarifa.operadorFinanceiro = :operadorFinanceiro and "
-				+ "tarifa.formaTransferencia = :formaTransferencia and " + "tarifa.tipoContaOrigem = :tipoContaOrigem and " + "tarifa.tipoContaDestino = :tipoContaDestino and "
-				+ "tarifa.tipoTarifa = :tipoTarifa and " + "tarifa.coletorTarifa = :coletorTarifa";
-		TypedQuery<BigDecimal> query = this.manager.createQuery(jpql, BigDecimal.class);
-		query.setParameter("operadorFinanceiro", operadorFinanceiroDao.getOperadorFinanceiroPadrao());
-		query.setParameter("formaTransferencia", formaTransferenciaDao.getDeposito());
-		query.setParameter("tipoContaOrigem", tipoContaDao.getBoleto());
-		query.setParameter("tipoContaDestino", tipoContaDao.getContaMasterIugu());
-		query.setParameter("tipoTarifa", tipoTarifaDao.getPorcentagem());
-		query.setParameter("coletorTarifa", coletorTarifa);
-		return query.getSingleResult();
-	}
-
-	// Tarifa de Deposito na Conta Master Itau - Transferencia Bancaria
-	public BigDecimal todasTarifasFixaDepositoContaBancariaNoItau() {
-		String jpql = "select sum(tarifa.valor) from TarifaOperacaoFinanceira tarifa where " + "tarifa.operadorFinanceiro = :operadorFinanceiro and "
-				+ "tarifa.formaTransferencia = :formaTransferencia and " + "tarifa.tipoContaOrigem = :tipoContaOrigem and " + "tarifa.tipoContaDestino = :tipoContaDestino and "
-				+ "tarifa.tipoTarifa = :tipoTarifa ";
-		TypedQuery<BigDecimal> query = this.manager.createQuery(jpql, BigDecimal.class);
-		query.setParameter("operadorFinanceiro", operadorFinanceiroDao.getItau());
-		query.setParameter("formaTransferencia", formaTransferenciaDao.getDeposito());
-		query.setParameter("tipoContaOrigem", tipoContaDao.getContaBancaria());
-		query.setParameter("tipoContaDestino", tipoContaDao.getContaMasterItau());
-		query.setParameter("tipoTarifa", tipoTarifaDao.getFixa());
-		return query.getSingleResult();
-	}
-
-	public BigDecimal tarifaFixaDepositoContaBancariaNoItau(ColetorTarifaOperacaoFinanceira coletorTarifa) {
-		String jpql = "select sum(tarifa.valor) from TarifaOperacaoFinanceira tarifa where " + "tarifa.operadorFinanceiro = :operadorFinanceiro and "
-				+ "tarifa.formaTransferencia = :formaTransferencia and " + "tarifa.tipoContaOrigem = :tipoContaOrigem and " + "tarifa.tipoContaDestino = :tipoContaDestino and "
-				+ "tarifa.tipoTarifa = :tipoTarifa and " + "tarifa.coletorTarifa = :coletorTarifa";
-		TypedQuery<BigDecimal> query = this.manager.createQuery(jpql, BigDecimal.class);
-		query.setParameter("operadorFinanceiro", operadorFinanceiroDao.getItau());
-		query.setParameter("formaTransferencia", formaTransferenciaDao.getDeposito());
-		query.setParameter("tipoContaOrigem", tipoContaDao.getContaBancaria());
-		query.setParameter("tipoContaDestino", tipoContaDao.getContaMasterItau());
-		query.setParameter("tipoTarifa", tipoTarifaDao.getFixa());
-		query.setParameter("coletorTarifa", coletorTarifa);
-		return query.getSingleResult();
-	}
-
-	public BigDecimal todasTarifasPorcentagemDepositoContaBancariaNoItau() {
-		String jpql = "select sum(tarifa.valor) from TarifaOperacaoFinanceira tarifa where " + "tarifa.operadorFinanceiro = :operadorFinanceiro and "
-				+ "tarifa.formaTransferencia = :formaTransferencia and " + "tarifa.tipoContaOrigem = :tipoContaOrigem and " + "tarifa.tipoContaDestino = :tipoContaDestino and "
-				+ "tarifa.tipoTarifa = :tipoTarifa ";
-		TypedQuery<BigDecimal> query = this.manager.createQuery(jpql, BigDecimal.class);
-		query.setParameter("operadorFinanceiro", operadorFinanceiroDao.getItau());
-		query.setParameter("formaTransferencia", formaTransferenciaDao.getDeposito());
-		query.setParameter("tipoContaOrigem", tipoContaDao.getContaBancaria());
-		query.setParameter("tipoContaDestino", tipoContaDao.getContaMasterItau());
-		query.setParameter("tipoTarifa", tipoTarifaDao.getPorcentagem());
-		return query.getSingleResult();
-	}
-
-	public BigDecimal tarifaPorcentagemDepositoContaBancariaNoItau(ColetorTarifaOperacaoFinanceira coletorTarifa) {
-		String jpql = "select sum(tarifa.valor) from TarifaOperacaoFinanceira tarifa where " + "tarifa.operadorFinanceiro = :operadorFinanceiro and "
-				+ "tarifa.formaTransferencia = :formaTransferencia and " + "tarifa.tipoContaOrigem = :tipoContaOrigem and " + "tarifa.tipoContaDestino = :tipoContaDestino and "
-				+ "tarifa.tipoTarifa = :tipoTarifa and " + "tarifa.coletorTarifa = :coletorTarifa";
-		TypedQuery<BigDecimal> query = this.manager.createQuery(jpql, BigDecimal.class);
-		query.setParameter("operadorFinanceiro", operadorFinanceiroDao.getItau());
-		query.setParameter("formaTransferencia", formaTransferenciaDao.getDeposito());
-		query.setParameter("tipoContaOrigem", tipoContaDao.getContaBancaria());
-		query.setParameter("tipoContaDestino", tipoContaDao.getContaMasterItau());
-		query.setParameter("tipoTarifa", tipoTarifaDao.getPorcentagem());
-		query.setParameter("coletorTarifa", coletorTarifa);
-		return query.getSingleResult();
-	}
-
-	// Tarifa de Deposito na Conta Master Itau - Boleto
-	public BigDecimal todasTarifasFixaDepositoBoletoNoItau() {
-		String jpql = "select sum(tarifa.valor) from TarifaOperacaoFinanceira tarifa where " + "tarifa.operadorFinanceiro = :operadorFinanceiro and "
-				+ "tarifa.formaTransferencia = :formaTransferencia and " + "tarifa.tipoContaOrigem = :tipoContaOrigem and " + "tarifa.tipoContaDestino = :tipoContaDestino and "
-				+ "tarifa.tipoTarifa = :tipoTarifa ";
-		TypedQuery<BigDecimal> query = this.manager.createQuery(jpql, BigDecimal.class);
-		query.setParameter("operadorFinanceiro", operadorFinanceiroDao.getItau());
-		query.setParameter("formaTransferencia", formaTransferenciaDao.getDeposito());
-		query.setParameter("tipoContaOrigem", tipoContaDao.getBoleto());
-		query.setParameter("tipoContaDestino", tipoContaDao.getContaMasterItau());
-		query.setParameter("tipoTarifa", tipoTarifaDao.getFixa());
-		return query.getSingleResult();
-	}
-
-	public BigDecimal tarifaFixaDepositoBoletoNoItau(ColetorTarifaOperacaoFinanceira coletorTarifa) {
-		String jpql = "select sum(tarifa.valor) from TarifaOperacaoFinanceira tarifa where " + "tarifa.operadorFinanceiro = :operadorFinanceiro and "
-				+ "tarifa.formaTransferencia = :formaTransferencia and " + "tarifa.tipoContaOrigem = :tipoContaOrigem and " + "tarifa.tipoContaDestino = :tipoContaDestino and "
-				+ "tarifa.tipoTarifa = :tipoTarifa and " + "tarifa.coletorTarifa = :coletorTarifa";
-		TypedQuery<BigDecimal> query = this.manager.createQuery(jpql, BigDecimal.class);
-		query.setParameter("operadorFinanceiro", operadorFinanceiroDao.getItau());
-		query.setParameter("formaTransferencia", formaTransferenciaDao.getDeposito());
-		query.setParameter("tipoContaOrigem", tipoContaDao.getBoleto());
-		query.setParameter("tipoContaDestino", tipoContaDao.getContaMasterItau());
-		query.setParameter("tipoTarifa", tipoTarifaDao.getFixa());
-		query.setParameter("coletorTarifa", coletorTarifa);
-		return query.getSingleResult();
-	}
-
-	public BigDecimal todasTarifasPorcentagemDepositoBoletoNoItau() {
 //		String jpql = "select sum(tarifa.valor) from TarifaOperacaoFinanceira tarifa where " + "tarifa.operadorFinanceiro = :operadorFinanceiro and "
 //				+ "tarifa.formaTransferencia = :formaTransferencia and " + "tarifa.tipoContaOrigem = :tipoContaOrigem and " + "tarifa.tipoContaDestino = :tipoContaDestino and "
 //				+ "tarifa.tipoTarifa = :tipoTarifa ";
 //		TypedQuery<BigDecimal> query = this.manager.createQuery(jpql, BigDecimal.class);
-//		query.setParameter("operadorFinanceiro", operadorFinanceiroDao.getItau());
-//		query.setParameter("formaTransferencia", formaTransferenciaDao.getDeposito());
-//		query.setParameter("tipoContaOrigem", tipoContaDao.getBoleto());
+//		query.setParameter("operadorFinanceiro", operadorFinanceiroDao.getOperadorFinanceiroPadrao());
+//		query.setParameter("formaTransferencia", formaTransferenciaDao.getSaque());
+//		query.setParameter("tipoContaOrigem", tipoContaDao.getSubconta());
+//		query.setParameter("tipoContaDestino", tipoContaDao.getContaBancaria());
+//		query.setParameter("tipoTarifa", tipoTarifaDao.getFixa());
+//		return query.getSingleResult();
+		System.out.println("[---"+"todasTarifasFixaDepositoCartaoDeCredito"+"---]");
+		return this.getTarifaFromAllColetor(	operadorFinanceiroDao.getOperadorFinanceiroPadrao(),
+								formaTransferenciaDao.getSaque(),
+								tipoContaDao.getSubconta(),
+								tipoContaDao.getContaBancaria(),
+								tipoTarifaDao.getFixa());
+	}
+
+	public BigDecimal tarifaFixaSaqueSubcontaContaBancaria(ColetorTarifaOperacaoFinanceira coletorTarifa) {
+//		String jpql = "select sum(tarifa.valor) from TarifaOperacaoFinanceira tarifa where " + "tarifa.operadorFinanceiro = :operadorFinanceiro and "
+//				+ "tarifa.formaTransferencia = :formaTransferencia and " + "tarifa.tipoContaOrigem = :tipoContaOrigem and " + "tarifa.tipoContaDestino = :tipoContaDestino and "
+//				+ "tarifa.tipoTarifa = :tipoTarifa and " + "tarifa.coletorTarifa = :coletorTarifa";
+//		TypedQuery<BigDecimal> query = this.manager.createQuery(jpql, BigDecimal.class);
+//		query.setParameter("operadorFinanceiro", operadorFinanceiroDao.getOperadorFinanceiroPadrao());
+//		query.setParameter("formaTransferencia", formaTransferenciaDao.getSaque());
+//		query.setParameter("tipoContaOrigem", tipoContaDao.getSubconta());
+//		query.setParameter("tipoContaDestino", tipoContaDao.getContaBancaria());
+//		query.setParameter("tipoTarifa", tipoTarifaDao.getFixa());
+//		query.setParameter("coletorTarifa", coletorTarifa);
+//		return query.getSingleResult();
+		System.out.println("[---"+"tarifaFixaDepositoCartaoDeCredito"+"---]");
+		return this.getTarifa(	operadorFinanceiroDao.getOperadorFinanceiroPadrao(),
+								formaTransferenciaDao.getSaque(),
+								tipoContaDao.getSubconta(),
+								tipoContaDao.getContaBancaria(),
+								tipoTarifaDao.getFixa(),
+								coletorTarifa);
+	}
+
+	public BigDecimal todasTarifasPorcentagemSaqueSubcontaContaBancaria() {
+//		String jpql = "select sum(tarifa.valor) from TarifaOperacaoFinanceira tarifa where " + "tarifa.operadorFinanceiro = :operadorFinanceiro and "
+//				+ "tarifa.formaTransferencia = :formaTransferencia and " + "tarifa.tipoContaOrigem = :tipoContaOrigem and " + "tarifa.tipoContaDestino = :tipoContaDestino and "
+//				+ "tarifa.tipoTarifa = :tipoTarifa ";
+//		TypedQuery<BigDecimal> query = this.manager.createQuery(jpql, BigDecimal.class);
+//		query.setParameter("operadorFinanceiro", operadorFinanceiroDao.getOperadorFinanceiroPadrao());
+//		query.setParameter("formaTransferencia", formaTransferenciaDao.getSaque());
+//		query.setParameter("tipoContaOrigem", tipoContaDao.getSubconta());
+//		query.setParameter("tipoContaDestino", tipoContaDao.getContaBancaria());
+//		query.setParameter("tipoTarifa", tipoTarifaDao.getPorcentagem());
+//		return query.getSingleResult();
+		System.out.println("[---"+"todasTarifasPorcentagemDepositoCartaoDeCredito"+"---]");
+		return this.getTarifaFromAllColetor(	operadorFinanceiroDao.getOperadorFinanceiroPadrao(),
+								formaTransferenciaDao.getSaque(),
+								tipoContaDao.getSubconta(),
+								tipoContaDao.getContaBancaria(),
+								tipoTarifaDao.getPorcentagem());
+	}
+
+	public BigDecimal tarifaPorcentagemSaqueSubcontaContaBancaria(ColetorTarifaOperacaoFinanceira coletorTarifa) {
+//		String jpql = "select sum(tarifa.valor) from TarifaOperacaoFinanceira tarifa where " + "tarifa.operadorFinanceiro = :operadorFinanceiro and "
+//				+ "tarifa.formaTransferencia = :formaTransferencia and " + "tarifa.tipoContaOrigem = :tipoContaOrigem and " + "tarifa.tipoContaDestino = :tipoContaDestino and "
+//				+ "tarifa.tipoTarifa = :tipoTarifa and " + "tarifa.coletorTarifa = :coletorTarifa";
+//		TypedQuery<BigDecimal> query = this.manager.createQuery(jpql, BigDecimal.class);
+//		query.setParameter("operadorFinanceiro", operadorFinanceiroDao.getOperadorFinanceiroPadrao());
+//		query.setParameter("formaTransferencia", formaTransferenciaDao.getSaque());
+//		query.setParameter("tipoContaOrigem", tipoContaDao.getSubconta());
+//		query.setParameter("tipoContaDestino", tipoContaDao.getContaBancaria());
+//		query.setParameter("tipoTarifa", tipoTarifaDao.getPorcentagem());
+//		query.setParameter("coletorTarifa", coletorTarifa);
+//		return query.getSingleResult();
+		System.out.println("[---"+"tarifaPorcentagemDepositoCartaoDeCredito"+"---]");
+		return this.getTarifa(	operadorFinanceiroDao.getOperadorFinanceiroPadrao(),
+								formaTransferenciaDao.getSaque(),
+								tipoContaDao.getSubconta(),
+								tipoContaDao.getContaBancaria(),
+								tipoTarifaDao.getPorcentagem(),
+								coletorTarifa);
+	}
+
+	// Tarifa de Saque Conta Master - Conta Master Itau
+	public BigDecimal todasTarifasFixaSaqueContaMasterIuguContaBancaria() {
+//		String jpql = "select sum(tarifa.valor) from TarifaOperacaoFinanceira tarifa where " + "tarifa.operadorFinanceiro = :operadorFinanceiro and "
+//				+ "tarifa.formaTransferencia = :formaTransferencia and " + "tarifa.tipoContaOrigem = :tipoContaOrigem and " + "tarifa.tipoContaDestino = :tipoContaDestino and "
+//				+ "tarifa.tipoTarifa = :tipoTarifa ";
+//		TypedQuery<BigDecimal> query = this.manager.createQuery(jpql, BigDecimal.class);
+//		query.setParameter("operadorFinanceiro", operadorFinanceiroDao.getOperadorFinanceiroPadrao());
+//		query.setParameter("formaTransferencia", formaTransferenciaDao.getSaque());
+//		query.setParameter("tipoContaOrigem", tipoContaDao.getContaMasterIugu());
+//		query.setParameter("tipoContaDestino", tipoContaDao.getContaMasterItau());
+//		query.setParameter("tipoTarifa", tipoTarifaDao.getFixa());
+//		return query.getSingleResult();
+		
+	}
+
+	public BigDecimal tarifaFixaSaqueContaMasterIuguContaBancaria(ColetorTarifaOperacaoFinanceira coletorTarifa) {
+//		String jpql = "select sum(tarifa.valor) from TarifaOperacaoFinanceira tarifa where " + "tarifa.operadorFinanceiro = :operadorFinanceiro and "
+//				+ "tarifa.formaTransferencia = :formaTransferencia and " + "tarifa.tipoContaOrigem = :tipoContaOrigem and " + "tarifa.tipoContaDestino = :tipoContaDestino and "
+//				+ "tarifa.tipoTarifa = :tipoTarifa and " + "tarifa.coletorTarifa = :coletorTarifa";
+//		TypedQuery<BigDecimal> query = this.manager.createQuery(jpql, BigDecimal.class);
+//		query.setParameter("operadorFinanceiro", operadorFinanceiroDao.getOperadorFinanceiroPadrao());
+//		query.setParameter("formaTransferencia", formaTransferenciaDao.getSaque());
+//		query.setParameter("tipoContaOrigem", tipoContaDao.getContaMasterIugu());
+//		query.setParameter("tipoContaDestino", tipoContaDao.getContaMasterItau());
+//		query.setParameter("tipoTarifa", tipoTarifaDao.getFixa());
+//		query.setParameter("coletorTarifa", coletorTarifa);
+//		return query.getSingleResult();
+		
+	}
+
+	public BigDecimal todasTarifasPorcentagemSaqueContaMasterIuguContaBancaria() {
+//		String jpql = "select sum(tarifa.valor) from TarifaOperacaoFinanceira tarifa where " + "tarifa.operadorFinanceiro = :operadorFinanceiro and "
+//				+ "tarifa.formaTransferencia = :formaTransferencia and " + "tarifa.tipoContaOrigem = :tipoContaOrigem and " + "tarifa.tipoContaDestino = :tipoContaDestino and "
+//				+ "tarifa.tipoTarifa = :tipoTarifa ";
+//		TypedQuery<BigDecimal> query = this.manager.createQuery(jpql, BigDecimal.class);
+//		query.setParameter("operadorFinanceiro", operadorFinanceiroDao.getOperadorFinanceiroPadrao());
+//		query.setParameter("formaTransferencia", formaTransferenciaDao.getSaque());
+//		query.setParameter("tipoContaOrigem", tipoContaDao.getContaMasterIugu());
 //		query.setParameter("tipoContaDestino", tipoContaDao.getContaMasterItau());
 //		query.setParameter("tipoTarifa", tipoTarifaDao.getPorcentagem());
 //		return query.getSingleResult();
 		
+	}
+
+	public BigDecimal tarifaPorcentagemSaqueContaMasterIuguContaBancaria(ColetorTarifaOperacaoFinanceira coletorTarifa) {
+//		String jpql = "select sum(tarifa.valor) from TarifaOperacaoFinanceira tarifa where " + "tarifa.operadorFinanceiro = :operadorFinanceiro and "
+//				+ "tarifa.formaTransferencia = :formaTransferencia and " + "tarifa.tipoContaOrigem = :tipoContaOrigem and " + "tarifa.tipoContaDestino = :tipoContaDestino and "
+//				+ "tarifa.tipoTarifa = :tipoTarifa and " + "tarifa.coletorTarifa = :coletorTarifa";
+//		TypedQuery<BigDecimal> query = this.manager.createQuery(jpql, BigDecimal.class);
+//		query.setParameter("operadorFinanceiro", operadorFinanceiroDao.getOperadorFinanceiroPadrao());
+//		query.setParameter("formaTransferencia", formaTransferenciaDao.getSaque());
+//		query.setParameter("tipoContaOrigem", tipoContaDao.getContaMasterIugu());
+//		query.setParameter("tipoContaDestino", tipoContaDao.getContaMasterItau());
+//		query.setParameter("tipoTarifa", tipoTarifaDao.getPorcentagem());
+//		query.setParameter("coletorTarifa", coletorTarifa);
+//		return query.getSingleResult();
+		
+	}
+
+	// Tarifa de Deposito na Conta Master Iugu - Cartão de Crédito
+	public BigDecimal todasTarifasFixaDepositoCartaoDeCredito() {
+		System.out.println("[---"+"todasTarifasFixaDepositoCartaoDeCredito"+"---]");
+		return this.getTarifaFromAllColetor(	operadorFinanceiroDao.getOperadorFinanceiroPadrao(),
+								formaTransferenciaDao.getDeposito(),
+								tipoContaDao.getCartaoDeCredito(),
+								tipoContaDao.getContaMasterIugu(),
+								tipoTarifaDao.getFixa());
+	}
+
+	public BigDecimal tarifaFixaDepositoCartaoDeCredito(ColetorTarifaOperacaoFinanceira coletorTarifa) {
+		System.out.println("[---"+"tarifaFixaDepositoCartaoDeCredito"+"---]");
+		return this.getTarifa(	operadorFinanceiroDao.getOperadorFinanceiroPadrao(),
+								formaTransferenciaDao.getDeposito(),
+								tipoContaDao.getCartaoDeCredito(),
+								tipoContaDao.getContaMasterIugu(),
+								tipoTarifaDao.getFixa(),
+								coletorTarifa);
+	}
+
+	public BigDecimal todasTarifasPorcentagemDepositoCartaoDeCredito() {
+		System.out.println("[---"+"todasTarifasPorcentagemDepositoCartaoDeCredito"+"---]");
+		return this.getTarifaFromAllColetor(	operadorFinanceiroDao.getOperadorFinanceiroPadrao(),
+								formaTransferenciaDao.getDeposito(),
+								tipoContaDao.getCartaoDeCredito(),
+								tipoContaDao.getContaMasterIugu(),
+								tipoTarifaDao.getPorcentagem());
+	}
+
+	public BigDecimal tarifaPorcentagemDepositoCartaoDeCredito(ColetorTarifaOperacaoFinanceira coletorTarifa) {
+		System.out.println("[---"+"tarifaPorcentagemDepositoCartaoDeCredito"+"---]");
+		return this.getTarifa(	operadorFinanceiroDao.getOperadorFinanceiroPadrao(),
+								formaTransferenciaDao.getDeposito(),
+								tipoContaDao.getCartaoDeCredito(),
+								tipoContaDao.getContaMasterIugu(),
+								tipoTarifaDao.getPorcentagem(),
+								coletorTarifa);
+	}
+
+	// Tarifa de Deposito na Conta Master Iugu - Boleto
+	public BigDecimal todasTarifasFixaDepositoBoleto() {
+		System.out.println("[---"+"todasTarifasFixaDepositoBoleto"+"---]");
+		return this.getTarifaFromAllColetor(	operadorFinanceiroDao.getOperadorFinanceiroPadrao(),
+								formaTransferenciaDao.getDeposito(),
+								tipoContaDao.getBoleto(),
+								tipoContaDao.getContaMasterIugu(),
+								tipoTarifaDao.getFixa());
+	}
+
+	public BigDecimal tarifaFixaDepositoBoleto(ColetorTarifaOperacaoFinanceira coletorTarifa) {
+		System.out.println("[---"+"tarifaFixaDepositoBoleto"+"---]");
+		return this.getTarifa(	operadorFinanceiroDao.getOperadorFinanceiroPadrao(),
+								formaTransferenciaDao.getDeposito(),
+								tipoContaDao.getBoleto(),
+								tipoContaDao.getContaMasterIugu(),
+								tipoTarifaDao.getFixa(),
+								coletorTarifa);
+	}
+
+	public BigDecimal todasTarifasPorcentagemDepositoBoleto() {
+		System.out.println("[---"+"todasTarifasPorcentagemDepositoBoleto"+"---]");
+		return this.getTarifaFromAllColetor(	operadorFinanceiroDao.getOperadorFinanceiroPadrao(),
+								formaTransferenciaDao.getDeposito(),
+								tipoContaDao.getBoleto(),
+								tipoContaDao.getContaMasterIugu(),
+								tipoTarifaDao.getPorcentagem());
+	}
+
+	public BigDecimal tarifaPorcentagemDepositoBoleto(ColetorTarifaOperacaoFinanceira coletorTarifa) {
+		System.out.println("[---"+"tarifaPorcentagemDepositoBoleto"+"---]");
+		return this.getTarifa(	operadorFinanceiroDao.getOperadorFinanceiroPadrao(),
+								formaTransferenciaDao.getDeposito(),
+								tipoContaDao.getBoleto(),
+								tipoContaDao.getContaMasterIugu(),
+								tipoTarifaDao.getPorcentagem(),
+								coletorTarifa);
+	}
+
+	// Tarifa de Deposito na Conta Master Itau - Transferencia Bancaria
+	public BigDecimal todasTarifasFixaDepositoContaBancariaNoItau() {
+		System.out.println("[---"+"todasTarifasFixaDepositoContaBancariaNoItau"+"---]");
+		return this.getTarifaFromAllColetor(	operadorFinanceiroDao.getItau(),
+								formaTransferenciaDao.getDeposito(),
+								tipoContaDao.getContaBancaria(),
+								tipoContaDao.getContaMasterItau(),
+								tipoTarifaDao.getFixa());
+	}
+
+	public BigDecimal tarifaFixaDepositoContaBancariaNoItau(ColetorTarifaOperacaoFinanceira coletorTarifa) {
+		System.out.println("[---"+"tarifaFixaDepositoContaBancariaNoItau"+"---]");
+		return this.getTarifa(	operadorFinanceiroDao.getItau(),
+								formaTransferenciaDao.getDeposito(),
+								tipoContaDao.getContaBancaria(),
+								tipoContaDao.getContaMasterItau(),
+								tipoTarifaDao.getFixa(),
+								coletorTarifa);
+	}
+
+	public BigDecimal todasTarifasPorcentagemDepositoContaBancariaNoItau() {
+		System.out.println("[---"+"todasTarifasPorcentagemDepositoContaBancariaNoItau"+"---]");
+		return this.getTarifaFromAllColetor(	operadorFinanceiroDao.getItau(),
+								formaTransferenciaDao.getDeposito(),
+								tipoContaDao.getContaBancaria(),
+								tipoContaDao.getContaMasterItau(),
+								tipoTarifaDao.getPorcentagem());
+	}
+
+	public BigDecimal tarifaPorcentagemDepositoContaBancariaNoItau(ColetorTarifaOperacaoFinanceira coletorTarifa) {
+		System.out.println("[---"+"tarifaPorcentagemDepositoContaBancariaNoItau"+"---]");
+		return this.getTarifa(	operadorFinanceiroDao.getItau(),
+								formaTransferenciaDao.getDeposito(),
+								tipoContaDao.getContaBancaria(),
+								tipoContaDao.getContaMasterItau(),
+								tipoTarifaDao.getPorcentagem(),
+								coletorTarifa);
+	}
+
+	// Tarifa de Deposito na Conta Master Itau - Boleto
+//	public TarifaOperacaoFinanceira DepositoBoletoNoItau() {
+//		return getTarifaOperacionalFinanceira()
+//	}
+	public BigDecimal todasTarifasFixaDepositoBoletoNoItau() {
+		System.out.println("[---"+"todasTarifasFixaDepositoBoletoNoItau"+"---]");
+		return this.getTarifaFromAllColetor(	operadorFinanceiroDao.getItau(),
+								formaTransferenciaDao.getDeposito(),
+								tipoContaDao.getBoleto(),
+								tipoContaDao.getContaMasterItau(),
+								tipoTarifaDao.getFixa());
+	}
+
+	public BigDecimal tarifaFixaDepositoBoletoNoItau(ColetorTarifaOperacaoFinanceira coletorTarifa) {
+		System.out.println("[---"+"tarifaFixaDepositoBoletoNoItau"+"---]");
+		return this.getTarifa(	operadorFinanceiroDao.getItau(),
+								formaTransferenciaDao.getDeposito(),
+								tipoContaDao.getBoleto(),
+								tipoContaDao.getContaMasterItau(),
+								tipoTarifaDao.getFixa(),
+								coletorTarifa);
+	}
+
+	public BigDecimal todasTarifasPorcentagemDepositoBoletoNoItau() {
 		System.out.println("[---"+"todasTarifasPorcentagemDepositoBoletoNoItau"+"---]");
 		return this.getTarifaFromAllColetor(	operadorFinanceiroDao.getItau(),
 								formaTransferenciaDao.getDeposito(),
@@ -612,19 +529,7 @@ public class TarifaOperacaoFinanceiraDao extends Dao<TarifaOperacaoFinanceira> {
 								tipoTarifaDao.getPorcentagem());
 	}
 
-	public BigDecimal tarifaPorcentagemDepositoBoletoNoItau(ColetorTarifaOperacaoFinanceira coletorTarifa) {
-//		String jpql = "select sum(tarifa.valor) from TarifaOperacaoFinanceira tarifa where " + "tarifa.operadorFinanceiro = :operadorFinanceiro and "
-//				+ "tarifa.formaTransferencia = :formaTransferencia and " + "tarifa.tipoContaOrigem = :tipoContaOrigem and " + "tarifa.tipoContaDestino = :tipoContaDestino and "
-//				+ "tarifa.tipoTarifa = :tipoTarifa and " + "tarifa.coletorTarifa = :coletorTarifa";
-//		TypedQuery<BigDecimal> query = this.manager.createQuery(jpql, BigDecimal.class);
-//		query.setParameter("operadorFinanceiro", operadorFinanceiroDao.getItau());
-//		query.setParameter("formaTransferencia", formaTransferenciaDao.getDeposito());
-//		query.setParameter("tipoContaOrigem", tipoContaDao.getBoleto());
-//		query.setParameter("tipoContaDestino", tipoContaDao.getContaMasterItau());
-//		query.setParameter("tipoTarifa", tipoTarifaDao.getPorcentagem());
-//		query.setParameter("coletorTarifa", coletorTarifa);
-//		return query.getSingleResult();
-		
+	public BigDecimal tarifaPorcentagemDepositoBoletoNoItau(ColetorTarifaOperacaoFinanceira coletorTarifa) {		
 		System.out.println("[---"+"tarifaPorcentagemDepositoBoletoNoItau"+"---]");
 		return this.getTarifa(	operadorFinanceiroDao.getItau(),
 								formaTransferenciaDao.getDeposito(),
