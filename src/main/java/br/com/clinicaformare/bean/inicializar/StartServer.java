@@ -40,7 +40,7 @@ import br.com.clinicaformare.daos.usuario.UsuarioDao;
 import br.com.clinicaformare.model.atendimento.AtendimentoPadrao;
 import br.com.clinicaformare.model.atendimento.Pacote;
 import br.com.clinicaformare.model.calendario.Calendario;
-import br.com.clinicaformare.model.calendario.CalendarioComDiasUteisNaoContendoSabadoDomingoFeriado2;
+import br.com.clinicaformare.model.calendario.CalendarioComDiasUteisNaoContendoSabadoDomingoFeriado;
 import br.com.clinicaformare.model.financeiro.operador.Banco;
 import br.com.clinicaformare.model.financeiro.operador.ColetorTarifaOperacaoFinanceira;
 import br.com.clinicaformare.model.financeiro.operador.FormaTransferenciaOperacaoFinanceira;
@@ -1124,8 +1124,8 @@ public class StartServer {
 	// e.printStackTrace();
 	// }
 	// 
-	@Inject @CalendarioQualifier(calendario = CalendarioDiasUteis.SEMSABADO_SEMDOMINGO_SEMFERIADO2)
-	CalendarioDao calendarioDao;
+	@Inject @CalendarioQualifier(calendario = CalendarioDiasUteis.SEMSABADO_SEMDOMINGO_SEMFERIADO)
+	CalendarioDao<CalendarioComDiasUteisNaoContendoSabadoDomingoFeriado> calendarioDao;
 //	@Inject
 //	private CalendarioComDiasUteisNaoContendoSabadoDomingoFeriadoDao calendarioComDiasUteisNaoContendoSabadoDomingoFeriadoDao;
 //	@Inject
@@ -1141,7 +1141,7 @@ public class StartServer {
 		LocalDate ultimoDia = LocalDate.of(2018, 12, 31);
 		
 		for(LocalDate data = primeiroDia; data.isBefore(ultimoDia.plusDays(1)); data = data.plusDays(1)) {
-			calendarioDao.adiciona(new CalendarioComDiasUteisNaoContendoSabadoDomingoFeriado2(data));
+			calendarioDao.adiciona(new CalendarioComDiasUteisNaoContendoSabadoDomingoFeriado(data));
 //			calendarioComDiasUteisNaoContendoSabadoDomingoDao.adiciona(new CalendarioComDiasUteisNaoContendoSabadoDomingo(data));
 //			calendarioComDiasUteisNaoContendoDomingoFeriadoDao.adiciona(new CalendarioComDiasUteisNaoContendoDomingoFeriado(data));
 //			calendarioComDiasUteisNaoContendoDomingoDao.adiciona(new CalendarioComDiasUteisNaoContendoDomingo(data));
