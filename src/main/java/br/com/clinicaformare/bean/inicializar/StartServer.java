@@ -40,7 +40,7 @@ import br.com.clinicaformare.daos.usuario.UsuarioDao;
 import br.com.clinicaformare.model.atendimento.AtendimentoPadrao;
 import br.com.clinicaformare.model.atendimento.Pacote;
 import br.com.clinicaformare.model.calendario.Calendario;
-import br.com.clinicaformare.model.calendario.CalendarioComDiasUteisNaoContendoSabadoDomingoFeriado;
+import br.com.clinicaformare.model.calendario.CalendarioComDiasUteisNaoContendoSabadoDomingoFeriado2;
 import br.com.clinicaformare.model.financeiro.operador.Banco;
 import br.com.clinicaformare.model.financeiro.operador.ColetorTarifaOperacaoFinanceira;
 import br.com.clinicaformare.model.financeiro.operador.FormaTransferenciaOperacaoFinanceira;
@@ -1124,7 +1124,7 @@ public class StartServer {
 	// e.printStackTrace();
 	// }
 	// 
-	@Inject @CalendarioQualifier(calendario = CalendarioDiasUteis.SEMSABADO_SEMDOMINGO_SEMFERIADO)
+	@Inject @CalendarioQualifier(calendario = CalendarioDiasUteis.SEMSABADO_SEMDOMINGO_SEMFERIADO2)
 	CalendarioDao calendarioDao;
 //	@Inject
 //	private CalendarioComDiasUteisNaoContendoSabadoDomingoFeriadoDao calendarioComDiasUteisNaoContendoSabadoDomingoFeriadoDao;
@@ -1141,7 +1141,7 @@ public class StartServer {
 		LocalDate ultimoDia = LocalDate.of(2018, 12, 31);
 		
 		for(LocalDate data = primeiroDia; data.isBefore(ultimoDia.plusDays(1)); data = data.plusDays(1)) {
-			calendarioDao.adiciona(new CalendarioComDiasUteisNaoContendoSabadoDomingoFeriado(data));
+			calendarioDao.adiciona(new CalendarioComDiasUteisNaoContendoSabadoDomingoFeriado2(data));
 //			calendarioComDiasUteisNaoContendoSabadoDomingoDao.adiciona(new CalendarioComDiasUteisNaoContendoSabadoDomingo(data));
 //			calendarioComDiasUteisNaoContendoDomingoFeriadoDao.adiciona(new CalendarioComDiasUteisNaoContendoDomingoFeriado(data));
 //			calendarioComDiasUteisNaoContendoDomingoDao.adiciona(new CalendarioComDiasUteisNaoContendoDomingo(data));
@@ -1185,6 +1185,7 @@ public class StartServer {
 				name = linha.substring(i4 + 1, lenght);
 				System.out.println("name-" + name);
 				localData = LocalDate.of(year, month, dayOfMonth);
+//				
 				Calendario data1 = calendarioDao.buscaData(localData);
 				data1.setDiaUtil(false);
 				data1.setNomeFeriado(name);
@@ -1200,13 +1201,13 @@ public class StartServer {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		for(int i=1;i<13;i++) {
-			System.out.println("--------->getQdeSemanasMes["+i+"]:"+calendarioDao.getQdeSemanasMes(2018, i));
-		}
-		
-		for(int i=1;i<13;i++) {
-			System.out.println("--------->getQdeDiasUteisSemanaDoMes["+i+"]:"+calendarioDao.getTotalDiasUteisSemanaDoMes(2018, i, 1));
-		}
+//		for(int i=1;i<13;i++) {
+//			System.out.println("--------->getQdeSemanasMes["+i+"]:"+calendarioDao.getQdeSemanasMes(2018, i));
+//		}
+//		
+//		for(int i=1;i<13;i++) {
+//			System.out.println("--------->getQdeDiasUteisSemanaDoMes["+i+"]:"+calendarioDao.getTotalDiasUteisSemanaDoMes(2018, i, 1));
+//		}
 	}
 
 //	Long id;
