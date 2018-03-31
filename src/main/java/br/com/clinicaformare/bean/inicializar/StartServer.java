@@ -40,6 +40,9 @@ import br.com.clinicaformare.daos.usuario.UsuarioDao;
 import br.com.clinicaformare.model.atendimento.AtendimentoPadrao;
 import br.com.clinicaformare.model.atendimento.Pacote;
 import br.com.clinicaformare.model.calendario.Calendario;
+import br.com.clinicaformare.model.calendario.CalendarioComDiasUteisNaoContendoDomingo;
+import br.com.clinicaformare.model.calendario.CalendarioComDiasUteisNaoContendoDomingoFeriado;
+import br.com.clinicaformare.model.calendario.CalendarioComDiasUteisNaoContendoSabadoDomingo;
 import br.com.clinicaformare.model.calendario.CalendarioComDiasUteisNaoContendoSabadoDomingoFeriado;
 import br.com.clinicaformare.model.financeiro.operador.Banco;
 import br.com.clinicaformare.model.financeiro.operador.ColetorTarifaOperacaoFinanceira;
@@ -1125,15 +1128,16 @@ public class StartServer {
 	// }
 	// 
 	@Inject @CalendarioQualifier(calendario = CalendarioDiasUteis.SEMSABADO_SEMDOMINGO_SEMFERIADO)
-	CalendarioDao<CalendarioComDiasUteisNaoContendoSabadoDomingoFeriado> calendarioDao;
+	private CalendarioDao<?> calendarioComDiasUteisNaoContendoSabadoDomingoFeriadoDao;
+//	CalendarioDao<CalendarioComDiasUteisNaoContendoSabadoDomingoFeriado> calendarioDao;
 //	@Inject
 //	private CalendarioComDiasUteisNaoContendoSabadoDomingoFeriadoDao calendarioComDiasUteisNaoContendoSabadoDomingoFeriadoDao;
-//	@Inject
-//	private CalendarioComDiasUteisNaoContendoSabadoDomingoDao calendarioComDiasUteisNaoContendoSabadoDomingoDao;
-//	@Inject
-//	private CalendarioComDiasUteisNaoContendoDomingoFeriadoDao calendarioComDiasUteisNaoContendoDomingoFeriadoDao;
-//	@Inject
-//	private CalendarioComDiasUteisNaoContendoDomingoDao calendarioComDiasUteisNaoContendoDomingoDao;
+	@Inject @CalendarioQualifier(calendario = CalendarioDiasUteis.SEMSABADO_SEMDOMINGO)
+	private CalendarioDao<?> calendarioComDiasUteisNaoContendoSabadoDomingoDao;
+	@Inject @CalendarioQualifier(calendario = CalendarioDiasUteis.SEMDOMINGO_SEMFERIADO)
+	private CalendarioDao<?> calendarioComDiasUteisNaoContendoDomingoFeriadoDao;
+	@Inject @CalendarioQualifier(calendario = CalendarioDiasUteis.SEMDOMINGO)
+	private CalendarioDao<?> calendarioComDiasUteisNaoContendoDomingoDao;
 //	
 	@Transactional
 	public void calendarios() {
@@ -1141,10 +1145,10 @@ public class StartServer {
 		LocalDate ultimoDia = LocalDate.of(2018, 12, 31);
 		
 		for(LocalDate data = primeiroDia; data.isBefore(ultimoDia.plusDays(1)); data = data.plusDays(1)) {
-			calendarioDao.adiciona(new CalendarioComDiasUteisNaoContendoSabadoDomingoFeriado(data));
-//			calendarioComDiasUteisNaoContendoSabadoDomingoDao.adiciona(new CalendarioComDiasUteisNaoContendoSabadoDomingo(data));
-//			calendarioComDiasUteisNaoContendoDomingoFeriadoDao.adiciona(new CalendarioComDiasUteisNaoContendoDomingoFeriado(data));
-//			calendarioComDiasUteisNaoContendoDomingoDao.adiciona(new CalendarioComDiasUteisNaoContendoDomingo(data));
+			calendarioComDiasUteisNaoContendoSabadoDomingoFeriadoDao.adiciona(new CalendarioComDiasUteisNaoContendoSabadoDomingoFeriado(data));
+			calendarioComDiasUteisNaoContendoSabadoDomingoDao.adiciona(new CalendarioComDiasUteisNaoContendoSabadoDomingo(data));
+			calendarioComDiasUteisNaoContendoDomingoFeriadoDao.adiciona(new CalendarioComDiasUteisNaoContendoDomingoFeriado(data));
+			calendarioComDiasUteisNaoContendoDomingoDao.adiciona(new CalendarioComDiasUteisNaoContendoDomingo(data));
 		}
 		
 		try {
@@ -1186,12 +1190,12 @@ public class StartServer {
 				System.out.println("name-" + name);
 				localData = LocalDate.of(year, month, dayOfMonth);
 //				
-				Calendario data1 = calendarioDao.buscaData(localData);
+				Calendario data1 = calendarioComDiasUteisNaoContendoSabadoDomingoFeriadoDao.buscaData(localData);
 				data1.setDiaUtil(false);
 				data1.setNomeFeriado(name);
-//				Calendario data2 = calendarioComDiasUteisNaoContendoDomingoFeriadoDao.buscaData(localData);
-//				data2.setDiaUtil(false);
-//				data2.setNomeFeriado(name);
+				Calendario data2 = calendarioComDiasUteisNaoContendoDomingoFeriadoDao.buscaData(localData);
+				data2.setDiaUtil(false);
+				data2.setNomeFeriado(name);
 				
 				linha = br.readLine();
 			}

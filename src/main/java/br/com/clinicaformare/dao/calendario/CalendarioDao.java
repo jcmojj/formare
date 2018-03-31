@@ -1,11 +1,14 @@
 package br.com.clinicaformare.dao.calendario;
 
+import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.time.LocalDate;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
+import javax.enterprise.inject.Produces;
+import javax.enterprise.inject.spi.InjectionPoint;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
@@ -21,6 +24,23 @@ public class CalendarioDao<T> extends Dao<T>{
 	public CalendarioDao(Class<T> classe) {
 		super(classe);
 	}
+	// produtor
+	@SuppressWarnings("unchecked")
+	@Produces
+	@CalendarioQualifier
+	public CalendarioDao<T> caledarioDao (InjectionPoint injectionPoint) {
+		Type type = injectionPoint.getType();
+		ParameterizedType parameterizedType = (ParameterizedType) type;
+		Type argType = parameterizedType.getActualTypeArguments()[0];
+		if (argType instanceof Class) {
+			  Class<?> clazz = (Class<?>) argType;
+			  if (clazz == CalendarioComDiasUteisNaoContendoSabadoDomingoFeriadoDao.class) {
+				  return (CalendarioDao<T>) new CalendarioComDiasUteisNaoContendoSabadoDomingoFeriadoDao();
+			  }
+		}
+		return null;
+	}
+	
 	// super
 	public void adiciona(T t) {
 		super.adiciona(t);
