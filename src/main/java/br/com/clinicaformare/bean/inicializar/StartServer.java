@@ -7,12 +7,16 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.math.BigDecimal;
+import java.time.LocalDate;
 
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.transaction.Transactional;
 
+import br.com.clinicaformare.dao.calendario.CalendarioDao;
+import br.com.clinicaformare.dao.calendario.CalendarioDiasUteis;
+import br.com.clinicaformare.dao.calendario.CalendarioQualifier;
 import br.com.clinicaformare.daos.AtendimentoPadraoDao;
 import br.com.clinicaformare.daos.PacoteDao;
 import br.com.clinicaformare.daos.financeiro.operacao.BancoDao;
@@ -35,6 +39,8 @@ import br.com.clinicaformare.daos.usuario.TipoTelefoneDao;
 import br.com.clinicaformare.daos.usuario.UsuarioDao;
 import br.com.clinicaformare.model.atendimento.AtendimentoPadrao;
 import br.com.clinicaformare.model.atendimento.Pacote;
+import br.com.clinicaformare.model.calendario.Calendario;
+import br.com.clinicaformare.model.calendario.CalendarioComDiasUteisNaoContendoSabadoDomingoFeriado;
 import br.com.clinicaformare.model.financeiro.operador.Banco;
 import br.com.clinicaformare.model.financeiro.operador.ColetorTarifaOperacaoFinanceira;
 import br.com.clinicaformare.model.financeiro.operador.FormaTransferenciaOperacaoFinanceira;
@@ -87,6 +93,8 @@ public class StartServer {
 		operacaoFinanceiraTarifa();
 		System.out.println("AllMainValues" + ":" + "calculadoraParametrosTeste");
 		calculadoraParametrosTeste();
+		System.out.println("AllMainValues" + ":" + "feriado");
+		calendarios();
 
 	}
 
@@ -98,8 +106,8 @@ public class StartServer {
 		operacaoFinanceira();
 		System.out.println("AllMainValues" + ":" + "operacaoFinanceiraTarifa");
 		operacaoFinanceiraTarifa();
-		System.out.println("AllMainValues" + ":" + "calculadoraParametrosTeste");
-		calculadoraParametrosTeste();
+//		System.out.println("AllMainValues" + ":" + "calculadoraParametrosTeste");
+//		calculadoraParametrosTeste();
 
 	}
 
@@ -857,9 +865,9 @@ public class StartServer {
 			ColetorTarifaOperacaoFinanceira imposto;
 			ColetorTarifaOperacaoFinanceira iugu;
 			ColetorTarifaOperacaoFinanceira cacaio;
-			BigDecimal tarifaImposto;
-			BigDecimal tarifaIugu;
-			BigDecimal tarifaCacaio;
+			BigDecimal tarifaImpostoBigDecimal;
+			BigDecimal tarifaIuguBigDecimal;
+			BigDecimal tarifaCacaioBigDecimal;
 
 			while (linha != null) {
 				while (linha.indexOf(";", 0) == 0) {
@@ -896,48 +904,67 @@ public class StartServer {
 				System.out.println("tipoTarifaOperacaoFinanceiraString" + ": " + tipoTarifaOperacaoFinanceiraString);
 				tipoTarifaOperacaoFinanceira = tipoTarifaOperacaoFinanceiraDao.getTipoByTipoString(tipoTarifaOperacaoFinanceiraString);
 
-				tarifaImposto = new BigDecimal(linha.substring(i6 + 1, i7));
-				tarifaIugu = new BigDecimal(linha.substring(i7 + 1, i8));
-				tarifaCacaio = new BigDecimal(linha.substring(i8 + 1, lenght));
+				tarifaImpostoBigDecimal = new BigDecimal(linha.substring(i6 + 1, i7));
+				tarifaIuguBigDecimal = new BigDecimal(linha.substring(i7 + 1, i8));
+				tarifaCacaioBigDecimal = new BigDecimal(linha.substring(i8 + 1, lenght));
 
 				imposto = coletorTarifaOperacaoFinanceiraDao.getColetorByColetorString("Imposto");
 				iugu = coletorTarifaOperacaoFinanceiraDao.getColetorByColetorString("Iugu");
 				cacaio = coletorTarifaOperacaoFinanceiraDao.getColetorByColetorString("Cacaio");
 
-				TarifaOperacaoFinanceira tarifa = new TarifaOperacaoFinanceira();
-				tarifa.setOperadorFinanceiro(operadorFinanceiro);
-				tarifa.setFormaTransferencia(formaTransferenciaOperacaoFinanceira);
-				tarifa.setTipoContaOrigem(tipoContaOrigem);
-				tarifa.setTipoContaDestino(tipoContaDestino);
-				tarifa.setTipoTarifa(tipoTarifaOperacaoFinanceira);
-				tarifa.setColetorTarifa(imposto);
-				tarifa.setValor(tarifaImposto);
-				System.out.println("tarifa" + ": " + tarifa);
-				tarifaOperacaoFinanceiraDao.adiciona(tarifa);
+				TarifaOperacaoFinanceira tarifaImposto = new TarifaOperacaoFinanceira();
+				tarifaImposto.setOperadorFinanceiro(operadorFinanceiro);
+				tarifaImposto.setFormaTransferencia(formaTransferenciaOperacaoFinanceira);
+				tarifaImposto.setTipoContaOrigem(tipoContaOrigem);
+				tarifaImposto.setTipoContaDestino(tipoContaDestino);
+//				tarifaImposto.setTipoTarifa(tipoTarifaOperacaoFinanceira);
+				tarifaImposto.setColetorTarifa(imposto);
+				tarifaImposto.setFixa(tarifaImpostoBigDecimal);
+				System.out.println("Imposto" + ": " + tarifaImposto);
+				tarifaOperacaoFinanceiraDao.adiciona(tarifaImposto);
 
-				tarifa = new TarifaOperacaoFinanceira();
-				tarifa.setOperadorFinanceiro(operadorFinanceiro);
-				tarifa.setFormaTransferencia(formaTransferenciaOperacaoFinanceira);
-				tarifa.setTipoContaOrigem(tipoContaOrigem);
-				tarifa.setTipoContaDestino(tipoContaDestino);
-				tarifa.setTipoTarifa(tipoTarifaOperacaoFinanceira);
-				tarifa.setColetorTarifa(iugu);
-				tarifa.setValor(tarifaIugu);
-				System.out.println("tarifa" + ": " + tarifa);
-				tarifaOperacaoFinanceiraDao.adiciona(tarifa);
+				TarifaOperacaoFinanceira tarifaIugu  = new TarifaOperacaoFinanceira();
+				tarifaIugu.setOperadorFinanceiro(operadorFinanceiro);
+				tarifaIugu.setFormaTransferencia(formaTransferenciaOperacaoFinanceira);
+				tarifaIugu.setTipoContaOrigem(tipoContaOrigem);
+				tarifaIugu.setTipoContaDestino(tipoContaDestino);
+//				tarifaIugu.setTipoTarifa(tipoTarifaOperacaoFinanceira);
+				tarifaIugu.setColetorTarifa(iugu);
+				tarifaIugu.setFixa(tarifaIuguBigDecimal);
+				System.out.println("Iugu" + ": " + tarifaIugu);
+				tarifaOperacaoFinanceiraDao.adiciona(tarifaIugu);
 
-				tarifa = new TarifaOperacaoFinanceira();
-				tarifa.setOperadorFinanceiro(operadorFinanceiro);
-				tarifa.setFormaTransferencia(formaTransferenciaOperacaoFinanceira);
-				tarifa.setTipoContaOrigem(tipoContaOrigem);
-				tarifa.setTipoContaDestino(tipoContaDestino);
-				tarifa.setTipoTarifa(tipoTarifaOperacaoFinanceira);
-				tarifa.setColetorTarifa(cacaio);
-				tarifa.setValor(tarifaCacaio);
-				System.out.println("tarifa" + ": " + tarifa);
-				tarifaOperacaoFinanceiraDao.adiciona(tarifa);
+				TarifaOperacaoFinanceira tarifaCacaio = new TarifaOperacaoFinanceira();
+				tarifaCacaio.setOperadorFinanceiro(operadorFinanceiro);
+				tarifaCacaio.setFormaTransferencia(formaTransferenciaOperacaoFinanceira);
+				tarifaCacaio.setTipoContaOrigem(tipoContaOrigem);
+				tarifaCacaio.setTipoContaDestino(tipoContaDestino);
+//				tarifaCacaio.setTipoTarifa(tipoTarifaOperacaoFinanceira);
+				tarifaCacaio.setColetorTarifa(cacaio);
+				tarifaCacaio.setFixa(tarifaCacaioBigDecimal);
+				System.out.println("Cacaio" + ": " + tarifaCacaio);
+				tarifaOperacaoFinanceiraDao.adiciona(tarifaCacaio);
 
 				linha = br.readLine();
+				
+				i1 = 0;
+				i2 = linha.indexOf(";", i1 + 1);
+				i3 = linha.indexOf(";", i2 + 1);
+				i4 = linha.indexOf(";", i3 + 1);
+				i5 = linha.indexOf(";", i4 + 1);
+				i6 = linha.indexOf(";", i5 + 1);
+				i7 = linha.indexOf(";", i6 + 1);
+				i8 = linha.indexOf(";", i7 + 1);
+				lenght = linha.length();
+				tarifaImpostoBigDecimal = new BigDecimal(linha.substring(i6 + 1, i7));
+				tarifaIuguBigDecimal = new BigDecimal(linha.substring(i7 + 1, i8));
+				tarifaCacaioBigDecimal = new BigDecimal(linha.substring(i8 + 1, lenght));
+				tarifaImposto.setPercentual(tarifaImpostoBigDecimal);
+				tarifaIugu.setPercentual(tarifaIuguBigDecimal);
+				tarifaCacaio.setPercentual(tarifaCacaioBigDecimal);
+				
+				linha = br.readLine();
+				
 			} // fim do while
 
 			br.close();
@@ -957,109 +984,109 @@ public class StartServer {
 	public void calculadoraParametrosTeste() {
 		System.out.println(calculadora.getOperadorFinanceiro());
 
-		// Tarifa Entre Subcontas Iugu
-		System.out.println("todasTarifasFixaInternaEntreSubContasIugu" + ": " + calculadora.todasTarifasFixaInternaEntreSubContasIugu());
-		System.out.println("tarifaFixaInternaEntreSubContasIugu.getCacaio" + ": " + calculadora.tarifaFixaInternaEntreSubContasIugu(coletorTarifaDao.getCacaio()));
-		System.out.println("tarifaFixaInternaEntreSubContasIugu.getImposto" + ": " + calculadora.tarifaFixaInternaEntreSubContasIugu(coletorTarifaDao.getImposto()));
-		System.out.println("tarifaFixaInternaEntreSubContasIugu.getIugu" + ": " + calculadora.tarifaFixaInternaEntreSubContasIugu(coletorTarifaDao.getIugu()));
-
-		System.out.println("todasTarifasPorcentagemInternaEntreSubContasIugu" + ": " + calculadora.todasTarifasPorcentagemInternaEntreSubContasIugu());
-		System.out.println("tarifaPorcentagemInternaEntreSubContasIugu.getCacaio" + ": " + calculadora.tarifaPorcentagemInternaEntreSubContasIugu(coletorTarifaDao.getCacaio()));
-		System.out.println("tarifaPorcentagemInternaEntreSubContasIugu.getImposto" + ": " + calculadora.tarifaPorcentagemInternaEntreSubContasIugu(coletorTarifaDao.getImposto()));
-		System.out.println("tarifaPorcentagemInternaEntreSubContasIugu.getIugu" + ": " + calculadora.tarifaPorcentagemInternaEntreSubContasIugu(coletorTarifaDao.getIugu()));
-
-		// Tarifa Entre Conta Master e Subcontas Iugu
-		System.out.println("todasTarifasFixaInternaEntreMasterIuguESubcontaIugu" + ": " + calculadora.todasTarifasFixaInternaEntreMasterIuguESubcontaIugu());
-		System.out.println("tarifaFixaInternaEntreMasterIuguESubcontaIugu.getCacaio" + ": " + calculadora.tarifaFixaInternaEntreMasterIuguESubcontaIugu(coletorTarifaDao.getCacaio()));
-		System.out.println("tarifaFixaInternaEntreMasterIuguESubcontaIugu.getImposto" + ": " + calculadora.tarifaFixaInternaEntreMasterIuguESubcontaIugu(coletorTarifaDao.getImposto()));
-		System.out.println("tarifaFixaInternaEntreMasterIuguESubcontaIugu.getIugu" + ": " + calculadora.tarifaFixaInternaEntreMasterIuguESubcontaIugu(coletorTarifaDao.getIugu()));
-
-		System.out.println("todasTarifasPorcentagemInternaEntreMasterIuguESubcontaIugu" + ": " + calculadora.todasTarifasPorcentagemInternaEntreMasterIuguESubcontaIugu());
-		System.out.println("tarifaPorcentagemInternaEntreMasterIuguESubcontaIugu.getCacaio" + ": " + calculadora.tarifaPorcentagemInternaEntreMasterIuguESubcontaIugu(coletorTarifaDao.getCacaio()));
-		System.out.println("tarifaPorcentagemInternaEntreMasterIuguESubcontaIugu.getImposto" + ": " + calculadora.tarifaPorcentagemInternaEntreMasterIuguESubcontaIugu(coletorTarifaDao.getImposto()));
-		System.out.println("tarifaPorcentagemInternaEntreMasterIuguESubcontaIugu.getIugu" + ": " + calculadora.tarifaPorcentagemInternaEntreMasterIuguESubcontaIugu(coletorTarifaDao.getIugu()));
-
-		// Tarifa Entre Subconta e Conta Master Iugu
-		System.out.println("todasTarifasFixaInternaEntreSubcontaIuguEMasterIugu" + ": " + calculadora.todasTarifasFixaInternaEntreSubcontaIuguEMasterIugu());
-		System.out.println("tarifaFixaInternaEntreSubcontaIuguEMasterIugu.getCacaio" + ": " + calculadora.tarifaFixaInternaEntreSubcontaIuguEMasterIugu(coletorTarifaDao.getCacaio()));
-		System.out.println("tarifaFixaInternaEntreSubcontaIuguEMasterIugu.getImposto" + ": " + calculadora.tarifaFixaInternaEntreSubcontaIuguEMasterIugu(coletorTarifaDao.getImposto()));
-		System.out.println("tarifaFixaInternaEntreSubcontaIuguEMasterIugu.getIugu" + ": " + calculadora.tarifaFixaInternaEntreSubcontaIuguEMasterIugu(coletorTarifaDao.getIugu()));
-
-		System.out.println("todasTarifasPorcentagemInternaEntreSubcontaIuguEMasterIugu" + ": " + calculadora.todasTarifasPorcentagemInternaEntreSubcontaIuguEMasterIugu());
-		System.out.println("tarifaPorcentagemInternaEntreSubcontaIuguEMasterIugu.getCacaio" + ": " + calculadora.tarifaPorcentagemInternaEntreSubcontaIuguEMasterIugu(coletorTarifaDao.getCacaio()));
-		System.out.println("tarifaPorcentagemInternaEntreSubcontaIuguEMasterIugu.getImposto" + ": " + calculadora.tarifaPorcentagemInternaEntreSubcontaIuguEMasterIugu(coletorTarifaDao.getImposto()));
-		System.out.println("tarifaPorcentagemInternaEntreSubcontaIuguEMasterIugu.getIugu" + ": " + calculadora.tarifaPorcentagemInternaEntreSubcontaIuguEMasterIugu(coletorTarifaDao.getIugu()));
-
-		
-		// Tarifa de Saque Subconta - Conta Bancária
-		System.out.println("todasTarifasFixaSaqueSubcontaContaBancaria" + ": " + calculadora.todasTarifasFixaSaqueSubcontaContaBancaria());
-		System.out.println("tarifaFixaSaqueSubcontaContaBancaria.getCacaio" + ": " + calculadora.tarifaFixaSaqueSubcontaContaBancaria(coletorTarifaDao.getCacaio()));
-		System.out.println("tarifaFixaSaqueSubcontaContaBancaria.getImposto" + ": " + calculadora.tarifaFixaSaqueSubcontaContaBancaria(coletorTarifaDao.getImposto()));
-		System.out.println("tarifaFixaSaqueSubcontaContaBancaria.getIugu" + ": " + calculadora.tarifaFixaSaqueSubcontaContaBancaria(coletorTarifaDao.getIugu()));
-
-		System.out.println("todasTarifasPorcentagemSaqueSubcontaContaBancaria" + ": " + calculadora.todasTarifasPorcentagemSaqueSubcontaContaBancaria());
-		System.out.println("tarifaPorcentagemSaqueSubcontaContaBancaria.getCacaio" + ": " + calculadora.tarifaPorcentagemSaqueSubcontaContaBancaria(coletorTarifaDao.getCacaio()));
-		System.out.println("tarifaPorcentagemSaqueSubcontaContaBancaria.getImposto" + ": " + calculadora.tarifaPorcentagemSaqueSubcontaContaBancaria(coletorTarifaDao.getImposto()));
-		System.out.println("tarifaPorcentagemSaqueSubcontaContaBancaria.getIugu" + ": " + calculadora.tarifaPorcentagemSaqueSubcontaContaBancaria(coletorTarifaDao.getIugu()));
-
-		// Tarifa de Saque Conta Master - Conta Bancária
-		System.out.println("todasTarifasFixaSaqueContaMasterIuguContaBancaria" + ": " + calculadora.todasTarifasFixaSaqueContaMasterIuguContaBancaria());
-		System.out.println("tarifaFixaSaqueContaMasterIuguContaBancaria.getCacaio" + ": " + calculadora.tarifaFixaSaqueContaMasterIuguContaBancaria(coletorTarifaDao.getCacaio()));
-		System.out.println("tarifaFixaSaqueContaMasterIuguContaBancaria.getImposto" + ": " + calculadora.tarifaFixaSaqueContaMasterIuguContaBancaria(coletorTarifaDao.getImposto()));
-		System.out.println("tarifaFixaSaqueContaMasterIuguContaBancaria.getIugu" + ": " + calculadora.tarifaFixaSaqueContaMasterIuguContaBancaria(coletorTarifaDao.getIugu()));
-
-		System.out.println("todasTarifasPorcentagemSaqueContaMasterIuguContaBancaria" + ": " + calculadora.todasTarifasPorcentagemSaqueContaMasterIuguContaBancaria());
-		System.out.println("tarifaPorcentagemSaqueContaMasterIuguContaBancaria.getCacaio" + ": " + calculadora.tarifaPorcentagemSaqueContaMasterIuguContaBancaria(coletorTarifaDao.getCacaio()));
-		System.out.println("tarifaPorcentagemSaqueContaMasterIuguContaBancaria.getImposto" + ": " + calculadora.tarifaPorcentagemSaqueContaMasterIuguContaBancaria(coletorTarifaDao.getImposto()));
-		System.out.println("tarifaPorcentagemSaqueContaMasterIuguContaBancaria.getIugu" + ": " + calculadora.tarifaPorcentagemSaqueContaMasterIuguContaBancaria(coletorTarifaDao.getIugu()));
-
-		// Tarifa de Deposito na Conta Master Iugu - Cartão de Crédito
-		System.out.println("todasTarifasFixaDepositoCartaoDeCredito" + ": " + calculadora.todasTarifasFixaDepositoCartaoDeCredito());
-		System.out.println("tarifaFixaDepositoCartaoDeCredito.getCacaio" + ": " + calculadora.tarifaFixaDepositoCartaoDeCredito(coletorTarifaDao.getCacaio()));
-		System.out.println("tarifaFixaDepositoCartaoDeCredito.getImposto" + ": " + calculadora.tarifaFixaDepositoCartaoDeCredito(coletorTarifaDao.getImposto()));
-		System.out.println("tarifaFixaDepositoCartaoDeCredito.getIugu" + ": " + calculadora.tarifaFixaDepositoCartaoDeCredito(coletorTarifaDao.getIugu()));
-
-		System.out.println("todasTarifasPorcentagemDepositoCartaoDeCredito" + ": " + calculadora.todasTarifasPorcentagemDepositoCartaoDeCredito());
-		System.out.println("tarifaPorcentagemDepositoCartaoDeCredito.getCacaio" + ": " + calculadora.tarifaPorcentagemDepositoCartaoDeCredito(coletorTarifaDao.getCacaio()));
-		System.out.println("tarifaPorcentagemDepositoCartaoDeCredito.getImposto" + ": " + calculadora.tarifaPorcentagemDepositoCartaoDeCredito(coletorTarifaDao.getImposto()));
-		System.out.println("tarifaPorcentagemDepositoCartaoDeCredito.getIugu" + ": " + calculadora.tarifaPorcentagemDepositoCartaoDeCredito(coletorTarifaDao.getIugu()));
-
-		
-		// Tarifa de Deposito na Conta Master Iugu - Boleto
-		System.out.println("todasTarifasFixaDepositoBoleto" + ": " + calculadora.todasTarifasFixaDepositoBoleto());
-		System.out.println("tarifaFixaDepositoBoleto.getCacaio" + ": " + calculadora.tarifaFixaDepositoBoleto(coletorTarifaDao.getCacaio()));
-		System.out.println("tarifaFixamDepositoBoleto.getImposto" + ": " + calculadora.tarifaFixaDepositoBoleto(coletorTarifaDao.getImposto()));
-		System.out.println("tarifaFixamDepositoBoleto.getIugu" + ": " + calculadora.tarifaFixaDepositoBoleto(coletorTarifaDao.getIugu()));
-
-		System.out.println("todasTarifasPorcentagemDepositoBoleto" + ": " + calculadora.todasTarifasPorcentagemDepositoBoleto());
-		System.out.println("tarifaPorcentagemDepositoBoleto.getCacaio" + ": " + calculadora.tarifaPorcentagemDepositoBoleto(coletorTarifaDao.getCacaio()));
-		System.out.println("tarifaPorcentagemDepositoBoleto.getImposto" + ": " + calculadora.tarifaPorcentagemDepositoBoleto(coletorTarifaDao.getImposto()));
-		System.out.println("tarifaPorcentagemDepositoBoleto.getIugu" + ": " + calculadora.tarifaPorcentagemDepositoBoleto(coletorTarifaDao.getIugu()));
-		
-		
-		// Tarifa de Deposito na Conta Master Itau - Transferencia Bancaria
-		System.out.println("todasTarifasFixaDepositoContaBancariaNoItau" + ": " + calculadora.todasTarifasFixaDepositoContaBancariaNoItau());
-		System.out.println("tarifaFixaDepositoContaBancariaNoItau.getCacaio" + ": " + calculadora.tarifaFixaDepositoContaBancariaNoItau(coletorTarifaDao.getCacaio()));
-		System.out.println("tarifaFixaDepositoContaBancariaNoItau.getImposto" + ": " + calculadora.tarifaFixaDepositoContaBancariaNoItau(coletorTarifaDao.getImposto()));
-		System.out.println("tarifaFixaDepositoContaBancariaNoItau.getIugu" + ": " + calculadora.tarifaFixaDepositoContaBancariaNoItau(coletorTarifaDao.getIugu()));
-
-		System.out.println("todasTarifasPorcentagemDepositoContaBancariaNoItau" + ": " + calculadora.todasTarifasPorcentagemDepositoContaBancariaNoItau());
-		System.out.println("tarifaPorcentagemDepositoContaBancariaNoItau.getCacaio" + ": " + calculadora.tarifaPorcentagemDepositoContaBancariaNoItau(coletorTarifaDao.getCacaio()));
-		System.out.println("tarifaPorcentagemDepositoContaBancariaNoItau.getImposto" + ": " + calculadora.tarifaPorcentagemDepositoContaBancariaNoItau(coletorTarifaDao.getImposto()));
-		System.out.println("tarifaPorcentagemDepositoContaBancariaNoItau.getIugu" + ": " + calculadora.tarifaPorcentagemDepositoContaBancariaNoItau(coletorTarifaDao.getIugu()));		
-		
-		
-		
-		// Tarifa de Deposito na Conta Master Itau - Boleto
-		System.out.println("todasTarifasFixaDepositoBoletoNoItau" + ": " + calculadora.todasTarifasFixaDepositoBoletoNoItau());
-		System.out.println("tarifaFixaDepositoBoletoNoItau.getCacaio" + ": " + calculadora.tarifaFixaDepositoBoletoNoItau(coletorTarifaDao.getCacaio()));
-		System.out.println("tarifaFixaDepositoBoletoNoItau.getImposto" + ": " + calculadora.tarifaFixaDepositoBoletoNoItau(coletorTarifaDao.getImposto()));
-		System.out.println("tarifaFixaDepositoBoletoNoItau.getIugu" + ": " + calculadora.tarifaFixaDepositoBoletoNoItau(coletorTarifaDao.getIugu()));
-
-		System.out.println("todasTarifasPorcentagemDepositoBoletoNoItau" + ": " + calculadora.todasTarifasPorcentagemDepositoBoletoNoItau());
-		System.out.println("tarifaPorcentagemDepositoBoletoNoItau.getCacaio" + ": " + calculadora.tarifaPorcentagemDepositoBoletoNoItau(coletorTarifaDao.getCacaio()));
-		System.out.println("tarifaPorcentagemDepositoBoletoNoItau.getImposto" + ": " + calculadora.tarifaPorcentagemDepositoBoletoNoItau(coletorTarifaDao.getImposto()));
-		System.out.println("tarifaPorcentagemDepositoBoletoNoItau.getIugu" + ": " + calculadora.tarifaPorcentagemDepositoBoletoNoItau(coletorTarifaDao.getIugu()));	
+//		// Tarifa Entre Subcontas Iugu
+//		System.out.println("todasTarifasFixaInternaEntreSubContasIugu" + ": " + calculadora.todasTarifasFixaInternaEntreSubContasIugu());
+//		System.out.println("tarifaFixaInternaEntreSubContasIugu.getCacaio" + ": " + calculadora.tarifaFixaInternaEntreSubContasIugu(coletorTarifaDao.getCacaio()));
+//		System.out.println("tarifaFixaInternaEntreSubContasIugu.getImposto" + ": " + calculadora.tarifaFixaInternaEntreSubContasIugu(coletorTarifaDao.getImposto()));
+//		System.out.println("tarifaFixaInternaEntreSubContasIugu.getIugu" + ": " + calculadora.tarifaFixaInternaEntreSubContasIugu(coletorTarifaDao.getIugu()));
+//
+//		System.out.println("todasTarifasPorcentagemInternaEntreSubContasIugu" + ": " + calculadora.todasTarifasPorcentagemInternaEntreSubContasIugu());
+//		System.out.println("tarifaPorcentagemInternaEntreSubContasIugu.getCacaio" + ": " + calculadora.tarifaPorcentagemInternaEntreSubContasIugu(coletorTarifaDao.getCacaio()));
+//		System.out.println("tarifaPorcentagemInternaEntreSubContasIugu.getImposto" + ": " + calculadora.tarifaPorcentagemInternaEntreSubContasIugu(coletorTarifaDao.getImposto()));
+//		System.out.println("tarifaPorcentagemInternaEntreSubContasIugu.getIugu" + ": " + calculadora.tarifaPorcentagemInternaEntreSubContasIugu(coletorTarifaDao.getIugu()));
+//
+//		// Tarifa Entre Conta Master e Subcontas Iugu
+//		System.out.println("todasTarifasFixaInternaEntreMasterIuguESubcontaIugu" + ": " + calculadora.todasTarifasFixaInternaEntreMasterIuguESubcontaIugu());
+//		System.out.println("tarifaFixaInternaEntreMasterIuguESubcontaIugu.getCacaio" + ": " + calculadora.tarifaFixaInternaEntreMasterIuguESubcontaIugu(coletorTarifaDao.getCacaio()));
+//		System.out.println("tarifaFixaInternaEntreMasterIuguESubcontaIugu.getImposto" + ": " + calculadora.tarifaFixaInternaEntreMasterIuguESubcontaIugu(coletorTarifaDao.getImposto()));
+//		System.out.println("tarifaFixaInternaEntreMasterIuguESubcontaIugu.getIugu" + ": " + calculadora.tarifaFixaInternaEntreMasterIuguESubcontaIugu(coletorTarifaDao.getIugu()));
+//
+//		System.out.println("todasTarifasPorcentagemInternaEntreMasterIuguESubcontaIugu" + ": " + calculadora.todasTarifasPorcentagemInternaEntreMasterIuguESubcontaIugu());
+//		System.out.println("tarifaPorcentagemInternaEntreMasterIuguESubcontaIugu.getCacaio" + ": " + calculadora.tarifaPorcentagemInternaEntreMasterIuguESubcontaIugu(coletorTarifaDao.getCacaio()));
+//		System.out.println("tarifaPorcentagemInternaEntreMasterIuguESubcontaIugu.getImposto" + ": " + calculadora.tarifaPorcentagemInternaEntreMasterIuguESubcontaIugu(coletorTarifaDao.getImposto()));
+//		System.out.println("tarifaPorcentagemInternaEntreMasterIuguESubcontaIugu.getIugu" + ": " + calculadora.tarifaPorcentagemInternaEntreMasterIuguESubcontaIugu(coletorTarifaDao.getIugu()));
+//
+//		// Tarifa Entre Subconta e Conta Master Iugu
+//		System.out.println("todasTarifasFixaInternaEntreSubcontaIuguEMasterIugu" + ": " + calculadora.todasTarifasFixaInternaEntreSubcontaIuguEMasterIugu());
+//		System.out.println("tarifaFixaInternaEntreSubcontaIuguEMasterIugu.getCacaio" + ": " + calculadora.tarifaFixaInternaEntreSubcontaIuguEMasterIugu(coletorTarifaDao.getCacaio()));
+//		System.out.println("tarifaFixaInternaEntreSubcontaIuguEMasterIugu.getImposto" + ": " + calculadora.tarifaFixaInternaEntreSubcontaIuguEMasterIugu(coletorTarifaDao.getImposto()));
+//		System.out.println("tarifaFixaInternaEntreSubcontaIuguEMasterIugu.getIugu" + ": " + calculadora.tarifaFixaInternaEntreSubcontaIuguEMasterIugu(coletorTarifaDao.getIugu()));
+//
+//		System.out.println("todasTarifasPorcentagemInternaEntreSubcontaIuguEMasterIugu" + ": " + calculadora.todasTarifasPorcentagemInternaEntreSubcontaIuguEMasterIugu());
+//		System.out.println("tarifaPorcentagemInternaEntreSubcontaIuguEMasterIugu.getCacaio" + ": " + calculadora.tarifaPorcentagemInternaEntreSubcontaIuguEMasterIugu(coletorTarifaDao.getCacaio()));
+//		System.out.println("tarifaPorcentagemInternaEntreSubcontaIuguEMasterIugu.getImposto" + ": " + calculadora.tarifaPorcentagemInternaEntreSubcontaIuguEMasterIugu(coletorTarifaDao.getImposto()));
+//		System.out.println("tarifaPorcentagemInternaEntreSubcontaIuguEMasterIugu.getIugu" + ": " + calculadora.tarifaPorcentagemInternaEntreSubcontaIuguEMasterIugu(coletorTarifaDao.getIugu()));
+//
+//		
+//		// Tarifa de Saque Subconta - Conta Bancária
+//		System.out.println("todasTarifasFixaSaqueSubcontaContaBancaria" + ": " + calculadora.todasTarifasFixaSaqueSubcontaContaBancaria());
+//		System.out.println("tarifaFixaSaqueSubcontaContaBancaria.getCacaio" + ": " + calculadora.tarifaFixaSaqueSubcontaContaBancaria(coletorTarifaDao.getCacaio()));
+//		System.out.println("tarifaFixaSaqueSubcontaContaBancaria.getImposto" + ": " + calculadora.tarifaFixaSaqueSubcontaContaBancaria(coletorTarifaDao.getImposto()));
+//		System.out.println("tarifaFixaSaqueSubcontaContaBancaria.getIugu" + ": " + calculadora.tarifaFixaSaqueSubcontaContaBancaria(coletorTarifaDao.getIugu()));
+//
+//		System.out.println("todasTarifasPorcentagemSaqueSubcontaContaBancaria" + ": " + calculadora.todasTarifasPorcentagemSaqueSubcontaContaBancaria());
+//		System.out.println("tarifaPorcentagemSaqueSubcontaContaBancaria.getCacaio" + ": " + calculadora.tarifaPorcentagemSaqueSubcontaContaBancaria(coletorTarifaDao.getCacaio()));
+//		System.out.println("tarifaPorcentagemSaqueSubcontaContaBancaria.getImposto" + ": " + calculadora.tarifaPorcentagemSaqueSubcontaContaBancaria(coletorTarifaDao.getImposto()));
+//		System.out.println("tarifaPorcentagemSaqueSubcontaContaBancaria.getIugu" + ": " + calculadora.tarifaPorcentagemSaqueSubcontaContaBancaria(coletorTarifaDao.getIugu()));
+//
+//		// Tarifa de Saque Conta Master - Conta Bancária
+//		System.out.println("todasTarifasFixaSaqueContaMasterIuguContaBancaria" + ": " + calculadora.todasTarifasFixaSaqueContaMasterIuguContaBancaria());
+//		System.out.println("tarifaFixaSaqueContaMasterIuguContaBancaria.getCacaio" + ": " + calculadora.tarifaFixaSaqueContaMasterIuguContaBancaria(coletorTarifaDao.getCacaio()));
+//		System.out.println("tarifaFixaSaqueContaMasterIuguContaBancaria.getImposto" + ": " + calculadora.tarifaFixaSaqueContaMasterIuguContaBancaria(coletorTarifaDao.getImposto()));
+//		System.out.println("tarifaFixaSaqueContaMasterIuguContaBancaria.getIugu" + ": " + calculadora.tarifaFixaSaqueContaMasterIuguContaBancaria(coletorTarifaDao.getIugu()));
+//
+//		System.out.println("todasTarifasPorcentagemSaqueContaMasterIuguContaBancaria" + ": " + calculadora.todasTarifasPorcentagemSaqueContaMasterIuguContaBancaria());
+//		System.out.println("tarifaPorcentagemSaqueContaMasterIuguContaBancaria.getCacaio" + ": " + calculadora.tarifaPorcentagemSaqueContaMasterIuguContaBancaria(coletorTarifaDao.getCacaio()));
+//		System.out.println("tarifaPorcentagemSaqueContaMasterIuguContaBancaria.getImposto" + ": " + calculadora.tarifaPorcentagemSaqueContaMasterIuguContaBancaria(coletorTarifaDao.getImposto()));
+//		System.out.println("tarifaPorcentagemSaqueContaMasterIuguContaBancaria.getIugu" + ": " + calculadora.tarifaPorcentagemSaqueContaMasterIuguContaBancaria(coletorTarifaDao.getIugu()));
+//
+//		// Tarifa de Deposito na Conta Master Iugu - Cartão de Crédito
+//		System.out.println("todasTarifasFixaDepositoCartaoDeCredito" + ": " + calculadora.todasTarifasFixaDepositoCartaoDeCredito());
+//		System.out.println("tarifaFixaDepositoCartaoDeCredito.getCacaio" + ": " + calculadora.tarifaFixaDepositoCartaoDeCredito(coletorTarifaDao.getCacaio()));
+//		System.out.println("tarifaFixaDepositoCartaoDeCredito.getImposto" + ": " + calculadora.tarifaFixaDepositoCartaoDeCredito(coletorTarifaDao.getImposto()));
+//		System.out.println("tarifaFixaDepositoCartaoDeCredito.getIugu" + ": " + calculadora.tarifaFixaDepositoCartaoDeCredito(coletorTarifaDao.getIugu()));
+//
+//		System.out.println("todasTarifasPorcentagemDepositoCartaoDeCredito" + ": " + calculadora.todasTarifasPorcentagemDepositoCartaoDeCredito());
+//		System.out.println("tarifaPorcentagemDepositoCartaoDeCredito.getCacaio" + ": " + calculadora.tarifaPorcentagemDepositoCartaoDeCredito(coletorTarifaDao.getCacaio()));
+//		System.out.println("tarifaPorcentagemDepositoCartaoDeCredito.getImposto" + ": " + calculadora.tarifaPorcentagemDepositoCartaoDeCredito(coletorTarifaDao.getImposto()));
+//		System.out.println("tarifaPorcentagemDepositoCartaoDeCredito.getIugu" + ": " + calculadora.tarifaPorcentagemDepositoCartaoDeCredito(coletorTarifaDao.getIugu()));
+//
+//		
+//		// Tarifa de Deposito na Conta Master Iugu - Boleto
+//		System.out.println("todasTarifasFixaDepositoBoleto" + ": " + calculadora.todasTarifasFixaDepositoBoleto());
+//		System.out.println("tarifaFixaDepositoBoleto.getCacaio" + ": " + calculadora.tarifaFixaDepositoBoleto(coletorTarifaDao.getCacaio()));
+//		System.out.println("tarifaFixamDepositoBoleto.getImposto" + ": " + calculadora.tarifaFixaDepositoBoleto(coletorTarifaDao.getImposto()));
+//		System.out.println("tarifaFixamDepositoBoleto.getIugu" + ": " + calculadora.tarifaFixaDepositoBoleto(coletorTarifaDao.getIugu()));
+//
+//		System.out.println("todasTarifasPorcentagemDepositoBoleto" + ": " + calculadora.todasTarifasPorcentagemDepositoBoleto());
+//		System.out.println("tarifaPorcentagemDepositoBoleto.getCacaio" + ": " + calculadora.tarifaPorcentagemDepositoBoleto(coletorTarifaDao.getCacaio()));
+//		System.out.println("tarifaPorcentagemDepositoBoleto.getImposto" + ": " + calculadora.tarifaPorcentagemDepositoBoleto(coletorTarifaDao.getImposto()));
+//		System.out.println("tarifaPorcentagemDepositoBoleto.getIugu" + ": " + calculadora.tarifaPorcentagemDepositoBoleto(coletorTarifaDao.getIugu()));
+//		
+//		
+//		// Tarifa de Deposito na Conta Master Itau - Transferencia Bancaria
+//		System.out.println("todasTarifasFixaDepositoContaBancariaNoItau" + ": " + calculadora.todasTarifasFixaDepositoContaBancariaNoItau());
+//		System.out.println("tarifaFixaDepositoContaBancariaNoItau.getCacaio" + ": " + calculadora.tarifaFixaDepositoContaBancariaNoItau(coletorTarifaDao.getCacaio()));
+//		System.out.println("tarifaFixaDepositoContaBancariaNoItau.getImposto" + ": " + calculadora.tarifaFixaDepositoContaBancariaNoItau(coletorTarifaDao.getImposto()));
+//		System.out.println("tarifaFixaDepositoContaBancariaNoItau.getIugu" + ": " + calculadora.tarifaFixaDepositoContaBancariaNoItau(coletorTarifaDao.getIugu()));
+//
+//		System.out.println("todasTarifasPorcentagemDepositoContaBancariaNoItau" + ": " + calculadora.todasTarifasPorcentagemDepositoContaBancariaNoItau());
+//		System.out.println("tarifaPorcentagemDepositoContaBancariaNoItau.getCacaio" + ": " + calculadora.tarifaPorcentagemDepositoContaBancariaNoItau(coletorTarifaDao.getCacaio()));
+//		System.out.println("tarifaPorcentagemDepositoContaBancariaNoItau.getImposto" + ": " + calculadora.tarifaPorcentagemDepositoContaBancariaNoItau(coletorTarifaDao.getImposto()));
+//		System.out.println("tarifaPorcentagemDepositoContaBancariaNoItau.getIugu" + ": " + calculadora.tarifaPorcentagemDepositoContaBancariaNoItau(coletorTarifaDao.getIugu()));		
+//		
+//		
+//		
+//		// Tarifa de Deposito na Conta Master Itau - Boleto
+//		System.out.println("todasTarifasFixaDepositoBoletoNoItau" + ": " + calculadora.todasTarifasFixaDepositoBoletoNoItau());
+//		System.out.println("tarifaFixaDepositoBoletoNoItau.getCacaio" + ": " + calculadora.tarifaFixaDepositoBoletoNoItau(coletorTarifaDao.getCacaio()));
+//		System.out.println("tarifaFixaDepositoBoletoNoItau.getImposto" + ": " + calculadora.tarifaFixaDepositoBoletoNoItau(coletorTarifaDao.getImposto()));
+//		System.out.println("tarifaFixaDepositoBoletoNoItau.getIugu" + ": " + calculadora.tarifaFixaDepositoBoletoNoItau(coletorTarifaDao.getIugu()));
+//
+//		System.out.println("todasTarifasPorcentagemDepositoBoletoNoItau" + ": " + calculadora.todasTarifasPorcentagemDepositoBoletoNoItau());
+//		System.out.println("tarifaPorcentagemDepositoBoletoNoItau.getCacaio" + ": " + calculadora.tarifaPorcentagemDepositoBoletoNoItau(coletorTarifaDao.getCacaio()));
+//		System.out.println("tarifaPorcentagemDepositoBoletoNoItau.getImposto" + ": " + calculadora.tarifaPorcentagemDepositoBoletoNoItau(coletorTarifaDao.getImposto()));
+//		System.out.println("tarifaPorcentagemDepositoBoletoNoItau.getIugu" + ": " + calculadora.tarifaPorcentagemDepositoBoletoNoItau(coletorTarifaDao.getIugu()));	
 	}
 
 	// @Inject
@@ -1096,6 +1123,139 @@ public class StartServer {
 	// } catch (IOException e) {
 	// e.printStackTrace();
 	// }
-	// }
+	// 
+	@Inject @CalendarioQualifier(calendario = CalendarioDiasUteis.SEMSABADO_SEMDOMINGO_SEMFERIADO)
+	CalendarioDao calendarioDao;
+//	@Inject
+//	private CalendarioComDiasUteisNaoContendoSabadoDomingoFeriadoDao calendarioComDiasUteisNaoContendoSabadoDomingoFeriadoDao;
+//	@Inject
+//	private CalendarioComDiasUteisNaoContendoSabadoDomingoDao calendarioComDiasUteisNaoContendoSabadoDomingoDao;
+//	@Inject
+//	private CalendarioComDiasUteisNaoContendoDomingoFeriadoDao calendarioComDiasUteisNaoContendoDomingoFeriadoDao;
+//	@Inject
+//	private CalendarioComDiasUteisNaoContendoDomingoDao calendarioComDiasUteisNaoContendoDomingoDao;
+//	
+	@Transactional
+	public void calendarios() {
+		LocalDate primeiroDia = LocalDate.of(2018, 1, 1);
+		LocalDate ultimoDia = LocalDate.of(2018, 12, 31);
+		
+		for(LocalDate data = primeiroDia; data.isBefore(ultimoDia.plusDays(1)); data = data.plusDays(1)) {
+			calendarioDao.adiciona(new CalendarioComDiasUteisNaoContendoSabadoDomingoFeriado(data));
+//			calendarioComDiasUteisNaoContendoSabadoDomingoDao.adiciona(new CalendarioComDiasUteisNaoContendoSabadoDomingo(data));
+//			calendarioComDiasUteisNaoContendoDomingoFeriadoDao.adiciona(new CalendarioComDiasUteisNaoContendoDomingoFeriado(data));
+//			calendarioComDiasUteisNaoContendoDomingoDao.adiciona(new CalendarioComDiasUteisNaoContendoDomingo(data));
+		}
+		
+		try {
+			InputStream is = new FileInputStream("/Users/josecarlosoliveira/javaee/eclipse-workspace/formare/src/main/resources/startServer/feriados2018");
+			InputStreamReader isr = new InputStreamReader(is);
+			BufferedReader br = new BufferedReader(isr);
+			String linha = br.readLine();
+			
+			Integer dayOfMonth;
+			Integer month;
+			Integer year;
+			String name;
+			LocalDate localData;
+			Integer i1;
+			Integer i2;
+			Integer i3;
+			Integer i4;
+			Integer lenght;
+			
+			while (linha != null) {
+				i1 = 0;
+				System.out.println("i1-" + i1);
+				i2 = linha.indexOf("/", i1 + 1);
+				System.out.println("i2-" + i2);
+				i3 = linha.indexOf("/", i2 + 1);
+				System.out.println("i3-" + i3);
+				i4 = linha.indexOf(" ", i3 + 1);
+				System.out.println("i4-" + i4);
+				lenght = linha.length();
+				System.out.println("lenght-" + lenght);
+				
+				dayOfMonth = (Integer.parseInt(linha.substring(i1, i2)));
+				System.out.println("dayOfMonth-" + dayOfMonth);
+				month = (Integer.parseInt(linha.substring(i2+1, i3)));
+				System.out.println("month-" + month);
+				year = (Integer.parseInt(linha.substring(i3+1, i4)));
+				System.out.println("year-" + year);
+				name = linha.substring(i4 + 1, lenght);
+				System.out.println("name-" + name);
+				localData = LocalDate.of(year, month, dayOfMonth);
+				Calendario data1 = calendarioDao.buscaData(localData);
+				data1.setDiaUtil(false);
+				data1.setNomeFeriado(name);
+//				Calendario data2 = calendarioComDiasUteisNaoContendoDomingoFeriadoDao.buscaData(localData);
+//				data2.setDiaUtil(false);
+//				data2.setNomeFeriado(name);
+				
+				linha = br.readLine();
+			}
+			br.close();
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		for(int i=1;i<13;i++) {
+			System.out.println("--------->getQdeSemanasMes["+i+"]:"+calendarioDao.getQdeSemanasMes(2018, i));
+		}
+		
+		for(int i=1;i<13;i++) {
+			System.out.println("--------->getQdeDiasUteisSemanaDoMes["+i+"]:"+calendarioDao.getTotalDiasUteisSemanaDoMes(2018, i, 1));
+		}
+	}
 
+//	Long id;
+//	String nomePai;
+//	String sobrenomePai;
+//	String emailPai;
+//	String nomeFilho;
+//	String sobrenomeFilho;
+//	String emailFilho;
+//	Integer i1;
+//	Integer i2;
+//	Integer i3;
+//	Integer i4;
+//	Integer i5;
+//	Integer i6;
+//	Integer i7;
+//	Integer lenght;
+//
+//	while (linha != null) {
+//		i1 = 0;
+//		System.out.println("i1");
+//		i2 = linha.indexOf(";", i1 + 1);
+//		System.out.println("i2-" + i2);
+//		i3 = linha.indexOf(" ", i2 + 1);
+//		System.out.println("i3-" + i3);
+//		i4 = linha.indexOf(";", i3 + 1);
+//		System.out.println("i4-" + i4);
+//		i5 = linha.indexOf(" ", i4 + 1);
+//		System.out.println("i5-" + i5);
+//		i6 = linha.indexOf(";", i5 + 1);
+//		System.out.println("i6-" + i6);
+//		i7 = linha.indexOf(";", i6 + 1);
+//		System.out.println("i7-" + i7);
+//		lenght = linha.length();
+//		System.out.println("i8-" + lenght);
+//		id = (Long.parseLong(linha.substring(i1, i2)));
+//		System.out.println("i0");
+//		nomePai = linha.substring(i2 + 1, i3);
+//		System.out.println("ia");
+//		sobrenomePai = linha.substring(i3 + 1, i4);
+//		System.out.println("ib");
+//		nomeFilho = linha.substring(i4 + 1, i5);
+//		System.out.println("ic");
+//		sobrenomeFilho = linha.substring(i5 + 1, i6);
+//		System.out.println("id");
+//		emailPai = linha.substring(i6 + 1, i7);
+//		System.out.println("ie");
+//		emailFilho = linha.substring(i7 + 1, lenght);
+//		System.out.println("if");
+	
+	
 }

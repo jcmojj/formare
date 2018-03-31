@@ -73,4 +73,9 @@ public class Dao<T> {
 	public EntityManager getEntityManager() {
 		return this.manager;
 	}
+
+	public Class<T> getClasse() {
+		return classe;
+	}
+	
 }

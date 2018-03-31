@@ -65,6 +65,8 @@ public class TarifaOperacaoFinanceira implements Serializable {
 	@ManyToOne
 	private ColetorTarifaOperacaoFinanceira coletorTarifa;
 	private BigDecimal valor;
+	private BigDecimal fixa;
+	private BigDecimal percentual;
 	
 
 	@OneToMany(mappedBy = "tarifa")
@@ -155,6 +157,27 @@ public class TarifaOperacaoFinanceira implements Serializable {
 	public void setPagamentos(List<Pagamento> pagamentos) {
 		this.pagamentos = pagamentos;
 	}
+	
+	public BigDecimal getFixa() {
+		return fixa;
+	}
+
+
+	public void setFixa(BigDecimal fixa) {
+		this.fixa = fixa;
+	}
+
+
+	public BigDecimal getPercentual() {
+		return percentual;
+	}
+
+
+	public void setPercentual(BigDecimal percentual) {
+		this.percentual = percentual;
+	}
+
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
