@@ -19,7 +19,6 @@ import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import javax.persistence.Transient;
 
 import br.com.clinicaformare.model.atendimento.AtendimentoPorProfissional;
 import br.com.clinicaformare.util.UsuarioLogado;
@@ -31,9 +30,8 @@ public class Profissional implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
-	@Transient
-	@Inject
-	private UsuarioLogado usuarioLogado;
+	@Inject @UsuarioLogado
+	private Usuario usuarioLogado;
 
 	// Parâmetros Próprios
 	@OneToOne(mappedBy = "profissional")
@@ -138,14 +136,14 @@ public class Profissional implements Serializable {
 	public void quandoCriar() {
 		this.dataCriacao = (Calendar.getInstance());
 		this.dataAlteracao = (Calendar.getInstance());
-		this.criadoPor = usuarioLogado.getUsuarioLogado();
-		this.alteradoPor = usuarioLogado.getUsuarioLogado();
+		this.criadoPor = usuarioLogado;
+		this.alteradoPor = usuarioLogado;
 	}
 
 	// Método Callback para update
 	@PreUpdate
 	public void quandoAtualizar() {
 		this.dataAlteracao = (Calendar.getInstance());
-		this.alteradoPor = usuarioLogado.getUsuarioLogado();
+		this.alteradoPor = usuarioLogado;
 	}
 }

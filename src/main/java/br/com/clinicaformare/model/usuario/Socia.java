@@ -13,7 +13,6 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
-import javax.persistence.Transient;
 
 import br.com.clinicaformare.model.atendimento.Atendimento;
 import br.com.clinicaformare.model.atendimento.Pacote;
@@ -26,9 +25,8 @@ public class Socia implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
-	@Transient
-	@Inject
-	private UsuarioLogado usuarioLogado;
+	@Inject @UsuarioLogado
+	private Usuario usuarioLogado;
 	
 	// Parâmetros Próprios
 	@OneToOne(mappedBy = "socia")
@@ -133,14 +131,14 @@ public class Socia implements Serializable {
 	public void quandoCriar() {
 		this.dataCriacao = LocalDateTime.now();
 		this.dataAlteracao = LocalDateTime.now();
-		this.criadoPor = usuarioLogado.getUsuarioLogado();
-		this.alteradoPor = usuarioLogado.getUsuarioLogado();
+		this.criadoPor = usuarioLogado;
+		this.alteradoPor = usuarioLogado;
 	}
 
 	// Método Callback para update
 	@PreUpdate
 	public void quandoAtualizar() {
 		this.dataAlteracao = LocalDateTime.now();;
-		this.alteradoPor = usuarioLogado.getUsuarioLogado();
+		this.alteradoPor = usuarioLogado;
 	}
 }

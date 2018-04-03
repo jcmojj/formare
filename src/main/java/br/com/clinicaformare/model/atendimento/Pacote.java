@@ -18,7 +18,6 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
-import javax.persistence.Transient;
 
 import br.com.clinicaformare.model.usuario.Paciente;
 import br.com.clinicaformare.model.usuario.ResponsavelFinanceiro;
@@ -33,9 +32,8 @@ public class Pacote implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
-	@Transient
-	@Inject
-	private UsuarioLogado usuarioLogado;
+	@Inject @UsuarioLogado
+	private Usuario usuarioLogado;
 
 //	@Transient
 //	private String nome;
@@ -88,8 +86,8 @@ public class Pacote implements Serializable {
 		responsavelFinanceiro.getPacotes().add(this);
 		this.paciente = paciente;
 		paciente.getPacotes().add(this);
-		this.sociaResponsavel = usuarioLogado.getUsuarioLogado().getSocia();
-		this.sociaSupervisora = usuarioLogado.getUsuarioLogado().getSocia();
+		this.sociaResponsavel = usuarioLogado.getSocia();
+		this.sociaSupervisora = usuarioLogado.getSocia();
 		sociaResponsavel.getPacotes().add(this);
 		this.atendimentos.addAll(atendimentos);
 		atendimentos.forEach(a -> a.setPacote(this));
@@ -229,15 +227,15 @@ public class Pacote implements Serializable {
 	public void quandoCriar() {
 		this.dataCriacao = LocalDateTime.now();
 		this.dataAlteracao = LocalDateTime.now();
-		this.criadoPor = usuarioLogado.getUsuarioLogado();
-		this.alteradoPor = usuarioLogado.getUsuarioLogado();
+		this.criadoPor = usuarioLogado;
+		this.alteradoPor = usuarioLogado;
 	}
 
 	// Método Callback para update
 	@PreUpdate
 	public void quandoAtualizar() {
 		this.dataAlteracao = LocalDateTime.now();;
-		this.alteradoPor = usuarioLogado.getUsuarioLogado();
+		this.alteradoPor = usuarioLogado;
 	}
 
 }

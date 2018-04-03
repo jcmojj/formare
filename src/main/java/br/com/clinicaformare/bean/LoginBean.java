@@ -3,15 +3,15 @@ package br.com.clinicaformare.bean;
 import java.io.Serializable;
 
 import javax.annotation.PostConstruct;
-import javax.enterprise.context.SessionScoped;
 import javax.faces.context.FacesContext;
+import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 
 import br.com.clinicaformare.daos.usuario.UsuarioDao;
 import br.com.clinicaformare.model.usuario.Usuario;
 
-@SessionScoped
+@ViewScoped
 @Named
 public class LoginBean implements Serializable{
 	private static final long serialVersionUID = 1L;
@@ -20,6 +20,9 @@ public class LoginBean implements Serializable{
 	private Usuario usuario;// = new Usuario();
 	@Inject
 	private UsuarioDao usuarioDao;
+	@Inject
+	private FacesContext context;
+	
 	private boolean logado = false;
 
 	public String logar() {
@@ -27,7 +30,7 @@ public class LoginBean implements Serializable{
 			usuario = usuarioDao.buscaLoginPassword(usuario);
 			System.out.println("Login Valido:"+ usuario.getNome()+" "+usuario.getSobrenome());
 			this.logado = true;
-			FacesContext context = FacesContext.getCurrentInstance();
+//			FacesContext context = FacesContext.getCurrentInstance();
 			context.getExternalContext().getSessionMap().put("usuarioLogado", this.usuario);
 		}else{
 			this.logado = false;
@@ -36,7 +39,7 @@ public class LoginBean implements Serializable{
 	}
 	
 	public void deslogar() {
-		FacesContext context = FacesContext.getCurrentInstance();
+//		FacesContext context = FacesContext.getCurrentInstance();
 		context.getExternalContext().getSessionMap().clear();
 		this.logado = false;
 	}

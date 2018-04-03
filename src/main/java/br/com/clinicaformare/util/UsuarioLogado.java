@@ -1,50 +1,28 @@
 package br.com.clinicaformare.util;
 
-import br.com.clinicaformare.model.usuario.Usuario;
+import static java.lang.annotation.ElementType.FIELD;
+import static java.lang.annotation.ElementType.METHOD;
+import static java.lang.annotation.ElementType.PARAMETER;
+import static java.lang.annotation.ElementType.TYPE;
 
-public class UsuarioLogado {
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
-	private Usuario user;
+import javax.inject.Qualifier;
 
-	// Constructor
-	public UsuarioLogado(Usuario usuarioLogado) {
-		this.user = usuarioLogado;
-	}
-	
-	// Getters and Setters
-	public Usuario getUserLogado() {
-		return user;
-	}
-	
-	// String, hashCode and Equals
-	@Override
-	public String toString() {
-		return "UsuarioLogado [usuarioLogado=" + user + "]";
-	}
+@Qualifier
+@Retention(RetentionPolicy.RUNTIME)
+@Target({TYPE, METHOD, FIELD, PARAMETER})
+public @interface UsuarioLogado {
 
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((user == null) ? 0 : user.hashCode());
-		return result;
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		UsuarioLogado other = (UsuarioLogado) obj;
-		if (user == null) {
-			if (other.user != null)
-				return false;
-		} else if (!user.equals(other.user))
-			return false;
-		return true;
-	}
-	
 }
+
+
+//@Qualifier
+//@Retention(RetentionPolicy.RUNTIME)
+//@Target({TYPE, METHOD, FIELD, PARAMETER})
+//public @interface CalendarioQualifier {
+//	CalendarioDiasUteis calendario() default 
+//	CalendarioDiasUteis.SEMSABADO_SEMDOMINGO_SEMFERIADO;
+//}

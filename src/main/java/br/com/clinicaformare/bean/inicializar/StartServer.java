@@ -13,9 +13,9 @@ import javax.inject.Named;
 import javax.transaction.Transactional;
 
 import br.com.clinicaformare.daos.usuario.NivelProfissionalDao;
-import br.com.clinicaformare.daos.usuario.UsuarioDao;
 import br.com.clinicaformare.model.usuario.NivelProfissional;
 import br.com.clinicaformare.model.usuario.Usuario;
+import br.com.clinicaformare.util.UsuarioLogado;
 
 @Named
 @RequestScoped
@@ -34,7 +34,15 @@ public class StartServer {
 //	 usuario.setProfissao("Developer");
 //	 return usuarioDao.adicionaVolta(usuario);
 //	 }
-
+	@Inject @UsuarioLogado
+	private Usuario usuarioLogado;
+	
+	public String getUsuarioLogado() {
+		if(usuarioLogado == null) {
+			return "Sem usuário logado";
+		}
+		return usuarioLogado.getNome() + usuarioLogado.getSobrenome();
+	}
 	
 	@Inject
 	private NivelProfissionalDao nivelProfissionalDao;
