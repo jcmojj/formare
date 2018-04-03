@@ -13,7 +13,6 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
-import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
@@ -21,11 +20,13 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 
-import br.com.clinicaformare.model.atendimento.AtendimentoPorProfissional;
+import org.hibernate.validator.constraints.br.CNPJ;
+import org.hibernate.validator.constraints.br.CPF;
+
 import br.com.clinicaformare.util.UsuarioLogado;
 
 @Entity
-public class Profissional implements Serializable {
+public class Fornecedor implements Serializable {
 	private static final long serialVersionUID = 1L;
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -34,17 +35,19 @@ public class Profissional implements Serializable {
 	@Transient
 	@Inject
 	private UsuarioLogado usuarioLogado;
-
-	// Parâmetros Próprios
-	@OneToOne(mappedBy = "profissional")
-	Usuario usuario;
-	@ManyToMany // Join para criar uma tabela única em relacionamento many to many
-	@JoinTable(name = "Profissional_EspecializacaoProfissional", joinColumns = @JoinColumn(name = "Profissional_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "EspecializacaoProfissional_id", referencedColumnName = "id"))
-	private List<EspecializacaoDoProfissional> especializacoesProfissional = new ArrayList<>();
 	
-	// Parâmetros Derivados
-	@OneToMany(mappedBy = "profissional")
-	private List<AtendimentoPorProfissional> atendimentoPorProfissional = new ArrayList<>();;
+	// Parâmetros Próprios
+	private String RazaoSocial;
+	private String apelido;
+//	@CPF
+//	private CPF cpf;
+//	@CNPJ
+//	private CNPJ cnpj;
+	@OneToOne(mappedBy = "fornecedor")
+	Usuario usuario;
+	@JoinTable(name = "Fornecedor_TipoFornecedor", joinColumns = @JoinColumn(name = "Fornecedor_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "TipoFornecedor_id", referencedColumnName = "id"))
+	@ManyToMany
+	private List<TipoFornecedor> tiposFornecedor = new ArrayList<>();
 
 	// Parâmetros de Persistência
 	@Temporal(TemporalType.TIMESTAMP)
@@ -55,21 +58,19 @@ public class Profissional implements Serializable {
 	private Usuario alteradoPor;
 	@OneToOne
 	private Usuario criadoPor;
-	
+
 	// Constructor
-	public Profissional() {
+	public Fornecedor() {
 	}
 
-	public Profissional(Long id) {
+	public Fornecedor(Long id) {
 		this.id = id;
 	}
-
-	public Profissional(Usuario usuario) {
-		super();
+	public Fornecedor(Usuario usuario) {
 		this.usuario = usuario;
 	}
 
-	// Getters and Setters
+	// Getters and setters
 	public Long getId() {
 		return id;
 	}
@@ -77,37 +78,56 @@ public class Profissional implements Serializable {
 	public Usuario getUsuario() {
 		return usuario;
 	}
-
-	public List<EspecializacaoDoProfissional> getEspecializacoesProfissional() {
-		return especializacoesProfissional;
-	}
-
-	public List<AtendimentoPorProfissional> getAtendimentoPorProfissional() {
-		return atendimentoPorProfissional;
-	}
-
-	public Calendar getDataCriacao() {
-		return dataCriacao;
-	}
-
-	public Calendar getDataAlteracao() {
-		return dataAlteracao;
-	}
-
-	public Usuario getAlteradoPor() {
-		return alteradoPor;
-	}
-
-	public Usuario getCriadoPor() {
-		return criadoPor;
+	
+	public void setUsuario(Usuario usuario) {
+		this.usuario = usuario;
 	}
 	
+	public List<TipoFornecedor> getTiposFornecedors() {
+		return tiposFornecedor;
+	}
+	public String getRazaoSocial() {
+		return RazaoSocial;
+	}
+
+	public void setRazaoSocial(String razaoSocial) {
+		RazaoSocial = razaoSocial;
+	}
+
+	public String getApelido() {
+		return apelido;
+	}
+
+	public void setApelido(String apelido) {
+		this.apelido = apelido;
+	}
+
+//	public CPF getCpf() {
+//		return cpf;
+//	}
+//
+//	public void setCpf(CPF cpf) {
+//		this.cpf = cpf;
+//	}
+//
+//	public CNPJ getCnpj() {
+//		return cnpj;
+//	}
+//
+//	public void setCnpj(CNPJ cnpj) {
+//		this.cnpj = cnpj;
+//	}
+
+	public List<TipoFornecedor> getTiposFornecedor() {
+		return tiposFornecedor;
+	}
+
+
 	// String, hashCode and Equals
 	@Override
 	public String toString() {
-		return "Profissional [id=" + id + ", usuario=" + usuario + "]";
+		return "Fornecedor [id=" + id + ", usuario[id]=" + usuario.getId() + "]";
 	}
-
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -124,7 +144,7 @@ public class Profissional implements Serializable {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Profissional other = (Profissional) obj;
+		Fornecedor other = (Fornecedor) obj;
 		if (id == null) {
 			if (other.id != null)
 				return false;

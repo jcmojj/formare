@@ -2,9 +2,7 @@ package br.com.clinicaformare.model.financeiro;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.List;
 
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
@@ -16,13 +14,11 @@ import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import javax.persistence.Transient;
 
-import br.com.clinicaformare.listeners.PagamentoListener;
-import br.com.clinicaformare.model.atendimento.AtendimentoPadrao;
 import br.com.clinicaformare.model.financeiro.operador.TarifaOperacaoFinanceira;
 import br.com.clinicaformare.model.usuario.Paciente;
 import br.com.clinicaformare.model.usuario.ResponsavelFinanceiro;
+import br.com.clinicaformare.util.listeners.PagamentoListener;
 
 @Entity
 @EntityListeners(PagamentoListener.class)
@@ -43,8 +39,8 @@ public class Pagamento implements Serializable {
 	@ManyToOne
 	private Paciente paciente;
 
-	@Transient
-	List<AtendimentoPadrao> atendimentosPadrao = new ArrayList<>();
+//	@Transient
+//	List<AtendimentoPadrao> atendimentosPadrao = new ArrayList<>();
 	
 	@Temporal(TemporalType.TIMESTAMP)
 	private Calendar dataCriacao;// = Calendar.getInstance();
@@ -153,13 +149,13 @@ public class Pagamento implements Serializable {
 		this.paciente = paciente;
 	}
 
-	public List<AtendimentoPadrao> getAtendimentosPadrao() {
-		return atendimentosPadrao;
-	}
-
-	public void setAtendimentosPadrao(List<AtendimentoPadrao> atendimentosPadrao) {
-		this.atendimentosPadrao = atendimentosPadrao;
-	}
+//	public List<AtendimentoPadrao> getAtendimentosPadrao() {
+//		return atendimentosPadrao;
+//	}
+//
+//	public void setAtendimentosPadrao(List<AtendimentoPadrao> atendimentosPadrao) {
+//		this.atendimentosPadrao = atendimentosPadrao;
+//	}
 
 	public Calendar getDataCriacao() {
 		return dataCriacao;

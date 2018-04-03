@@ -1,4 +1,4 @@
-package br.com.clinicaformare.listeners;
+package br.com.clinicaformare.util.listeners;
 
 import javax.faces.event.PhaseEvent;
 import javax.faces.event.PhaseId;

@@ -1,7 +1,6 @@
 package br.com.clinicaformare.model.usuario;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
@@ -10,9 +9,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.PrePersist;
@@ -21,12 +17,11 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 
-import br.com.clinicaformare.model.atendimento.AtendimentoPorProfissional;
 import br.com.clinicaformare.util.UsuarioLogado;
 
 @Entity
-public class Profissional implements Serializable {
-	private static final long serialVersionUID = 1L;
+public class NivelProfissional implements Serializable {
+	private static final long serialVersionUID = 2L;
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
@@ -34,18 +29,14 @@ public class Profissional implements Serializable {
 	@Transient
 	@Inject
 	private UsuarioLogado usuarioLogado;
-
+	
 	// Parâmetros Próprios
-	@OneToOne(mappedBy = "profissional")
-	Usuario usuario;
-	@ManyToMany // Join para criar uma tabela única em relacionamento many to many
-	@JoinTable(name = "Profissional_EspecializacaoProfissional", joinColumns = @JoinColumn(name = "Profissional_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "EspecializacaoProfissional_id", referencedColumnName = "id"))
-	private List<EspecializacaoDoProfissional> especializacoesProfissional = new ArrayList<>();
+	private String nivel;
 	
 	// Parâmetros Derivados
-	@OneToMany(mappedBy = "profissional")
-	private List<AtendimentoPorProfissional> atendimentoPorProfissional = new ArrayList<>();;
-
+	@OneToMany (mappedBy = "nivelProfissional")
+	private List<EspecializacaoDoProfissional> especializacoesDoProfissional;
+	
 	// Parâmetros de Persistência
 	@Temporal(TemporalType.TIMESTAMP)
 	private Calendar dataCriacao;
@@ -56,58 +47,49 @@ public class Profissional implements Serializable {
 	@OneToOne
 	private Usuario criadoPor;
 	
+	
 	// Constructor
-	public Profissional() {
-	}
-
-	public Profissional(Long id) {
-		this.id = id;
-	}
-
-	public Profissional(Usuario usuario) {
+	public NivelProfissional() {
 		super();
-		this.usuario = usuario;
 	}
-
+	public NivelProfissional(Long id) {
+		super();
+		this.id = id;
+	}	
+	public NivelProfissional(String nivel) {
+		super();
+		this.nivel = nivel;
+	}	
+	
 	// Getters and Setters
 	public Long getId() {
 		return id;
 	}
-
-	public Usuario getUsuario() {
-		return usuario;
+	public String getNivel() {
+		return nivel;
 	}
-
-	public List<EspecializacaoDoProfissional> getEspecializacoesProfissional() {
-		return especializacoesProfissional;
+	public List<EspecializacaoDoProfissional> getEspecializacoesDoProfissional() {
+		return especializacoesDoProfissional;
 	}
-
-	public List<AtendimentoPorProfissional> getAtendimentoPorProfissional() {
-		return atendimentoPorProfissional;
-	}
-
 	public Calendar getDataCriacao() {
 		return dataCriacao;
 	}
-
 	public Calendar getDataAlteracao() {
 		return dataAlteracao;
 	}
-
 	public Usuario getAlteradoPor() {
 		return alteradoPor;
 	}
-
 	public Usuario getCriadoPor() {
 		return criadoPor;
 	}
 	
+	
 	// String, hashCode and Equals
 	@Override
 	public String toString() {
-		return "Profissional [id=" + id + ", usuario=" + usuario + "]";
+		return "NivelProfissional [id=" + id + ", nivel=" + nivel + "]";
 	}
-
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -115,7 +97,6 @@ public class Profissional implements Serializable {
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
 		return result;
 	}
-
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -124,7 +105,7 @@ public class Profissional implements Serializable {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Profissional other = (Profissional) obj;
+		NivelProfissional other = (NivelProfissional) obj;
 		if (id == null) {
 			if (other.id != null)
 				return false;
@@ -148,4 +129,6 @@ public class Profissional implements Serializable {
 		this.dataAlteracao = (Calendar.getInstance());
 		this.alteradoPor = usuarioLogado.getUsuarioLogado();
 	}
+
+
 }

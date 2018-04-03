@@ -1,15 +1,12 @@
 package br.com.clinicaformare.model.financeiro;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
-import java.util.List;
 
 import javax.inject.Inject;
 
 import br.com.clinicaformare.daos.financeiro.PagamentoDao;
-import br.com.clinicaformare.model.atendimento.AtendimentoPadrao;
 import br.com.clinicaformare.model.financeiro.operador.TarifaOperacaoFinanceira;
 import br.com.clinicaformare.model.usuario.Paciente;
 import br.com.clinicaformare.model.usuario.ResponsavelFinanceiro;
@@ -19,18 +16,18 @@ public class CalculadoraDeDesconto {
 	private TarifaOperacaoFinanceira tarifa;
 	private ResponsavelFinanceiro responsavelFinanceiro;
 	private Paciente paciente;
-	List<AtendimentoPadrao> atendimentosPadrao = new ArrayList<>();
+//	List<AtendimentoPadrao> atendimentosPadrao = new ArrayList<>();
 	
 	@Inject
 	PagamentoDao pagamentoDao;
 	
 	// Quantidade de Pagamentos Em Período
-	public CalculadoraDeDesconto(TarifaOperacaoFinanceira tarifa, ResponsavelFinanceiro responsavelFinanceiro, Paciente paciente, List<AtendimentoPadrao> atendimentosPadrao) {
+	public CalculadoraDeDesconto(TarifaOperacaoFinanceira tarifa, ResponsavelFinanceiro responsavelFinanceiro, Paciente paciente) {//, List<AtendimentoPadrao> atendimentosPadrao) {
 		super();
 		this.tarifa = tarifa;
 		this.responsavelFinanceiro = responsavelFinanceiro;
 		this.paciente = paciente;
-		this.atendimentosPadrao = atendimentosPadrao;
+//		this.atendimentosPadrao = atendimentosPadrao;
 	}
 	public Long quantidadePagamentosMensaisDeResponsavelFinanceiroDesde(Calendar data) {
 		return pagamentoDao.pagamentosDeResponsavelFinanceiroDesdeData(responsavelFinanceiro,  data);

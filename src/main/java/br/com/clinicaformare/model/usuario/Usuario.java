@@ -74,6 +74,8 @@ public class Usuario implements Serializable {
 	private Administrador administrador;
 	@OneToOne
 	private Secretaria secretaria;
+	@OneToOne
+	private Fornecedor fornecedor;
 
 
 	@ManyToMany // Join para criar uma tabela única em relacionamento many to many

@@ -42,6 +42,7 @@ public class CalendarioDao<T> extends Dao<T>{
 	}
 	
 	// super
+	@Override
 	public void adiciona(T t) {
 		super.adiciona(t);
 	}

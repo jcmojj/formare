@@ -5,19 +5,24 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
+import javax.inject.Inject;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 
+import br.com.clinicaformare.model.atendimento.Atendimento;
 import br.com.clinicaformare.model.atendimento.Pacote;
 import br.com.clinicaformare.model.financeiro.Pagamento;
+import br.com.clinicaformare.util.UsuarioLogado;
 
 @Entity
 public class Paciente implements Serializable {
@@ -25,27 +30,39 @@ public class Paciente implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
+	
+	@Transient
+	@Inject
+	private UsuarioLogado usuarioLogado;
+	
+	// Parâmetros Próprios
 	@OneToOne(mappedBy = "paciente")//, cascade = {CascadeType.ALL, CascadeType.MERGE, CascadeType.PERSIST})
 	Usuario usuario;
+	@ManyToOne
+	private Socia sociaSupervisora;
+	@ManyToOne
+	private Socia sociaResponsavel;
+	
+	@OneToMany(mappedBy = "paciente")
+	private List<Atendimento> atendimentos = new ArrayList<>();
+	@OneToMany(mappedBy = "paciente")
+	private List<Autorizacao> autorizacoesDoDependente  = new ArrayList<>();
+	@OneToMany(mappedBy = "paciente")//, cascade = {CascadeType.ALL, CascadeType.MERGE, CascadeType.PERSIST})
+	private List<Pacote> pacotes = new ArrayList<>();
+	
+	@OneToMany(mappedBy = "paciente")
+	private List<Pagamento> pagamentos = new ArrayList<>();
+
+	// Parâmetros de Persistência
 	@Temporal(TemporalType.TIMESTAMP)
 	private Calendar dataCriacao;
 	@Temporal(TemporalType.TIMESTAMP)
 	private Calendar dataAlteracao;
-
-	@OneToMany(mappedBy = "paciente")
-	private List<Autorizacao> autorizacoesDoDependente  = new ArrayList<>();
-	@OneToMany(mappedBy = "paciente")//, cascade = {CascadeType.ALL, CascadeType.MERGE, CascadeType.PERSIST})
-	private List<Pacote> pacotes  = new ArrayList<>();
+	@OneToOne
+	private Usuario alteradoPor;
+	@OneToOne
+	private Usuario criadoPor;
 	
-	@OneToMany(mappedBy = "paciente")
-	private List<Pagamento> pagamentos  = new ArrayList<>();
-	
-
-	@Override
-	public String toString() {
-		return "Paciente [id=" + id + ", usuario=" + usuario + ", dataCriacao=" + dataCriacao + ", dataAlteracao=" + dataAlteracao + ", autorizacoesDoDependente=" + autorizacoesDoDependente;
-	}
-
 	// Constructor
 	public Paciente() {
 	}
@@ -117,6 +134,31 @@ public class Paciente implements Serializable {
 		this.pagamentos = pagamentos;
 	}
 
+	public List<Atendimento> getAtendimentos() {
+		return atendimentos;
+	}
+
+	public Socia getSociaSupervisora() {
+		return sociaSupervisora;
+	}
+
+	public void setSociaSupervisora(Socia sociaSupervisora) {
+		this.sociaSupervisora = sociaSupervisora;
+	}
+
+	public Socia getSociaResponsavel() {
+		return sociaResponsavel;
+	}
+
+	public void setSociaResponsavel(Socia sociaResponsavel) {
+		this.sociaResponsavel = sociaResponsavel;
+	}
+
+	// String, hashCode and Equals
+	@Override
+	public String toString() {
+		return "Paciente [id=" + id + ", usuario=" + usuario + ", dataCriacao=" + dataCriacao + ", dataAlteracao=" + dataAlteracao + ", autorizacoesDoDependente=" + autorizacoesDoDependente;
+	}
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -145,13 +187,16 @@ public class Paciente implements Serializable {
 	// Método Callback para persistir
 	@PrePersist
 	public void quandoCriar() {
-		this.setDataCriacao(Calendar.getInstance());
-		this.setDataAlteracao(Calendar.getInstance());
+		this.dataCriacao = (Calendar.getInstance());
+		this.dataAlteracao = (Calendar.getInstance());
+		this.criadoPor = usuarioLogado.getUsuarioLogado();
+		this.alteradoPor = usuarioLogado.getUsuarioLogado();
 	}
 
 	// Método Callback para update
 	@PreUpdate
 	public void quandoAtualizar() {
-		this.setDataAlteracao(Calendar.getInstance());
+		this.dataAlteracao = (Calendar.getInstance());
+		this.alteradoPor = usuarioLogado.getUsuarioLogado();
 	}
 }

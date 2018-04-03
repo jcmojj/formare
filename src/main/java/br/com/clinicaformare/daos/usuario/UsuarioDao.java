@@ -8,7 +8,6 @@ import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 
 import br.com.clinicaformare.daos.Dao;
-import br.com.clinicaformare.model.usuario.TipoSocia;
 import br.com.clinicaformare.model.usuario.Usuario;
 
 @Stateless
@@ -22,12 +21,25 @@ public class UsuarioDao extends Dao<Usuario> {
 	}
 
 	public boolean existe(Usuario usuario) {
-		String jpql = "from Usuario u where u.email = " + ":email and u.password = :password";
+		System.out.println("Procurando Usuario: " + usuario);
+		String jpql = "select u from Usuario u where u.email = " + ":email and u.password = :password";
 		TypedQuery<Usuario> query = manager.createQuery(jpql, Usuario.class);
 		query.setParameter("email", usuario.getEmail());
 		query.setParameter("password", usuario.getPassword());
+		query.getResultList().forEach(u -> System.out.println("Existe Usuario: " + u));
 		return !query.getResultList().isEmpty();
 	}
+	
+	public Usuario buscaLoginPassword(Usuario usuario) {
+		System.out.println("Buscando Usuario: " + usuario);
+		String jpql = "select u from Usuario u where u.email = " + ":email and u.password = :password";
+		TypedQuery<Usuario> query = manager.createQuery(jpql, Usuario.class);
+		query.setParameter("email", usuario.getEmail());
+		query.setParameter("password", usuario.getPassword());
+		query.getResultList().forEach(u -> System.out.println("Existe Usuario buscado: " + u));
+		return query.getSingleResult();
+	}
+
 
 	public List<Usuario> listaTodosUsuarioClienteDoMaisNovoAoMaisVelho() {
 		String jpql = "select u from Usuario u where u.equipe = false order by u.dataAlteracao desc";
@@ -51,12 +63,12 @@ public class UsuarioDao extends Dao<Usuario> {
 		return query.getResultList();
 	}
 
-	public List<Usuario> listaTodosUsuariosSociaDoTipo(TipoSocia tipoSocia) {
-		// String jpql = "select u from Usuario u join u.socia.tiposSocia tipo where tipo = :tipoSocia ";
-		String jpql = "select s.usuario from Socia s join s.tiposSocia tipoSocia where tipoSocia = :tipoSocia ";
-		TypedQuery<Usuario> query = manager.createQuery(jpql, Usuario.class);
-		query.setParameter("tipoSocia", tipoSocia);
-		return query.getResultList();
-	}
+//	public List<Usuario> listaTodosUsuariosSociaDoTipo(TipoSocia tipoSocia) {
+//		// String jpql = "select u from Usuario u join u.socia.tiposSocia tipo where tipo = :tipoSocia ";
+//		String jpql = "select s.usuario from Socia s join s.tiposSocia tipoSocia where tipoSocia = :tipoSocia ";
+//		TypedQuery<Usuario> query = manager.createQuery(jpql, Usuario.class);
+//		query.setParameter("tipoSocia", tipoSocia);
+//		return query.getResultList();
+//	}
 
 }

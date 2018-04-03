@@ -9,12 +9,10 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
-import javax.persistence.OneToMany;
 
-import br.com.clinicaformare.model.atendimento.AtendimentoPadrao;
 
 @Entity
-public class TipoSocia implements Serializable, TipoHorista {
+public class TipoFornecedor implements Serializable {
 	private static final long serialVersionUID = 2L;
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,18 +22,18 @@ public class TipoSocia implements Serializable, TipoHorista {
 	private Double valorBrutoHora;
 	private Double valorLiquidoHora;
 	private Double porcentagemLiquidoSobreBruto;
-	@OneToMany(mappedBy = "tipoSocia")
-	private List<AtendimentoPadrao> atendimentosPadrao  = new ArrayList<>();
-	@ManyToMany(mappedBy = "tiposSocia")
-	private List<Socia> socias  = new ArrayList<>();
+//	@OneToMany(mappedBy = "tipoFornecedor")
+//	private List<AtendimentoPadrao> atendimentosPadrao  = new ArrayList<>();
+	@ManyToMany(mappedBy = "tiposFornecedor")
+	private List<Fornecedor> fornecedores  = new ArrayList<>();
 
 	// Constructor
 	@Override
 	public String toString() {
-		return "TipoSocia(" + id + ")=" + tipo ;
+		return "TipoFornecedor(" + id + ")=" + tipo ;
 	}
 
-	public TipoSocia(String tipo, Double valorBrutoHora, Double valorLiquidoHora) {
+	public TipoFornecedor(String tipo, Double valorBrutoHora, Double valorLiquidoHora) {
 		super();
 		this.tipo = tipo;
 		this.valorBrutoHora = valorBrutoHora;
@@ -44,7 +42,7 @@ public class TipoSocia implements Serializable, TipoHorista {
 
 	}
 
-	public TipoSocia() {
+	public TipoFornecedor() {
 		super();
 	}
 
@@ -94,20 +92,16 @@ public class TipoSocia implements Serializable, TipoHorista {
 
 
 
-	public List<AtendimentoPadrao> getAtendimentosPadrao() {
-		return atendimentosPadrao;
-	}
+//	public List<AtendimentoPadrao> getAtendimentosPadrao() {
+//		return atendimentosPadrao;
+//	}
+//
+//	public void setAtendimentosPadrao(List<AtendimentoPadrao> atendimentosPadrao) {
+//		this.atendimentosPadrao = atendimentosPadrao;
+//	}
 
-	public void setAtendimentosPadrao(List<AtendimentoPadrao> atendimentosPadrao) {
-		this.atendimentosPadrao = atendimentosPadrao;
-	}
-
-	public List<Socia> getSocias() {
-		return socias;
-	}
-
-	public void setSocias(List<Socia> socias) {
-		this.socias = socias;
+	public List<Fornecedor> getFornecedores() {
+		return fornecedores;
 	}
 
 	@Override
@@ -126,7 +120,7 @@ public class TipoSocia implements Serializable, TipoHorista {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		TipoSocia other = (TipoSocia) obj;
+		TipoFornecedor other = (TipoFornecedor) obj;
 		if (id == null) {
 			if (other.id != null)
 				return false;

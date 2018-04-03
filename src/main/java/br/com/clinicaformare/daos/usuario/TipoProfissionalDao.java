@@ -9,18 +9,18 @@ import javax.ejb.Stateless;
 import javax.persistence.TypedQuery;
 
 import br.com.clinicaformare.daos.Dao;
-import br.com.clinicaformare.model.usuario.TipoProfissional;
+import br.com.clinicaformare.model.usuario.EspecializacaoDoProfissional;
 
 @Stateless
-public class TipoProfissionalDao extends Dao<TipoProfissional> {
+public class TipoProfissionalDao extends Dao<EspecializacaoDoProfissional> {
 
 	public TipoProfissionalDao() {
-		super(TipoProfissional.class);
+		super(EspecializacaoDoProfissional.class);
 	}
 
-	public TipoProfissional buscaPorTipoEEspecialista(String tipo, boolean especialista) {
+	public EspecializacaoDoProfissional buscaPorTipoEEspecialista(String tipo, boolean especialista) {
 		String jpql = "select t from TipoProfissional t where t.tipo = :tipo and t.especialista = :especialista";
-		TypedQuery<TipoProfissional> query = super.getEntityManager().createQuery(jpql,TipoProfissional.class);
+		TypedQuery<EspecializacaoDoProfissional> query = super.getEntityManager().createQuery(jpql,EspecializacaoDoProfissional.class);
 		query.setParameter("tipo", tipo);
 		query.setParameter("especialista", especialista);
 		return query.getSingleResult();

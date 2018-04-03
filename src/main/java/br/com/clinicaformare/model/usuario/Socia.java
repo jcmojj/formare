@@ -1,26 +1,23 @@
 package br.com.clinicaformare.model.usuario;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Calendar;
+import java.time.LocalDateTime;
 import java.util.List;
 
+import javax.inject.Inject;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 
-import br.com.clinicaformare.model.atendimento.AtendimentoPadrao;
+import br.com.clinicaformare.model.atendimento.Atendimento;
 import br.com.clinicaformare.model.atendimento.Pacote;
+import br.com.clinicaformare.util.UsuarioLogado;
 
 @Entity
 public class Socia implements Serializable {
@@ -28,99 +25,84 @@ public class Socia implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
+	
+	@Transient
+	@Inject
+	private UsuarioLogado usuarioLogado;
+	
+	// Parâmetros Próprios
 	@OneToOne(mappedBy = "socia")
 	Usuario usuario;
 
-	@Temporal(TemporalType.TIMESTAMP)
-	private Calendar dataCriacao;
-	@Temporal(TemporalType.TIMESTAMP)
-	private Calendar dataAlteracao;
+	// Parâmetros de Persistência
+	private LocalDateTime dataCriacao;
+	private LocalDateTime dataAlteracao;
+	@OneToOne
+	private Usuario alteradoPor;
+	@OneToOne
+	private Usuario criadoPor;
 
-
+	@OneToMany(mappedBy = "sociaSupervisora")
+	private List<Paciente> sociasSupervisoras;
+	@OneToMany(mappedBy = "sociaResponsavel")
+	private List<Paciente> sociasResponsaveis;
+	
+	@OneToMany(mappedBy = "sociaSupervisora")
+	private List<Atendimento> atendimentos;
 	@OneToMany(mappedBy = "sociaResponsavel")
 	private List<Pacote> pacotes;
-	@OneToMany(mappedBy = "socia")
-	private List<AtendimentoPadrao> atendimentosPadrao = new ArrayList<>();
-	@JoinTable(name = "Socia_TipoSocia", joinColumns = @JoinColumn(name = "Socia_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "TipoSocia_id", referencedColumnName = "id"))
-	@ManyToMany
-	private List<TipoSocia> tiposSocia = new ArrayList<>();
-
-
-
-	@Override
-	public String toString() {
-		return "Socia [id=" + id + ", usuario[id]=" + usuario.getId() + "]";
-	}
+	
 
 	// Constructor
 	public Socia() {
 	}
-
 	public Socia(Long id) {
 		this.id = id;
 	}
-
-
-	// Getters and setters
-
-
-	public List<Pacote> getPacotes() {
-		return pacotes;
-	}
-
-	public void setPacotes(List<Pacote> pacotes) {
-		this.pacotes = pacotes;
-	}
-
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
-
-	public Usuario getUsuario() {
-		return usuario;
-	}
-
-	public void setUsuario(Usuario usuario) {
+	public Socia(Usuario usuario) {
+		super();
 		this.usuario = usuario;
-	}
-
-	public Calendar getDataCriacao() {
-		return dataCriacao;
-	}
-
-	public void setDataCriacao(Calendar dataCriacao) {
-		this.dataCriacao = dataCriacao;
-	}
-
-	public Calendar getDataAlteracao() {
-		return dataAlteracao;
-	}
-
-	public void setDataAlteracao(Calendar dataAlteracao) {
-		this.dataAlteracao = dataAlteracao;
-	}
-
-	public List<AtendimentoPadrao> getAtendimentosPadrao() {
-		return atendimentosPadrao;
-	}
-
-	public void setAtendimentosPadrao(List<AtendimentoPadrao> atendimentosPadrao) {
-		this.atendimentosPadrao = atendimentosPadrao;
-	}
-
-	public List<TipoSocia> getTiposSocias() {
-		return tiposSocia;
-	}
-
-	public void setTiposSocias(List<TipoSocia> tiposSocia) {
-		this.tiposSocia = tiposSocia;
 	}
 	
 
+	// Getters
+	public Long getId() {
+		return id;
+	}
+	public Usuario getUsuario() {
+		return usuario;
+	}
+	public LocalDateTime getDataCriacao() {
+		return dataCriacao;
+	}
+	public LocalDateTime getDataAlteracao() {
+		return dataAlteracao;
+	}
+	public Usuario getAlteradoPor() {
+		return alteradoPor;
+	}
+	public Usuario getCriadoPor() {
+		return criadoPor;
+	}
+	public List<Paciente> getSociasSupervisoras() {
+		return sociasSupervisoras;
+	}
+	public List<Paciente> getSociasResponsaveis() {
+		return sociasResponsaveis;
+	}
+	public List<Pacote> getPacotes() {
+		return pacotes;
+	}
+	public List<Atendimento> getAtendimentos() {
+		return atendimentos;
+	}
+	// Setters
+	
+	// String, hashCode and Equals
+		@Override
+		public String toString() {
+			return "Socia [id=" + id + ", usuario[id]=" + usuario.getId() + "]";
+		}
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -149,13 +131,16 @@ public class Socia implements Serializable {
 	// Método Callback para persistir
 	@PrePersist
 	public void quandoCriar() {
-		this.setDataCriacao(Calendar.getInstance());
-		this.setDataAlteracao(Calendar.getInstance());
+		this.dataCriacao = LocalDateTime.now();
+		this.dataAlteracao = LocalDateTime.now();
+		this.criadoPor = usuarioLogado.getUsuarioLogado();
+		this.alteradoPor = usuarioLogado.getUsuarioLogado();
 	}
 
 	// Método Callback para update
 	@PreUpdate
 	public void quandoAtualizar() {
-		this.setDataAlteracao(Calendar.getInstance());
+		this.dataAlteracao = LocalDateTime.now();;
+		this.alteradoPor = usuarioLogado.getUsuarioLogado();
 	}
 }

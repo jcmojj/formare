@@ -16,7 +16,7 @@ import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.QueryHint;
 
-import br.com.clinicaformare.listeners.OperadorFinanceiroListener;
+import br.com.clinicaformare.util.listeners.OperadorFinanceiroListener;
 
 @Entity
 @Cacheable
