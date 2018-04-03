@@ -1,7 +1,7 @@
 package br.com.clinicaformare.model.usuario;
 
 import java.io.Serializable;
-import java.util.Calendar;
+import java.time.LocalDate;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -13,8 +13,6 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 
 import br.com.clinicaformare.util.UsuarioLogado;
 
@@ -36,10 +34,8 @@ public class NivelProfissional implements Serializable {
 	private List<EspecializacaoDoProfissional> especializacoesDoProfissional;
 	
 	// Parâmetros de Persistência
-	@Temporal(TemporalType.TIMESTAMP)
-	private Calendar dataCriacao;
-	@Temporal(TemporalType.TIMESTAMP)
-	private Calendar dataAlteracao;
+	private LocalDate dataCriacao;
+	private LocalDate dataAlteracao;
 	@OneToOne
 	private Usuario alteradoPor;
 	@OneToOne
@@ -69,10 +65,10 @@ public class NivelProfissional implements Serializable {
 	public List<EspecializacaoDoProfissional> getEspecializacoesDoProfissional() {
 		return especializacoesDoProfissional;
 	}
-	public Calendar getDataCriacao() {
+	public LocalDate getDataCriacao() {
 		return dataCriacao;
 	}
-	public Calendar getDataAlteracao() {
+	public LocalDate getDataAlteracao() {
 		return dataAlteracao;
 	}
 	public Usuario getAlteradoPor() {
@@ -115,8 +111,8 @@ public class NivelProfissional implements Serializable {
 	// Método Callback para persistir
 	@PrePersist
 	public void quandoCriar() {
-		this.dataCriacao = (Calendar.getInstance());
-		this.dataAlteracao = (Calendar.getInstance());
+		this.dataCriacao = (LocalDate.now());
+		this.dataAlteracao = (LocalDate.now());
 		this.criadoPor = usuarioLogado;
 		this.alteradoPor = usuarioLogado;
 	}
@@ -124,7 +120,7 @@ public class NivelProfissional implements Serializable {
 	// Método Callback para update
 	@PreUpdate
 	public void quandoAtualizar() {
-		this.dataAlteracao = (Calendar.getInstance());
+		this.dataAlteracao = (LocalDate.now());
 		this.alteradoPor = usuarioLogado;
 	}
 

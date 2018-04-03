@@ -1,6 +1,7 @@
 package br.com.clinicaformare.util;
 
 import javax.enterprise.context.RequestScoped;
+import javax.enterprise.context.SessionScoped;
 import javax.enterprise.inject.Produces;
 import javax.faces.context.FacesContext;
 
@@ -21,9 +22,15 @@ public class ClasseProdutora {
 	}
 	
 	@Produces @UsuarioLogado
-	public Usuario produzirUsuarioLogado(Usuario usuario) {
-		System.out.println("Criando Usuario Logado");
-		usuario = (Usuario) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("usuarioLogado"); // define ele no loginBean
+	public Usuario produzirUsuarioLogado() {
+		System.out.println("Criando Usuario Logado na Classe Produtora");
+		Usuario usuario = new Usuario();
+		if(FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("usuarioLogado") == null) {
+			usuario = null;
+		}else {
+			usuario = (Usuario) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("usuarioLogado"); // define ele no loginBean
+		}
+		System.out.println("Usuario Logado produzido na classe produtora: " + usuario);
 		return usuario;
 //		if(usuarioDao.buscaPorId(1L) == null) {
 //			Usuario usuario = new Usuario("Jose", "Oliveira", "jcmojj@gmail.com");

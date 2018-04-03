@@ -25,7 +25,11 @@ public class Autorizador implements PhaseListener {
 		System.out.println("Recuperou a árvore: " + event.getPhaseId());
 //		FacesContext context = event.getFacesContext();
 		String nomePagina = context.getViewRoot().getViewId();
+		System.out.println();
+		System.out.println("Autorizador");
 		System.out.println("Nome Pagina: " + nomePagina);
+		System.out.println("Usuario Logado do Autorizador:" + usuarioLogado);
+		System.out.println("Usuario Logado do Original:" + FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("usuarioLogado"));
 		
 		// se login, liberado
 		if("/login.xhtml".equals(nomePagina)) {

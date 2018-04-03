@@ -12,7 +12,8 @@
 		<h:form id="login">
 		<p:fieldset legend="Login">
 			<h:panelGrid columns="3">
-			
+				<h:outputText value="#{sessionScope['usuarioLogado'].nome}" />
+				
 				<p:outputLabel for="email" value="Email:" />
 				<p:inputText id="email" value="#{loginBean.usuario.email}"
 					required="true" requiredMessage="O email é um campo obrigatório."

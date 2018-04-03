@@ -16,8 +16,8 @@ import br.com.clinicaformare.model.usuario.Usuario;
 public class LoginBean implements Serializable{
 	private static final long serialVersionUID = 1L;
 	
-	@Inject
-	private Usuario usuario;// = new Usuario();
+//	@Inject
+	private Usuario usuario = new Usuario();
 	@Inject
 	private UsuarioDao usuarioDao;
 	@Inject
@@ -40,7 +40,7 @@ public class LoginBean implements Serializable{
 	
 	public void deslogar() {
 //		FacesContext context = FacesContext.getCurrentInstance();
-		context.getExternalContext().getSessionMap().clear();
+		context.getExternalContext().getSessionMap().put("usuarioLogado", null);
 		this.logado = false;
 	}
 	

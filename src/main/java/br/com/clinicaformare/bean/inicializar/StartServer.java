@@ -48,7 +48,9 @@ public class StartServer {
 	private NivelProfissionalDao nivelProfissionalDao;
 
 	@Transactional
-	public void nivelProfissional() {
+	public String nivelProfissional() {
+		System.out.println("");
+		System.out.println("Nivel Profissional");
 		try {
 			InputStream is = new FileInputStream("/Users/josecarlosoliveira/javaee/eclipse-workspace/formare/src/main/resources/startServer/nivelProfissional");
 			InputStreamReader isr = new InputStreamReader(is);
@@ -67,6 +69,7 @@ public class StartServer {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		return "startserver?faces-redirect-true"; 
 	}
 	
 	

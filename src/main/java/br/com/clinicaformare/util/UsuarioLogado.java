@@ -9,8 +9,12 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+import javax.enterprise.context.SessionScoped;
+import javax.enterprise.inject.Stereotype;
 import javax.inject.Qualifier;
 
+@Stereotype
+@SessionScoped
 @Qualifier
 @Retention(RetentionPolicy.RUNTIME)
 @Target({TYPE, METHOD, FIELD, PARAMETER})
