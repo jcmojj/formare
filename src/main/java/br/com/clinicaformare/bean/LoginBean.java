@@ -1,17 +1,19 @@
 package br.com.clinicaformare.bean;
 
 import java.io.Serializable;
+import java.util.Map;
 
 import javax.annotation.PostConstruct;
+import javax.enterprise.context.RequestScoped;
 import javax.faces.context.FacesContext;
-import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 
 import br.com.clinicaformare.daos.usuario.UsuarioDao;
 import br.com.clinicaformare.model.usuario.Usuario;
+import br.com.clinicaformare.util.faces.SessionMap;
 
-@ViewScoped
+@RequestScoped
 @Named
 public class LoginBean implements Serializable{
 	private static final long serialVersionUID = 1L;
@@ -22,6 +24,8 @@ public class LoginBean implements Serializable{
 	private UsuarioDao usuarioDao;
 	@Inject
 	private FacesContext context;
+	@Inject @SessionMap
+	private  Map<String,Object> sessionMap;
 	
 	private boolean logado = false;
 
@@ -31,7 +35,8 @@ public class LoginBean implements Serializable{
 			System.out.println("Login Valido:"+ usuario.getNome()+" "+usuario.getSobrenome());
 			this.logado = true;
 //			FacesContext context = FacesContext.getCurrentInstance();
-			context.getExternalContext().getSessionMap().put("usuarioLogado", this.usuario);
+//			context.getExternalContext().getSessionMap().put("usuarioLogado", this.usuario);
+			sessionMap.put("usuarioLogado", this.usuario);
 		}else{
 			this.logado = false;
 		}

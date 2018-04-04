@@ -3,6 +3,6 @@
 	xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-facesconfig_2_2.xsd">
 	<lifecycle>
 		<phase-listener>br.com.clinicaformare.util.listeners.LifeCycleListener</phase-listener>
-		<phase-listener>br.com.clinicaformare.util.listeners.Autorizador</phase-listener>
+		<phase-listener>br.com.clinicaformare.util.listeners.login.EventPhaseListenerForRestoreView</phase-listener>
 	</lifecycle>
 </faces-config>

@@ -21,7 +21,7 @@ import javax.persistence.TemporalType;
 import br.com.clinicaformare.model.atendimento.Atendimento;
 import br.com.clinicaformare.model.atendimento.Pacote;
 import br.com.clinicaformare.model.financeiro.Pagamento;
-import br.com.clinicaformare.util.UsuarioLogado;
+import br.com.clinicaformare.util.listeners.login.UsuarioLogado;
 
 @Entity
 public class Paciente implements Serializable {

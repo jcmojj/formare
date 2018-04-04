@@ -14,7 +14,7 @@ import javax.persistence.OneToOne;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 
-import br.com.clinicaformare.util.UsuarioLogado;
+import br.com.clinicaformare.util.listeners.login.UsuarioLogado;
 
 @Entity
 public class NivelProfissional implements Serializable {

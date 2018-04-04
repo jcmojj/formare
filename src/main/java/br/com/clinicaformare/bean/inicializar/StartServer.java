@@ -15,7 +15,7 @@ import javax.transaction.Transactional;
 import br.com.clinicaformare.daos.usuario.NivelProfissionalDao;
 import br.com.clinicaformare.model.usuario.NivelProfissional;
 import br.com.clinicaformare.model.usuario.Usuario;
-import br.com.clinicaformare.util.UsuarioLogado;
+import br.com.clinicaformare.util.listeners.login.UsuarioLogado;
 
 @Named
 @RequestScoped

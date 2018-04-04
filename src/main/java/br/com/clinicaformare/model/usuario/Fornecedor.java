@@ -19,7 +19,7 @@ import javax.persistence.PreUpdate;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
-import br.com.clinicaformare.util.UsuarioLogado;
+import br.com.clinicaformare.util.listeners.login.UsuarioLogado;
 
 @Entity
 public class Fornecedor implements Serializable {

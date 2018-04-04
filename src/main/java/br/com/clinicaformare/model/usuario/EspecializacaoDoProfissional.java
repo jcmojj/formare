@@ -22,7 +22,7 @@ import javax.persistence.TemporalType;
 
 import br.com.clinicaformare.model.atendimento.Atendimento;
 import br.com.clinicaformare.model.atendimento.AtendimentoPorProfissional;
-import br.com.clinicaformare.util.UsuarioLogado;
+import br.com.clinicaformare.util.listeners.login.UsuarioLogado;
 
 @Entity
 public class EspecializacaoDoProfissional implements Serializable {

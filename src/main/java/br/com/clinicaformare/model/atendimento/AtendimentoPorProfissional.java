@@ -19,7 +19,7 @@ import javax.persistence.TemporalType;
 import br.com.clinicaformare.model.usuario.EspecializacaoDoProfissional;
 import br.com.clinicaformare.model.usuario.Profissional;
 import br.com.clinicaformare.model.usuario.Usuario;
-import br.com.clinicaformare.util.UsuarioLogado;
+import br.com.clinicaformare.util.listeners.login.UsuarioLogado;
 
 @Entity
 public class AtendimentoPorProfissional implements Serializable {
