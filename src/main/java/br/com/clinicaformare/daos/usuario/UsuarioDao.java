@@ -1,5 +1,6 @@
 package br.com.clinicaformare.daos.usuario;
 
+import java.io.Serializable;
 import java.util.List;
 
 import javax.ejb.Stateless;
@@ -11,7 +12,8 @@ import br.com.clinicaformare.daos.Dao;
 import br.com.clinicaformare.model.usuario.Usuario;
 
 @Stateless
-public class UsuarioDao extends Dao<Usuario> {
+public class UsuarioDao extends Dao<Usuario> implements Serializable {
+	private static final long serialVersionUID = 1L;
 	@Inject
 	EntityManager manager;
 

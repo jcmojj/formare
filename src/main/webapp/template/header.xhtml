@@ -27,16 +27,15 @@
 					layout="block">
 
 					<h:outputText styleClass="data" value="Campo Belo" />
-					<h:outputText styleClass="data" value="01/01/2018" />
-					<h:outputText styleClass="data" value="20:21" />
-
+					<p:clock  pattern="HH:mm:ss dd.MM.yyyy"
+						/>
+					<p:clock  pattern="HH:mm:ss dd.MM.yyyy"
+						mode="server" />
 				</h:panelGroup>
 				<h:panelGroup
 					styleClass="usuario-container-cabecalho border-right-light border-left-light"
 					layout="block">
-					<h:outputText styleClass="usuario " value="Jose Carlos Oliveira" />
-					<h:outputText styleClass="usuario" value="Usuário:" />
-					<h:outputText styleClass="usuario" value="20:21" />
+					<h:outputText styleClass="usuario" value="#{sessionScope['usuarioLogado'].nome}" />
 				</h:panelGroup>
 
 				<h:panelGroup styleClass="logo-final-container-cabecalho"
@@ -111,9 +110,12 @@
 				styleClass="centraliza container-cabecalho-inferior-linhas"
 				layout="block">
 				<ui:include src="menu.xhtml" />
-				<p:growl id="growlSticky" globalOnly="true" sticky="true" showDetail="true"/>
-				<p:growl id="growlLongo"  globalOnly="true"  showDetail="true" life="5000" />
-				<p:growl id="growlCurto"  globalOnly="true"  showDetail="true" life="2000" />
+				<p:growl id="growlSticky" globalOnly="true" sticky="true"
+					showDetail="true" />
+				<p:growl id="growlLongo" globalOnly="true" showDetail="true"
+					life="5000" />
+				<p:growl id="growlCurto" globalOnly="true" showDetail="true"
+					life="2000" />
 				<p:messages />
 			</h:panelGroup>
 		</h:panelGroup>

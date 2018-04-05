@@ -12,7 +12,7 @@ import br.com.clinicaformare.daos.usuario.UsuarioDao;
 import br.com.clinicaformare.model.usuario.Usuario;
 import br.com.clinicaformare.util.faces.SessionMap;
 
-@RequestScoped // --> nao pode ser isso
+@RequestScoped // --> nao pode ser SessionScoped porque ta injetando o map
 @Named
 public class LoginBean implements Serializable{
 	private static final long serialVersionUID = 1L;

@@ -27,7 +27,7 @@ public class FacesProducer implements Serializable{
 	}
 	
 	@Produces @SessionMap
-	public Map<String,Object> disponibilizaSessionMap(ExternalContext ec){
+	public Map<String,Object> disponibilizaSessionMap(ExternalContext ec) {
 		return ec.getSessionMap();
 	}
 	
