@@ -24,7 +24,7 @@ public class UsuarioLogadoProducer implements Serializable{
 	if(sessionMap.get("usuarioLogado") == null) {
 		usuario = null;
 	}else {
-		usuario = (Usuario) sessionMap.get("usuarioLogado"); // define ele no loginBean
+		usuario = (Usuario) sessionMap.get("usuarioLogado"); // definedo o usuario no loginBean
 	}
 	System.out.println("Usuario Logado produzido na classe produtora: " + usuario);
 	return usuario;

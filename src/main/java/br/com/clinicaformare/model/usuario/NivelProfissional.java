@@ -4,17 +4,16 @@ import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.List;
 
-import javax.inject.Inject;
+import javax.faces.context.FacesContext;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 
-import br.com.clinicaformare.util.listeners.login.UsuarioLogado;
 
 @Entity
 public class NivelProfissional implements Serializable {
@@ -23,8 +22,22 @@ public class NivelProfissional implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
-	@Inject @UsuarioLogado
-	private Usuario usuarioLogado;
+//	@Inject @UsuarioLogado @Transient
+//	private Usuario usuarioLogado;
+	
+//	@Inject
+//	private UsuarioRecuperado usuarioRecuperado;
+	
+//	@Inject
+//	private Event<UsuarioRecuperado> recuperarUsuarioEvent;
+	
+//	@Inject @UsuarioLogado
+//	private Event<Usuario> usuarioLogadoEvent;
+	
+//	@Inject
+//	private transient UsuarioRecuperado usuarioRecuperado;// = new UsuarioRecuperado();
+	
+//	Usuario usuarioLogado;// = new Usuario(); 
 	
 	// Parâmetros Próprios
 	private String nivel;
@@ -36,24 +49,39 @@ public class NivelProfissional implements Serializable {
 	// Parâmetros de Persistência
 	private LocalDate dataCriacao;
 	private LocalDate dataAlteracao;
-	@OneToOne
+	@ManyToOne
 	private Usuario alteradoPor;
-	@OneToOne
+	@ManyToOne
 	private Usuario criadoPor;
+	
+//	//Usuario Logado
+//	private transient Usuario usuarioLogado;
+//	//Usuario Logado
+//		private transient LoginBean loginBean;
+//	@Transient
+//	private Long usuarioLogadoId;
+	
+//	@PostContruct
+//	private void teste() {
+//		
+//	}
 	
 	
 	// Constructor
 	public NivelProfissional() {
 		super();
+//		usuarioLogado = (Usuario)FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("usuarioLogado");
 	}
 	public NivelProfissional(Long id) {
 		super();
 		this.id = id;
+//		usuarioLogado = (Usuario)FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("usuarioLogado");
 	}	
 	public NivelProfissional(String nivel) {
 		super();
 		this.nivel = nivel;
-	}	
+//		usuarioLogado = (Usuario)FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("usuarioLogado");
+	}
 	
 	// Getters and Setters
 	public Long getId() {
@@ -111,17 +139,24 @@ public class NivelProfissional implements Serializable {
 	// Método Callback para persistir
 	@PrePersist
 	public void quandoCriar() {
+//		recuperarUsuarioEvent.fire(usuarioRecuperado);
+		
+//		Usuario usuarioLogado = new Usuario();
+//		usuarioLogadoEvent.fire(usuarioLogado);
+//		System.out.println("Quando Criar - Usuario: " + usuarioLogado);
 		this.dataCriacao = (LocalDate.now());
 		this.dataAlteracao = (LocalDate.now());
-		this.criadoPor = usuarioLogado;
-		this.alteradoPor = usuarioLogado;
+		this.criadoPor = (Usuario)FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("usuarioLogado");
+//		this.alteradoPor = usuarioLogado;
 	}
 
 	// Método Callback para update
 	@PreUpdate
 	public void quandoAtualizar() {
+//		Usuario usuarioLogado = new Usuario();
+//		usuarioLogadoEvent.fire(usuarioLogado);
 		this.dataAlteracao = (LocalDate.now());
-		this.alteradoPor = usuarioLogado;
+//		this.alteradoPor = usuarioLogado;
 	}
 
 

@@ -9,7 +9,6 @@ import javax.interceptor.Interceptor;
 import javax.interceptor.InvocationContext;
 
 import org.slf4j.Logger;
-
 @Priority(Interceptor.Priority.APPLICATION)
 @Interceptor @Auditavel 
 public class Auditor {

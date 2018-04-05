@@ -12,6 +12,7 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import javax.transaction.Transactional;
 
+import br.com.clinicaformare.bean.LoginBean;
 import br.com.clinicaformare.daos.usuario.NivelProfissionalDao;
 import br.com.clinicaformare.model.usuario.NivelProfissional;
 import br.com.clinicaformare.model.usuario.Usuario;
@@ -21,6 +22,8 @@ import br.com.clinicaformare.util.listeners.login.UsuarioLogado;
 @RequestScoped
 public class StartServer {
 
+//	@Inject
+//	private LoginBean loginBean;
 //	@Inject
 //	private UsuarioDao usuarioDao;
 //
@@ -50,7 +53,8 @@ public class StartServer {
 	@Transactional
 	public String nivelProfissional() {
 		System.out.println("");
-		System.out.println("Nivel Profissional");
+//		System.out.println("Nivel Profissional");
+//		System.out.println("Usuario Logado: " + usuarioLogado);
 		try {
 			InputStream is = new FileInputStream("/Users/josecarlosoliveira/javaee/eclipse-workspace/formare/src/main/resources/startServer/nivelProfissional");
 			InputStreamReader isr = new InputStreamReader(is);

@@ -99,6 +99,7 @@ public class Usuario implements Serializable {
 
 	// Constructor
 	public Usuario() {
+		System.out.println("New Usuario");
 	}
 
 	public Usuario(Long id) {
@@ -145,6 +146,7 @@ public class Usuario implements Serializable {
 	}
 
 	public String getNome() {
+		System.out.println("New Usuario - setNome");
 		return nome;
 	}
 
