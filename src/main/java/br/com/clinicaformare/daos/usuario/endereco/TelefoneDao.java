@@ -1,9 +1,9 @@
-package br.com.clinicaformare.daos.usuario;
+package br.com.clinicaformare.daos.usuario.endereco;
 
 import javax.ejb.Stateless;
 
 import br.com.clinicaformare.daos.Dao;
-import br.com.clinicaformare.model.usuario.telefone.Telefone;
+import br.com.clinicaformare.usuario.endereco.Telefone;
 
 @Stateless
 public class TelefoneDao extends Dao<Telefone> {

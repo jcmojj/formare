@@ -1,17 +1,17 @@
 package br.com.clinicaformare.model.usuario;
 
 import java.io.Serializable;
-import java.util.Calendar;
+import java.time.LocalDateTime;
 
+import javax.faces.context.FacesContext;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 
 @Entity
 public class Administrador implements Serializable {
@@ -19,17 +19,11 @@ public class Administrador implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
+	
+	// Parâmetros Derivados
 	@OneToOne(mappedBy = "administrador")
 	Usuario usuario;
-	@Temporal(TemporalType.TIMESTAMP)
-	private Calendar dataCriacao;
-	@Temporal(TemporalType.TIMESTAMP)
-	private Calendar dataAlteracao;
 
-	@Override
-	public String toString() {
-		return "Administrador [id=" + id + ", usuario=" + usuario + ", dataCriacao=" + dataCriacao + ", dataAlteracao=" + dataAlteracao + "]";
-	}
 
 	// Constructor
 	public Administrador() {
@@ -40,9 +34,13 @@ public class Administrador implements Serializable {
 		super();
 		this.id = id;
 	}
+ 
+	public Administrador(Usuario usuario) {
+		super();
+		this.usuario = usuario;
+	}
 
 	// Getters and setters
-
 	public Long getId() {
 		return id;
 	}
@@ -55,26 +53,12 @@ public class Administrador implements Serializable {
 		return usuario;
 	}
 
-	public void setUsuario(Usuario usuario) {
-		this.usuario = usuario;
+	// String, hashCode and Equals
+	@Override
+	public String toString() {
+		return "Administrador [id=" + id + ", usuario=" + usuario + ", dataCriacao=" + dataCriacao + ", dataAlteracao=" + dataAlteracao + "]";
 	}
-
-	public Calendar getDataCriacao() {
-		return dataCriacao;
-	}
-
-	public void setDataCriacao(Calendar dataCriacao) {
-		this.dataCriacao = dataCriacao;
-	}
-
-	public Calendar getDataAlteracao() {
-		return dataAlteracao;
-	}
-
-	public void setDataAlteracao(Calendar dataAlteracao) {
-		this.dataAlteracao = dataAlteracao;
-	}
-
+	
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -100,17 +84,45 @@ public class Administrador implements Serializable {
 		return true;
 	}
 
-	// Método Callback para persistir
-	@PrePersist
-	public void quandoCriar() {
-		this.setDataCriacao(Calendar.getInstance());
-		this.setDataAlteracao(Calendar.getInstance());
-	}
+	// -----------------------------------Registro de Alteração-----------------------------------------
+		// Parâmetros de Persistência
+		private LocalDateTime dataCriacao;
+		private LocalDateTime dataAlteracao;
+		@ManyToOne
+		private Usuario alterador;
+		@ManyToOne
+		private Usuario criador;
+		
+		// Getters de persistência
+		public LocalDateTime getDataCriacao() {
+			return dataCriacao;
+		}
+		public LocalDateTime getDataAlteracao() {
+			return dataAlteracao;
+		}
+		public Usuario getAlterador() {
+			return alterador;
+		}
+		public Usuario getCriador() {
+			return criador;
+		}
+		
+		// Método Callback para persistir
+		@PrePersist
+		public void quandoCriar() {
+			this.dataCriacao = (LocalDateTime.now());
+			this.dataAlteracao = (LocalDateTime.now());
+			this.criador = (Usuario)FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("usuarioLogado");
+			this.alterador = (Usuario)FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("usuarioLogado");
+		}
 
-	// Método Callback para update
-	@PreUpdate
-	public void quandoAtualizar() {
-		this.setDataAlteracao(Calendar.getInstance());
-	}
+		// Método Callback para update
+		@PreUpdate
+		public void quandoAtualizar() {
+			this.dataAlteracao = (LocalDateTime.now());
+			this.alterador  = (Usuario)FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("usuarioLogado");
+		}
+		// ------------------------------------------------------------------------------------------------
+
 
 }

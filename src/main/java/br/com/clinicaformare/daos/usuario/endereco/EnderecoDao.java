@@ -1,4 +1,4 @@
-package br.com.clinicaformare.daos.usuario;
+package br.com.clinicaformare.daos.usuario.endereco;
 
 import javax.ejb.Stateless;
 import br.com.clinicaformare.daos.Dao;

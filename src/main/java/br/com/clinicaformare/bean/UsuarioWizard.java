@@ -14,15 +14,15 @@ import javax.transaction.Transactional;
 
 import org.primefaces.event.FlowEvent;
 
-import br.com.clinicaformare.daos.usuario.EnderecoDao;
-import br.com.clinicaformare.daos.usuario.LogradouroDao;
-import br.com.clinicaformare.daos.usuario.PaesciDao;
-import br.com.clinicaformare.daos.usuario.TipoEnderecoDao;
 import br.com.clinicaformare.daos.usuario.UsuarioDao;
+import br.com.clinicaformare.daos.usuario.endereco.EnderecoDao;
+import br.com.clinicaformare.daos.usuario.endereco.LogradouroDao;
+import br.com.clinicaformare.daos.usuario.endereco.PaesciDao;
+import br.com.clinicaformare.daos.usuario.endereco.TipoEnderecoDao;
 import br.com.clinicaformare.model.usuario.Usuario;
-import br.com.clinicaformare.model.usuario.telefone.Telefone;
 import br.com.clinicaformare.usuario.endereco.Endereco;
 import br.com.clinicaformare.usuario.endereco.Logradouro;
+import br.com.clinicaformare.usuario.endereco.Telefone;
 import br.com.clinicaformare.usuario.endereco.TipoEndereco;
 
 @Named

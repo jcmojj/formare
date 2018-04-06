@@ -9,7 +9,7 @@ import javax.inject.Named;
 import br.com.clinicaformare.daos.PacoteDao;
 import br.com.clinicaformare.daos.usuario.PacienteDao;
 import br.com.clinicaformare.daos.usuario.ResponsavelFinanceiroDao;
-import br.com.clinicaformare.daos.usuario.TipoProfissionalDao;
+import br.com.clinicaformare.daos.usuario.EspecializacaoDoProfissionalDao;
 import br.com.clinicaformare.daos.usuario.UsuarioDao;
 
 @Named
@@ -24,7 +24,7 @@ public class NovoPacoteBean implements Serializable {
 //	@Inject
 //	AtendimentoPadraoDao atendimentoPadraoDao;
 	@Inject
-	TipoProfissionalDao tipoProfissionalDao;
+	EspecializacaoDoProfissionalDao tipoProfissionalDao;
 //	@Inject
 //	TipoSociaDao tipoSociaDao;
 	@Inject

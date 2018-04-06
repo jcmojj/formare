@@ -12,12 +12,12 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import javax.transaction.Transactional;
 
-import br.com.clinicaformare.daos.usuario.LogradouroDao;
-import br.com.clinicaformare.daos.usuario.PaesciDao;
-import br.com.clinicaformare.daos.usuario.TipoTelefoneDao;
-import br.com.clinicaformare.model.usuario.telefone.TipoTelefone;
+import br.com.clinicaformare.daos.usuario.endereco.LogradouroDao;
+import br.com.clinicaformare.daos.usuario.endereco.PaesciDao;
+import br.com.clinicaformare.daos.usuario.endereco.TipoTelefoneDao;
 import br.com.clinicaformare.usuario.endereco.Logradouro;
 import br.com.clinicaformare.usuario.endereco.Paesci;
+import br.com.clinicaformare.usuario.endereco.TipoTelefone;
 
 @Named
 @RequestScoped
@@ -26,7 +26,7 @@ public class InicializarBean {
 	@Transactional
 	public void todos() {
 		logradouro();
-		tipoTelefone();
+//		tipoTelefone();
 		paesci();
 //		secao();
 //		tipoProdutoPet();
@@ -73,31 +73,31 @@ public class InicializarBean {
 		}
 	}
 
-	@Inject
-	private TipoTelefoneDao tipoTelefoneDao;
-
-	@Transactional
-	public void tipoTelefone() {
-		try {
-			InputStream is = new FileInputStream(
-					"/Users/josecarlosoliveira/javaee/eclipse-workspace/coisasde/target/classes/br/com/coisasde/loja/model/usuario/telefone/tipoTelefone");
-			InputStreamReader isr = new InputStreamReader(is);
-			BufferedReader br = new BufferedReader(isr);
-			String tipoTelefone = br.readLine();
-
-			while (tipoTelefone != null) {
-
-				tipoTelefoneDao.adiciona(new TipoTelefone(tipoTelefone));
-
-				tipoTelefone = br.readLine();
-			}
-			br.close();
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
+//	@Inject
+//	private TipoTelefoneDao tipoTelefoneDao;
+//
+//	@Transactional
+//	public void tipoTelefone() {
+//		try {
+//			InputStream is = new FileInputStream(
+//					"/Users/josecarlosoliveira/javaee/eclipse-workspace/coisasde/target/classes/br/com/coisasde/loja/model/usuario/telefone/tipoTelefone");
+//			InputStreamReader isr = new InputStreamReader(is);
+//			BufferedReader br = new BufferedReader(isr);
+//			String tipoTelefone = br.readLine();
+//
+//			while (tipoTelefone != null) {
+//
+//				tipoTelefoneDao.adiciona(new TipoTelefone(tipoTelefone));
+//
+//				tipoTelefone = br.readLine();
+//			}
+//			br.close();
+//		} catch (FileNotFoundException e) {
+//			e.printStackTrace();
+//		} catch (IOException e) {
+//			e.printStackTrace();
+//		}
+//	}
 
 	@Inject
 	private PaesciDao paesciDao;

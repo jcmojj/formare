@@ -1,13 +1,12 @@
 package br.com.clinicaformare.model.usuario;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.Period;
-import java.time.ZoneId;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
+import javax.faces.context.FacesContext;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -20,15 +19,13 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.br.CPF;
 
-import br.com.clinicaformare.model.usuario.telefone.Telefone;
 import br.com.clinicaformare.usuario.endereco.Endereco;
 import br.com.clinicaformare.usuario.endereco.Paesci;
+import br.com.clinicaformare.usuario.endereco.Telefone;
 
 @Entity
 public class Usuario implements Serializable {
@@ -48,8 +45,7 @@ public class Usuario implements Serializable {
 	private String nome;
 	private String sobrenome;
 	private String profissao;
-	@Temporal(TemporalType.DATE)
-	private Date dataNascimento  = new Date();
+	private LocalDate dataNascimento;//  = LocalDate.now();
 	@ManyToOne
 	private Paesci localNascimento;
 	@Column(unique = true)
@@ -85,10 +81,6 @@ public class Usuario implements Serializable {
 	@JoinTable(name = "Usuario_Endereco", joinColumns = @JoinColumn(name = "Usuario_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "Endereco_id", referencedColumnName = "id"))
 	private List<Endereco> enderecos;
 
-	@Temporal(TemporalType.TIMESTAMP)
-	private Calendar dataCriacao = Calendar.getInstance();
-	@Temporal(TemporalType.TIMESTAMP)
-	private Calendar dataAlteracao = Calendar.getInstance();
 
 	@Override
 	public String toString() {
@@ -134,7 +126,7 @@ public class Usuario implements Serializable {
 	}
 
 	public void setEmail(String email) {
-		this.email = email;
+		this.email = email.replaceAll(" ", "").trim().toLowerCase();
 	}
 
 	public String getPassword() {
@@ -142,7 +134,7 @@ public class Usuario implements Serializable {
 	}
 
 	public void setPassword(String password) {
-		this.password = password;
+		this.password = password.trim();
 	}
 
 	public String getNome() {
@@ -151,7 +143,7 @@ public class Usuario implements Serializable {
 	}
 
 	public void setNome(String nome) {
-		this.nome = nome;
+		this.nome = nome.trim();
 	}
 
 	public String getSobrenome() {
@@ -159,14 +151,14 @@ public class Usuario implements Serializable {
 	}
 
 	public void setSobrenome(String sobrenome) {
-		this.sobrenome = sobrenome;
+		this.sobrenome = sobrenome.trim();
 	}
 
-	public Date getDataNascimento() {
+	public LocalDate getDataNascimento() {
 		return dataNascimento;
 	}
 
-	public void setDataNascimento(Date dataNascimento) {
+	public void setDataNascimento(LocalDate dataNascimento) {
 		this.dataNascimento = dataNascimento;
 	}
 
@@ -194,22 +186,6 @@ public class Usuario implements Serializable {
 		this.telefones = telefones;
 	}
 
-	public Calendar getDataCriacao() {
-		return dataCriacao;
-	}
-
-	public void setDataCriacao(Calendar dataCriacao) {
-		this.dataCriacao = dataCriacao;
-	}
-
-	public Calendar getDataAlteracao() {
-		return dataAlteracao;
-	}
-
-	public void setDataAlteracao(Calendar dataAlteracao) {
-		this.dataAlteracao = dataAlteracao;
-	}
-
 	public List<Endereco> getEnderecos() {
 		return enderecos;
 	}
@@ -224,6 +200,13 @@ public class Usuario implements Serializable {
 
 	public void setLocalNascimento(Paesci localNascimento) {
 		this.localNascimento = localNascimento;
+	}
+	public String getProfissao() {
+		return profissao;
+	}
+
+	public void setProfissao(String profissao) {
+		this.profissao = profissao.trim();
 	}
 
 	// Getters and Setters das Relacoes
@@ -260,10 +243,7 @@ public class Usuario implements Serializable {
 
 	public void setProfissional(Profissional profissional) {
 		this.equipe = (profissional != null) || (socia != null) || (administrador != null) || (secretaria != null);
-		// System.out.println("AQUI3");
 		this.profissional = profissional;
-		// profissional.setUsuario(this);
-		// System.out.println("AQUI1");
 	}
 
 	public Socia getSocia() {
@@ -294,8 +274,9 @@ public class Usuario implements Serializable {
 	}
 
 	public Integer getIdade() {
-		Calendar now = Calendar.getInstance();
-		return Period.between(LocalDateTime.ofInstant(dataNascimento.toInstant(), ZoneId.systemDefault()).toLocalDate(), LocalDateTime.ofInstant(now.toInstant(), ZoneId.systemDefault()).toLocalDate()).getYears();
+//		Calendar now = Calendar.getInstance();
+//		return Period.between(LocalDateTime.ofInstant(dataNascimento.toInstant(), ZoneId.systemDefault()).toLocalDate(), LocalDateTime.ofInstant(now.toInstant(), ZoneId.systemDefault()).toLocalDate()).getYears();
+		return Period.between(dataNascimento, LocalDate.now()).getYears();
 	}
 
 	// Getters and Setters dos Booleans
@@ -334,28 +315,6 @@ public class Usuario implements Serializable {
 	public Boolean isSecretaria() {
 		return (secretaria != null) ? true : false;
 	}
-	
-
-	public String getProfissao() {
-		return profissao;
-	}
-
-	public void setProfissao(String profissao) {
-		this.profissao = profissao;
-	}
-
-	// Método Callback para persistir
-	@PrePersist
-	public void quandoCriar() {
-		this.setDataCriacao(Calendar.getInstance());
-		this.setDataAlteracao(Calendar.getInstance());
-	}
-
-	// Método Callback para update
-	@PreUpdate
-	public void quandoAtualizar() {
-		this.setDataAlteracao(Calendar.getInstance());
-	}
 
 	@Override
 	public int hashCode() {
@@ -381,5 +340,47 @@ public class Usuario implements Serializable {
 			return false;
 		return true;
 	}
+	
+	// -----------------------------------Registro de Alteração-----------------------------------------
+		// Parâmetros de Persistência
+		private LocalDateTime dataCriacao;
+		private LocalDateTime dataAlteracao;
+		@ManyToOne
+		private Usuario alterador;
+		@ManyToOne
+		private Usuario criador;
+		
+		// Getters de persistência
+		public LocalDateTime getDataCriacao() {
+			return dataCriacao;
+		}
+		public LocalDateTime getDataAlteracao() {
+			return dataAlteracao;
+		}
+		public Usuario getAlterador() {
+			return alterador;
+		}
+		public Usuario getCriador() {
+			return criador;
+		}
+		
+		// Método Callback para persistir
+		@PrePersist
+		public void quandoCriar() {
+			this.dataCriacao = (LocalDateTime.now());
+			this.dataAlteracao = (LocalDateTime.now());
+			this.criador = (Usuario)FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("usuarioLogado");
+			this.alterador = (Usuario)FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("usuarioLogado");
+		}
+
+		// Método Callback para update
+		@PreUpdate
+		public void quandoAtualizar() {
+			this.dataAlteracao = (LocalDateTime.now());
+			this.alterador  = (Usuario)FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("usuarioLogado");
+		}
+		// ------------------------------------------------------------------------------------------------
+
+	
 
 }

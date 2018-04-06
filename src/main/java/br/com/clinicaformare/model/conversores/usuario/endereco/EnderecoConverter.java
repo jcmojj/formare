@@ -1,4 +1,4 @@
-package br.com.clinicaformare.model.conversores;
+package br.com.clinicaformare.model.conversores.usuario.endereco;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -6,32 +6,32 @@ import javax.faces.convert.Converter;
 import javax.inject.Inject;
 import javax.inject.Named;
 
-import br.com.clinicaformare.daos.usuario.UsuarioDao;
-import br.com.clinicaformare.model.usuario.Usuario;
+import br.com.clinicaformare.daos.usuario.endereco.EnderecoDao;
+import br.com.clinicaformare.usuario.endereco.Endereco;
 
 @Named
-public class UsuarioConverter implements Converter{
+public class EnderecoConverter implements Converter{
 	
 	@Inject
-	UsuarioDao usuarioDao;
+	EnderecoDao enderecoDao;
 	@Override
 	public Object getAsObject(FacesContext context, UIComponent component, String string) {
 		if(string == null || string.trim().isEmpty()) {
 			return null;
 		}
 		Long id =Long.valueOf(string);
-		Usuario usuario = usuarioDao.buscaPorId(id);
-		return usuario;
+		Endereco endereco = enderecoDao.buscaPorId(id);
+		return endereco;
 	}
 
 	@Override
 	public String getAsString(FacesContext context, UIComponent component, Object object) {
 		if(object == null) return null;
-		Usuario usuario = (Usuario) object;
-		if(usuario == null || usuario.getId() == null) {
+		Endereco endereco = (Endereco) object;
+		if(endereco == null || endereco.getId() == null) {
 			return null;
 		}
-		return String.valueOf(usuario.getId());
+		return String.valueOf(endereco.getId());
 	}
 
 }

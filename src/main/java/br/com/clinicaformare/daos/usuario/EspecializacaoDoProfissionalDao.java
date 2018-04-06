@@ -10,19 +10,20 @@ import javax.persistence.TypedQuery;
 
 import br.com.clinicaformare.daos.Dao;
 import br.com.clinicaformare.model.usuario.EspecializacaoDoProfissional;
+import br.com.clinicaformare.model.usuario.NivelProfissional;
 
 @Stateless
-public class TipoProfissionalDao extends Dao<EspecializacaoDoProfissional> {
+public class EspecializacaoDoProfissionalDao extends Dao<EspecializacaoDoProfissional> {
 
-	public TipoProfissionalDao() {
+	public EspecializacaoDoProfissionalDao() {
 		super(EspecializacaoDoProfissional.class);
 	}
 
-	public EspecializacaoDoProfissional buscaPorTipoEEspecialista(String tipo, boolean especialista) {
-		String jpql = "select t from TipoProfissional t where t.tipo = :tipo and t.especialista = :especialista";
+	public EspecializacaoDoProfissional buscaPorEspecializacaoENivel(String especializacao, NivelProfissional nivel) {
+		String jpql = "select t from EspecializacaoDoProfissional t where t.especializacao = :especializacao and t.nivelProfissional = :nivel";
 		TypedQuery<EspecializacaoDoProfissional> query = super.getEntityManager().createQuery(jpql,EspecializacaoDoProfissional.class);
-		query.setParameter("tipo", tipo);
-		query.setParameter("especialista", especialista);
+		query.setParameter("especializacao", especializacao);
+		query.setParameter("nivel", nivel);
 		return query.getSingleResult();
 	
 	}
@@ -32,8 +33,8 @@ public class TipoProfissionalDao extends Dao<EspecializacaoDoProfissional> {
 //		return query.getResultList();
 //	}
 
-	public List<String> listaStringDeTiposDeProfissionalExistentes() {
-		String jpql = "select tipoProfissional.tipo from TipoProfissional tipoProfissional" + " join tipoProfissional.profissionais profissional ";
+	public List<String> listaStringDeEspecializacaoDoProfissionalExistentes() {
+		String jpql = "select ep.especializacao from EspecializacaoDoProfissional ep" + " join ep.profissionais profissional ";
 //				+ " where tipoProfissional.deSocia is false ";
 		TypedQuery<String> query = super.getEntityManager().createQuery(jpql, String.class);
 		Set<String> set = new HashSet<>(query.getResultList());

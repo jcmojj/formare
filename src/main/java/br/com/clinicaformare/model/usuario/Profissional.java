@@ -1,11 +1,11 @@
 package br.com.clinicaformare.model.usuario;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 
-import javax.inject.Inject;
+import javax.faces.context.FacesContext;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -13,15 +13,13 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 
 import br.com.clinicaformare.model.atendimento.AtendimentoPorProfissional;
-import br.com.clinicaformare.util.listeners.login.UsuarioLogado;
 
 @Entity
 public class Profissional implements Serializable {
@@ -30,9 +28,6 @@ public class Profissional implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
-	@Inject @UsuarioLogado
-	private Usuario usuarioLogado;
-
 	// Parâmetros Próprios
 	@OneToOne(mappedBy = "profissional")
 	Usuario usuario;
@@ -44,15 +39,7 @@ public class Profissional implements Serializable {
 	@OneToMany(mappedBy = "profissional")
 	private List<AtendimentoPorProfissional> atendimentoPorProfissional = new ArrayList<>();;
 
-	// Parâmetros de Persistência
-	@Temporal(TemporalType.TIMESTAMP)
-	private Calendar dataCriacao;
-	@Temporal(TemporalType.TIMESTAMP)
-	private Calendar dataAlteracao;
-	@OneToOne
-	private Usuario alteradoPor;
-	@OneToOne
-	private Usuario criadoPor;
+	
 	
 	// Constructor
 	public Profissional() {
@@ -82,22 +69,6 @@ public class Profissional implements Serializable {
 
 	public List<AtendimentoPorProfissional> getAtendimentoPorProfissional() {
 		return atendimentoPorProfissional;
-	}
-
-	public Calendar getDataCriacao() {
-		return dataCriacao;
-	}
-
-	public Calendar getDataAlteracao() {
-		return dataAlteracao;
-	}
-
-	public Usuario getAlteradoPor() {
-		return alteradoPor;
-	}
-
-	public Usuario getCriadoPor() {
-		return criadoPor;
 	}
 	
 	// String, hashCode and Equals
@@ -131,19 +102,44 @@ public class Profissional implements Serializable {
 		return true;
 	}
 
-	// Método Callback para persistir
-	@PrePersist
-	public void quandoCriar() {
-		this.dataCriacao = (Calendar.getInstance());
-		this.dataAlteracao = (Calendar.getInstance());
-		this.criadoPor = usuarioLogado;
-		this.alteradoPor = usuarioLogado;
-	}
+	// -----------------------------------Registro de Alteração-----------------------------------------
+		// Parâmetros de Persistência
+		private LocalDateTime dataCriacao;
+		private LocalDateTime dataAlteracao;
+		@ManyToOne
+		private Usuario alterador;
+		@ManyToOne
+		private Usuario criador;
+		
+		// Getters de persistência
+		public LocalDateTime getDataCriacao() {
+			return dataCriacao;
+		}
+		public LocalDateTime getDataAlteracao() {
+			return dataAlteracao;
+		}
+		public Usuario getAlterador() {
+			return alterador;
+		}
+		public Usuario getCriador() {
+			return criador;
+		}
+		
+		// Método Callback para persistir
+		@PrePersist
+		public void quandoCriar() {
+			this.dataCriacao = (LocalDateTime.now());
+			this.dataAlteracao = (LocalDateTime.now());
+			this.criador = (Usuario)FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("usuarioLogado");
+			this.alterador = (Usuario)FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("usuarioLogado");
+		}
 
-	// Método Callback para update
-	@PreUpdate
-	public void quandoAtualizar() {
-		this.dataAlteracao = (Calendar.getInstance());
-		this.alteradoPor = usuarioLogado;
-	}
+		// Método Callback para update
+		@PreUpdate
+		public void quandoAtualizar() {
+			this.dataAlteracao = (LocalDateTime.now());
+			this.alterador  = (Usuario)FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("usuarioLogado");
+		}
+		// ------------------------------------------------------------------------------------------------
+
 }

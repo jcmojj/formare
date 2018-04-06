@@ -1,5 +1,5 @@
 package br.com.clinicaformare.util.logger;
 
-public interface InjectionPoing {
+public interface InjectionPoint {
 	java.lang.reflect.Member getMember();
 }

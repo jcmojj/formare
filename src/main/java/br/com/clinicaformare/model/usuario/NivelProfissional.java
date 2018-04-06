@@ -1,7 +1,7 @@
 package br.com.clinicaformare.model.usuario;
 
 import java.io.Serializable;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import javax.faces.context.FacesContext;
@@ -29,15 +29,6 @@ public class NivelProfissional implements Serializable {
 	@OneToMany (mappedBy = "nivelProfissional")
 	private List<EspecializacaoDoProfissional> especializacoesDoProfissional;
 	
-	// Parâmetros de Persistência
-	private LocalDate dataCriacao;
-	private LocalDate dataAlteracao;
-	@ManyToOne
-	private Usuario alteradoPor;
-	@ManyToOne
-	private Usuario criadoPor;
-	
-	
 	// Constructor
 	public NivelProfissional() {
 		super();
@@ -61,19 +52,6 @@ public class NivelProfissional implements Serializable {
 	public List<EspecializacaoDoProfissional> getEspecializacoesDoProfissional() {
 		return especializacoesDoProfissional;
 	}
-	public LocalDate getDataCriacao() {
-		return dataCriacao;
-	}
-	public LocalDate getDataAlteracao() {
-		return dataAlteracao;
-	}
-	public Usuario getAlteradoPor() {
-		return alteradoPor;
-	}
-	public Usuario getCriadoPor() {
-		return criadoPor;
-	}
-	
 	
 	// String, hashCode and Equals
 	@Override
@@ -104,21 +82,44 @@ public class NivelProfissional implements Serializable {
 		return true;
 	}
 
+	// -----------------------------------Registro de Alteração-----------------------------------------
+	// Parâmetros de Persistência
+	private LocalDateTime dataCriacao;
+	private LocalDateTime dataAlteracao;
+	@ManyToOne
+	private Usuario alterador;
+	@ManyToOne
+	private Usuario criador;
+	
+	// Getters de persistência
+	public LocalDateTime getDataCriacao() {
+		return dataCriacao;
+	}
+	public LocalDateTime getDataAlteracao() {
+		return dataAlteracao;
+	}
+	public Usuario getAlterador() {
+		return alterador;
+	}
+	public Usuario getCriador() {
+		return criador;
+	}
+	
 	// Método Callback para persistir
 	@PrePersist
 	public void quandoCriar() {
-		this.dataCriacao = (LocalDate.now());
-		this.dataAlteracao = (LocalDate.now());
-		this.criadoPor = (Usuario)FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("usuarioLogado");
-		this.alteradoPor = (Usuario)FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("usuarioLogado");
+		this.dataCriacao = (LocalDateTime.now());
+		this.dataAlteracao = (LocalDateTime.now());
+		this.criador = (Usuario)FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("usuarioLogado");
+		this.alterador = (Usuario)FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("usuarioLogado");
 	}
 
 	// Método Callback para update
 	@PreUpdate
 	public void quandoAtualizar() {
-		this.dataAlteracao = (LocalDate.now());
-		this.alteradoPor  = (Usuario)FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("usuarioLogado");
+		this.dataAlteracao = (LocalDateTime.now());
+		this.alterador  = (Usuario)FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("usuarioLogado");
 	}
-
+	// ------------------------------------------------------------------------------------------------
 
 }

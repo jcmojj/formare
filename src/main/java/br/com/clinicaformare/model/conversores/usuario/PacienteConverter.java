@@ -1,4 +1,4 @@
-package br.com.clinicaformare.model.conversores;
+package br.com.clinicaformare.model.conversores.usuario;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;

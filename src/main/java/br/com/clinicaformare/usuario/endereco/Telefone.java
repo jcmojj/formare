@@ -17,61 +17,32 @@ import javax.persistence.PreUpdate;
 import br.com.clinicaformare.model.usuario.Usuario;
 
 @Entity
-public class Endereco implements Serializable {
+public class Telefone implements Serializable {
 	private static final long serialVersionUID = 1L;
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
-	
-	// Parâmetros Próprios
-	@ManyToOne
-	private TipoEndereco tipoEndereco;
-	@ManyToOne
-	private Logradouro logradouro;
-	private String endereco;
+	private Integer id;
+	private Integer ddd;
 	private String numero;
-	private String complemento;
-	private String cep;
-	private String bairro;
-	@ManyToOne
-	private Paesci paesci;
-	
-	// Parâmetros Derivados
-	@ManyToMany(mappedBy = "enderecos")
+	@ManyToMany(mappedBy = "telefones")
 	private List<Usuario> usuarios;
+	@ManyToOne
+	private TipoTelefone tipoTelefone;
 
 	// Constructor
-	public Endereco() {
+	public Telefone() {
 		super();
 	}
 
-	public Endereco(TipoEndereco tipoEndereco) {
-		this.tipoEndereco = tipoEndereco;
-		this.logradouro = new Logradouro();
+	public Telefone(Integer ddd, String numero, TipoTelefone tipoTelefone) {
+		super();
+		this.setDdd(ddd);
+		this.numero = numero;
+		this.tipoTelefone = tipoTelefone;
 	}
 
 	// Getters and Setters
-	public Long getId() {
-		return id;
-	}
-	
-	public Logradouro getLogradouro() {
-		return logradouro;
-	}
-
-
-	public void setLogradouro(Logradouro logradouro) {
-		this.logradouro = logradouro;
-	}
-
-	public String getEndereco() {
-		return endereco;
-	}
-
-	public void setEndereco(String endereco) {
-		this.endereco = endereco;
-	}
-
 	public String getNumero() {
 		return numero;
 	}
@@ -80,36 +51,28 @@ public class Endereco implements Serializable {
 		this.numero = numero;
 	}
 
-	public String getComplemento() {
-		return complemento;
+	public TipoTelefone getTipo() {
+		return tipoTelefone;
 	}
 
-	public void setComplemento(String complemento) {
-		this.complemento = complemento;
+	public void setTipo(TipoTelefone tipoTelefone) {
+		this.tipoTelefone = tipoTelefone;
 	}
 
-	public String getCep() {
-		return cep;
+	public Integer getDdd() {
+		return ddd;
 	}
 
-	public void setCep(String cep) {
-		this.cep = cep;
+	public void setDdd(Integer ddd) {
+		this.ddd = ddd;
 	}
 
-	public Paesci getPaesci() {
-		return paesci;
+	public Integer getId() {
+		return id;
 	}
 
-	public void setPaesci(Paesci paesci) {
-		this.paesci = paesci;
-	}
-
-	public TipoEndereco getTipoEndereco() {
-		return tipoEndereco;
-	}
-
-	public void setTipoEndereco(TipoEndereco tipoEndereco) {
-		this.tipoEndereco = tipoEndereco;
+	public void setId(Integer id) {
+		this.id = id;
 	}
 
 	public List<Usuario> getUsuarios() {
@@ -120,23 +83,18 @@ public class Endereco implements Serializable {
 		this.usuarios = usuarios;
 	}
 
-	public String getBairro() {
-		return bairro;
+	public TipoTelefone getTipoTelefone() {
+		return tipoTelefone;
 	}
 
-	public void setBairro(String bairro) {
-		this.bairro = bairro;
+	public void setTipoTelefone(TipoTelefone tipoTelefone) {
+		this.tipoTelefone = tipoTelefone;
 	}
+
 	// String, hashCode and Equals
-	
-	
-	// -----------------------------------Registro de Alteração-----------------------------------------
-	// Parâmetros de Persistência
-	private LocalDateTime dataCriacao;
 	@Override
 	public String toString() {
-		return "Endereco [id=" + id + ", tipoEndereco=" + tipoEndereco + ", logradouro=" + logradouro + ", endereco=" + endereco + ", numero=" + numero + ", complemento=" + complemento + ", cep="
-				+ cep + ", bairro=" + bairro + "]";
+		return "Telefone [id=" + id + ", ddd=" + ddd + ", numero=" + numero + ", tipoTelefone=" + tipoTelefone + "]";
 	}
 
 	@Override
@@ -155,7 +113,7 @@ public class Endereco implements Serializable {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Endereco other = (Endereco) obj;
+		Telefone other = (Telefone) obj;
 		if (id == null) {
 			if (other.id != null)
 				return false;
@@ -164,41 +122,46 @@ public class Endereco implements Serializable {
 		return true;
 	}
 
-
+	// -----------------------------------Registro de Alteração-----------------------------------------
+	// Parâmetros de Persistência
+	private LocalDateTime dataCriacao;
 	private LocalDateTime dataAlteracao;
 	@ManyToOne
 	private Usuario alterador;
 	@ManyToOne
 	private Usuario criador;
-	
+
 	// Getters de persistência
 	public LocalDateTime getDataCriacao() {
 		return dataCriacao;
 	}
+
 	public LocalDateTime getDataAlteracao() {
 		return dataAlteracao;
 	}
+
 	public Usuario getAlterador() {
 		return alterador;
 	}
+
 	public Usuario getCriador() {
 		return criador;
 	}
-	
+
 	// Método Callback para persistir
 	@PrePersist
 	public void quandoCriar() {
 		this.dataCriacao = (LocalDateTime.now());
 		this.dataAlteracao = (LocalDateTime.now());
-		this.criador = (Usuario)FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("usuarioLogado");
-		this.alterador = (Usuario)FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("usuarioLogado");
+		this.criador = (Usuario) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("usuarioLogado");
+		this.alterador = (Usuario) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("usuarioLogado");
 	}
 
 	// Método Callback para update
 	@PreUpdate
 	public void quandoAtualizar() {
 		this.dataAlteracao = (LocalDateTime.now());
-		this.alterador  = (Usuario)FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("usuarioLogado");
+		this.alterador = (Usuario) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("usuarioLogado");
 	}
 	// ------------------------------------------------------------------------------------------------
 

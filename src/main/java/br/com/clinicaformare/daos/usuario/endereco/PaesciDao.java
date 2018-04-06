@@ -1,4 +1,4 @@
-package br.com.clinicaformare.daos.usuario;
+package br.com.clinicaformare.daos.usuario.endereco;
 
 import java.util.ArrayList;
 import java.util.List;
