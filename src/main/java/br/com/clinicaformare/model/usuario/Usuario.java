@@ -129,7 +129,7 @@ public class Usuario implements Serializable {
 	}
 
 	public void setEmail(String email) {
-		this.email = WordUtils.capitalize(email).trim().toLowerCase().replaceAll("  ", " ").replaceAll("  ", " ").replaceAll("  ", " ").replaceAll("  ", " ").replaceAll(" ", "");
+		this.email = email.trim().toLowerCase().replaceAll("  ", " ").replaceAll("  ", " ").replaceAll("  ", " ").replaceAll("  ", " ").replaceAll(" ", "");
 	}
 
 	public String getPassword() {

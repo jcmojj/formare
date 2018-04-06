@@ -15,14 +15,14 @@
 				<h:outputText value="#{sessionScope['usuarioLogado'].nome}" />
 				
 				<p:outputLabel for="email" value="Email:" />
-				<p:inputText id="email" value="#{loginBean.usuario.email}"
+				<p:inputText id="email" value="#{loginBean.email}"
 					required="true" requiredMessage="O email é um campo obrigatório."
 					label="Email">
 				</p:inputText>
 				<p:message for="email" id="messageEmail"/>
 				
 				<p:outputLabel for="senha" value="Senha:" />
-				<p:password id="senha" value="#{loginBean.usuario.password}"
+				<p:password id="senha" value="#{loginBean.password}"
 					required="true" requiredMessage="A senha é um campo obrigatório."
 					label="Senha"/>
 				<p:message for="senha" id="messageSenha"/>

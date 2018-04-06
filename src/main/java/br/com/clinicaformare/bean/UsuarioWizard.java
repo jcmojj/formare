@@ -225,8 +225,10 @@ public class UsuarioWizard implements Serializable {
 	// Endereco Residencial
 	private Long logradouroResidencialId = 0L;
 	
-	private TipoEndereco tipoEnderecoResidencial = new TipoEndereco(1L);
-	private Endereco enderecoResidencial = new Endereco(tipoEnderecoResidencial);
+	private TipoEndereco tipoEnderecoResidencial = tipoEnderecoDao.buscaPorId(1L);
+	private Endereco enderecoResidencial = new Endereco();
+//	enderecoResidencial
+//	.setTipoEndereco(tipoEnderecoResidencial);
 	 
 
 	public Long getLogradouroResidencialId() {
@@ -316,8 +318,8 @@ public class UsuarioWizard implements Serializable {
 	// Endereco Comercial
 		private Long logradouroComercialId = 0L;
 		
-		private TipoEndereco tipoEnderecoComercial = new TipoEndereco(2L);
-		private Endereco enderecoComercial = new Endereco(tipoEnderecoComercial);
+		private TipoEndereco tipoEnderecoComercial = tipoEnderecoDao.buscaPorId(1L);
+		private Endereco enderecoComercial = new Endereco();
 		 
 
 		public Long getLogradouroComercialId() {

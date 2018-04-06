@@ -27,15 +27,14 @@
 					layout="block">
 
 					<h:outputText styleClass="data" value="Campo Belo" />
-					<p:clock  pattern="HH:mm:ss dd.MM.yyyy"
-						/>
-					<p:clock  pattern="HH:mm:ss dd.MM.yyyy"
-						mode="server" />
+					<p:clock pattern="HH:mm:ss dd.MM.yyyy" />
+					<p:clock pattern="HH:mm:ss dd.MM.yyyy" mode="server" />
 				</h:panelGroup>
 				<h:panelGroup
 					styleClass="usuario-container-cabecalho border-right-light border-left-light"
 					layout="block">
-					<h:outputText styleClass="usuario" value="#{sessionScope['usuarioLogado'].nome}" />
+					<h:outputText styleClass="usuario"
+						value="#{sessionScope['usuarioLogado'].nome}" />
 				</h:panelGroup>
 
 				<h:panelGroup styleClass="logo-final-container-cabecalho"
@@ -122,23 +121,24 @@
 
 		<p:dialog header="Login" widgetVar="logar" modal="true" height="100"
 			focus="usuario" showEffect="clip" resizable="false">
-			<h:panelGrid columns="1" columnClasses="label, value" cellpadding="5">
+				<h:panelGrid columns="1" columnClasses="label, value" cellpadding="5">
 				<p:inputText id="usuario" styleClass="login" placeholder="Usuário"
-					label="username" required="true" value="#{userLoginBean.username}" />
+					label="username" required="true" value="#{loginBean.email}" />
 				<p:password id="senha" styleClass="login" feedback="false"
 					placeholder="Senha" label="password" required="true"
-					value="#{userLoginBean.password}" />
+					value="#{loginBean.password}" />
 				<f:facet name="footer">
 					<p:commandButton value="Logar" update="growlLongo"
-						action="#{userLoginBean.login}"
+						action="#{loginBean.logar}"
 						oncomplete="handleLoginRequest(xhr, status, args)">
 						<p:ajax />
 					</p:commandButton>
 				</f:facet>
 			</h:panelGrid>
+		</p:dialog>
 
 
-			<!--     <h:outputLabel for="username" value="Username:" />
+		<!--     <h:outputLabel for="username" value="Username:" />
             <p:inputText id="username" value="#{userLoginView.username}" required="true" label="username" />
  
             <h:outputLabel for="password" value="Password:" />
@@ -150,7 +150,6 @@
             </f:facet>  -->
 
 
-		</p:dialog>
 	</h:form>
 	<script type="text/javascript">
 		function handleLoginRequest(xhr, status, args) {

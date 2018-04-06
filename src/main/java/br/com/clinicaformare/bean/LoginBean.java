@@ -2,12 +2,15 @@ package br.com.clinicaformare.bean;
 
 import java.io.Serializable;
 import java.time.LocalDate;
-import java.util.Map;
 
 import javax.annotation.PostConstruct;
-import javax.enterprise.context.RequestScoped;
+import javax.enterprise.context.SessionScoped;
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
+
+import org.primefaces.context.RequestContext;
 
 import br.com.clinicaformare.bean.inicializar.StartServer;
 import br.com.clinicaformare.daos.usuario.AdministradorDao;
@@ -22,16 +25,12 @@ import br.com.clinicaformare.model.usuario.Administrador;
 import br.com.clinicaformare.model.usuario.Usuario;
 import br.com.clinicaformare.usuario.endereco.Endereco;
 import br.com.clinicaformare.usuario.endereco.Telefone;
-import br.com.clinicaformare.util.faces.SessionMap;
 
-@RequestScoped // --> nao pode ser SessionScoped porque ta injetando o map
+@SessionScoped // --> nao pode ser SessionScoped porque ta injetando o map
 @Named
 public class LoginBean implements Serializable {
 	private static final long serialVersionUID = 1L;
 
-	// @Inject
-	// @SessionScoped
-	private Usuario usuario = new Usuario();
 	@Inject
 	private UsuarioDao usuarioDao;
 	@Inject
@@ -50,29 +49,38 @@ public class LoginBean implements Serializable {
 	private LogradouroDao logradouroDao;
 	@Inject
 	private EnderecoDao enderecoDao;
-
-	// @Inject
-	// private FacesContext context;
-
-	@Inject
-	@SessionMap
-	private Map<String, Object> sessionMap;// ---> precisa
-
-	// @Inject @RequestParameterMap
-	// private Map<String,String> parameterMap;
+//	@Inject
+//	@SessionMap
+//	private Map<String, Object> sessionMap;// ---> precisa nao pode te por conta do viewscoped
 
 	private boolean logado = false;
-
-	public String logar() {
-		System.out.println("IMPRIMIR LOGAR ANTES DO IF");
-		System.out.println("usuario:" + usuario);
-		System.out.println("usuarioDao.existe(usuario):" + usuarioDao.existe(usuario));
-		if (usuarioDao.existe(usuario)) {
-			System.out.println("IMPRIMIR LOGAR APÓS O IF");
-			usuario = usuarioDao.buscaLoginPassword(usuario);
-			System.out.println("Login Valido:" + usuario.getNome() + " " + usuario.getSobrenome());
+	private String email = "";
+    private String password = "";
+    public String getEmail() {
+    	System.out.println("getEmail: " + email);
+        return email;
+    }
+    public void setEmail(String email) {
+    	System.out.println("setUsername: " + email);
+        this.email = email;
+    }
+    public String getPassword() {
+    	 System.out.println("getPassword: " + password);
+        return password;
+    }
+    public void setPassword(String password) {
+    	 System.out.println("setPassword: " + password);
+        this.password = password;
+    }
+    
+	public void logar() {
+		FacesMessage message = null;
+		if (usuarioDao.existe(email, password)) {
+			System.out.println("Login Valido:" + email + " " + password);
 			this.logado = true;
-			sessionMap.put("usuarioLogado", this.usuario); // --->> precisa
+			Usuario usuario = usuarioDao.buscaLoginPassword(email, password);
+			FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("usuarioLogado", usuario); // --->> precisa
+			message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Bem-Vindo", usuario.getNome());
 			posLogado();
 			// FacesContext context = FacesContext.getCurrentInstance();
 			// context.getExternalContext().getSessionMap().put("usuarioLogado", this.usuario);
@@ -81,8 +89,16 @@ public class LoginBean implements Serializable {
 			// parameterMap.put("usuarioLogadoId", ((Long)this.usuario.getId()).toString());
 		} else {
 			this.logado = false;
+			message = new FacesMessage(FacesMessage.SEVERITY_WARN, "Erro de login", "Dados inválidos");
 		}
-		return "home?faces-redirect-true";
+		FacesContext.getCurrentInstance().addMessage(null, message);
+		RequestContext rc = RequestContext.getCurrentInstance();
+		rc.addCallbackParam("loggedIn", this.logado);
+//		return "home?faces-redirect-true";
+
+		// System.out.println("IMPRIMIR LOGAR ANTES DO IF");
+		// System.out.println("usuario:" + usuario);
+		// System.out.println("usuarioDao.existe(usuario):" + usuarioDao.existe(usuario));
 	}
 
 	public void deslogar() {
@@ -92,9 +108,6 @@ public class LoginBean implements Serializable {
 		this.logado = false;
 	}
 
-	public Usuario getUsuario() {
-		return usuario;
-	}
 
 	public boolean isLogado() {
 		return logado;
@@ -117,23 +130,24 @@ public class LoginBean implements Serializable {
 			System.out.println("Usuario Criado:" + usuario);
 		}
 	}
-	
+
 	public void posLogado() {
-		if(paesciDao.buscaPorId(1L) == null) {
+		if (paesciDao.buscaPorId(1L) == null) {
+			Usuario usuario = (Usuario)FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("usuarioLogado");
 			startServer.paesci();
 			startServer.logradouro();
 			startServer.tipoTelefone();
 			startServer.tipoEndereco();
 			usuario.setLocalNascimento(paesciDao.buscaPorId(paesciDao.getId("Brasil", "SP", "São Paulo")));
-			
+
 			System.out.println("Telefone");
-			Telefone telefone = new Telefone("11","991318300",tipoTelefoneDao.buscaPorId(3L));
-//			telefone.getUsuarios().add(usuario);
+			Telefone telefone = new Telefone("11", "991318300", tipoTelefoneDao.buscaPorId(3L));
+			// telefone.getUsuarios().add(usuario);
 			telefone = telefoneDao.adicionaVolta(telefone);
 			usuario.getTelefones().add(telefone); // chefe da relação
 			usuarioDao.atualiza(usuario); // persiste aqui
 			telefoneDao.atualiza(telefone);
-			
+
 			System.out.println("Endereco");
 			Endereco endereco = new Endereco();
 			endereco.setBairro("   Campo     belo");
@@ -144,12 +158,12 @@ public class LoginBean implements Serializable {
 			endereco.setNumero("296");
 			endereco.setPaesci(paesciDao.buscaPorId(paesciDao.getId("Brasil", "SP", "São Paulo")));
 			endereco.setTipoEndereco(tipoEnderecoDao.buscaPorNome("Residencial"));
-//			endereco.getUsuarios().add(usuario);
+			// endereco.getUsuarios().add(usuario);
 			endereco = enderecoDao.adicionaVolta(endereco);
 			usuario.getEnderecos().add(endereco); // chefe da relação
 			usuarioDao.atualiza(usuario); // persiste aqui
 			enderecoDao.atualiza(endereco);
-			
+
 			System.out.println("Administrador");
 			Administrador administrador = new Administrador(usuario);
 			administrador = administradorDao.adicionaVolta(administrador);

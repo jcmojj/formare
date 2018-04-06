@@ -32,12 +32,32 @@ public class UsuarioDao extends Dao<Usuario> implements Serializable {
 		return !query.getResultList().isEmpty();
 	}
 	
+	public boolean existe(String email, String password) {
+		System.out.println("Procurando Usuario com email: " + email +  " e password: " + password);
+		String jpql = "select u from Usuario u where u.email = " + ":email and u.password = :password";
+		TypedQuery<Usuario> query = manager.createQuery(jpql, Usuario.class);
+		query.setParameter("email", email);
+		query.setParameter("password", password);
+		query.getResultList().forEach(u -> System.out.println("Existe Usuario: " + u));
+		return !query.getResultList().isEmpty();
+	}
+	
 	public Usuario buscaLoginPassword(Usuario usuario) {
 		System.out.println("Buscando Usuario: " + usuario);
 		String jpql = "select u from Usuario u where u.email = " + ":email and u.password = :password";
 		TypedQuery<Usuario> query = manager.createQuery(jpql, Usuario.class);
 		query.setParameter("email", usuario.getEmail());
 		query.setParameter("password", usuario.getPassword());
+		query.getResultList().forEach(u -> System.out.println("Existe Usuario buscado: " + u));
+		return query.getSingleResult();
+	}
+	
+	public Usuario buscaLoginPassword(String email, String password) {
+		System.out.println("Procurando Usuario com email: " + email +  " e password: " + password);
+		String jpql = "select u from Usuario u where u.email = " + ":email and u.password = :password";
+		TypedQuery<Usuario> query = manager.createQuery(jpql, Usuario.class);
+		query.setParameter("email", email);
+		query.setParameter("password", password);
 		query.getResultList().forEach(u -> System.out.println("Existe Usuario buscado: " + u));
 		return query.getSingleResult();
 	}
