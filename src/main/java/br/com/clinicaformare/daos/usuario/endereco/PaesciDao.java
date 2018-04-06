@@ -50,21 +50,14 @@ public class PaesciDao extends Dao<Paesci> {
 	public List<String> cidades(String pais, String estado){
 		String jpql = "select p from Paesci p " + 
 						" where p.pais = :pais and p.estado = :estado";
-		System.out.println("TESTE1");
 		TypedQuery<Paesci> query = this.manager.createQuery(jpql,Paesci.class);
-		System.out.println("TESTE2");
 		query.setParameter("pais", pais);
-		System.out.println("TESTE3");
 		query.setParameter("estado", estado);
-		System.out.println("TESTE4");
 		List<Paesci> paescis = query.getResultList(); 
-		System.out.println("TESTE5");
 		Set<String> cidadesSet = new TreeSet<>();
-		System.out.println("TESTE6");
 		for(Paesci paesci: paescis) {
 			cidadesSet.add(paesci.getCidade());
 		}
-		System.out.println("TESTE7");
 		List<String> cidades = new ArrayList<String>(cidadesSet);
 		return cidades;
 	}
@@ -72,8 +65,8 @@ public class PaesciDao extends Dao<Paesci> {
 	public Long getId(String pais, String estado, String cidade){
 		String jpql = "select p from Paesci p " + 
 						" where p.pais = :pais and " +
-						" where p.estado = :estado and " +
-						" where p.cidade = :cidade ";
+						" p.estado = :estado and " +
+						" p.cidade = :cidade ";
 		TypedQuery<Paesci> query = this.manager.createQuery(jpql,Paesci.class);
 		query.setParameter("pais", pais);
 		query.setParameter("estado", estado);

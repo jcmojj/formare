@@ -24,7 +24,7 @@ public class TipoTelefone implements Serializable {
 	private static final long serialVersionUID = 1L;
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer id;
+	private Long id;
 	
 	// Parâmetros Próprios
 	private String tipo;
@@ -46,7 +46,7 @@ public class TipoTelefone implements Serializable {
 	}
 	
 	//Getters and Setters
-	public Integer getId() {
+	public Long getId() {
 		return id;
 	}
 	

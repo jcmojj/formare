@@ -2,6 +2,7 @@ package br.com.clinicaformare.usuario.endereco;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.faces.context.FacesContext;
@@ -33,9 +34,9 @@ public class Paesci implements Serializable{
 	
 	// Parâmetros Derivados
 	@OneToMany(mappedBy="paesci")
-	private List<Endereco> endereco;
+	private List<Endereco> endereco  = new ArrayList<>();
 	@OneToMany(mappedBy="localNascimento")
-	private List<Usuario> usuariosLocalNascimento;
+	private List<Usuario> usuariosLocalNascimento  = new ArrayList<>();
 	
 	// Constructor
 	public Paesci() {

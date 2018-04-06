@@ -97,66 +97,6 @@ public class StartServer {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-//			.collect(Collectors.toList());
-//			tipos.forEach(t -> System.out.println(t));
-//			for(TipoTelefone tipo:tipos) {
-//				tipoTelefoneDao.adiciona(tipo);
-//			}
-
-		//			tipos.forEach(t -> tipoTelefoneDao.adiciona(t));
-//					{
-//			            StaffPublic obj = new StaffPublic();
-//			            obj.setName(temp.getName());
-//			            obj.setAge(temp.getAge());
-//			            if ("mkyong".equals(temp.getName())) {
-//			                obj.setExtra("this field is for mkyong only!");
-//			            }
-//			            return obj;
-//					
-//					).forEach(p -> System.out.println(p));
-//			stream.limit(2).collect(Collector.)
-//			Stream.iterate(stream.toString(), str -> {
-//		        int pos = str.lastIndexOf('.');
-//		        return pos == -1 ? "" : str.substring(0, pos);
-//		    }).forEach(System.out::println);
-//			stream.iterator(str,str2 -> {}str.indexOf(';', i))
-//			stream.collect(Collectors)
-//			stream.collect(Collectors.)
-//			stream.forEach(linha -> Patterns.compile(";").splitAsStream(linha)
-//			logradouroDao.adiciona(new Logradouro(logradouro)));
-
-		
-//		try {
-//			InputStream is = new FileInputStream("/Users/josecarlosoliveira/javaee/eclipse-workspace/formare/src/main/resources/startServer/usuario/endereco//tipoTelefone");
-//			InputStreamReader isr = new InputStreamReader(is);
-//			BufferedReader br = new BufferedReader(isr);
-//			String linha = br.readLine();
-//			Integer i0;
-//			Integer i1;
-//			Integer lenght;
-//			boolean hasWhatsapp;
-//			String tipoTelefone;
-//
-//			while (linha != null) {
-//				i0 = 0;
-//				i1 = linha.indexOf(";", i0);
-//				lenght = linha.length();
-//				if(linha.substring(i0, i1).equals("0")) {
-//					hasWhatsapp = false;
-//				}else {
-//					hasWhatsapp = true;
-//				}
-//				tipoTelefone = linha.substring(i1 + 1, lenght);
-//				tipoTelefoneDao.adiciona(new TipoTelefone(tipoTelefone,hasWhatsapp));
-//
-//				linha = br.readLine();
-//			}
-//			br.close();
-//		} catch (FileNotFoundException e) {
-//			e.printStackTrace();
-//		} catch (IOException e) {
-//			e.printStackTrace();
-//		}
 	}
 
 	@Inject
@@ -173,26 +113,6 @@ public class StartServer {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		
-		
-//		try {
-//			InputStream is = new FileInputStream("/Users/josecarlosoliveira/javaee/eclipse-workspace/formare/src/main/resources/startServer/usuario/endereco//tipoEndereco");
-//			InputStreamReader isr = new InputStreamReader(is);
-//			BufferedReader br = new BufferedReader(isr);
-//			String tipoEndereco = br.readLine();
-//
-//			while (tipoEndereco != null) {
-//
-//				tipoEnderecoDao.adiciona(new TipoEndereco(tipoEndereco));
-//
-//				tipoEndereco = br.readLine();
-//			}
-//			br.close();
-//		} catch (FileNotFoundException e) {
-//			e.printStackTrace();
-//		} catch (IOException e) {
-//			e.printStackTrace();
-//		}
 	}
 
 	@Inject
@@ -200,7 +120,7 @@ public class StartServer {
 
 	@Transactional
 	public void paesci() {
-		String fileName = "/Users/josecarlosoliveira/javaee/eclipse-workspace/formare/src/main/resources/startServer/usuario/endereco//paesci";
+		String fileName = "/Users/josecarlosoliveira/javaee/eclipse-workspace/formare/src/main/resources/startServer/usuario/endereco/paesci";
 		try (Stream<String> stream = Files.lines(Paths.get(fileName))) {
 			stream
 			.map(linha -> {
@@ -217,41 +137,6 @@ public class StartServer {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		
-		
-		
-		
-		
-//		try {
-//			InputStream is = new FileInputStream("/Users/josecarlosoliveira/javaee/eclipse-workspace/formare/src/main/resources/startServer/usuario/endereco//paesci");
-//			InputStreamReader isr = new InputStreamReader(is);
-//			BufferedReader br = new BufferedReader(isr);
-//			String s = br.readLine();
-//			Integer first;
-//			Integer second;
-//			Integer third;
-//			Integer lenght;
-//			String pais;
-//			String estado;
-//			String cidade;
-//
-//			while (s != null) {
-//				first = 0;
-//				second = s.indexOf("-", first);
-//				third = s.indexOf("-", second + 1);
-//				lenght = s.length();
-//				pais = s.substring(first, second);
-//				estado = s.substring(second + 1, third);
-//				cidade = s.substring(third + 1, lenght);
-//				paesciDao.adiciona(new Paesci(pais, estado, cidade));
-//				s = br.readLine();
-//			}
-//			br.close();
-//		} catch (FileNotFoundException e) {
-//			e.printStackTrace();
-//		} catch (IOException e) {
-//			e.printStackTrace();
-//		}
 	}
 
 	@Inject

@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.Period;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.faces.context.FacesContext;
@@ -20,6 +21,7 @@ import javax.persistence.OneToOne;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 
+import org.apache.commons.text.WordUtils;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.br.CPF;
 
@@ -76,10 +78,10 @@ public class Usuario implements Serializable {
 
 	@ManyToMany // Join para criar uma tabela única em relacionamento many to many
 	@JoinTable(name = "Usuario_Telefone", joinColumns = @JoinColumn(name = "Usuario_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "Telefone_id", referencedColumnName = "id"))
-	private List<Telefone> telefones;
+	private List<Telefone> telefones = new ArrayList<>();
 	@ManyToMany // Join para criar uma tabela única em relacionamento many to many
 	@JoinTable(name = "Usuario_Endereco", joinColumns = @JoinColumn(name = "Usuario_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "Endereco_id", referencedColumnName = "id"))
-	private List<Endereco> enderecos;
+	private List<Endereco> enderecos  = new ArrayList<>();
 
 
 	@Override
@@ -94,12 +96,12 @@ public class Usuario implements Serializable {
 		System.out.println("New Usuario");
 	}
 
-	public Usuario(Long id) {
-		this.id = id;
-	}
+//	public Usuario(Long id) {
+//		this.id = id;
+//	}
 
 	public Usuario(String email, String password) {
-		this.email = email;
+		this.email = WordUtils.capitalize(email).trim().replaceAll("  ", " ").replaceAll("  ", " ").replaceAll("  ", " ").replaceAll("  ", " ").replaceAll(" ", "");
 		this.password = password;
 	}
 
@@ -107,8 +109,9 @@ public class Usuario implements Serializable {
 //		this.nome = nome;
 //	}
 	public Usuario(String nome, String sobrenome, String email) {
-		this.nome = nome;
-		this.sobrenome = sobrenome;
+		this.nome = WordUtils.capitalize(nome).trim().replaceAll("  ", " ").replaceAll("  ", " ").replaceAll("  ", " ").replaceAll("  ", " ");
+		this.sobrenome = WordUtils.capitalize(sobrenome).trim().replaceAll("  ", " ").replaceAll("  ", " ").replaceAll("  ", " ").replaceAll("  ", " ");
+		this.email = WordUtils.capitalize(email).trim().replaceAll("  ", " ").replaceAll("  ", " ").replaceAll("  ", " ").replaceAll("  ", " ").replaceAll(" ", "");
 	}
 
 	// Getters and Setters
@@ -126,7 +129,7 @@ public class Usuario implements Serializable {
 	}
 
 	public void setEmail(String email) {
-		this.email = email.replaceAll(" ", "").trim().toLowerCase();
+		this.email = WordUtils.capitalize(email).trim().toLowerCase().replaceAll("  ", " ").replaceAll("  ", " ").replaceAll("  ", " ").replaceAll("  ", " ").replaceAll(" ", "");
 	}
 
 	public String getPassword() {
@@ -138,12 +141,11 @@ public class Usuario implements Serializable {
 	}
 
 	public String getNome() {
-		System.out.println("New Usuario - setNome");
 		return nome;
 	}
 
 	public void setNome(String nome) {
-		this.nome = nome.trim();
+		this.nome = WordUtils.capitalize(nome).trim().replaceAll("  ", " ").replaceAll("  ", " ").replaceAll("  ", " ").replaceAll("  ", " ");
 	}
 
 	public String getSobrenome() {
@@ -151,7 +153,7 @@ public class Usuario implements Serializable {
 	}
 
 	public void setSobrenome(String sobrenome) {
-		this.sobrenome = sobrenome.trim();
+		this.sobrenome = WordUtils.capitalize(sobrenome).trim().replaceAll("  ", " ").replaceAll("  ", " ").replaceAll("  ", " ").replaceAll("  ", " ");
 	}
 
 	public LocalDate getDataNascimento() {
@@ -167,7 +169,7 @@ public class Usuario implements Serializable {
 	}
 
 	public void setCpf(String cpf) {
-		this.cpf = cpf;
+		this.cpf = cpf.trim();
 	}
 
 	public String getRg() {
@@ -175,25 +177,17 @@ public class Usuario implements Serializable {
 	}
 
 	public void setRg(String rg) {
-		this.rg = rg;
+		this.rg = rg.trim();
 	}
 
 	public List<Telefone> getTelefones() {
 		return telefones;
 	}
 
-	public void setTelefones(List<Telefone> telefones) {
-		this.telefones = telefones;
-	}
-
 	public List<Endereco> getEnderecos() {
 		return enderecos;
 	}
 
-	public void setEnderecos(List<Endereco> enderecos) {
-		this.enderecos = enderecos;
-	}
-	
 	public Paesci getLocalNascimento() {
 		return localNascimento;
 	}
@@ -206,7 +200,7 @@ public class Usuario implements Serializable {
 	}
 
 	public void setProfissao(String profissao) {
-		this.profissao = profissao.trim();
+		this.profissao = WordUtils.capitalize(profissao).trim().replaceAll("  ", " ").replaceAll("  ", " ").replaceAll("  ", " ").replaceAll("  ", " ");
 	}
 
 	// Getters and Setters das Relacoes
@@ -369,8 +363,8 @@ public class Usuario implements Serializable {
 		public void quandoCriar() {
 			this.dataCriacao = (LocalDateTime.now());
 			this.dataAlteracao = (LocalDateTime.now());
-			this.criador = (Usuario)FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("usuarioLogado");
-			this.alterador = (Usuario)FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("usuarioLogado");
+			this.criador = 		(Usuario)FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("usuarioLogado");
+			this.alterador = 	(Usuario)FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("usuarioLogado");
 		}
 
 		// Método Callback para update

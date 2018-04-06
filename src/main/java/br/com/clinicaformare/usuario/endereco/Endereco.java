@@ -2,6 +2,7 @@ package br.com.clinicaformare.usuario.endereco;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.faces.context.FacesContext;
@@ -13,6 +14,8 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
+
+import org.apache.commons.text.WordUtils;
 
 import br.com.clinicaformare.model.usuario.Usuario;
 
@@ -38,16 +41,11 @@ public class Endereco implements Serializable {
 	
 	// Parâmetros Derivados
 	@ManyToMany(mappedBy = "enderecos")
-	private List<Usuario> usuarios;
+	private List<Usuario> usuarios  = new ArrayList<>();
 
 	// Constructor
 	public Endereco() {
 		super();
-	}
-
-	public Endereco(TipoEndereco tipoEndereco) {
-		this.tipoEndereco = tipoEndereco;
-		this.logradouro = new Logradouro();
 	}
 
 	// Getters and Setters
@@ -69,7 +67,7 @@ public class Endereco implements Serializable {
 	}
 
 	public void setEndereco(String endereco) {
-		this.endereco = endereco;
+		this.endereco = WordUtils.capitalize(endereco).trim().replaceAll("  ", " ").replaceAll("  ", " ").replaceAll("  ", " ").replaceAll("  ", " ");
 	}
 
 	public String getNumero() {
@@ -77,7 +75,7 @@ public class Endereco implements Serializable {
 	}
 
 	public void setNumero(String numero) {
-		this.numero = numero;
+		this.numero = numero.trim();
 	}
 
 	public String getComplemento() {
@@ -85,7 +83,7 @@ public class Endereco implements Serializable {
 	}
 
 	public void setComplemento(String complemento) {
-		this.complemento = complemento;
+		this.complemento = WordUtils.capitalize(complemento).trim().replaceAll("  ", " ").replaceAll("  ", " ").replaceAll("  ", " ").replaceAll("  ", " ");
 	}
 
 	public String getCep() {
@@ -93,31 +91,7 @@ public class Endereco implements Serializable {
 	}
 
 	public void setCep(String cep) {
-		this.cep = cep;
-	}
-
-	public Paesci getPaesci() {
-		return paesci;
-	}
-
-	public void setPaesci(Paesci paesci) {
-		this.paesci = paesci;
-	}
-
-	public TipoEndereco getTipoEndereco() {
-		return tipoEndereco;
-	}
-
-	public void setTipoEndereco(TipoEndereco tipoEndereco) {
-		this.tipoEndereco = tipoEndereco;
-	}
-
-	public List<Usuario> getUsuarios() {
-		return usuarios;
-	}
-
-	public void setUsuarios(List<Usuario> usuarios) {
-		this.usuarios = usuarios;
+		this.cep = cep.trim().replaceAll(" ", "");
 	}
 
 	public String getBairro() {
@@ -125,14 +99,32 @@ public class Endereco implements Serializable {
 	}
 
 	public void setBairro(String bairro) {
-		this.bairro = bairro;
+		this.bairro = WordUtils.capitalize(bairro).trim().replaceAll("  ", " ").replaceAll("  ", " ").replaceAll("  ", " ").replaceAll("  ", " ");
 	}
+	public Paesci getPaesci() {
+		return paesci;
+	}
+	
+	public void setPaesci(Paesci paesci) {
+		this.paesci = paesci;
+	}
+	public TipoEndereco getTipoEndereco() {
+		return tipoEndereco;
+	}
+	
+	public void setTipoEndereco(TipoEndereco tipoEndereco) {
+		this.tipoEndereco = tipoEndereco;
+	}
+	
+	public List<Usuario> getUsuarios() {
+		return usuarios;
+	}
+	
+	public void setUsuarios(List<Usuario> usuarios) {
+		this.usuarios = usuarios;
+	}
+	
 	// String, hashCode and Equals
-	
-	
-	// -----------------------------------Registro de Alteração-----------------------------------------
-	// Parâmetros de Persistência
-	private LocalDateTime dataCriacao;
 	@Override
 	public String toString() {
 		return "Endereco [id=" + id + ", tipoEndereco=" + tipoEndereco + ", logradouro=" + logradouro + ", endereco=" + endereco + ", numero=" + numero + ", complemento=" + complemento + ", cep="
@@ -165,6 +157,9 @@ public class Endereco implements Serializable {
 	}
 
 
+	// -----------------------------------Registro de Alteração-----------------------------------------
+	// Parâmetros de Persistência
+	private LocalDateTime dataCriacao;
 	private LocalDateTime dataAlteracao;
 	@ManyToOne
 	private Usuario alterador;

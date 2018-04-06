@@ -2,6 +2,7 @@ package br.com.clinicaformare.usuario.endereco;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.faces.context.FacesContext;
@@ -30,7 +31,7 @@ public class Logradouro implements Serializable {
 	
 	// Parâmetros Derivados
 	@OneToMany(mappedBy = "logradouro")
-	private List<Endereco> endereco;
+	private List<Endereco> endereco  = new ArrayList<>();
 
 	// Construtor
 	public Logradouro() {

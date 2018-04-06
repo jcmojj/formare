@@ -2,6 +2,7 @@ package br.com.clinicaformare.usuario.endereco;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.faces.context.FacesContext;
@@ -30,21 +31,19 @@ public class TipoEndereco implements Serializable {
 	
 	// Parâmetros Derivados
 	@OneToMany(mappedBy = "tipoEndereco")
-	private List<Endereco> enderecos;
+	private List<Endereco> enderecos  = new ArrayList<>();
 	
 	// Constructor
-	public TipoEndereco(String tipo) {
-		super();
-		this.tipo = tipo;
-	}
-
 	public TipoEndereco() {
 		super();
 	}
-	
-	public TipoEndereco(Long id) {
+//	public TipoEndereco(Long id) {
+//		super();
+//		this.id = id;
+//	}
+	public TipoEndereco(String tipo) {
 		super();
-		this.id = id;
+		this.tipo = tipo;
 	}
 
 	//Getters and Setters

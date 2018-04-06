@@ -2,6 +2,7 @@ package br.com.clinicaformare.usuario.endereco;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.faces.context.FacesContext;
@@ -23,10 +24,10 @@ public class Telefone implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
-	private Integer ddd;
+	private String ddd;
 	private String numero;
 	@ManyToMany(mappedBy = "telefones")
-	private List<Usuario> usuarios;
+	private List<Usuario> usuarios = new ArrayList<>();
 	@ManyToOne
 	private TipoTelefone tipoTelefone;
 
@@ -35,7 +36,7 @@ public class Telefone implements Serializable {
 		super();
 	}
 
-	public Telefone(Integer ddd, String numero, TipoTelefone tipoTelefone) {
+	public Telefone(String ddd, String numero, TipoTelefone tipoTelefone) {
 		super();
 		this.setDdd(ddd);
 		this.numero = numero;
@@ -59,11 +60,11 @@ public class Telefone implements Serializable {
 		this.tipoTelefone = tipoTelefone;
 	}
 
-	public Integer getDdd() {
+	public String getDdd() {
 		return ddd;
 	}
 
-	public void setDdd(Integer ddd) {
+	public void setDdd(String ddd) {
 		this.ddd = ddd;
 	}
 
@@ -71,16 +72,8 @@ public class Telefone implements Serializable {
 		return id;
 	}
 
-	public void setId(Integer id) {
-		this.id = id;
-	}
-
 	public List<Usuario> getUsuarios() {
 		return usuarios;
-	}
-
-	public void setUsuarios(List<Usuario> usuarios) {
-		this.usuarios = usuarios;
 	}
 
 	public TipoTelefone getTipoTelefone() {
