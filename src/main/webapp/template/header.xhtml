@@ -118,27 +118,29 @@
 				<p:messages />
 			</h:panelGroup>
 		</h:panelGroup>
-
+	</h:form>
+	<h:form id="headerLogin">
 		<p:dialog header="Login" widgetVar="logar" modal="true" height="100"
 			focus="usuario" showEffect="clip" resizable="false">
-				<h:panelGrid columns="1" columnClasses="label, value" cellpadding="5">
+			<h:panelGrid columns="1" columnClasses="label, value" cellpadding="5">
 				<p:inputText id="usuario" styleClass="login" placeholder="Usuário"
 					label="username" required="true" value="#{loginBean.email}" />
 				<p:password id="senha" styleClass="login" feedback="false"
 					placeholder="Senha" label="password" required="true"
 					value="#{loginBean.password}" />
 				<f:facet name="footer">
-					<p:commandButton value="Logar" update="growlLongo"
+					<p:commandButton value="Logar" update=":header:growlLongo"
 						action="#{loginBean.logar}"
 						oncomplete="handleLoginRequest(xhr, status, args)">
-						<p:ajax />
+
 					</p:commandButton>
 				</f:facet>
 			</h:panelGrid>
 		</p:dialog>
+	</h:form>
 
 
-		<!--     <h:outputLabel for="username" value="Username:" />
+	<!--     <h:outputLabel for="username" value="Username:" />
             <p:inputText id="username" value="#{userLoginView.username}" required="true" label="username" />
  
             <h:outputLabel for="password" value="Password:" />
@@ -150,7 +152,6 @@
             </f:facet>  -->
 
 
-	</h:form>
 	<script type="text/javascript">
 		function handleLoginRequest(xhr, status, args) {
 			if (args.validationFailed || !args.loggedIn) {

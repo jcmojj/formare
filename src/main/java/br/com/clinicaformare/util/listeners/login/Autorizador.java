@@ -1,6 +1,7 @@
 package br.com.clinicaformare.util.listeners.login;
 
 import javax.enterprise.event.Observes;
+import javax.faces.application.NavigationHandler;
 import javax.faces.context.FacesContext;
 import javax.faces.event.PhaseEvent;
 
@@ -17,18 +18,18 @@ public class Autorizador {
 		System.out.println("Usuario Logado do Autorizador:" + usuarioLogado);
 		System.out.println("Usuario Logado do Original:" + FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("usuarioLogado"));
 		
-//		// se login, liberado
-//		if("/home.xhtml".equals(nomePagina)) {
-//			return;
-//		}
-//		// se existe usuario, liberado
-//		if(usuarioLogado != null) {
-//			return;
-//		}
-//		// se nada de antes vai pra login
-//		NavigationHandler handler = context.getApplication().getNavigationHandler();
-//		handler.handleNavigation(context, null, "home?faces-redirect-true");
-//		context.renderResponse();
+		// se login, liberado
+		if("/home.xhtml".equals(nomePagina)) {
+			return;
+		}
+		// se existe usuario, liberado
+		if(usuarioLogado != null) {
+			return;
+		}
+		// se nada de antes vai pra login
+		NavigationHandler handler = context.getApplication().getNavigationHandler();
+		handler.handleNavigation(context, null, "home?faces-redirect-true");
+		context.renderResponse();
 		
 		
 		
