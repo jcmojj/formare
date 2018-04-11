@@ -30,6 +30,7 @@ import br.com.clinicaformare.usuario.endereco.Paesci;
 import br.com.clinicaformare.usuario.endereco.Telefone;
 
 @Entity
+//@Table(uniqueConstraints=  @UniqueConstraint(columnNames = {"email", "password"}))
 public class Usuario implements Serializable {
 	private static final long serialVersionUID = 2L;
 	@Id
@@ -39,9 +40,9 @@ public class Usuario implements Serializable {
 
 	// Necessário para criação
 	@Email(message = "Não é um endereço de e-mail válido")
-	@Column(nullable = true, unique = true)
+	@Column(nullable = true)//, unique = true)
 	private String email;
-	@Column(nullable = true, unique = true, length = 15)
+	@Column(nullable = true, length = 15)//, unique = true)
 	private String password;
 
 	private String nome;
@@ -87,7 +88,7 @@ public class Usuario implements Serializable {
 	@Override
 	public String toString() {
 		return "Usuario [id=" + id + ", email=" + email + ", password=" + password + ", nome=" + nome + ", sobrenome=" + sobrenome + ", dataNascimento=" + dataNascimento + ", cpf=" + cpf + ", rg=" + rg
-				+ ", telefones=" + telefones + ", enderecos=" + enderecos + ", Cliente=" + isCliente() + ", Paciente=" + isPaciente() + ", Autorizado=" + isAutorizado() + ", ResponsavelFinanceiro=" + isResponsavelFinanceiro()
+				+ ", enderecos=" + enderecos + ", Cliente=" + isCliente() + ", Paciente=" + isPaciente() + ", Autorizado=" + isAutorizado() + ", ResponsavelFinanceiro=" + isResponsavelFinanceiro()
 				+ ", Equipe=" + isEquipe() + ", Profissional=" + isProfissional() + ", Socia=" + isSocia() + ", Administrador=" + isAdministrador() + ", Secretaria=" + isSecretaria() + "]";
 	}
 

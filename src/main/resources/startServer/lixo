@@ -1,3 +1,20 @@
+handleLoginRequest(xhr, status, args)
+onclick="{PF('dlgLogar').hide();PF('dlgOutro').show();}">
+oncomplete="{PF('dlgLogar').hide(); PF('dlgEscolher').show();}">
+actionListener="#{loginBean.logar()}"
+	{
+			function handleLoginRequest(xhr, status, args) {
+				
+				
+				if (args.validationFailed || !args.logado) {
+					PF('dlgEscolher').jq.effect("shake", {
+						times : 5
+					}, 100);
+				} else {
+					PF('dlgEscolher').hide();
+				}
+			}
+		}
 		<dependency>
 				<groupId>org.jboss.spec</groupId>
 				<artifactId>jboss-javaee-6.0</artifactId>
