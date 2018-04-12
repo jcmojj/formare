@@ -4,11 +4,11 @@
 	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
 	xmlns:p="http://primefaces.org/ui">
 
-<ui:composition template="template/_template.xhtml">
-	<ui:define name="title">
-            Formare - Cadastro Usuário
+<ui:composition template="template/_templatedyn.xhtml">
+<ui:define name="title">
+            Clínica Formare - Atendimento Comportamental Integrado
     </ui:define>
-	<ui:define name="content">
+	<ui:define name="dynContent">
 <h:form>
 <h1>
 Usuário Logado: #{startServer.usuarioLogado}
@@ -52,13 +52,13 @@ Usuário Logado: #{startServer.usuarioLogado}
 
 <h:form> 
 <h2>Populate Entities Sistema Novo</h2>
-<h:commandLink action="#{startServer.paesci}" value="Paesci" /><br />
-<h:commandLink action="#{startServer.logradouro}" value="Logradouro" /><br />
-<h:commandLink action="#{startServer.tipoTelefone}" value="Tipo Telefone" /><br />
-<h:commandLink action="#{startServer.tipoEndereco}" value="Tipo Endereco" /><br />
-<h:commandLink action="#{startServer.nivelProfissional}" value="Nível Profissional" /><br />
-<h:commandLink action="#{startServer.especializacaoDoProfissional}" value="Especialização do Profissional" /><br />
-<h:commandLink action="#{startServer.profissional}" value="Profissional" /><br />
+<h:commandLink actionListener="#{startServer.paesci}" value="Paesci" /><br />
+<h:commandLink actionListener="#{startServer.logradouro}" value="Logradouro" /><br />
+<h:commandLink actionListener="#{startServer.tipoTelefone}" value="Tipo Telefone" /><br />
+<h:commandLink actionListener="#{startServer.tipoEndereco}" value="Tipo Endereco" /><br />
+<h:commandLink actionListener="#{startServer.nivelProfissional}" value="Nível Profissional" /><br />
+<h:commandLink actionListener="#{startServer.especializacaoDoProfissional}" value="Especialização do Profissional" /><br />
+<h:commandLink actionListener="#{startServer.profissional}" value="Profissional" /><br />
 </h:form>
 
 

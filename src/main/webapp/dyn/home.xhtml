@@ -4,13 +4,16 @@
 	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
 	xmlns:p="http://primefaces.org/ui">
 
-<ui:composition template="/template/_templatestatic.xhtml">
+<ui:composition template="/template/_templatedyn.xhtml">
 	<ui:define name="title">
             Clínica Formare - Atendimento Comportamental Integrado
     </ui:define>
-	<ui:define name="staticContent">
+	<ui:define name="dynContent">
 		<h:form id="home"  class="nomargin">
-
+			<h3 class="heading-title">Home do Dyn</h3>
+			<blockquote>
+	        <p>Temos uma ampla equipe para atender as necessidades de nossos pacientes. Conheça nossas especialidades:</p><br/>
+	      </blockquote>
 		</h:form>
 	</ui:define>
 

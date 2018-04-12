@@ -13,19 +13,23 @@
 	<h:outputStylesheet name="css/estilos.css" />
 	<h:outputScript name="js/traducoes-primefaces.js" />
 
+
+	  <!-- jQuery first, then Tether, then Bootstrap JS. -->
+
+
 	<script type="text/javascript" src="js/cssrefresh.js"></script>
 </h:head>
 
 <h:body>
 	<h:panelGroup styleClass="page" layout="block">
-		<ui:include src="header.xhtml" />
+		<ui:include src="/antigo/header.xhtml" />
 
-			<h:panelGroup styleClass="container-content" layout="block">
+		<h:panelGroup styleClass="container-content" layout="block">
 
-				<ui:insert name="content" />
-			</h:panelGroup>
+			<ui:insert name="content" />
+		</h:panelGroup>
 
-		<ui:include src="footer.xhtml" />
+		<ui:include src="/antigo/footer.xhtml" />
 	</h:panelGroup>
 </h:body>
 

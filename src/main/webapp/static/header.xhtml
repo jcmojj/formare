@@ -1,0 +1,85 @@
+	<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:form id="formHeader">
+
+<!-- Headers Start -->
+      <div id="headers" class="nomargin">
+        <!-- Light header -->	
+        <header id="header-style-1">
+          <nav class="navbar navbar-toggleable-sm navbar-light bg-faded">
+            <div class="container">
+            
+            		<h:outputLink value="index.html" class="navbar-brand">
+					<h:graphicImage library="images" name="logo.png" alt="" />
+				</h:outputLink>
+            
+              <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation"><i class="fa fa-bars"></i>
+              </button>
+              <div class="collapse navbar-collapse justify-content-end" id="navbarCollapse">
+                <ul class="navbar-nav">
+                  <li class="nav-item">
+                  	<h:outputLink value="index.html" class="nav-link">
+						<h:outputText value="Home" />
+					</h:outputLink>
+                  </li>
+                  <li class="nav-item">
+                  	<h:outputLink value="index.html" class="nav-link">
+						<h:outputText value="Quem somos" />
+					</h:outputLink>
+                  </li>
+                  <li class="nav-item">
+                  	<h:outputLink value="index.html" class="nav-link">
+						<h:outputText value="Equipe Técnica" />
+					</h:outputLink>
+                  </li>
+                  <li class="nav-item">
+                  	<h:outputLink value="index.html" class="nav-link">
+						<h:outputText value="Nossos serviços" />
+					</h:outputLink>
+                  </li>
+                  <li class="nav-item">
+                  	<h:outputLink value="index.html" class="nav-link">
+						<h:outputText value="A Clínica" />
+					</h:outputLink>
+                  </li>
+                  <li class="nav-item">
+                  	<h:outputLink value="index.html" class="nav-link">
+						<h:outputText value="Trabalhe com a gente" />
+					</h:outputLink>
+                  </li>
+                  <li class="nav-item">
+                  	<h:outputLink value="index.html" class="nav-link">
+						<h:outputText value="Contato" />
+					</h:outputLink>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </nav>
+
+          <div class="container">
+            <div class="header-caption">
+              <div class="row">
+                <div class="col-md-12 header-content">
+                  <h1 class="header-title animated fadeInDown">Uma <span class="text-primary">metodologia inovadora. </span></h1>
+                  <h5 class="header-text animated fadeIn">Atendimentos multiprofissionais interligados, baseados na Análise do Comportamento Aplicada (ABA).<br/>Um método inovador que potencializa resultados.</h5>
+                  	<h:outputLink value="#" class="page-scroll btn btn-lg btn-default-filled animated fadeInUp">
+						<h:outputText value="Saiba mais" />
+					</h:outputLink>
+					<h:outputLink value="#" class="page-scroll btn btn-lg btn-common animated fadeInUp">
+						<h:outputText value="Quem somos" />
+					</h:outputLink>
+                </div>
+              </div>
+            </div>
+          </div>
+        </header>
+      </div>
+      <!-- Headers End -->
+</h:form>
+		
+</ui:composition>

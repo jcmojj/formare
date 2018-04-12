@@ -61,7 +61,8 @@ public class ThemeSwitcherViewBean {
 		themes.add(new Theme(35, "UI-Darkness", "ui-darkness"));
 		themes.add(new Theme(36, "UI-Lightness", "ui-lightness"));
 		themes.add(new Theme(37, "Vader", "vader"));
-		tema = themes.get(26);
+//		themes.add(new Theme(38, "Nenhum", "none"));
+		tema = themes.get(7); // ESCOLHENDO TEMA
 	}
 
 	public List<Theme> getThemes() {

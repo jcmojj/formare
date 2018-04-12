@@ -1,0 +1,56 @@
+@charset "UTF-8";
+
+.top-menu-adapt {
+	height: 44px;
+}
+
+.top-menu-submenu-adapt {
+	padding: 11.5px 15px;
+	vertical-align: middle;
+}
+
+.centralizar {
+	text-align: center
+}
+
+.bloco{
+	display: block;
+}
+
+.nomargin {
+	margin: 0px;
+}
+
+.altura-dyn {
+	min-height: 70%;
+}
+
+loginFieldset{
+	height: 10px
+}
+
+.login-bg {
+	background-image: url("#{resource['images/bg/login-bg.png']}");
+	-webkit-background-size: cover;
+	-moz-background-size: cover;
+	background-size: cover;
+	background-position: contain
+}
+.login-box{
+	border: 2px groove #ccc;
+	border-radius: 15px;
+	margin: 0 auto;
+	height: 500px;
+	width: 354px;
+	background-color: white;
+}
+
+.login-padding{
+	padding: 0 0 0 18px;
+}
+.login-margin{
+	margin: 0 0 0 18px;
+}
+.top-menu .left{
+	float:left
+}

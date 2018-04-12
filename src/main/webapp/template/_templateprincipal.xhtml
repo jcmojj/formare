@@ -1,0 +1,50 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+	<!-- meta tags -->
+	<meta charset="utf-8" />
+	<meta name="viewport"
+		content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+	<meta name="description" content="Bootstrap" />
+	<meta name="keywords" content="" />
+
+	<!-- CSS Files -->
+	<h:outputStylesheet library="font-awesome"
+		name="css/font-awesome.min.css" />
+
+	<h:outputStylesheet name="css/bootstrap.min.css" />
+	<h:outputStylesheet name="css/adapt.css" />
+
+
+	<!-- jQuery first, then Tether, then Bootstrap JS. -->
+	<script type="text/javascript" src="js/cssrefresh.js"></script>
+	<h:outputScript name="js/traducoes-primefaces.js" />
+
+	<h:outputScript name="js/jquery.min.js" />
+	<h:outputScript name="js/tether.min.js" />
+	<h:outputScript name="js/bootstrap.min.js" />
+	<h:outputScript name="js/owl.carousel.min.js" />
+
+	<h:outputScript name="js/form-validator.min.js" />
+	<h:outputScript name="js/traducoes-primefaces.js" />
+	<h:outputScript name="js/main.js" />
+
+	<h:outputScript name="js/traducoes-primefaces.js" />
+
+	<!-- Title -->
+	<title><ui:insert name="title"></ui:insert></title>
+</h:head>
+
+<h:body>
+	<ui:include src="topmenu.xhtml" />
+
+	<ui:insert name="content" />
+
+	<ui:include src="footer.xhtml" />
+</h:body>
+
+</html>

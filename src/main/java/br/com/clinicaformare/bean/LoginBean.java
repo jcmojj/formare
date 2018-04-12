@@ -2,6 +2,7 @@ package br.com.clinicaformare.bean;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -52,7 +53,7 @@ public class LoginBean implements Serializable {
 	@Inject
 	private EnderecoDao enderecoDao;
 	@Inject
-	private Usuario loggedUser;
+	private Usuario usuarioLogado;
 	// @Inject
 	// @SessionMap
 	// private Map<String, Object> sessionMap;// ---> precisa nao pode te por conta do viewscoped
@@ -63,7 +64,7 @@ public class LoginBean implements Serializable {
 	private String email = "";
 	private String password = "";
 	private String userId = "";
-	private List<Usuario> listaUsuariosComEmailESenha;
+	private List<Usuario> listaUsuariosComEmailESenha = new ArrayList<>();
 
 	public void novoUsuario() {
 		System.out.println("METODO: NOVO USUARIO");
@@ -76,7 +77,7 @@ public class LoginBean implements Serializable {
 	}
 
 	public String novoUsuarioString() {
-		return "usuariowizard?faces-redirect-true";
+		return "usuariowizard?faces-redirect=true";
 	}
 
 	public void recuperarUsuario() {
@@ -90,16 +91,16 @@ public class LoginBean implements Serializable {
 	}
 
 	public String recuperarUsuarioString() {
-		return "recuperarusuario?faces-redirect-true"; // "recuperarusuario?faces-redirect-true";
+		return "recuperarusuario?faces-redirect=true"; // "recuperarusuario?faces-redirect=true";
 	}
 
 	public String selecionarString() {
 		System.out.println("METODO: SELECIONAR STRING");
 		this.outro = false;
-		return "startserver?faces-redirect-true";
+		return "startserver?faces-redirect=true";
 	}
 
-	public void selecionar() {
+	public String selecionar() {
 		System.out.println("METODO: SELECIONAR --> ID:"+ this.userId);
 		Usuario usuarioLogado = usuarioDao.buscaPorId(Long.valueOf(this.userId));
 		System.out.println("Usuário:" + usuarioLogado);
@@ -115,6 +116,7 @@ public class LoginBean implements Serializable {
 		// }else { // mais de um usuário
 		//
 		// }
+		return "dashboard?faces-redirect=true";
 	}
 
 	public void logarString() {
@@ -153,7 +155,7 @@ public class LoginBean implements Serializable {
 			rc.addCallbackParam("logado", this.logado);
 		}
 		FacesContext.getCurrentInstance().addMessage(null, message);
-		// return "home?faces-redirect-true";
+		// return "home?faces-redirect=true";
 
 		// System.out.println("IMPRIMIR LOGAR ANTES DO IF");
 		// System.out.println("usuario:" + usuario);
@@ -173,13 +175,16 @@ public class LoginBean implements Serializable {
 
 	public String deslogarString() {
 		System.out.println("METODO: DESLOGAR STRING");
-		return "home?faces-redirect-true";
+		return "home?faces-redirect=true";
 	}
-	public void deslogar() {
+	public String deslogar() {
 		System.out.println("METODO: DESLOGAR");
+		
 		this.logado = false;
 		listaUsuariosComEmailESenha = null;
+		usuarioLogado = null;
 		FacesContext.getCurrentInstance().getExternalContext().getSessionMap().remove("usuarioLogado");
+		return "home?faces-redirect=true";
 	}
 	public List<Usuario> getListaUsuariosComEmailESenha() {
 		System.out.println("METODO: GET LISTA");
@@ -228,6 +233,10 @@ public class LoginBean implements Serializable {
 	public void setUserId(String userId) {
 		System.out.println("ENTROU SETUSERID");
 		this.userId = userId;
+	}
+
+	public Usuario getUsuarioLogado() {
+		return usuarioLogado = (Usuario)FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("usuarioLogado");
 	}
 
 	// Métodos de inicialização do Usuário Raiz no Servidor

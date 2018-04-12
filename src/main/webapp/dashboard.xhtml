@@ -4,15 +4,18 @@
 	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
 	xmlns:p="http://primefaces.org/ui">
 
-<ui:composition template="/template/_templatestatic.xhtml">
-	<ui:define name="title">
+<ui:composition template="template/_templatedyn.xhtml">
+<ui:define name="title">
             Clínica Formare - Atendimento Comportamental Integrado
     </ui:define>
-	<ui:define name="staticContent">
-		<h:form id="home"  class="nomargin">
-
-		</h:form>
-	</ui:define>
+<ui:define name="dynContent">
+	<h:form id="formDashboard">
+		
+		<h3>Dashboard</h3>
+		<h:link value="Start Server" outcome="startserver" />
+		
+	</h:form>
+</ui:define>
 
 </ui:composition>
 </html>

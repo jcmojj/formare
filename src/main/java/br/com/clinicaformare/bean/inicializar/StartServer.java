@@ -15,6 +15,7 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import javax.transaction.Transactional;
 
+import br.com.clinicaformare.bean.LoginBean;
 import br.com.clinicaformare.daos.usuario.NivelProfissionalDao;
 import br.com.clinicaformare.daos.usuario.endereco.LogradouroDao;
 import br.com.clinicaformare.daos.usuario.endereco.PaesciDao;
@@ -50,12 +51,15 @@ public class StartServer {
 	@Inject
 	@UsuarioLogado
 	private Usuario usuarioLogado;
+	
+	@Inject
+	private LoginBean loginBean;
 
 	public String getUsuarioLogado() {
 		if (usuarioLogado == null) {
 			return "Sem usuário logado";
 		}
-		return usuarioLogado.getNome() + usuarioLogado.getSobrenome();
+		return "UsuarioLogado: " + usuarioLogado.getNome() + usuarioLogado.getSobrenome() + " LoginBean: " + loginBean.getUsuarioLogado().getNome() + loginBean.getUsuarioLogado().getSobrenome();
 	}
 
 	@Inject
@@ -165,7 +169,7 @@ public class StartServer {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		return "startserver?faces-redirect-true";
+		return "startserver?faces-redirect=true";
 	}
 
 	@Transactional

@@ -4,34 +4,53 @@
 	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
 	xmlns:p="http://primefaces.org/ui">
 
-<ui:composition template="template/_template.xhtml">
+<ui:composition template="template/_templatedyn.xhtml">
 	<ui:define name="title">
-            Formare - Cadastro Usuário
+            Clínica Formare - Atendimento Comportamental Integrado
     </ui:define>
-	<ui:define name="content">
-		<h:form id="login">
-		<p:fieldset legend="Login">
-			<h:panelGrid columns="3">
-				<h:outputText value="#{sessionScope['usuarioLogado'].nome}" />
+	<ui:define name="dynContent">
+		<h:form id="formLogin">
+			<div class="login-box">
+				<br />
+				<h3 class="login-padding">Login</h3>
 				
-				<p:outputLabel for="email" value="Email:" />
-				<p:inputText id="email" value="#{loginBean.email}"
-					required="true" requiredMessage="O email é um campo obrigatório."
-					label="Email">
-				</p:inputText>
-				<p:message for="email" id="messageEmail"/>
 				
-				<p:outputLabel for="senha" value="Senha:" />
-				<p:password id="senha" value="#{loginBean.password}"
-					required="true" requiredMessage="A senha é um campo obrigatório."
-					label="Senha"/>
-				<p:message for="senha" id="messageSenha"/>
+				<!-- Logando -->
+				<h:panelGrid columns="2" rendered="#{!loginBean.logado}"
+					columnClasses="label, value">
+
+					<p:outputLabel for="loginemail" value="Email:" />
+					<p:inputText id="loginemail" placeholder="Digite seu email"
+						label="useremail" required="true" value="#{loginBean.email}" 
+						requiredMessage="O email é um campo obrigatório." >
+					</p:inputText>
+
+
+					<p:outputLabel for="loginsenha" value="Senha:" />
+					<p:password id="loginsenha" placeholder="Digite sua senha"
+						label="userpassword" required="true" value="#{loginBean.password}"
+						requiredMessage="A senha é um campo obrigatório."/>
+
+					<p:message for="loginemail" id="loginemailmessage" />
+					<p:message for="loginsenha" id="loginsenhamessage" />
+						<p:commandButton value="Logar" action="#{loginBean.logar}" update=":formLogin :formMessages:growlLongo">
+							<p:ajax />
+						</p:commandButton>
+				</h:panelGrid>
 				
-				<p:commandButton value="Logar" action="#{loginBean.logar}"/>
-			</h:panelGrid>
-		</p:fieldset>
-		
-				
+				<!-- Verificando qual usuário quer -->
+				<h:panelGroup rendered="#{loginBean.logado}" layout="block">
+				<h4 class="login-padding"><br/>Escolha um usuário:</h4>
+				<h:dataTable var="user" value="#{loginBean.listaUsuariosComEmailESenha}" class="login-margin" >
+						<h:column>
+						<p:commandButton value="#{user.nome}" action="#{loginBean.selecionar}" >
+							<f:setPropertyActionListener target="#{loginBean.userId}" value="#{user.id}" />
+						</p:commandButton>
+						</h:column>
+				</h:dataTable>
+				</h:panelGroup>
+			</div>
+
 		</h:form>
 	</ui:define>
 
