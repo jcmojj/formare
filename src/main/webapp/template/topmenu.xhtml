@@ -17,16 +17,22 @@
 				</h:outputLabel>
 				
 				<h:outputLabel rendered="#{loginBean.logado}" class="btn btn-top-menu-inverse">
-					<h:commandLink value="Deslogar" action="#{loginBean.deslogar}">
+					<h:commandLink  action="#{loginBean.deslogar}">
 						<i class="fa fa-lock"></i>
 						<h:outputText value="Deslogar" />
 					</h:commandLink>
 				</h:outputLabel>
 				
-				<h:outputText value="#{sessionScope['usuarioLogado'].nome}" />
+				<h:outputLabel rendered="#{loginBean.logado}" class="btn btn-top-menu-inverse">
+					<h:outputLink  value="dashboard.xhtml">
+						<i class="fa fa-user"></i>
+						<h:outputText value="#{sessionScope['usuarioLogado'].nome}" />
+					</h:outputLink>
+				</h:outputLabel>
+				
 			</span>
-			<span class="right hidden-sm-down top-menu-submenu-adapt  "> 
 			
+			<span class="right hidden-sm-down top-menu-submenu-adapt  "> 
 			<h:outputLink value="tel:5041-2626">
 				<i class="fa fa-phone"></i>
 				<h:outputText value="(11) 5041-2626" />

@@ -15,7 +15,7 @@ import javax.transaction.Transactional;
 
 import org.primefaces.context.RequestContext;
 
-import br.com.clinicaformare.bean.inicializar.StartServer;
+import br.com.clinicaformare.bean.entity.StartEntity;
 import br.com.clinicaformare.daos.usuario.AdministradorDao;
 import br.com.clinicaformare.daos.usuario.UsuarioDao;
 import br.com.clinicaformare.daos.usuario.endereco.EnderecoDao;
@@ -37,7 +37,7 @@ public class LoginBean implements Serializable {
 	@Inject
 	private UsuarioDao usuarioDao;
 	@Inject
-	private StartServer startServer;
+	private StartEntity startEntity;
 	@Inject
 	private PaesciDao paesciDao;
 	@Inject
@@ -52,8 +52,7 @@ public class LoginBean implements Serializable {
 	private LogradouroDao logradouroDao;
 	@Inject
 	private EnderecoDao enderecoDao;
-	@Inject
-	private Usuario usuarioLogado;
+	private Usuario usuarioLogado = new Usuario();
 	// @Inject
 	// @SessionMap
 	// private Map<String, Object> sessionMap;// ---> precisa nao pode te por conta do viewscoped
@@ -102,30 +101,14 @@ public class LoginBean implements Serializable {
 
 	public String selecionar() {
 		System.out.println("METODO: SELECIONAR --> ID:"+ this.userId);
-		Usuario usuarioLogado = usuarioDao.buscaPorId(Long.valueOf(this.userId));
+		usuarioLogado = usuarioDao.buscaPorId(Long.valueOf(this.userId));
 		System.out.println("Usuário:" + usuarioLogado);
 		FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Bem-Vindo", usuarioLogado.getNome());
 		FacesContext.getCurrentInstance().addMessage(null, message);
 		this.logado = true;
 		this.outro = false;
-		// Usuario usuario = usuarioDao.buscaUsuariosComLoginEPassword(email, password).get(0);
-		// Usuario usuario = usuarioDao.buscaPorId(Long.valueOf(id));
-		FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("usuarioLogado", usuarioLogado); // --->> precisa
-		// if(usuarioDao.buscaQuantidadeUsuariosComEmailEPassword(email, password) == 1) { // somente um usuário
-		//
-		// }else { // mais de um usuário
-		//
-		// }
+		FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("usuarioLogado", usuarioLogado);
 		return "dashboard?faces-redirect=true";
-	}
-
-	public void logarString() {
-		System.out.println("METODO: LOGAR STRING");
-		if (usuarioDao.existe(email, password)) {
-			listaUsuariosComEmailESenha = usuarioDao.buscaUsuariosComLoginEPassword(this.email, this.password);
-			this.logado = true;
-			listaUsuariosComEmailESenha.forEach(System.out::println);
-		}
 	}
 
 	public void logar() { // logar procura um usuario
@@ -139,11 +122,6 @@ public class LoginBean implements Serializable {
 			this.logado = true;
 			RequestContext rc = RequestContext.getCurrentInstance();
 			rc.addCallbackParam("logado", this.logado);
-			// FacesContext context = FacesContext.getCurrentInstance();
-			// context.getExternalContext().getSessionMap().put("usuarioLogado", this.usuario);
-			// System.out.println("Login Valido2:"+ sessionMap.get("usuarioLogado"));
-			// System.out.println();
-			// parameterMap.put("usuarioLogadoId", ((Long)this.usuario.getId()).toString());
 			System.out.println("LISTA de USUARIOS");
 			listaUsuariosComEmailESenha.forEach(System.out::println);
 		} else {
@@ -155,28 +133,9 @@ public class LoginBean implements Serializable {
 			rc.addCallbackParam("logado", this.logado);
 		}
 		FacesContext.getCurrentInstance().addMessage(null, message);
-		// return "home?faces-redirect=true";
-
-		// System.out.println("IMPRIMIR LOGAR ANTES DO IF");
-		// System.out.println("usuario:" + usuario);
-		// System.out.println("usuarioDao.existe(usuario):" + usuarioDao.existe(usuario));
 	}
 
-	// public void escolherUsuario(ActionEvent event) {
-	// Usuario usuario = usuarioDao.buscaUsuariosComLoginEPassword(email, password).get(0);
-	// FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("usuarioLogado", usuario); // --->> precisa
-	// posLogado();
-	// if(usuarioDao.buscaQuantidadeUsuariosComEmailEPassword(email, password) == 1) { // somente um usuário
-	//
-	// }else { // mais de um usuário
-	//
-	// }
-	// }
 
-	public String deslogarString() {
-		System.out.println("METODO: DESLOGAR STRING");
-		return "home?faces-redirect=true";
-	}
 	public String deslogar() {
 		System.out.println("METODO: DESLOGAR");
 		
@@ -276,10 +235,10 @@ public class LoginBean implements Serializable {
 
 		if (paesciDao.buscaPorId(1L) == null) {
 			Usuario usuario = (Usuario) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("usuarioLogado");
-			startServer.paesci();
-			startServer.logradouro();
-			startServer.tipoTelefone();
-			startServer.tipoEndereco();
+			startEntity.paesci();
+			startEntity.logradouro();
+			startEntity.tipoTelefone();
+			startEntity.tipoEndereco();
 			usuario.setLocalNascimento(paesciDao.buscaPorId(paesciDao.getId("Brasil", "SP", "São Paulo")));
 
 			System.out.println("Telefone");

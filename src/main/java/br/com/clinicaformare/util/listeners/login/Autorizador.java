@@ -31,7 +31,7 @@ public class Autorizador {
 		}
 		// se nada de antes vai pra login
 		NavigationHandler handler = context.getApplication().getNavigationHandler();
-		handler.handleNavigation(context, null, "login	?faces-redirect=true");
+		handler.handleNavigation(context, null, "home?faces-redirect=true");
 		context.renderResponse();
 	}
 

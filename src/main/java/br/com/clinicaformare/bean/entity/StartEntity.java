@@ -1,4 +1,4 @@
-package br.com.clinicaformare.bean.inicializar;
+package br.com.clinicaformare.bean.entity;
 
 import java.io.BufferedReader;
 import java.io.FileInputStream;
@@ -31,7 +31,7 @@ import br.com.clinicaformare.util.listeners.login.UsuarioLogado;
 
 @Named
 @RequestScoped
-public class StartServer {
+public class StartEntity {
 
 	// @Inject
 	// private LoginBean loginBean;
