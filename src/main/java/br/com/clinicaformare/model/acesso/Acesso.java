@@ -1,9 +1,7 @@
-package br.com.clinicaformare.usuario.endereco;
+package br.com.clinicaformare.model.acesso;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.faces.context.FacesContext;
 import javax.persistence.Column;
@@ -12,68 +10,64 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 
 import br.com.clinicaformare.model.usuario.Usuario;
 
 @Entity
-public class Logradouro implements Serializable {
+public class Acesso implements Serializable{
 	private static final long serialVersionUID = 1L;
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "id", updatable = false, nullable = false)
 	private Long id;
 	
-	// Parâmetros Próprios
-	@Column(unique = true)
-	private String nome;
+	// Variáveis
+	Usuario usuario;
+	TipoEntidade entidade;
+	boolean inicializar;
+	boolean listar;
+	boolean alterar;
+	boolean incluir;
+	boolean deletar;
 	
-	// Parâmetros Derivados
-	@OneToMany(mappedBy = "logradouro")
-	private List<Endereco> endereco  = new ArrayList<>();
-
-	// Construtor
-	public Logradouro() {
-		super();
+	// Getters and Setters
+	public TipoEntidade getEntidade() {
+		return entidade;
 	}
-
-	public Logradouro(String nome) {
-		super();
-		this.nome = nome;
+	public void setEntidade(TipoEntidade entidade) {
+		this.entidade = entidade;
 	}
-
-	// Getters and setters
-	public String getLogradouro() {
-		return nome;
+	public boolean isInicializar() {
+		return inicializar;
 	}
-
-	public void setLogradouro(String nome) {
-		this.nome = nome.trim();
+	public void setInicializar(boolean inicializar) {
+		this.inicializar = inicializar;
 	}
-
-	public Long getId() {
-		return id;
+	public boolean isListar() {
+		return listar;
 	}
-
-	public void setId(Long id) {
-		this.id = id;
+	public void setListar(boolean listar) {
+		this.listar = listar;
 	}
-
-	public String getNome() {
-		return nome;
+	public boolean isIncluir() {
+		return incluir;
 	}
-
-	public void setNome(String nome) {
-		this.nome = nome;
+	public void setIncluir(boolean incluir) {
+		this.incluir = incluir;
 	}
-	// String, hashCode and Equals
+	public boolean isDeletar() {
+		return deletar;
+	}
+	public void setDeletar(boolean deletar) {
+		this.deletar = deletar;
+	}
+	public Usuario getUsuario() {
+		return usuario;
+	}
 	
-	@Override
-	public String toString() {
-		return "Logradouro [id=" + id + ", nome=" + nome + ", endereco=" + endereco + "]";
-	}
-
+	// Tostring, Equal e Hashcode
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -81,7 +75,6 @@ public class Logradouro implements Serializable {
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
 		return result;
 	}
-
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -90,7 +83,7 @@ public class Logradouro implements Serializable {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Logradouro other = (Logradouro) obj;
+		Acesso other = (Acesso) obj;
 		if (id == null) {
 			if (other.id != null)
 				return false;
@@ -127,8 +120,8 @@ public class Logradouro implements Serializable {
 	public void quandoCriar() {
 		this.dataCriacao = (LocalDateTime.now());
 		this.dataAlteracao = (LocalDateTime.now());
-		this.criador = (Usuario)FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("usuarioLogado");
-		this.alterador = (Usuario)FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("usuarioLogado");
+		this.criador = 		(Usuario)FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("usuarioLogado");
+		this.alterador = 	(Usuario)FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("usuarioLogado");
 	}
 
 	// Método Callback para update
@@ -137,6 +130,5 @@ public class Logradouro implements Serializable {
 		this.dataAlteracao = (LocalDateTime.now());
 		this.alterador  = (Usuario)FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("usuarioLogado");
 	}
-	// ------------------------------------------------------------------------------------------------
-
+	
 }

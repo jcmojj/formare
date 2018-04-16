@@ -6,9 +6,12 @@ import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 
 import br.com.clinicaformare.daos.Dao;
+import br.com.clinicaformare.model.acesso.Entidade;
+import br.com.clinicaformare.model.acesso.TipoEntidade;
 import br.com.clinicaformare.usuario.endereco.Logradouro;
 
 @Stateless
+@Entidade(tipo = TipoEntidade.LOGRADOURO)
 public class LogradouroDao extends Dao<Logradouro> {
 
 	public LogradouroDao() {
