@@ -48,6 +48,7 @@ public class LoginBean implements Serializable {
 	private TipoTelefoneDao tipoTelefoneDao;
 	@Inject
 	private TipoEnderecoDao tipoEnderecoDao;
+//	@Inject @Entidade(tipo = TipoEntidade.LOGRADOURO)
 	@Inject
 	private LogradouroDao logradouroDao;
 	@Inject

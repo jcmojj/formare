@@ -15,6 +15,8 @@ import javax.transaction.Transactional;
 import br.com.clinicaformare.daos.usuario.endereco.LogradouroDao;
 import br.com.clinicaformare.daos.usuario.endereco.PaesciDao;
 import br.com.clinicaformare.daos.usuario.endereco.TipoTelefoneDao;
+import br.com.clinicaformare.model.acesso.Entidade;
+import br.com.clinicaformare.model.acesso.TipoEntidade;
 import br.com.clinicaformare.usuario.endereco.Logradouro;
 import br.com.clinicaformare.usuario.endereco.Paesci;
 import br.com.clinicaformare.usuario.endereco.TipoTelefone;
@@ -47,6 +49,7 @@ public class InicializarBean {
 //		racaGato();
 	}
 
+//	@Inject @Entidade(tipo = TipoEntidade.LOGRADOURO)
 	@Inject
 	private LogradouroDao logradouroDao;
 

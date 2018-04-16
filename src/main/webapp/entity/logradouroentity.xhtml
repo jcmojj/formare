@@ -65,7 +65,7 @@
         </p:column> -->
        <p:column style="width:60px; text-align: center">
            <p:commandButton update="@form @form:msgs"  icon="ui-icon-search" title="Deletar" action="#{logradouroBean.apagar}">
-                <f:setPropertyActionListener value="#{logradouro}" target="#{logradouroBean.logradouro}" />
+                <f:setPropertyActionListener value="#{logradouro}" target="#{logradouroBean.modelo}" />
             </p:commandButton>
        </p:column>
    </p:dataTable>	

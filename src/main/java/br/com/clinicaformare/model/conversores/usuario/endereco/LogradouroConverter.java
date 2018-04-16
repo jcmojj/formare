@@ -12,6 +12,7 @@ import br.com.clinicaformare.usuario.endereco.Logradouro;
 @Named
 public class LogradouroConverter implements Converter{
 	
+//	@Inject @Entidade(tipo = TipoEntidade.LOGRADOURO)
 	@Inject
 	LogradouroDao logradouroDao;
 	@Override

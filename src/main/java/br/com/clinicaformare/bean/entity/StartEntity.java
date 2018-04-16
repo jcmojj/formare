@@ -21,8 +21,6 @@ import br.com.clinicaformare.daos.usuario.endereco.LogradouroDao;
 import br.com.clinicaformare.daos.usuario.endereco.PaesciDao;
 import br.com.clinicaformare.daos.usuario.endereco.TipoEnderecoDao;
 import br.com.clinicaformare.daos.usuario.endereco.TipoTelefoneDao;
-import br.com.clinicaformare.model.acesso.Entidade;
-import br.com.clinicaformare.model.acesso.TipoEntidade;
 import br.com.clinicaformare.model.usuario.NivelProfissional;
 import br.com.clinicaformare.model.usuario.Usuario;
 import br.com.clinicaformare.usuario.endereco.Logradouro;
@@ -54,6 +52,7 @@ public class StartEntity {
 	@UsuarioLogado
 	private Usuario usuarioLogado;
 	
+//	@Inject @Entidade(tipo = TipoEntidade.LOGRADOURO)
 	@Inject
 	private LoginBean loginBean;
 
@@ -64,7 +63,8 @@ public class StartEntity {
 		return "UsuarioLogado: " + usuarioLogado.getNome() + usuarioLogado.getSobrenome() + " LoginBean: " + loginBean.getUsuarioLogado().getNome() + loginBean.getUsuarioLogado().getSobrenome();
 	}
 
-	@Inject @Entidade(tipo = TipoEntidade.LOGRADOURO)
+//	@Inject @Entidade(tipo = TipoEntidade.LOGRADOURO)
+	@Inject
 	private LogradouroDao logradouroDao;
 
 	@Transactional

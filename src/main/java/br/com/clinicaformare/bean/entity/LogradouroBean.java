@@ -20,59 +20,70 @@ import javax.transaction.Transactional;
 import org.primefaces.event.RowEditEvent;
 
 import br.com.clinicaformare.daos.Dao;
-import br.com.clinicaformare.daos.usuario.endereco.LogradouroDao;
-import br.com.clinicaformare.model.acesso.Entidade;
-import br.com.clinicaformare.model.acesso.TipoEntidade;
 import br.com.clinicaformare.usuario.endereco.Logradouro;
 
 @Named
 @ViewScoped
-public class LogradouroBean extends EntityBean implements Serializable{
+public class LogradouroBean extends EntityBean<Logradouro> implements Serializable{
 	private static final long serialVersionUID = 1L;
 
-	@Inject @Entidade(tipo = TipoEntidade.LOGRADOURO)
-	private Dao<?> logradDao;
+	public LogradouroBean() {
+		super(Logradouro.class);
+	}
+	
+	
+//	@Inject @Entidade(tipo = TipoEntidade.LOGRADOURO)
+//	private Dao<?> logradouroDao;
 
+
+	//	@Inject @Entidade(tipo = TipoEntidade.LOGRADOURO)
+//	@Inject
+//	private LogradouroDao logradouroDao;
+	
 	@Inject
-	private LogradouroDao logradouroDao;
+	private Dao<Logradouro> logradouroDao;
 
 	// Variáveis
-	boolean inicializar = false;
-	boolean listar = false;
-	boolean alterar = false;
-	boolean incluir = false;
-	boolean deletar = false;
+//	boolean inicializar = false;
+//	boolean listar = false;
+//	boolean alterar = false;
+//	boolean incluir = false;
+//	boolean deletar = false;
 	Logradouro logradouroDelete;
 	Logradouro logradouroNovo = new Logradouro();
 	List<Logradouro> logradouros;
 
 	@PostConstruct
 	public void init() {
+//		super.setDao(logradouroDao);
 		logradouros = logradouroDao.listaTodos();
+		super.modeloDelete = logradouroDelete;
+		super.modeloNovo = logradouroNovo;
+		logradouros.stream().forEach(o -> super.modelos.add(o));
 	}
 
 	// Getters and Setters
-	public boolean isListar() {
-		return listar;
-	}
+//	public boolean isListar() {
+//		return listar;
+//	}
+//
+//	public boolean isAlterar() {
+//		return alterar;
+//	}
+//
+//	public boolean isIncluir() {
+//		return incluir;
+//	}
+//
+//	public boolean isDeletar() {
+//		return deletar;
+//	}
 
-	public boolean isAlterar() {
-		return alterar;
-	}
-
-	public boolean isIncluir() {
-		return incluir;
-	}
-
-	public boolean isDeletar() {
-		return deletar;
-	}
-
-	public Logradouro getLogradouro() {
+	public Logradouro getLogradouroDelete() {
 		return logradouroDelete;
 	}
 
-	public void setLogradouro(Logradouro logradouro) {
+	public void setLogradouroDelete(Logradouro logradouro) {
 		this.logradouroDelete = logradouro;
 	}
 
@@ -123,37 +134,37 @@ public class LogradouroBean extends EntityBean implements Serializable{
 		return logradouros;
 	}
 
-	public String listar() {
-		listar = true;
-		alterar = false;
-		incluir = false;
-		deletar = false;
-		return "logradouroentity?faces-redirect=true";
-	}
-
-	public String alterar() {
-		listar = true;
-		alterar = true;
-		incluir = false;
-		deletar = false;
-		return "logradouroentity?faces-redirect=true";
-	}
-
-	public String incluir() {
-		listar = true;
-		alterar = false;
-		incluir = true;
-		deletar = false;
-		return "logradouroentity?faces-redirect=true";
-	}
-
-	public String deletar() {
-		listar = true;
-		alterar = false;
-		incluir = false;
-		deletar = true;
-		return "logradouroentity?faces-redirect=true";
-	}
+//	public String listar() {
+//		listar = true;
+//		alterar = false;
+//		incluir = false;
+//		deletar = false;
+//		return "logradouroentity?faces-redirect=true";
+//	}
+//
+//	public String alterar() {
+//		listar = true;
+//		alterar = true;
+//		incluir = false;
+//		deletar = false;
+//		return "logradouroentity?faces-redirect=true";
+//	}
+//
+//	public String incluir() {
+//		listar = true;
+//		alterar = false;
+//		incluir = true;
+//		deletar = false;
+//		return "logradouroentity?faces-redirect=true";
+//	}
+//
+//	public String deletar() {
+//		listar = true;
+//		alterar = false;
+//		incluir = false;
+//		deletar = true;
+//		return "logradouroentity?faces-redirect=true";
+//	}
 
 	@Transactional
 	public void onRowEdit(RowEditEvent event) {
@@ -168,22 +179,22 @@ public class LogradouroBean extends EntityBean implements Serializable{
 		FacesContext.getCurrentInstance().addMessage(null, msg);
 	}
 
-	@Transactional
-	public void apagar() {
-		logradouroDao.remove(logradouroDelete);
-		this.init();
-		FacesMessage msg = new FacesMessage("Logradouro Deletado", logradouroDelete.getId().toString());
-		FacesContext.getCurrentInstance().addMessage(null, msg);
-	}
+//	@Transactional
+//	public void apagar() {
+//		logradouroDao.remove(logradouroDelete);
+//		this.init();
+//		FacesMessage msg = new FacesMessage("Logradouro Deletado", logradouroDelete.getId().toString());
+//		FacesContext.getCurrentInstance().addMessage(null, msg);
+//	}
 
-	@Transactional
-	public void adicionar() {
-		logradouroDao.adiciona(logradouroNovo);
-		this.init();
-		FacesMessage msg = new FacesMessage("Logradouro Adicionado", logradouroNovo.getNome());
-		FacesContext.getCurrentInstance().addMessage(null, msg);
-		logradouroNovo = new Logradouro();
-	}
+//	@Transactional
+//	public void adicionar() {
+//		logradouroDao.adiciona(logradouroNovo);
+//		this.init();
+//		FacesMessage msg = new FacesMessage("Logradouro Adicionado", logradouroNovo.getNome());
+//		FacesContext.getCurrentInstance().addMessage(null, msg);
+//		logradouroNovo = new Logradouro();
+//	}
 
 	// public void onCellEdit(CellEditEvent event) {
 	// Object oldValue = event.getOldValue();

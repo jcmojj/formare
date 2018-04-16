@@ -16,10 +16,11 @@ import javax.persistence.OneToMany;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 
+import br.com.clinicaformare.model.Modelo;
 import br.com.clinicaformare.model.usuario.Usuario;
 
 @Entity
-public class Logradouro implements Serializable {
+public class Logradouro implements Serializable, Modelo{
 	private static final long serialVersionUID = 1L;
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -138,5 +139,7 @@ public class Logradouro implements Serializable {
 		this.alterador  = (Usuario)FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("usuarioLogado");
 	}
 	// ------------------------------------------------------------------------------------------------
-
+	public Class<?> getClasse(){
+		return this.getClass();
+	}
 }
