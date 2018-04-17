@@ -1,20 +1,16 @@
 package br.com.clinicaformare.model.acesso;
 
 public enum TipoEntidade {
-//	LOGRADOURO;
-	LOGRADOURO("Logradouro"), ENDERECO("Endereço"), PAESCI("Paesci");
+	LOGRADOURO("Logradouro"), ENDERECO("Endereço"), PAESCI("Paesci"), TELEFONE("Telefone");
 	
-	private String nome;
+	private String tipo;
 
-//	private TipoEntidade() {
-//		
-//	}
-	private TipoEntidade(String nome) {
-		this.nome = nome;
+	private TipoEntidade(String tipo) {
+		this.tipo = tipo;
 	}
 
 	public String getNome() {
-		return nome;
+		return tipo;
 	}
 
 	

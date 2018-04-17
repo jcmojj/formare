@@ -6,6 +6,8 @@ import java.time.LocalDateTime;
 import javax.faces.context.FacesContext;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -24,49 +26,75 @@ public class Acesso implements Serializable{
 	private Long id;
 	
 	// Variáveis
-	Usuario usuario;
-	TipoEntidade entidade;
-	boolean inicializar;
-	boolean listar;
-	boolean alterar;
-	boolean incluir;
-	boolean deletar;
+	@ManyToOne
+	Usuario usuario; // null quando for os de tipoUsurio
+	@Enumerated(EnumType.STRING)
+	TipoUsuario tipoUsuario;  // null quando for de usuario
+	@Enumerated(EnumType.STRING)
+	TipoEntidade tipoEntidade;
+	private Boolean inicializar;
+	private Boolean listar;
+	private Boolean alterar;
+	private Boolean incluir;
+	private Boolean deletar;
 	
+	// Constructor
+	public Acesso() {
+		super();
+	}
+	public Acesso(Usuario usuario) {
+		super();
+		this.tipoUsuario = null;
+		this.usuario = usuario;
+	}
+	public Acesso(TipoUsuario tipoUsuario) {
+		super();
+		this.usuario = null;
+		this.tipoUsuario = tipoUsuario;
+	}
 	// Getters and Setters
-	public TipoEntidade getEntidade() {
-		return entidade;
+	public TipoEntidade getTipoEntidade() {
+		return tipoEntidade;
 	}
-	public void setEntidade(TipoEntidade entidade) {
-		this.entidade = entidade;
+	public void setTipoEntidade(TipoEntidade entidade) {
+		this.tipoEntidade = entidade;
 	}
-	public boolean isInicializar() {
+	public Boolean isInicializar() {
 		return inicializar;
 	}
-	public void setInicializar(boolean inicializar) {
+	public void setInicializar(Boolean inicializar) {
 		this.inicializar = inicializar;
 	}
-	public boolean isListar() {
+	public Boolean isListar() {
 		return listar;
 	}
-	public void setListar(boolean listar) {
+	public void setListar(Boolean listar) {
 		this.listar = listar;
 	}
-	public boolean isIncluir() {
+	public Boolean isAlterar() {
+		return alterar;
+	}
+	public void setAlterar(Boolean alterar) {
+		this.alterar = alterar;
+	}
+	public Boolean isIncluir() {
 		return incluir;
 	}
-	public void setIncluir(boolean incluir) {
+	public void setIncluir(Boolean incluir) {
 		this.incluir = incluir;
 	}
-	public boolean isDeletar() {
+	public Boolean isDeletar() {
 		return deletar;
 	}
-	public void setDeletar(boolean deletar) {
+	public void setDeletar(Boolean deletar) {
 		this.deletar = deletar;
 	}
 	public Usuario getUsuario() {
 		return usuario;
 	}
-	
+	public TipoUsuario getTipoUsuario() {
+		return tipoUsuario;
+	}
 	// Tostring, Equal e Hashcode
 	@Override
 	public int hashCode() {

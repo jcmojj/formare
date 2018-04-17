@@ -22,7 +22,7 @@ import br.com.clinicaformare.daos.usuario.endereco.TipoEnderecoDao;
 import br.com.clinicaformare.model.usuario.Usuario;
 import br.com.clinicaformare.usuario.endereco.Endereco;
 import br.com.clinicaformare.usuario.endereco.Logradouro;
-import br.com.clinicaformare.usuario.endereco.Telefone;
+import br.com.clinicaformare.usuario.endereco.Acesso;
 import br.com.clinicaformare.usuario.endereco.TipoEndereco;
 
 @Named
@@ -35,7 +35,7 @@ public class UsuarioWizard implements Serializable {
 
 	private Usuario usuario = new Usuario();
 	private Endereco endereco = new Endereco();
-	private Telefone telefone = new Telefone();
+	private Acesso telefone = new Acesso();
 
 	private boolean skip;
 
@@ -56,11 +56,11 @@ public class UsuarioWizard implements Serializable {
 		this.endereco = endereco;
 	}
 
-	public Telefone getTelefone() {
+	public Acesso getTelefone() {
 		return telefone;
 	}
 
-	public void setTelefone(Telefone telefone) {
+	public void setTelefone(Acesso telefone) {
 		this.telefone = telefone;
 	}
 

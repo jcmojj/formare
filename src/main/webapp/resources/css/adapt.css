@@ -54,3 +54,7 @@ loginFieldset{
 .top-menu .left{
 	float:left
 }
+
+.ui-state-error{
+	color:#333;
+}

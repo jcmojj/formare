@@ -17,6 +17,9 @@ import org.primefaces.context.RequestContext;
 
 import br.com.clinicaformare.bean.entity.StartEntity;
 import br.com.clinicaformare.daos.usuario.AdministradorDao;
+import br.com.clinicaformare.daos.usuario.FinanceiroDao;
+import br.com.clinicaformare.daos.usuario.ProfissionalDao;
+import br.com.clinicaformare.daos.usuario.SociaDao;
 import br.com.clinicaformare.daos.usuario.UsuarioDao;
 import br.com.clinicaformare.daos.usuario.endereco.EnderecoDao;
 import br.com.clinicaformare.daos.usuario.endereco.LogradouroDao;
@@ -24,10 +27,12 @@ import br.com.clinicaformare.daos.usuario.endereco.PaesciDao;
 import br.com.clinicaformare.daos.usuario.endereco.TelefoneDao;
 import br.com.clinicaformare.daos.usuario.endereco.TipoEnderecoDao;
 import br.com.clinicaformare.daos.usuario.endereco.TipoTelefoneDao;
+import br.com.clinicaformare.model.acesso.AcessoProducer;
 import br.com.clinicaformare.model.usuario.Administrador;
+import br.com.clinicaformare.model.usuario.Financeiro;
+import br.com.clinicaformare.model.usuario.Profissional;
+import br.com.clinicaformare.model.usuario.Socia;
 import br.com.clinicaformare.model.usuario.Usuario;
-import br.com.clinicaformare.usuario.endereco.Endereco;
-import br.com.clinicaformare.usuario.endereco.Telefone;
 
 @SessionScoped // --> nao pode ser SessionScoped porque ta injetando o map
 @Named
@@ -43,6 +48,8 @@ public class LoginBean implements Serializable {
 	@Inject
 	private AdministradorDao administradorDao;
 	@Inject
+	private FinanceiroDao financeiroDao;
+	@Inject
 	private TelefoneDao telefoneDao;
 	@Inject
 	private TipoTelefoneDao tipoTelefoneDao;
@@ -54,6 +61,12 @@ public class LoginBean implements Serializable {
 	@Inject
 	private EnderecoDao enderecoDao;
 	private Usuario usuarioLogado = new Usuario();
+	@Inject
+	private AcessoProducer acessoProducer;
+	@Inject
+	private SociaDao sociaDao;
+	@Inject 
+	private ProfissionalDao profissionalDao;
 	// @Inject
 	// @SessionMap
 	// private Map<String, Object> sessionMap;// ---> precisa nao pode te por conta do viewscoped
@@ -109,12 +122,15 @@ public class LoginBean implements Serializable {
 		this.logado = true;
 		this.outro = false;
 		FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("usuarioLogado", usuarioLogado);
+		posLogado();
 		return "dashboard?faces-redirect=true";
 	}
 
 	public void logar() { // logar procura um usuario
 		System.out.println("METODO: LOGAR");
 		FacesMessage message = null;
+		FacesContext context = FacesContext.getCurrentInstance();
+		context.getExternalContext().getFlash().setKeepMessages(true);
 		if (usuarioDao.existe(email, password)) {
 			System.out.println("Encontrado Usuario com:" + email + " " + password);
 			message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Bem-Vindo", "Selecione o usuário");
@@ -127,8 +143,8 @@ public class LoginBean implements Serializable {
 			listaUsuariosComEmailESenha.forEach(System.out::println);
 		} else {
 			System.out.println("Não Encontrado Usuário:" + email + " " + password);
-			message = new FacesMessage(FacesMessage.SEVERITY_WARN, "Erro de login", "Dados inválidos");
-			FacesContext.getCurrentInstance().addMessage(null, message);
+			message = new FacesMessage(FacesMessage.SEVERITY_WARN, "Dados inválidos", "Usuário ou senha não encontrados");
+//			context.addMessage(null, new FacesMessage("Usuário não encontrado"));
 			this.logado = false;
 			RequestContext rc = RequestContext.getCurrentInstance();
 			rc.addCallbackParam("logado", this.logado);
@@ -233,43 +249,72 @@ public class LoginBean implements Serializable {
 
 	@Transactional
 	public void posLogado() {
+		Usuario usuario = (Usuario) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("usuarioLogado");
 
-		if (paesciDao.buscaPorId(1L) == null) {
-			Usuario usuario = (Usuario) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("usuarioLogado");
-			startEntity.paesci();
-			startEntity.logradouro();
-			startEntity.tipoTelefone();
-			startEntity.tipoEndereco();
-			usuario.setLocalNascimento(paesciDao.buscaPorId(paesciDao.getId("Brasil", "SP", "São Paulo")));
-
-			System.out.println("Telefone");
-			Telefone telefone = new Telefone("11", "991318300", tipoTelefoneDao.buscaPorId(3L));
-			// telefone.getUsuarios().add(usuario);
-			telefone = telefoneDao.adicionaVolta(telefone);
-			usuario.getTelefones().add(telefone); // chefe da relação
-			usuarioDao.atualiza(usuario); // persiste aqui
-			telefoneDao.atualiza(telefone);
-
-			System.out.println("Endereco");
-			Endereco endereco = new Endereco();
-			endereco.setBairro("   Campo     belo");
-			endereco.setCep("04    634-          031       ");
-			endereco.setComplemento("apto 72A");
-			endereco.setEndereco("  rua tebas, 296  ");
-			endereco.setLogradouro(logradouroDao.buscaPorNome("Rua"));
-			endereco.setNumero("296");
-			endereco.setPaesci(paesciDao.buscaPorId(paesciDao.getId("Brasil", "SP", "São Paulo")));
-			endereco.setTipoEndereco(tipoEnderecoDao.buscaPorNome("Residencial"));
-			// endereco.getUsuarios().add(usuario);
-			usuario.getEnderecos().add(endereco); // chefe da relação
-			usuarioDao.atualiza(usuario); // persiste aqui
-			enderecoDao.atualiza(endereco);
-
+//		if (paesciDao.buscaPorId(1L) == null) {
+//			Usuario usuario = (Usuario) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("usuarioLogado");
+//			startEntity.paesci();
+//			startEntity.logradouro();
+//			startEntity.tipoTelefone();
+//			startEntity.tipoEndereco();
+//			usuario.setLocalNascimento(paesciDao.buscaPorId(paesciDao.getId("Brasil", "SP", "São Paulo")));
+//
+//			System.out.println("Telefone");
+//			Telefone telefone = new Telefone("11", "991318300", tipoTelefoneDao.buscaPorId(3L));
+//			// telefone.getUsuarios().add(usuario);
+//			telefone = telefoneDao.adicionaVolta(telefone);
+//			usuario.getTelefones().add(telefone); // chefe da relação
+//			usuarioDao.atualiza(usuario); // persiste aqui
+//			telefoneDao.atualiza(telefone);
+//
+//			System.out.println("Endereco");
+//			Endereco endereco = new Endereco();
+//			endereco.setBairro("   Campo     belo");
+//			endereco.setCep("04    634-          031       ");
+//			endereco.setComplemento("apto 72A");
+//			endereco.setEndereco("  rua tebas, 296  ");
+//			endereco.setLogradouro(logradouroDao.buscaPorNome("Rua"));
+//			endereco.setNumero("296");
+//			endereco.setPaesci(paesciDao.buscaPorId(paesciDao.getId("Brasil", "SP", "São Paulo")));
+//			endereco.setTipoEndereco(tipoEnderecoDao.buscaPorNome("Residencial"));
+//			// endereco.getUsuarios().add(usuario);
+//			usuario.getEnderecos().add(endereco); // chefe da relação
+//			usuarioDao.atualiza(usuario); // persiste aqui
+//			enderecoDao.atualiza(endereco);
+//
+			acessoProducer.adicionarAcessoPadrao();
+			
 			System.out.println("Administrador");
 			Administrador administrador = new Administrador(usuario);
 			administrador = administradorDao.adicionaVolta(administrador);
 			usuario.setAdministrador(administrador);
-		}
+			
+			System.out.println("Financeiro");
+			Financeiro financeiro = new Financeiro(usuario);
+			financeiro = financeiroDao.adicionaVolta(financeiro);
+			usuario.setFinanceiro(financeiro);
+			usuarioDao.atualiza(usuario);
+			
+			acessoProducer.criarNovoAcessoPara(usuario);
+			
+			Usuario usuario2 = usuarioDao.buscaPorId(2L);
+			
+			
+			System.out.println("Socia");
+			Socia socia = new Socia(usuario2);
+			socia = sociaDao.adicionaVolta(socia);
+			usuario2.setSocia(socia);
+			
+			System.out.println("Profissional");
+			Profissional profissional = new Profissional(usuario2);
+			profissional = profissionalDao.adicionaVolta(profissional);
+			usuario2.setProfissional(profissional);
+			usuarioDao.atualiza(usuario2);
+			
+			acessoProducer.criarNovoAcessoPara(usuario2);
+			
+			
+//		}
 	}
 
 }

@@ -17,6 +17,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
@@ -25,6 +26,7 @@ import org.apache.commons.text.WordUtils;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.br.CPF;
 
+import br.com.clinicaformare.model.acesso.Acesso;
 import br.com.clinicaformare.usuario.endereco.Endereco;
 import br.com.clinicaformare.usuario.endereco.Paesci;
 import br.com.clinicaformare.usuario.endereco.Telefone;
@@ -75,6 +77,10 @@ public class Usuario implements Serializable {
 	private Secretaria secretaria;
 	@OneToOne
 	private Fornecedor fornecedor;
+	@OneToOne
+	private Financeiro financeiro;
+	@OneToMany(mappedBy = "usuario")
+	List<Acesso> acessos = new ArrayList<>();
 
 
 	@ManyToMany // Join para criar uma tabela única em relacionamento many to many
@@ -204,6 +210,10 @@ public class Usuario implements Serializable {
 		this.profissao = WordUtils.capitalize(profissao).trim().replaceAll("  ", " ").replaceAll("  ", " ").replaceAll("  ", " ").replaceAll("  ", " ");
 	}
 
+	public List<Acesso> getAcessos() {
+		return acessos;
+	}
+
 	// Getters and Setters das Relacoes
 	public Paciente getPaciente() {
 		return paciente;
@@ -262,10 +272,23 @@ public class Usuario implements Serializable {
 	public Secretaria getSecretaria() {
 		return secretaria;
 	}
-
 	public void setSecretaria(Secretaria secretaria) {
 		this.equipe = (profissional != null) || (socia != null) || (administrador != null) || (secretaria != null);
 		this.secretaria = secretaria;
+	}
+	public Fornecedor getFornecedor() {
+		return fornecedor;
+	}
+	public void setFornecedor(Fornecedor fornecedor) {
+		this.fornecedor = fornecedor;
+	}
+
+	public Financeiro getFinanceiro() {
+		return financeiro;
+	}
+
+	public void setFinanceiro(Financeiro financeiro) {
+		this.financeiro = financeiro;
 	}
 
 	public Integer getIdade() {
@@ -309,6 +332,13 @@ public class Usuario implements Serializable {
 
 	public Boolean isSecretaria() {
 		return (secretaria != null) ? true : false;
+	}
+	
+	public Boolean isFornecedor() {
+		return (fornecedor != null) ? true : false;
+	}
+	public Boolean isFinanceiro() {
+		return (financeiro != null) ? true : false;
 	}
 
 	@Override

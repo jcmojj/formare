@@ -1,23 +1,12 @@
 package br.com.clinicaformare.bean.entity;
 
-import java.io.IOException;
 import java.io.Serializable;
-import java.net.URLDecoder;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.List;
-import java.util.stream.Stream;
 
 import javax.annotation.PostConstruct;
-import javax.faces.application.FacesMessage;
-import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
-import javax.transaction.Transactional;
-
-import org.primefaces.event.RowEditEvent;
 
 import br.com.clinicaformare.daos.Dao;
 import br.com.clinicaformare.usuario.endereco.Logradouro;
@@ -63,6 +52,15 @@ public class LogradouroBean extends EntityBean<Logradouro> implements Serializab
 	}
 
 	// Getters and Setters
+	public List<Logradouro> getLogradouros() {
+		return logradouros;
+	}
+	public Logradouro getLogradouroNovo() {
+		return logradouroNovo;
+	}
+	public void setLogradouroNovo(Logradouro logradouroNovo) {
+		this.logradouroNovo = logradouroNovo;
+	}
 //	public boolean isListar() {
 //		return listar;
 //	}
@@ -78,25 +76,15 @@ public class LogradouroBean extends EntityBean<Logradouro> implements Serializab
 //	public boolean isDeletar() {
 //		return deletar;
 //	}
-	public List<Logradouro> getLogradouros() {
-		return logradouros;
-	}
 
-	public Logradouro getLogradouroDelete() {
-		return logradouroDelete;
-	}
+//	public Logradouro getLogradouroDelete() {
+//		return logradouroDelete;
+//	}
+//
+//	public void setLogradouroDelete(Logradouro logradouro) {
+//		this.logradouroDelete = logradouro;
+//	}
 
-	public void setLogradouroDelete(Logradouro logradouro) {
-		this.logradouroDelete = logradouro;
-	}
-
-	public Logradouro getLogradouroNovo() {
-		return logradouroNovo;
-	}
-
-	public void setLogradouroNovo(Logradouro logradouroNovo) {
-		this.logradouroNovo = logradouroNovo;
-	}
 
 //	public String inicializar() {
 //		listar = true;

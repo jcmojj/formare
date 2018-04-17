@@ -11,10 +11,12 @@
 <ui:define name="dynContent">
 	<h:form id="formNovoLogradouroEntity">
 	
-		<p:growl id="msgs" showDetail="true"/>
+
+		<h:outputLink value="entity.xhtml">
 		<h2>Logradouro</h2>
+		</h:outputLink>
 		<br/>
-		<p:fieldset value="Incluir">
+		<p:fieldset value="Incluir" rendered="#{logradouroBean.incluir}">
 			<br/>
 			<h:panelGrid columns="3">
 				<p:outputLabel for="nomelogradouro" value="Tipo:" />
@@ -33,7 +35,8 @@
 		</h:form>
 		<h:form id="formListaLogradouroEntity">
 		<p:growl id="msgs" showDetail="true"/>
-		<p:dataTable id="logradouroTable" var="logradouro" value="#{logradouroBean.logradouros}"  editable="true" style="margin-bottom:20px">
+		<p:dataTable id="logradouroTable" var="logradouro" value="#{logradouroBean.logradouros}" 
+		editable="true" style="margin-bottom:20px" rendered="#{logradouroBean.listar}">
 	       <f:facet name="header">
 	           Logradouro
 	       </f:facet>
@@ -55,7 +58,7 @@
            </p:cellEditor>
        </p:column>
  
-       <p:column style="width:32px">
+       <p:column style="width:32px" rendered="#{logradouroBean.alterar}">
            <p:rowEditor />
        </p:column>
 <!--        <p:column style="width:32px;text-align: center">
@@ -63,7 +66,7 @@
                 <f:setPropertyActionListener value="#{car}" target="#{dtSelectionView.selectedCar}" />
             </p:commandButton>
         </p:column> -->
-       <p:column style="width:60px; text-align: center">
+       <p:column style="width:60px; text-align: center" rendered="#{logradouroBean.deletar}">
            <p:commandButton update="@form @form:msgs"  icon="ui-icon-search" title="Deletar" action="#{logradouroBean.apagar}">
                 <f:setPropertyActionListener value="#{logradouro}" target="#{logradouroBean.modeloDelete}" />
             </p:commandButton>

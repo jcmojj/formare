@@ -15,6 +15,89 @@ Usuário Logado: #{startEntity.usuarioLogado}
 </h4>
 <h:outputText value="#{sessionScope['usuarioLogado'].nome}" />
 </h:form>
+
+<h:form> 
+<h2>Populate Entities Sistema Novo</h2>
+
+<p:panelGrid id="entityTable"  style="margin-top:20px">
+	<f:facet name="header">
+	<p:row>
+		<p:column colspan="1" ><h:outputText value="Nome"/></p:column>
+		<p:column colspan="1" ><h:outputText value="Inicializar"/></p:column>
+		<p:column colspan="1" ><h:outputText value="Listar"/></p:column>
+		<p:column colspan="1" ><h:outputText value="Alterar"/></p:column>
+		<p:column colspan="1" ><h:outputText value="Incluir"/></p:column>
+		<p:column colspan="1" ><h:outputText value="Deletar"/></p:column>
+	</p:row>
+	</f:facet>
+	<p:row>
+		<p:column colspan="1" ><h:outputText value="Cidade, Estado, País"/></p:column>
+		<p:column colspan="1" ><h:outputText value="2"/></p:column>
+		<p:column colspan="1" ><h:outputText value="3"/></p:column>
+		<p:column colspan="1" ><h:outputText value="4444"/></p:column>
+		<p:column colspan="1" ><h:outputText value="5555"/></p:column>
+		<p:column colspan="1" ><h:outputText value="5555"/></p:column>
+	</p:row>
+	
+	<p:row>
+		<p:column colspan="1" ><h:outputText value="Logradouro"/></p:column>
+		<p:column colspan="1" ><h:commandLink value="Inicializar"  	action="#{logradouroBean.inicializando}" /></p:column>
+		<p:column colspan="1" ><h:commandLink value="Listar" 			action="#{logradouroBean.listando}"/></p:column>
+		<p:column colspan="1" ><h:commandLink value="Alterar" 		action="#{logradouroBean.alterando}"/></p:column>
+		<p:column colspan="1" ><h:commandLink value="Incluir" 		action="#{logradouroBean.incluindo}"/></p:column>
+		<p:column colspan="1" ><h:commandLink value="Incluir" 		action="#{logradouroBean.deletando}"/></p:column>
+	</p:row>
+	
+	<p:row>
+		<p:column colspan="1" ><h:outputText value="Tipo Telefone"/></p:column>
+		<p:column colspan="1" ><h:outputText value="Inicializar"/></p:column>
+		<p:column colspan="1" ><h:outputText value="Listar"/></p:column>
+		<p:column colspan="1" ><h:outputText value="Alterar"/></p:column>
+		<p:column colspan="1" ><h:outputText value="Incluir"/></p:column>
+		<p:column colspan="1" ><h:outputText value="Deletar"/></p:column>
+	</p:row>
+	
+	<p:row>
+		<p:column colspan="1" ><h:outputText value="Tipo Endereço"/></p:column>
+		<p:column colspan="1" ><h:outputText value="Inicializar"/></p:column>
+		<p:column colspan="1" ><h:outputText value="Listar"/></p:column>
+		<p:column colspan="1" ><h:outputText value="Alterar"/></p:column>
+		<p:column colspan="1" ><h:outputText value="Incluir"/></p:column>
+		<p:column colspan="1" ><h:outputText value="Deletar"/></p:column>
+	</p:row>
+	
+	<p:row>
+		<p:column colspan="1" ><h:outputText value="Nível Profissional"/></p:column>
+		<p:column colspan="1" ><h:outputText value="Inicializar"/></p:column>
+		<p:column colspan="1" ><h:outputText value="Listar"/></p:column>
+		<p:column colspan="1" ><h:outputText value="Alterar"/></p:column>
+		<p:column colspan="1" ><h:outputText value="Incluir"/></p:column>
+		<p:column colspan="1" ><h:outputText value="Deletar"/></p:column>
+	</p:row>
+	
+	<p:row>
+		<p:column colspan="1" ><h:outputText value="Nome"/></p:column>
+		<p:column colspan="1" ><h:outputText value="Inicializar"/></p:column>
+		<p:column colspan="1" ><h:outputText value="Listar"/></p:column>
+		<p:column colspan="1" ><h:outputText value="Alterar"/></p:column>
+		<p:column colspan="1" ><h:outputText value="Incluir"/></p:column>
+		<p:column colspan="1" ><h:outputText value="Deletar"/></p:column>
+	</p:row>
+	
+</p:panelGrid>
+
+
+
+
+<h:commandLink actionListener="#{startEntity.paesci}" value="Paesci" /><br />
+<h:commandLink actionListener="#{startEntity.logradouro}" value="Logradouro" /><br />
+<h:commandLink actionListener="#{startEntity.tipoTelefone}" value="Tipo Telefone" /><br />
+<h:commandLink actionListener="#{startEntity.tipoEndereco}" value="Tipo Endereco" /><br />
+<h:commandLink actionListener="#{startEntity.nivelProfissional}" value="Nível Profissional" /><br />
+<h:commandLink actionListener="#{startEntity.especializacaoDoProfissional}" value="Especialização do Profissional" /><br />
+<h:commandLink actionListener="#{startEntity.profissional}" value="Profissional" /><br />
+</h:form>
+
 <h:form>
 <h2>Populate Entities Todos</h2>
 <h:commandLink action="#{startEntity.allMainValues}" value="Todos" /><br /><br />
@@ -61,6 +144,7 @@ Usuário Logado: #{startEntity.usuarioLogado}
 		<p:column colspan="1" ><h:outputText value="Listar"/></p:column>
 		<p:column colspan="1" ><h:outputText value="Alterar"/></p:column>
 		<p:column colspan="1" ><h:outputText value="Incluir"/></p:column>
+		<p:column colspan="1" ><h:outputText value="Deletar"/></p:column>
 	</p:row>
 	</f:facet>
 	<p:row>
@@ -68,6 +152,7 @@ Usuário Logado: #{startEntity.usuarioLogado}
 		<p:column colspan="1" ><h:outputText value="2"/></p:column>
 		<p:column colspan="1" ><h:outputText value="3"/></p:column>
 		<p:column colspan="1" ><h:outputText value="4444"/></p:column>
+		<p:column colspan="1" ><h:outputText value="5555"/></p:column>
 		<p:column colspan="1" ><h:outputText value="5555"/></p:column>
 	</p:row>
 	
@@ -77,6 +162,7 @@ Usuário Logado: #{startEntity.usuarioLogado}
 		<p:column colspan="1" ><h:commandLink value="Listar" 			action="#{logradouroBean.listar}"/></p:column>
 		<p:column colspan="1" ><h:commandLink value="Alterar" 		action="#{logradouroBean.alterar}"/></p:column>
 		<p:column colspan="1" ><h:commandLink value="Incluir" 		action="#{logradouroBean.incluir}"/></p:column>
+		<p:column colspan="1" ><h:commandLink value="Incluir" 		action="#{logradouroBean.deletar}"/></p:column>
 	</p:row>
 	
 	<p:row>
@@ -85,6 +171,7 @@ Usuário Logado: #{startEntity.usuarioLogado}
 		<p:column colspan="1" ><h:outputText value="Listar"/></p:column>
 		<p:column colspan="1" ><h:outputText value="Alterar"/></p:column>
 		<p:column colspan="1" ><h:outputText value="Incluir"/></p:column>
+		<p:column colspan="1" ><h:outputText value="Deletar"/></p:column>
 	</p:row>
 	
 	<p:row>
@@ -93,6 +180,7 @@ Usuário Logado: #{startEntity.usuarioLogado}
 		<p:column colspan="1" ><h:outputText value="Listar"/></p:column>
 		<p:column colspan="1" ><h:outputText value="Alterar"/></p:column>
 		<p:column colspan="1" ><h:outputText value="Incluir"/></p:column>
+		<p:column colspan="1" ><h:outputText value="Deletar"/></p:column>
 	</p:row>
 	
 	<p:row>
@@ -101,6 +189,7 @@ Usuário Logado: #{startEntity.usuarioLogado}
 		<p:column colspan="1" ><h:outputText value="Listar"/></p:column>
 		<p:column colspan="1" ><h:outputText value="Alterar"/></p:column>
 		<p:column colspan="1" ><h:outputText value="Incluir"/></p:column>
+		<p:column colspan="1" ><h:outputText value="Deletar"/></p:column>
 	</p:row>
 	
 	<p:row>
@@ -109,6 +198,7 @@ Usuário Logado: #{startEntity.usuarioLogado}
 		<p:column colspan="1" ><h:outputText value="Listar"/></p:column>
 		<p:column colspan="1" ><h:outputText value="Alterar"/></p:column>
 		<p:column colspan="1" ><h:outputText value="Incluir"/></p:column>
+		<p:column colspan="1" ><h:outputText value="Deletar"/></p:column>
 	</p:row>
 	
 </p:panelGrid>

@@ -73,6 +73,10 @@ public class Dao<T> {
 	public EntityManager getEntityManager() {
 		return this.manager;
 	}
+	
+	public boolean isEmpty() {
+		return this.contaTodos() > 0 ? false : true;
+	}
 
 	public Class<T> getClasse() {
 		return classe;

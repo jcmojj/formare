@@ -72,7 +72,7 @@ public class Logradouro implements Serializable, Modelo{
 	
 	@Override
 	public String toString() {
-		return "Logradouro [id=" + id + ", nome=" + nome + ", endereco=" + endereco + "]";
+		return "Logradouro [id=" + id + ", nome=" + nome + "]";
 	}
 
 	@Override

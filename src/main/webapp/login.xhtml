@@ -24,18 +24,27 @@
 						label="useremail" required="true" value="#{loginBean.email}" 
 						requiredMessage="O email é um campo obrigatório." >
 					</p:inputText>
-
-
+				</h:panelGrid>
+				<h:panelGrid columns="1" rendered="#{!loginBean.logado}"
+					columnClasses="label, value">
+					<p:message for="loginemail" id="loginemailmessage" />
+				</h:panelGrid>	
+				<h:panelGrid columns="2" rendered="#{!loginBean.logado}"
+					columnClasses="label, value">
 					<p:outputLabel for="loginsenha" value="Senha:" />
 					<p:password id="loginsenha" placeholder="Digite sua senha"
 						label="userpassword" required="true" value="#{loginBean.password}"
 						requiredMessage="A senha é um campo obrigatório."/>
-
-					<p:message for="loginemail" id="loginemailmessage" />
+				</h:panelGrid>
+				<h:panelGrid columns="1" rendered="#{!loginBean.logado}"
+					columnClasses="label, value">
 					<p:message for="loginsenha" id="loginsenhamessage" />
-						<p:commandButton value="Logar" action="#{loginBean.logar}" update=":formLogin :formMessages:growlLongo">
-							<p:ajax />
-						</p:commandButton>
+				</h:panelGrid>
+				<h:panelGrid columns="2" rendered="#{!loginBean.logado}"
+					columnClasses="label, value">
+				<p:commandButton value="Logar" action="#{loginBean.logar}" update=":formLogin :formMessages:growlLongo">
+					<p:ajax />
+				</p:commandButton>
 				</h:panelGrid>
 				
 				<!-- Verificando qual usuário quer -->
@@ -43,7 +52,7 @@
 				<h4 class="login-padding"><br/>Escolha um usuário:</h4>
 				<h:dataTable var="user" value="#{loginBean.listaUsuariosComEmailESenha}" class="login-margin" >
 						<h:column>
-						<p:commandButton value="#{user.nome}" action="#{loginBean.selecionar}" >
+						<p:commandButton value="#{user.nome}" action="#{loginBean.selecionar}" update=":formMessages:msgs">
 							<f:setPropertyActionListener target="#{loginBean.userId}" value="#{user.id}" />
 						</p:commandButton>
 						</h:column>

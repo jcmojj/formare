@@ -2,7 +2,6 @@ package br.com.clinicaformare.model.usuario;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.util.List;
 
 import javax.faces.context.FacesContext;
 import javax.persistence.Entity;
@@ -10,78 +9,101 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 
-import br.com.clinicaformare.model.atendimento.Atendimento;
-import br.com.clinicaformare.model.atendimento.Pacote;
-
 @Entity
-public class Socia implements Serializable {
+public class Financeiro implements Serializable {
 	private static final long serialVersionUID = 1L;
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	
-//	@Inject @UsuarioLogado
-//	private Usuario usuarioLogado;
+
 	
 	// Parâmetros Próprios
-	@OneToOne(mappedBy = "socia")
+	private String RazaoSocial;
+	private String apelido;
+//	@CPF
+//	private CPF cpf;
+//	@CNPJ
+//	private CNPJ cnpj;
+	@OneToOne(mappedBy = "financeiro")
 	Usuario usuario;
+//	@JoinTable(name = "Financeiro_TipoFinanceiro", joinColumns = @JoinColumn(name = "Financeiro_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "TipoFinanceiro_id", referencedColumnName = "id"))
+//	@ManyToMany
+//	private List<TipoFinanceiro> tiposFinanceiro = new ArrayList<>();
 
-
-	@OneToMany(mappedBy = "sociaSupervisora")
-	private List<Paciente> sociasSupervisoras;
-	@OneToMany(mappedBy = "sociaResponsavel")
-	private List<Paciente> sociasResponsaveis;
-	
-	@OneToMany(mappedBy = "sociaSupervisora")
-	private List<Atendimento> atendimentos;
-	@OneToMany(mappedBy = "sociaResponsavel")
-	private List<Pacote> pacotes;
-	
 
 	// Constructor
-	public Socia() {
+	public Financeiro() {
 	}
-	public Socia(Long id) {
+
+	public Financeiro(Long id) {
 		this.id = id;
 	}
-	public Socia(Usuario usuario) {
-		super();
+	public Financeiro(Usuario usuario) {
 		this.usuario = usuario;
 	}
-	
 
-	// Getters
+	// Getters and setters
 	public Long getId() {
 		return id;
 	}
+
 	public Usuario getUsuario() {
 		return usuario;
 	}
-	public List<Paciente> getSociasSupervisoras() {
-		return sociasSupervisoras;
-	}
-	public List<Paciente> getSociasResponsaveis() {
-		return sociasResponsaveis;
-	}
-	public List<Pacote> getPacotes() {
-		return pacotes;
-	}
-	public List<Atendimento> getAtendimentos() {
-		return atendimentos;
-	}
-	// Setters
 	
+	public void setUsuario(Usuario usuario) {
+		this.usuario = usuario;
+	}
+//	
+//	public List<TipoFinanceiro> getTiposFinanceiros() {
+//		return tiposFinanceiro;
+//	}
+	public String getRazaoSocial() {
+		return RazaoSocial;
+	}
+
+	public void setRazaoSocial(String razaoSocial) {
+		RazaoSocial = razaoSocial;
+	}
+
+	public String getApelido() {
+		return apelido;
+	}
+
+	public void setApelido(String apelido) {
+		this.apelido = apelido;
+	}
+
+//	public CPF getCpf() {
+//		return cpf;
+//	}
+//
+//	public void setCpf(CPF cpf) {
+//		this.cpf = cpf;
+//	}
+//
+//	public CNPJ getCnpj() {
+//		return cnpj;
+//	}
+//
+//	public void setCnpj(CNPJ cnpj) {
+//		this.cnpj = cnpj;
+//	}
+
+//	public List<TipoFinanceiro> getTiposFinanceiro() {
+//		return tiposFinanceiro;
+//	}
+
+
 	// String, hashCode and Equals
-		@Override
-		public String toString() {
-			return "Socia [id=" + id + ", usuario[id]=" + usuario.getId() + "]";
-		}
+	@Override
+	public String toString() {
+		return "Financeiro [id=" + id + ", usuario[id]=" + usuario.getId() + "]";
+	}
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -98,7 +120,7 @@ public class Socia implements Serializable {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Socia other = (Socia) obj;
+		Financeiro other = (Financeiro) obj;
 		if (id == null) {
 			if (other.id != null)
 				return false;

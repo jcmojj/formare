@@ -8,10 +8,10 @@
 		<div class="container">
 			<div class="row">
 				<div class="col-md-12">
-					<p:growl id="growlSticky" sticky="true" showDetail="true"/>
-					<p:growl id="growlLongo" showDetail="true" life="5000" />
-					<p:growl id="growlCurto" showDetail="true" life="2000" />
-					<p:messages />
+					<p:growl id="growlSticky" globalOnly="true" sticky="true" showDetail="true" closable="true"/>
+					<p:growl id="growlLongo" globalOnly="true" showDetail="true" life="5000" closable="true"/>
+					<p:growl id="growlCurto" globalOnly="true" showDetail="true" life="2000" closable="true" />
+					<h:messages id="msgs" globalOnly="true" showDetail="true" closable="true" />
 				</div>
 			</div>
 		</div>
