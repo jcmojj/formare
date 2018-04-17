@@ -17,4 +17,5 @@ public interface Modelo {
 	public Usuario getCriador();
 	public Class<?> getClasse();
 	public String getNome();
+	public void setNome(String nome);
 }

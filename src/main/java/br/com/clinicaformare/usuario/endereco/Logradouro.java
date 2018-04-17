@@ -45,13 +45,13 @@ public class Logradouro implements Serializable, Modelo{
 	}
 
 	// Getters and setters
-	public String getLogradouro() {
-		return nome;
-	}
-
-	public void setLogradouro(String nome) {
-		this.nome = nome.trim();
-	}
+//	public String getLogradouro() {
+//		return nome;
+//	}
+//
+//	public void setLogradouro(String nome) {
+//		this.nome = nome.trim();
+//	}
 
 	public Long getId() {
 		return id;

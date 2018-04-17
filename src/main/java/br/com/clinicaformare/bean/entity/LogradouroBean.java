@@ -28,7 +28,7 @@ public class LogradouroBean extends EntityBean<Logradouro> implements Serializab
 	private static final long serialVersionUID = 1L;
 
 	public LogradouroBean() {
-		super(Logradouro.class);
+		super(Logradouro.class, "/entity/usuario/endereco/", "logradouro");
 	}
 	
 	
@@ -57,9 +57,9 @@ public class LogradouroBean extends EntityBean<Logradouro> implements Serializab
 	public void init() {
 //		super.setDao(logradouroDao);
 		logradouros = logradouroDao.listaTodos();
-		super.modeloDelete = logradouroDelete;
+//		super.modeloDelete = logradouroDelete;
 		super.modeloNovo = logradouroNovo;
-		logradouros.stream().forEach(o -> super.modelos.add(o));
+//		logradouros.stream().forEach(o -> super.modelos.add(o));
 	}
 
 	// Getters and Setters
@@ -78,6 +78,9 @@ public class LogradouroBean extends EntityBean<Logradouro> implements Serializab
 //	public boolean isDeletar() {
 //		return deletar;
 //	}
+	public List<Logradouro> getLogradouros() {
+		return logradouros;
+	}
 
 	public Logradouro getLogradouroDelete() {
 		return logradouroDelete;
@@ -95,43 +98,39 @@ public class LogradouroBean extends EntityBean<Logradouro> implements Serializab
 		this.logradouroNovo = logradouroNovo;
 	}
 
-	public String inicializar() {
-		listar = true;
-		alterar = false;
-		incluir = false;
-		deletar = false;
-		if (!inicializar) {
-			inicializar = true;
-			String shortPath = "/entity/usuario/endereco/";
-			String fileName = "logradouro";
+//	public String inicializar() {
+//		listar = true;
+//		alterar = false;
+//		incluir = false;
+//		deletar = false;
+//		if (!inicializar) {
+//			inicializar = true;
+//			String shortPath = "/entity/usuario/endereco/";
+//			String fileName = "logradouro";
+//
+//			try {
+//				this.iterar(this.getLinha(shortPath, fileName));
+//			} catch (IOException e) {
+//				e.printStackTrace();
+//			}
+//		}
+//		return "logradouroentity?faces-redirect=true";
+//	}
 
-			try {
-				this.iterar(this.getLinha(shortPath, fileName));
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
-		return "logradouroentity?faces-redirect=true";
-	}
+//	public Stream<String> getLinha(String shortPath, String fileName) throws IOException {
+//		String pathString = this.getClass().getClassLoader().getResource(shortPath).getPath();
+//		String fullPath = URLDecoder.decode(pathString, "UTF-8");
+//		Path path = Paths.get(fullPath + fileName);
+//		Stream<String> lines = Files.lines(path);
+//		return lines;
+//	}
 
-	public Stream<String> getLinha(String shortPath, String fileName) throws IOException {
-		String pathString = this.getClass().getClassLoader().getResource(shortPath).getPath();
-		String fullPath = URLDecoder.decode(pathString, "UTF-8");
-		Path path = Paths.get(fullPath + fileName);
-		Stream<String> lines = Files.lines(path);
-		return lines;
-	}
-
-	public void iterar(Stream<String> lines) {
-		lines.forEach(linha -> logradouroDao.adiciona(this.gerar(linha)));
-	}
+//	public void iterar(Stream<String> lines) {
+//		lines.forEach(linha -> logradouroDao.adiciona(this.gerar(linha)));
+//	}
 
 	public Logradouro gerar(String linha) {
 		return new Logradouro(linha);
-	}
-
-	public List<Logradouro> getLogradouros() {
-		return logradouros;
 	}
 
 //	public String listar() {
@@ -166,18 +165,18 @@ public class LogradouroBean extends EntityBean<Logradouro> implements Serializab
 //		return "logradouroentity?faces-redirect=true";
 //	}
 
-	@Transactional
-	public void onRowEdit(RowEditEvent event) {
-		logradouroDao.atualiza((Logradouro) event.getObject());
-		this.init();
-		FacesMessage msg = new FacesMessage("Logradouro Editado", "(" + (((Logradouro) event.getObject()).getId()).toString() + ") " + ((Logradouro) event.getObject()).getNome());
-		FacesContext.getCurrentInstance().addMessage(null, msg);
-	}
+//	@Transactional
+//	public void onRowEdit(RowEditEvent event) {
+//		logradouroDao.atualiza((Logradouro) event.getObject());
+//		this.init();
+//		FacesMessage msg = new FacesMessage("Logradouro Editado", "(" + (((Logradouro) event.getObject()).getId()).toString() + ") " + ((Logradouro) event.getObject()).getNome());
+//		FacesContext.getCurrentInstance().addMessage(null, msg);
+//	}
 
-	public void onRowCancel(RowEditEvent event) {
-		FacesMessage msg = new FacesMessage("Edição Cancelada", (((Logradouro) event.getObject()).getId()).toString());
-		FacesContext.getCurrentInstance().addMessage(null, msg);
-	}
+//	public void onRowCancel(RowEditEvent event) {
+//		FacesMessage msg = new FacesMessage("Edição Cancelada", (((Logradouro) event.getObject()).getId()).toString());
+//		FacesContext.getCurrentInstance().addMessage(null, msg);
+//	}
 
 //	@Transactional
 //	public void apagar() {
@@ -195,6 +194,10 @@ public class LogradouroBean extends EntityBean<Logradouro> implements Serializab
 //		FacesContext.getCurrentInstance().addMessage(null, msg);
 //		logradouroNovo = new Logradouro();
 //	}
+	public void geraNovaEntidade(){
+		logradouroNovo = new Logradouro();
+		modeloNovo = logradouroNovo;
+	}
 
 	// public void onCellEdit(CellEditEvent event) {
 	// Object oldValue = event.getOldValue();

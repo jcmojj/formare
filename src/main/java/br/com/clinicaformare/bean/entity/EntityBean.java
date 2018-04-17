@@ -14,6 +14,7 @@ import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
+import javax.inject.Inject;
 import javax.inject.Named;
 import javax.transaction.Transactional;
 
@@ -21,20 +22,26 @@ import org.primefaces.event.RowEditEvent;
 
 import br.com.clinicaformare.daos.Dao;
 import br.com.clinicaformare.model.Modelo;
-import br.com.clinicaformare.usuario.endereco.Logradouro;
 
 @Named
 @ViewScoped
 public class EntityBean<T extends Modelo> implements Serializable {
 	private static final long serialVersionUID = 1L;
 
-	private final Class<T> classe;
+	private final Class<?> classe;
+	private String className;
+	@Inject
 	private Dao<T> dao;
+	private String shortPath;
+	private String fileName;
 
 	// Construtor
 //	@SuppressWarnings("unchecked")
-	public EntityBean(Class<T> classe) {//, Modelo modeloDelete, Modelo modeloNovo, List<Modelo> modelos) {
+	public EntityBean(Class<?> classe, String shortPath, String fileName) {//, Modelo modeloDelete, Modelo modeloNovo, List<Modelo> modelos) {
 		this.classe = classe;
+		this.shortPath = shortPath;
+		this.fileName = fileName;
+		className = this.classe.getName();
 	}	
 		
 //	}
@@ -57,9 +64,9 @@ public class EntityBean<T extends Modelo> implements Serializable {
 	boolean alterar = false;
 	boolean incluir = false;
 	boolean deletar = false;
-	Modelo modeloDelete;
-	Modelo modeloNovo;
-	List<Modelo> modelos = new ArrayList<>();
+	protected Modelo modeloDelete;
+	protected Modelo modeloNovo;
+	protected List<Modelo> modelos = new ArrayList<>();
 	
 //	Logradouro logradouroDelete;
 //	Object object = classe.newInstance();
@@ -94,11 +101,11 @@ public class EntityBean<T extends Modelo> implements Serializable {
 		return deletar;
 	}
 
-	public Modelo getModelo() {
+	public Modelo getModeloDelete() {
 		return modeloDelete;
 	}
 
-	public void setModeloo(Modelo modelo) {
+	public void setModeloDelete(Modelo modelo) {
 		this.modeloDelete = modelo;
 	}
 
@@ -115,20 +122,21 @@ public class EntityBean<T extends Modelo> implements Serializable {
 		alterar = false;
 		incluir = false;
 		deletar = false;
-		// if (!inicializar) {
-		// inicializar = true;
-		// String shortPath = "/entity/usuario/endereco/";
-		// String fileName = "logradouro";
-		//
-		// try {
-		// this.iterar(this.getLinha(shortPath, fileName));
-		// } catch (IOException e) {
-		// e.printStackTrace();
-		// }
-		// }
+		 if (!inicializar) {
+		 inicializar = true;
+//		 String shortPath = "/entity/usuario/endereco/";
+//		 String fileName = "logradouro";
+		
+		 try {
+		 this.iterar(this.getLinha(shortPath, fileName));
+		 } catch (IOException e) {
+		 e.printStackTrace();
+		 }
+		 }
 		return "logradouroentity?faces-redirect=true";
 	}
-
+	
+	
 	public Stream<String> getLinha(String shortPath, String fileName) throws IOException {
 		String pathString = this.getClass().getClassLoader().getResource(shortPath).getPath();
 		String fullPath = URLDecoder.decode(pathString, "UTF-8");
@@ -137,18 +145,15 @@ public class EntityBean<T extends Modelo> implements Serializable {
 		return lines;
 	}
 
-////	 @SuppressWarnings("unchecked")
-//	public void iterar(Stream<String> lines) {
-//	 lines.forEach(linha -> dao.adiciona((Class<T>)this.gerar(linha)));
-//	 }
-//
-//	public <T> gerar(String linha) {
-//		
-//		return new Logradouro(linha);
-//	}
-//
-//	public List<Logradouro> getLogradouros() {
-//		return logradouros;
+	@SuppressWarnings("unchecked")
+	public void iterar(Stream<String> lines) {
+		lines.forEach(linha -> dao.adiciona((T)this.gerar(linha)));
+	}
+	public Modelo gerar(String linha) {return null;}
+//	public T gerar(String linha, Class <T> classe) {
+//		Container<String> container = new Container<>(() -> linha);
+////		return new EntityBean<>()
+////		return null;
 //	}
 
 	public String listar() {
@@ -188,35 +193,53 @@ public class EntityBean<T extends Modelo> implements Serializable {
 	 public void onRowEdit(RowEditEvent event) {
 	 dao.atualiza((T) event.getObject());
 	 this.init();
-	 FacesMessage msg = new FacesMessage("Logradouro Editado", "(" + (((Logradouro) event.getObject()).getId()).toString() + ") " + ((Logradouro) event.getObject()).getNome());
+	 FacesMessage msg = new FacesMessage(classe.getSimpleName() +" editado:", "(" + (((T) event.getObject()).getId()).toString().toString() + ") " + ((T) event.getObject()).getNome());
 	 FacesContext.getCurrentInstance().addMessage(null, msg);
 	 }
-	
+//	
 	 public void onRowCancel(RowEditEvent event) {
-	 FacesMessage msg = new FacesMessage("Edição Cancelada", (((Logradouro) event.getObject()).getId()).toString());
+	 @SuppressWarnings("unchecked")
+	FacesMessage msg = new FacesMessage("Edição CanceladaZ", (((T) event.getObject()).getId()).toString());
 	 FacesContext.getCurrentInstance().addMessage(null, msg);
 	 }
-	
+//	
 	 @SuppressWarnings("unchecked")
 	@Transactional
 	 public void apagar() {
+	 FacesMessage msg = new FacesMessage(classe.getSimpleName() +  " deletado:", modeloDelete.getId().toString());
+	 FacesContext.getCurrentInstance().addMessage(null, msg);
 	 dao.remove((T)modeloDelete);
 	 this.init();
-	 FacesMessage msg = new FacesMessage(modeloDelete.getClasse().toString() +  "Deletado", modeloDelete.getId().toString());
-	 FacesContext.getCurrentInstance().addMessage(null, msg);
 	 }
-	
+//	
 	 @SuppressWarnings("unchecked")
 	@Transactional
-	 public void adicionar(Modelo modelo) {
-	 dao.adiciona((T)modelo);
+	 public void adicionar() {
+	 dao.adiciona((T)modeloNovo);
 	 this.init();
-	 FacesMessage msg = new FacesMessage(modelo.getClasse().toString() + " Adicionado", modelo.getNome());
+	 FacesMessage msg = new FacesMessage(classe.getSimpleName() + " Adicionado", modeloNovo.getNome());
 	 FacesContext.getCurrentInstance().addMessage(null, msg);
 //	 T = classe.newInstance();
-	 modeloNovo = new Logradouro();
+//	 modeloNovo = new Logradouro();
+	 geraNovaEntidade();
 	 }
+	 
+	 public void geraNovaEntidade() {}
 
+//// @SuppressWarnings("unchecked")
+//public void iterar(Stream<String> lines) {
+// lines.forEach(linha -> dao.adiciona((Class<T>)this.gerar(linha)));
+// }
+//
+//public <T> gerar(String linha) {
+//	
+//	return new Logradouro(linha);
+//}
+//
+//public List<Logradouro> getLogradouros() {
+//	return logradouros;
+//}
+	 
 	// public void onCellEdit(CellEditEvent event) {
 	// Object oldValue = event.getOldValue();
 	// Object newValue = event.getNewValue();
