@@ -52,7 +52,7 @@
 				<h4 class="login-padding"><br/>Escolha um usuário:</h4>
 				<h:dataTable var="user" value="#{loginBean.listaUsuariosComEmailESenha}" class="login-margin" >
 						<h:column>
-						<p:commandButton value="#{user.nome}" action="#{loginBean.selecionar}" update=":formMessages:msgs">
+						<p:commandButton value="#{user.nome}" action="#{loginBean.selecionar}" update="@form :formMessages:msgs">
 							<f:setPropertyActionListener target="#{loginBean.userId}" value="#{user.id}" />
 						</p:commandButton>
 						</h:column>

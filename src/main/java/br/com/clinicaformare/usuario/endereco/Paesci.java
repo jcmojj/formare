@@ -17,11 +17,13 @@ import javax.persistence.PreUpdate;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
+import br.com.clinicaformare.model.Modelo;
 import br.com.clinicaformare.model.usuario.Usuario;
+import br.com.clinicaformare.util.ArrumarTexto;
 
 @Entity
 @Table (uniqueConstraints= {@UniqueConstraint(columnNames = {"cidade","estado","pais"})})
-public class Paesci implements Serializable{
+public class Paesci implements Serializable, Modelo {
 	private static final long serialVersionUID = 1L;
 	@Id
 	
@@ -56,7 +58,7 @@ public class Paesci implements Serializable{
 	}
 
 	public void setCidade(String cidade) {
-		this.cidade = cidade;
+		this.cidade = ArrumarTexto.capitalizeString(cidade.trim());
 	}
 
 	public String getEstado() {
@@ -64,7 +66,7 @@ public class Paesci implements Serializable{
 	}
 
 	public void setEstado(String estado) {
-		this.estado = estado;
+		this.estado = ArrumarTexto.capitalizeString(estado.trim());
 	}
 
 	public String getPais() {
@@ -72,7 +74,7 @@ public class Paesci implements Serializable{
 	}
 
 	public void setPais(String pais) {
-		this.pais = pais;
+		this.pais = ArrumarTexto.capitalizeString(pais.trim());
 	}
 
 	public Long getId() {
@@ -102,7 +104,7 @@ public class Paesci implements Serializable{
 	// String, hashCode and Equals
 	@Override
 	public String toString() {
-		return "Paesci [id=" + id + ", cidade=" + cidade + ", estado=" + estado + ", pais=" + pais + ", endereco=" + endereco + "]";
+		return "(" + id + ") " + cidade + " - " + estado + " - " + pais + " ";
 	}
 
 	@Override
@@ -169,5 +171,8 @@ public class Paesci implements Serializable{
 		this.alterador  = (Usuario)FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("usuarioLogado");
 	}
 	// ------------------------------------------------------------------------------------------------
+	public Class<?> getClasse(){
+		return this.getClass();
+	}
 
 }

@@ -7,7 +7,7 @@ import javax.inject.Inject;
 import javax.inject.Named;
 
 import br.com.clinicaformare.daos.usuario.endereco.TelefoneDao;
-import br.com.clinicaformare.usuario.endereco.Acesso;
+import br.com.clinicaformare.usuario.endereco.Telefone;
 
 @Named
 public class TelefoneConverter implements Converter{
@@ -20,14 +20,14 @@ public class TelefoneConverter implements Converter{
 			return null;
 		}
 		Long id =Long.valueOf(string);
-		Acesso telefone = telefoneDao.buscaPorId(id);
+		Telefone telefone = telefoneDao.buscaPorId(id);
 		return telefone;
 	}
 
 	@Override
 	public String getAsString(FacesContext context, UIComponent component, Object object) {
 		if(object == null) return null;
-		Acesso telefone = (Acesso) object;
+		Telefone telefone = (Telefone) object;
 		if(telefone == null || telefone.getId() == null) {
 			return null;
 		}

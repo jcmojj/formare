@@ -17,8 +17,11 @@ import org.primefaces.context.RequestContext;
 
 import br.com.clinicaformare.bean.entity.StartEntity;
 import br.com.clinicaformare.daos.usuario.AdministradorDao;
+import br.com.clinicaformare.daos.usuario.AlteradorDao;
+import br.com.clinicaformare.daos.usuario.CriadorDao;
 import br.com.clinicaformare.daos.usuario.FinanceiroDao;
 import br.com.clinicaformare.daos.usuario.ProfissionalDao;
+import br.com.clinicaformare.daos.usuario.SecretariaDao;
 import br.com.clinicaformare.daos.usuario.SociaDao;
 import br.com.clinicaformare.daos.usuario.UsuarioDao;
 import br.com.clinicaformare.daos.usuario.endereco.EnderecoDao;
@@ -29,9 +32,10 @@ import br.com.clinicaformare.daos.usuario.endereco.TipoEnderecoDao;
 import br.com.clinicaformare.daos.usuario.endereco.TipoTelefoneDao;
 import br.com.clinicaformare.model.acesso.AcessoProducer;
 import br.com.clinicaformare.model.usuario.Administrador;
+import br.com.clinicaformare.model.usuario.Alterador;
+import br.com.clinicaformare.model.usuario.Criador;
 import br.com.clinicaformare.model.usuario.Financeiro;
-import br.com.clinicaformare.model.usuario.Profissional;
-import br.com.clinicaformare.model.usuario.Socia;
+import br.com.clinicaformare.model.usuario.Secretaria;
 import br.com.clinicaformare.model.usuario.Usuario;
 
 @SessionScoped // --> nao pode ser SessionScoped porque ta injetando o map
@@ -67,6 +71,12 @@ public class LoginBean implements Serializable {
 	private SociaDao sociaDao;
 	@Inject 
 	private ProfissionalDao profissionalDao;
+	@Inject
+	private SecretariaDao secretariaDao;
+	@Inject
+	private CriadorDao criadorDao;
+	@Inject
+	private AlteradorDao alteradorDao;
 	// @Inject
 	// @SessionMap
 	// private Map<String, Object> sessionMap;// ---> precisa nao pode te por conta do viewscoped
@@ -160,8 +170,9 @@ public class LoginBean implements Serializable {
 		listaUsuariosComEmailESenha = null;
 		usuarioLogado = null;
 		FacesContext.getCurrentInstance().getExternalContext().getSessionMap().remove("usuarioLogado");
-		return "home?faces-redirect=true";
+		return "/home?faces-redirect=true";
 	}
+	
 	public List<Usuario> getListaUsuariosComEmailESenha() {
 		System.out.println("METODO: GET LISTA");
 		listaUsuariosComEmailESenha.forEach(System.out::println);
@@ -178,6 +189,7 @@ public class LoginBean implements Serializable {
 	}
 
 	public boolean isLogado() {
+		System.out.println("IsLogado");
 		return logado;
 	}
 
@@ -212,6 +224,7 @@ public class LoginBean implements Serializable {
 	}
 
 	public Usuario getUsuarioLogado() {
+		System.out.println("LoginBean: getUsuarioLogado");
 		return usuarioLogado = (Usuario)FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("usuarioLogado");
 	}
 
@@ -232,6 +245,12 @@ public class LoginBean implements Serializable {
 			usuario.setPassword("123");
 			usuario = usuarioDao.adicionaVolta(usuario);
 			System.out.println("Usuario Criado:" + usuario);
+			Criador criador = new Criador(usuario);
+			criadorDao.adicionaVolta(criador);
+			Alterador alterador = new Alterador(usuario);
+			alteradorDao.adicionaVolta(alterador);
+			
+			
 			Usuario usuario2 = new Usuario();
 			usuario2.setCpf("339.541.588-09");
 			usuario2.setNome("Daniela");
@@ -244,14 +263,21 @@ public class LoginBean implements Serializable {
 			usuario2.setPassword("123");
 			usuario2 = usuarioDao.adicionaVolta(usuario2);
 			System.out.println("Usuario Criado:" + usuario2);
+			Criador criador2 = new Criador(usuario2);
+			criadorDao.adicionaVolta(criador2);
+			Alterador alterador2 = new Alterador(usuario2);
+			alteradorDao.adicionaVolta(alterador2);
+			
+			
 		}
 	}
 
 	@Transactional
 	public void posLogado() {
+		System.out.println("LoginBean - poslogado");
 		Usuario usuario = (Usuario) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("usuarioLogado");
 
-//		if (paesciDao.buscaPorId(1L) == null) {
+		if (administradorDao.buscaPorId(1L) == null) {
 //			Usuario usuario = (Usuario) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("usuarioLogado");
 //			startEntity.paesci();
 //			startEntity.logradouro();
@@ -300,21 +326,27 @@ public class LoginBean implements Serializable {
 			Usuario usuario2 = usuarioDao.buscaPorId(2L);
 			
 			
-			System.out.println("Socia");
-			Socia socia = new Socia(usuario2);
-			socia = sociaDao.adicionaVolta(socia);
-			usuario2.setSocia(socia);
+//			System.out.println("Socia");
+//			Socia socia = new Socia(usuario2);
+//			socia = sociaDao.adicionaVolta(socia);
+//			usuario2.setSocia(socia);
+//			
+//			System.out.println("Profissional");
+//			Profissional profissional = new Profissional(usuario2);
+//			profissional = profissionalDao.adicionaVolta(profissional);
+//			usuario2.setProfissional(profissional);
+//			usuarioDao.atualiza(usuario2);
 			
-			System.out.println("Profissional");
-			Profissional profissional = new Profissional(usuario2);
-			profissional = profissionalDao.adicionaVolta(profissional);
-			usuario2.setProfissional(profissional);
+			System.out.println("Secretária");
+			Secretaria secretaria = new Secretaria(usuario2);
+			secretaria = secretariaDao.adicionaVolta(secretaria);
+			usuario2.setSecretaria(secretaria);
 			usuarioDao.atualiza(usuario2);
 			
 			acessoProducer.criarNovoAcessoPara(usuario2);
 			
 			
-//		}
+		}
 	}
 
 }

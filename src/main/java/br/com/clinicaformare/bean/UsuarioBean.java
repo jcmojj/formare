@@ -46,7 +46,7 @@ public class UsuarioBean implements Serializable {
 		if (this.usuario.getId() == null) {
 			// usuario.setDataCriacao(LocalDateTime.now());
 			// usuario.setDataAlteracao(LocalDateTime.now());
-			usuarioDao.adiciona(usuario);
+			usuarioDao.adicionaVolta(usuario);
 		} else {
 			// System.out.println("Gravando o usuario");
 			// System.out.println("Id: " + usuario.getId());

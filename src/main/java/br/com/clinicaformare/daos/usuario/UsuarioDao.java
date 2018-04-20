@@ -9,6 +9,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 
 import br.com.clinicaformare.daos.Dao;
+import br.com.clinicaformare.model.acesso.Acesso;
 import br.com.clinicaformare.model.usuario.Usuario;
 
 @Stateless
@@ -20,6 +21,11 @@ public class UsuarioDao extends Dao<Usuario> implements Serializable {
 
 	public UsuarioDao() {
 		super(Usuario.class);
+	}
+	
+	public List<Usuario> listarUsuarios() {
+		TypedQuery<Usuario> query = manager.createNamedQuery(Usuario.LISTAR, Usuario.class);
+		return query.getResultList();
 	}
 
 	public boolean existe(Usuario usuario) {

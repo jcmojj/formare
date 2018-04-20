@@ -10,30 +10,39 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Stream;
 
-import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
+import javax.persistence.PersistenceException;
 import javax.transaction.Transactional;
 
 import org.primefaces.event.RowEditEvent;
 
+import br.com.clinicaformare.dao.acesso.AcessoDao;
 import br.com.clinicaformare.daos.Dao;
 import br.com.clinicaformare.model.Modelo;
+import br.com.clinicaformare.model.usuario.Usuario;
+import br.com.clinicaformare.util.listeners.login.UsuarioLogado;
 
 @Named
 @ViewScoped
-public class EntityBean<T extends Modelo> implements Serializable {
+public abstract class EntityBean<T extends Modelo> implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	private final Class<?> classe;
-	private String className;
+	// private String className;
+	@Inject
+	private AcessoDao acessoDao;
 	@Inject
 	private Dao<T> dao;
 	private String shortPath;
 	private String fileName;
+
+	@Inject
+	@UsuarioLogado
+	Usuario usuarioLogado;
 
 	// Construtor
 	// @SuppressWarnings("unchecked")
@@ -41,7 +50,7 @@ public class EntityBean<T extends Modelo> implements Serializable {
 		this.classe = classe;
 		this.shortPath = shortPath;
 		this.fileName = fileName;
-		className = this.classe.getName();
+		// className = this.classe.getName();
 	}
 
 	// }
@@ -58,11 +67,21 @@ public class EntityBean<T extends Modelo> implements Serializable {
 	// }
 
 	// Variáveis
-	Boolean inicializar = false;
-	Boolean listar = true;
-	Boolean alterar = false;
-	Boolean incluir = false;
-	Boolean deletar = false;
+	Boolean inicializar;
+	Boolean listar;
+	Boolean alterar;
+	Boolean incluir;
+	Boolean deletar;
+
+	protected void postContructEntityBean() {
+		System.out.println("PostConstruct ENTITYBEAN abriu metodo");
+		inicializar = acessoDao.buscaAcessoInicializarPara(usuarioLogado, fileName);
+		listar = acessoDao.buscaAcessoListarPara(usuarioLogado, fileName);
+		alterar = acessoDao.buscaAcessoAlterarPara(usuarioLogado, fileName);
+		incluir = acessoDao.buscaAcessoIncluirPara(usuarioLogado, fileName);
+		deletar = acessoDao.buscaAcessoDeletarPara(usuarioLogado, fileName);
+		System.out.println("PostConstruct ENTITYBEAN fechou metodo");
+	}
 
 	protected Modelo modeloDelete;
 	protected Modelo modeloNovo;
@@ -78,26 +97,35 @@ public class EntityBean<T extends Modelo> implements Serializable {
 	// Logradouro logradouroNovo = new Logradouro();
 	// List<Logradouro> logradouros;
 
-	@PostConstruct
-	public void init() {
-		// class.ge
-		// logradouros = logradouroDao.listaTodos();
-	}
+	// @PostConstruct
+	// public void init() {
+	// // class.ge
+	// // logradouros = logradouroDao.listaTodos();
+	// }
 
 	// Getters and Setters
+	public boolean isInicializar() {
+//		System.out.println("ENTITY BEAN: INICIALIZAR");
+		return inicializar;
+	}
+
 	public boolean isListar() {
+//		System.out.println("ENTITY BEAN: isListar");
 		return listar;
 	}
 
 	public boolean isAlterar() {
+//		System.out.println("ENTITY BEAN: isAlterar");
 		return alterar;
 	}
 
 	public boolean isIncluir() {
+//		System.out.println("ENTITY BEAN: isIncluir");
 		return incluir;
 	}
 
 	public boolean isDeletar() {
+//		System.out.println("ENTITY BEAN: isDeletar");
 		return deletar;
 	}
 
@@ -118,12 +146,13 @@ public class EntityBean<T extends Modelo> implements Serializable {
 	}
 
 	public String inicializando() {
-		inicializar = true;
-		listar = true;
-		alterar = false;
-		incluir = false;
-		deletar = false;
-		if (dao.isEmpty() && inicializar) {
+		System.out.println("EntityBean metodo inicializando");
+		// inicializar = true;
+		// listar = true;
+		// alterar = false;
+		// incluir = false;
+		// deletar = false;
+		if (dao.isEmpty() && isInicializar()) {
 			// String shortPath = "/entity/usuario/endereco/";
 			// String fileName = "logradouro";
 
@@ -137,6 +166,7 @@ public class EntityBean<T extends Modelo> implements Serializable {
 	}
 
 	public Stream<String> getLinha(String shortPath, String fileName) throws IOException {
+		System.out.println("EntityBean metodo getLinha");
 		String pathString = this.getClass().getClassLoader().getResource(shortPath).getPath();
 		String fullPath = URLDecoder.decode(pathString, "UTF-8");
 		Path path = Paths.get(fullPath + fileName);
@@ -146,7 +176,12 @@ public class EntityBean<T extends Modelo> implements Serializable {
 
 	@SuppressWarnings("unchecked")
 	public void iterar(Stream<String> lines) {
-		lines.forEach(linha -> dao.adiciona((T) this.gerar(linha)));
+		System.out.println("EntityBean metodo iterar");
+		lines.limit(30).forEach(linha -> {
+			if (linha.equals(""))
+				return; // se a linha for vazia, para de persistir
+			dao.adicionaVolta((T) this.gerar(linha));
+		});
 	}
 
 	public Modelo gerar(String linha) {
@@ -158,51 +193,33 @@ public class EntityBean<T extends Modelo> implements Serializable {
 	//// return null;
 	// }
 
-	public String listando() {
-		listar = true;
-		alterar = false;
-		incluir = false;
-		deletar = false;
-		return "/entity/" + fileName + "entity?faces-redirect=true";
+	public String abrir() {
+		if (isListar()) {
+			return "/entity/" + fileName + "entity?faces-redirect=true";
+		} else {
+			return "";
+		}
 	}
 
-	public String alterando() {
-		listar = true;
-		alterar = true;
-		incluir = false;
-		deletar = false;
-		return "/entity/" + fileName + "entity?faces-redirect=true";
-	}
-
-	public String incluindo() {
-		listar = true;
-		alterar = false;
-		incluir = true;
-		deletar = false;
-		return "/entity/" + fileName + "entity?faces-redirect=true";
-	}
-
-	public String deletando() {
-		listar = true;
-		alterar = false;
-		incluir = false;
-		deletar = true;
-		return "/entity/" + fileName + "entity?faces-redirect=true";
+	
+	public void atualizaLista() {
 	}
 
 	@SuppressWarnings("unchecked")
 	@Transactional
 	public void onRowEdit(RowEditEvent event) {
+		System.out.println("EntityBean metodo onRowEdit");
 		dao.atualiza((T) event.getObject());
-		this.init();
-		FacesMessage msg = new FacesMessage(classe.getSimpleName() + " editado:", "(" + (((T) event.getObject()).getId()).toString().toString() + ") " + ((T) event.getObject()).toString());
+		this.atualizaLista();
+		FacesMessage msg = new FacesMessage(classe.getSimpleName() + " Editado:", (((T) event.getObject())).toString());
 		FacesContext.getCurrentInstance().addMessage(null, msg);
 	}
 
 	//
 	public void onRowCancel(RowEditEvent event) {
+		System.out.println("EntityBean metodo onRowCancel");
 		@SuppressWarnings("unchecked")
-		FacesMessage msg = new FacesMessage("Edição CanceladaZ", (((T) event.getObject()).getId()).toString());
+		FacesMessage msg = new FacesMessage("Edição Cancelada", (((T) event.getObject())).toString());
 		FacesContext.getCurrentInstance().addMessage(null, msg);
 	}
 
@@ -210,26 +227,97 @@ public class EntityBean<T extends Modelo> implements Serializable {
 	@SuppressWarnings("unchecked")
 	@Transactional
 	public void apagar() {
-		FacesMessage msg = new FacesMessage(classe.getSimpleName() + " deletado:", modeloDelete.getId().toString());
+		System.out.println("EntityBean metodo apagar");
+		FacesMessage msg = new FacesMessage(classe.getSimpleName() + " deletado:", modeloDelete.toString());
 		FacesContext.getCurrentInstance().addMessage(null, msg);
 		dao.remove((T) modeloDelete);
-		this.init();
+		this.atualizaLista();
 	}
 
 	//
 	@SuppressWarnings("unchecked")
 	@Transactional
 	public void adicionar() {
-		dao.adiciona((T) modeloNovo);
-		this.init();
-		// FacesMessage msg = new FacesMessage(classe.getSimpleName() + " Adicionado", modeloNovo.getNome());
+		System.out.println("EntityBean metodo adicionar");
+		FacesMessage msg = new FacesMessage(classe.getSimpleName() + " nao entrou");
+		atualizaModelo();
+		// if(dao.adiciona((T) modeloNovo)) {
+		// FacesMessage msg = new FacesMessage(classe.getSimpleName() + " Adicionado", modeloNovo.toString());
 		// FacesContext.getCurrentInstance().addMessage(null, msg);
+		// }else {
+		// FacesMessage msg = new FacesMessage(classe.getSimpleName() + " Não adicionado", "Já está cadastrado");
+		// FacesContext.getCurrentInstance().addMessage(null, msg);
+		// }
+		// FacesContext.getCurrentInstance().addMessage(null, dao.adiciona((T) modeloNovo));
+
 		// T = classe.newInstance();
 		// modeloNovo = new Logradouro();
+		try {
+			dao.adiciona((T) modeloNovo);
+			msg = new FacesMessage(classe.getSimpleName() + " Adicionado", modeloNovo.toString());
+		} catch (PersistenceException p) {
+			p.printStackTrace();
+			if (p.getMessage().contains("ConstraintViolationException")) {
+				if (p.getMessage().contains("Duplicate"))
+					msg = new FacesMessage(classe.getSimpleName(), " Já existe um cadastro");
+				else if (p.getMessage().contains("duplicate"))
+					msg = new FacesMessage(classe.getSimpleName(), " Já existe um cadastro");
+				else if (p.getMessage().contains("key"))
+					msg = new FacesMessage(classe.getSimpleName(), " Já existe um cadastro");
+				else
+					msg = new FacesMessage(classe.getSimpleName(), " Registro com informações já existentes na base de dados");
+			} else {
+				msg = new FacesMessage(classe.getSimpleName(), "Problemas ao gravar no banco");
+			}
+			FacesContext.getCurrentInstance().getExternalContext().getFlash().setKeepMessages(true);
+			FacesContext.getCurrentInstance().addMessage(null, msg);
+		} catch (Exception e) {
+//			e.printStackTrace();
+			System.out.println("EXCEPTION: " + e.getMessage());
+			if (e.getMessage().contains("ConstraintViolationException")) {
+				msg = new FacesMessage(classe.getSimpleName(), "Esse " + classe.getSimpleName() + " já foi cadastrado");
+				FacesContext.getCurrentInstance().getExternalContext().getFlash().setKeepMessages(true);
+				FacesContext.getCurrentInstance().addMessage("formMessages:msgs", msg);
+				try {
+					FacesContext.getCurrentInstance().getExternalContext().redirect(fileName + "entity.xhtml");
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			} else if (e.getMessage().contains("GenericJDBCException")) {
+				msg = new FacesMessage(classe.getSimpleName(), "Esse " + classe.getSimpleName() + " já foi cadastrado");
+				FacesContext.getCurrentInstance().getExternalContext().getFlash().setKeepMessages(true);
+				FacesContext.getCurrentInstance().addMessage("formMessages:msgs", msg);
+				try {
+					FacesContext.getCurrentInstance().getExternalContext().redirect(fileName + "entity.xhtml");
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			} else {
+				msg = new FacesMessage(classe.getSimpleName(), "Inconsistências nos dados: " + e.getMessage());
+				FacesContext.getCurrentInstance().getExternalContext().getFlash().setKeepMessages(true);
+				FacesContext.getCurrentInstance().addMessage("formMessages:msgs", msg);
+				try {
+					FacesContext.getCurrentInstance().getExternalContext().redirect(fileName + "entity.xhtml");
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+
+			}
+		}
+		FacesContext.getCurrentInstance().getExternalContext().getFlash().setKeepMessages(true);
+		FacesContext.getCurrentInstance().addMessage(null, msg);
+		this.atualizaLista();
 		geraNovaEntidade();
 	}
 
 	public void geraNovaEntidade() {
+	}
+
+	public void atualizaModelo() {
+
 	}
 
 	//// @SuppressWarnings("unchecked")

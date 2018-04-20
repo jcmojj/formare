@@ -43,7 +43,8 @@ public class AcessoProducer {
 			acesso.setIncluir(acessos.stream().filter(a -> a.getTipoEntidade().equals(tipoEntidade)).anyMatch(aa -> aa.isIncluir()));
 			acesso.setInicializar(acessos.stream().filter(a -> a.getTipoEntidade().equals(tipoEntidade)).anyMatch(aa -> aa.isInicializar()));
 			acesso.setListar(acessos.stream().filter(a -> a.getTipoEntidade().equals(tipoEntidade)).anyMatch(aa -> aa.isListar()));
-			acessoDao.adiciona(acesso);
+//			acessoDao.adiciona(acesso);
+			acessoDao.adicionaVolta(acesso);
 		}
 		
 		
@@ -74,7 +75,8 @@ public class AcessoProducer {
 				Acesso acesso = new Acesso(tipoUsuario);
 				acesso.setTipoEntidade(tipoEntidade);
 				this.configurarAcessoPadrao(acesso);
-				acessoDao.adiciona(acesso);
+				acessoDao.adicionaVolta(acesso);
+//				acessoDao.adiciona(acesso);
 			}
 		}
 	}
@@ -124,7 +126,7 @@ public class AcessoProducer {
 			acesso.setListar(false);
 			break;
 		case SECRETARIA:
-			acesso.setAlterar(true);
+			acesso.setAlterar(false);
 			acesso.setDeletar(false);
 			acesso.setIncluir(true);
 			acesso.setInicializar(false);

@@ -20,7 +20,7 @@
 			<br/>
 			<h:panelGrid columns="3">
 				<p:outputLabel for="nomelogradouro" value="Tipo:" />
-				<p:inputText id="nomelogradouro" value="#{logradouroBean.modeloNovo.nome}"
+				<p:inputText id="nomelogradouro" value="#{logradouroBean.logradouroNovo.nome}"
 					required="true"
 					requiredMessage="Campo obrigatório." label="Logradouro">
 				</p:inputText>
@@ -28,30 +28,32 @@
 			</h:panelGrid>
 			<br/>	
 			<p:commandButton value="Incluir"
-							actionListener="#{logradouroBean.adicionar}" update="@form msgs :formListaLogradouroEntity"
+							actionListener="#{logradouroBean.adicionar}" update="@form formMessages:msgs :formListaLogradouroEntity"
 							/>		
 		</p:fieldset>
 		<br/>
 		</h:form>
 		<h:form id="formListaLogradouroEntity">
-		<p:growl id="msgs" showDetail="true"/>
+		
 		<p:dataTable id="logradouroTable" var="logradouro" value="#{logradouroBean.logradouros}" 
-		editable="true" style="margin-bottom:20px" rendered="#{logradouroBean.listar}">
+		editable="true" style="margin-bottom:20px" rendered="#{logradouroBean.listar}"
+		draggableColumns="true" >
+                         >
 	       <f:facet name="header">
 	           Logradouro
 	       </f:facet>
  
-       <p:ajax event="rowEdit" 		listener="#{logradouroBean.onRowEdit}" 	update=" @form:msgs" />
-       <p:ajax event="rowEditCancel" listener="#{logradouroBean.onRowCancel}" 	update=" @form:msgs" />
+       <p:ajax event="rowEdit" 		listener="#{logradouroBean.onRowEdit}" 	update="formMessages:msgs" />
+       <p:ajax event="rowEditCancel" listener="#{logradouroBean.onRowCancel}" 	update="formMessages:msgs" />
  
-       <p:column headerText="Id" style="width:40px; text-align: center">
+       <p:column headerText="Id" style="width:40px; text-align: center" sortBy="#{logradouro.id}">
            <p:cellEditor>
                <f:facet name="output"><h:outputText value="#{logradouro.id}" /></f:facet>
                <f:facet name="input"><h:outputText value="#{logradouro.id}" /></f:facet>
            </p:cellEditor>
        </p:column>
  
-       <p:column headerText="Nome" style="text-align: center">
+       <p:column headerText="Nome" style="text-align: center" sortBy="#{logradouro.nome}">
            <p:cellEditor>
                <f:facet name="output"><h:outputText value="#{logradouro.nome}" /></f:facet>
                <f:facet name="input"><p:inputText value="#{logradouro.nome}" style="width:100%" label="Nome"/></f:facet>
@@ -66,10 +68,11 @@
                 <f:setPropertyActionListener value="#{car}" target="#{dtSelectionView.selectedCar}" />
             </p:commandButton>
         </p:column> -->
-       <p:column style="width:60px; text-align: center" rendered="#{logradouroBean.deletar}">
-           <p:commandButton update="@form @form:msgs"  icon="ui-icon-search" title="Deletar" action="#{logradouroBean.apagar}">
+       <p:column style="width:32px; text-align: center" rendered="#{logradouroBean.deletar}">
+           <p:commandLink update="@form formMessages:msgs" title="Deletar" action="#{logradouroBean.apagar}">
+           		<i class="fa fa-trash"></i>
                 <f:setPropertyActionListener value="#{logradouro}" target="#{logradouroBean.modeloDelete}" />
-            </p:commandButton>
+            </p:commandLink>
        </p:column>
    </p:dataTable>	
 		

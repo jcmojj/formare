@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 
 import javax.faces.context.FacesContext;
+import javax.persistence.Cacheable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -12,14 +13,24 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQuery;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
+import javax.persistence.QueryHint;
 
 import br.com.clinicaformare.model.usuario.Usuario;
 
 @Entity
+@Cacheable
+@NamedQuery(	name=Acesso.LISTAR, 
+			query="select a from Acesso a",
+			hints= {
+					@QueryHint(name="org.hibernate.cacheable", value="true"),
+					@QueryHint(name="org.hibernate.cacheRegion", value=Acesso.LISTAR)
+			})
 public class Acesso implements Serializable{
 	private static final long serialVersionUID = 1L;
+	public static final String LISTAR = "Acesso.listar";
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id", updatable = false, nullable = false)

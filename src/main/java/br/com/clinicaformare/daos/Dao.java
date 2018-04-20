@@ -13,12 +13,14 @@ public class Dao<T> {
 	@Inject
 	private EntityManager manager;
 
+
 	public Dao(Class<T> classe) {
 		this.classe = classe;
 	}
 
-	public void adiciona(T t) {
+	public void adiciona(T t) throws Exception{
 		manager.persist(t);
+		manager.flush();
 	}
 	
 	public T adicionaVolta(T t) {
@@ -37,11 +39,10 @@ public class Dao<T> {
 	}
 
 	public List<T> listaTodos() {
+		System.out.println("Dentro de Dao de " +classe.getGenericSuperclass().toString());
 		CriteriaQuery<T> query = manager.getCriteriaBuilder().createQuery(classe);
 		query.select(query.from(classe));
-
 		List<T> lista = manager.createQuery(query).getResultList();
-
 		return lista;
 	}
 

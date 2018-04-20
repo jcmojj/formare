@@ -17,7 +17,10 @@ import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 
 import br.com.clinicaformare.model.Modelo;
+import br.com.clinicaformare.model.usuario.Alterador;
+import br.com.clinicaformare.model.usuario.Criador;
 import br.com.clinicaformare.model.usuario.Usuario;
+import br.com.clinicaformare.util.ArrumarTexto;
 
 @Entity
 public class Logradouro implements Serializable, Modelo{
@@ -66,13 +69,14 @@ public class Logradouro implements Serializable, Modelo{
 	}
 
 	public void setNome(String nome) {
-		this.nome = nome;
+		
+		this.nome = ArrumarTexto.capitalizeString(nome.trim());
 	}
 	// String, hashCode and Equals
 	
 	@Override
 	public String toString() {
-		return "Logradouro [id=" + id + ", nome=" + nome + "]";
+		return "(" + id + ") " + nome + "";
 	}
 
 	@Override
@@ -99,15 +103,31 @@ public class Logradouro implements Serializable, Modelo{
 			return false;
 		return true;
 	}
+	
+//	public boolean existe(Object obj) {
+//		if (this == obj)
+//			return true;
+//		if (obj == null)
+//			return false;
+//		if (getClass() != obj.getClass())
+//			return false;
+//		Logradouro other = (Logradouro) obj;
+//		if (nome == null) {
+//			if (other.nome != null)
+//				return false;
+//		} else if (!nome.equals(other.nome))
+//			return false;
+//		return true;
+//	}
 
 	// -----------------------------------Registro de Alteração-----------------------------------------
 	// Parâmetros de Persistência
 	private LocalDateTime dataCriacao;
 	private LocalDateTime dataAlteracao;
 	@ManyToOne
-	private Usuario alterador;
+	private Alterador alterador;
 	@ManyToOne
-	private Usuario criador;
+	private Criador criador;
 	
 	// Getters de persistência
 	public LocalDateTime getDataCriacao() {
@@ -116,10 +136,12 @@ public class Logradouro implements Serializable, Modelo{
 	public LocalDateTime getDataAlteracao() {
 		return dataAlteracao;
 	}
-	public Usuario getAlterador() {
+	public Alterador getAlterador() {
+		System.out.println("Logradouro + getalterador");
 		return alterador;
 	}
-	public Usuario getCriador() {
+	public Criador getCriador() {
+		System.out.println("Logradouro + getCriador");
 		return criador;
 	}
 	
@@ -128,18 +150,34 @@ public class Logradouro implements Serializable, Modelo{
 	public void quandoCriar() {
 		this.dataCriacao = (LocalDateTime.now());
 		this.dataAlteracao = (LocalDateTime.now());
-		this.criador = (Usuario)FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("usuarioLogado");
-		this.alterador = (Usuario)FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("usuarioLogado");
+		System.out.println("Criador de logradouro");
+		this.criador = ((Usuario)FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("usuarioLogado")).getCriadorDesseUsuario();
+		System.out.println("Alterador de logradouro");
+		this.alterador = ((Usuario)FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("usuarioLogado")).getAlteradorDesseUsuario();
 	}
 
 	// Método Callback para update
 	@PreUpdate
 	public void quandoAtualizar() {
+		System.out.println("Logradouro + quandoAtualizar");
 		this.dataAlteracao = (LocalDateTime.now());
-		this.alterador  = (Usuario)FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("usuarioLogado");
+		this.alterador = ((Usuario)FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("usuarioLogado")).getAlteradorDesseUsuario();
 	}
 	// ------------------------------------------------------------------------------------------------
 	public Class<?> getClasse(){
 		return this.getClass();
 	}
+	public static String capitalizeString(String string) {
+		  char[] chars = string.toLowerCase().toCharArray();
+		  boolean found = false;
+		  for (int i = 0; i < chars.length; i++) {
+		    if (!found && Character.isLetter(chars[i])) {
+		      chars[i] = Character.toUpperCase(chars[i]);
+		      found = true;
+		    } else if (Character.isWhitespace(chars[i]) || chars[i]=='.' || chars[i]=='\'') { // You can add other chars here
+		      found = false;
+		    }
+		  }
+		  return String.valueOf(chars);
+		}
 }

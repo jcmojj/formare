@@ -40,6 +40,10 @@ public class Secretaria implements Serializable {
 		super();
 		this.id = id;
 	}
+	public Secretaria(Usuario usuario) {
+		super();
+		this.usuario = usuario;
+	}
 
 	// Getters and setters
 

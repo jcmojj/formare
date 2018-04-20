@@ -1,0 +1,108 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+<ui:composition template="/template/_templatedyn.xhtml">
+<ui:define name="title">
+            Clínica Formare - Atendimento Comportamental Integrado
+    </ui:define>
+<ui:define name="dynContent">
+	<h:form id="formNovoTipoTelefoneEntity">
+	
+
+		<h:outputLink value="entity.xhtml">
+		<h2>TipoTelefone</h2>
+		</h:outputLink>
+		<br/>
+		<p:fieldset value="Incluir" rendered="#{tipoTelefoneBean.incluir}">
+			<br/>
+			<h:panelGrid columns="3">
+				<p:outputLabel for="tipoTelefone" value="Tipo:" />
+				<p:inputText id="tipoTelefone" value="#{tipoTelefoneBean.tipoTelefoneNovo.tipo}"
+					required="true"
+					requiredMessage="Campo obrigatório." label="TipoTelefone">
+				</p:inputText>
+				<p:message for="tipoTelefone" />
+				
+				
+				
+				<p:outputLabel for="whatsapp" value="Whatsapp:" />
+				 <p:selectBooleanButton id="whatsapp" value="#{tipoTelefoneBean.tipoTelefoneNovo.whatsapp}" onLabel="Sim" offLabel="Não" style="width:60px" 
+				 required="true" 	requiredMessage="Campo obrigatório." label="Whatsapp"/>
+				<p:message for="whatsapp" />
+				
+	
+				
+				
+			</h:panelGrid>
+			<br/>	
+			<p:commandButton value="Incluir"
+							actionListener="#{tipoTelefoneBean.adicionar}" update="@form formMessages :formListaTipoTelefoneEntity"
+							/>		
+		</p:fieldset>
+		<br/>
+		</h:form>
+		<h:form id="formListaTipoTelefoneEntity">
+		
+		<p:dataTable id="tipoTelefoneTable" var="tipoTelefone" value="#{tipoTelefoneBean.tipoTelefones}" 
+		editable="true" style="margin-bottom:20px" rendered="#{tipoTelefoneBean.listar}"
+		draggableColumns="true" >
+                         >
+	       <f:facet name="header">
+	           TipoTelefone
+	       </f:facet>
+ 
+       <p:ajax event="rowEdit" 		listener="#{tipoTelefoneBean.onRowEdit}" 	update="formMessages:msgs" />
+       <p:ajax event="rowEditCancel" listener="#{tipoTelefoneBean.onRowCancel}" 	update="formMessages:msgs" />
+ 
+       <p:column headerText="Id" style="width:40px; text-align: center" sortBy="#{tipoTelefone.id}">
+           <p:cellEditor>
+               <f:facet name="output"><h:outputText value="#{tipoTelefone.id}" /></f:facet>
+               <f:facet name="input"><h:outputText value="#{tipoTelefone.id}" /></f:facet>
+           </p:cellEditor>
+       </p:column>
+ 
+       <p:column headerText="Nome" style="text-align: center" sortBy="#{tipoTelefone.tipo}">
+           <p:cellEditor>
+               <f:facet name="output"><h:outputText value="#{tipoTelefone.tipo}" /></f:facet>
+               <f:facet name="input"><p:inputText value="#{tipoTelefone.tipo}" style="width:100%" label="Nome"/></f:facet>
+           </p:cellEditor>
+       </p:column>
+       
+        <p:column headerText="Whatsapp" style="text-align: center; width:150px;" sortBy="#{tipoTelefone.whatsapp}">
+           <p:cellEditor>
+               <f:facet name="output">
+               		<p:outputPanel layout="inline" styleClass="ui-icon ui-icon-circle-check" 	rendered="#{tipoTelefone.whatsapp}" />
+					<p:outputPanel layout="inline" styleClass="ui-icon ui-icon-circle-close" rendered="#{!tipoTelefone.whatsapp}" />
+               </f:facet>
+               <f:facet name="input">
+               		<p:selectBooleanButton value="#{tipoTelefone.whatsapp}" onLabel="Sim" offLabel="Não" style="width:100%" label="Whatsapp"/>
+               </f:facet>
+           </p:cellEditor>
+       </p:column>
+ 
+       <p:column style="width:32px" rendered="#{tipoTelefoneBean.alterar}">
+           <p:rowEditor />
+       </p:column>
+<!--        <p:column style="width:32px;text-align: center">
+             <p:commandButton update=":form:carDetail" oncomplete="PF('carDialog').show()" icon="ui-icon-search" title="View">
+                <f:setPropertyActionListener value="#{car}" target="#{dtSelectionView.selectedCar}" />
+            </p:commandButton>
+        </p:column> -->
+       <p:column style="width:32px; text-align: center" rendered="#{tipoTelefoneBean.deletar}">
+           <p:commandLink update="@form formMessages:msgs" title="Deletar" action="#{tipoTelefoneBean.apagar}">
+           		<i class="fa fa-trash"></i>
+                <f:setPropertyActionListener value="#{tipoTelefone}" target="#{tipoTelefoneBean.modeloDelete}" />
+            </p:commandLink>
+       </p:column>
+   </p:dataTable>	
+		
+	
+		
+	</h:form>
+</ui:define>
+
+</ui:composition>
+</html>

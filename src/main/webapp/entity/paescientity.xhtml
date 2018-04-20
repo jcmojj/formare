@@ -1,0 +1,117 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+<ui:composition template="/template/_templatedyn.xhtml">
+<ui:define name="title">
+            Clínica Formare - Atendimento Comportamental Integrado
+    </ui:define>
+<ui:define name="dynContent">
+	<h:form id="formNovoPaesciEntity">
+	
+
+		<h:outputLink value="entity.xhtml">
+		<h2>Paesci</h2>
+		</h:outputLink>
+		<br/>
+		<p:fieldset value="Incluir" rendered="#{paesciBean.incluir}">
+			<br/>
+			<h:panelGrid columns="3">
+				<p:outputLabel for="pais" value="País:" />
+				<p:inputText id="pais" value="#{paesciBean.paesciNovo.pais}"
+					required="true"
+					requiredMessage="Campo obrigatório." label="País">
+				</p:inputText>
+				<p:message for="pais" />
+				
+				<p:outputLabel for="estado" value="Cidade:" />
+				<p:inputText id="estado" value="#{paesciBean.paesciNovo.estado}"
+					required="true"
+					requiredMessage="Campo obrigatório." label="Estado">
+				</p:inputText>
+				<p:message for="estado" />
+				
+				<p:outputLabel for="cidade" value="País" />
+				<p:inputText id="cidade" value="#{paesciBean.paesciNovo.cidade}"
+					required="true"
+					requiredMessage="Campo obrigatório." label="Cidade">
+				</p:inputText>
+				<p:message for="cidade" />
+				
+			</h:panelGrid>
+			<br/>	
+			<p:commandButton value="Incluir"
+							actionListener="#{paesciBean.adicionar}" update="@form formMessages:msgs :formListaPaesciEntity"
+							/>		
+		</p:fieldset>
+		<br/>
+		</h:form>
+		<h:form id="formListaPaesciEntity">
+		<p:dataTable id="paesciTable" var="paesci" value="#{paesciBean.paescis}" 
+		editable="true" style="margin-bottom:20px" rendered="#{paesciBean.listar}"
+		draggableColumns="true"  stickyHeader="true" 
+		paginator="true" rows="20" rowsPerPageTemplate="5,10,15"
+		paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                         >
+       	
+	       <f:facet name="header">
+	           Paesci
+	       </f:facet>
+ 
+       <p:ajax event="rowEdit" 		listener="#{paesciBean.onRowEdit}" 	update="formMessages:msgs" />
+       <p:ajax event="rowEditCancel" listener="#{paesciBean.onRowCancel}" 	update="formMessages:msgs" />
+ 
+       <p:column headerText="Id" style="width:40px; text-align: center" sortBy="#{paesci.id}">
+           <p:cellEditor>
+               <f:facet name="output"><h:outputText value="#{paesci.id}" /></f:facet>
+               <f:facet name="input"><h:outputText value="#{paesci.id}" /></f:facet>
+           </p:cellEditor>
+       </p:column>
+ 
+       <p:column headerText="País" style="text-align: center" sortBy="#{paesci.pais}">
+           <p:cellEditor>
+               <f:facet name="output"><h:outputText value="#{paesci.pais}" /></f:facet>
+               <f:facet name="input"><p:inputText value="#{paesci.pais}" style="width:100%" label="País"/></f:facet>
+           </p:cellEditor>
+       </p:column>
+       
+       <p:column headerText="Estado" style="text-align: center" sortBy="#{paesci.estado}">
+           <p:cellEditor>
+               <f:facet name="output"><h:outputText value="#{paesci.estado}" /></f:facet>
+               <f:facet name="input"><p:inputText value="#{paesci.estado}" style="width:100%" label="Estado"/></f:facet>
+           </p:cellEditor>
+       </p:column>
+       
+       
+       <p:column headerText="Cidade" style="text-align: center" sortBy="#{paesci.cidade}">
+           <p:cellEditor>
+               <f:facet name="output"><h:outputText value="#{paesci.cidade}" /></f:facet>
+               <f:facet name="input"><p:inputText value="#{paesci.cidade}" style="width:100%" label="Cidade"/></f:facet>
+           </p:cellEditor>
+       </p:column>
+ 
+       <p:column style="width:32px" rendered="#{paesciBean.alterar}">
+           <p:rowEditor />
+       </p:column>
+<!--        <p:column style="width:32px;text-align: center">
+             <p:commandButton update=":form:carDetail" oncomplete="PF('carDialog').show()" icon="ui-icon-search" title="View">
+                <f:setPropertyActionListener value="#{car}" target="#{dtSelectionView.selectedCar}" />
+            </p:commandButton>
+        </p:column> -->
+       <p:column style="width:32px; text-align: center" rendered="#{paesciBean.deletar}">
+           <p:commandLink update="@form formMessages:msgs" title="Deletar" action="#{paesciBean.apagar}">
+                <i class="fa fa-trash"></i>
+                <f:setPropertyActionListener value="#{paesci}" target="#{paesciBean.modeloDelete}" />
+            </p:commandLink>
+       </p:column>
+   </p:dataTable>	
+		
+	
+		
+	</h:form>
+</ui:define>
+
+</ui:composition>
+</html>

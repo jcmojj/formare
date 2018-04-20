@@ -1,5 +1,7 @@
 package br.com.clinicaformare.daos.usuario.endereco;
 
+import java.util.List;
+
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
@@ -24,5 +26,13 @@ public class LogradouroDao extends Dao<Logradouro> {
 		TypedQuery<Logradouro> query = this.manager.createQuery(jpql,Logradouro.class);
 		query.setParameter("logradouro", logradouro);
 		return query.getSingleResult();
+	}
+	
+	@Override
+	public List<Logradouro> listaTodos(){
+		System.out.println("Dentro de LogradouroDao - listaTodos");
+		String jpql = "select l from Logradouro l";
+		TypedQuery<Logradouro> query = manager.createQuery(jpql,Logradouro.class);
+		return query.getResultList();
 	}
 }

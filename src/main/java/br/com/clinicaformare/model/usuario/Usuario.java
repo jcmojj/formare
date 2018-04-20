@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.faces.context.FacesContext;
+import javax.persistence.Cacheable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -17,10 +18,13 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import javax.persistence.PostPersist;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
+import javax.persistence.QueryHint;
 
 import org.apache.commons.text.WordUtils;
 import org.hibernate.validator.constraints.Email;
@@ -33,12 +37,26 @@ import br.com.clinicaformare.usuario.endereco.Telefone;
 
 @Entity
 //@Table(uniqueConstraints=  @UniqueConstraint(columnNames = {"email", "password"}))
+@Cacheable
+@NamedQuery(	name=Usuario.LISTAR, 
+			query="select u from Usuario u",
+			hints= {
+					@QueryHint(name="org.hibernate.cacheable", value="true"),
+					@QueryHint(name="org.hibernate.cacheRegion", value=Usuario.LISTAR)
+			})
 public class Usuario implements Serializable {
 	private static final long serialVersionUID = 2L;
+	public static final String LISTAR = "Usuario.listar";
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id", updatable = false, nullable = false)
 	private Long id;
+	// Variáveis de alteração
+	@OneToOne(mappedBy = "usuario")
+	private Alterador alteradorDesseUsuario;
+	@OneToOne(mappedBy = "usuario")
+	private Criador criadorDesseUsuario;
 
 	// Necessário para criação
 	@Email(message = "Não é um endereço de e-mail válido")
@@ -121,6 +139,14 @@ public class Usuario implements Serializable {
 		this.email = WordUtils.capitalize(email).trim().replaceAll("  ", " ").replaceAll("  ", " ").replaceAll("  ", " ").replaceAll("  ", " ").replaceAll(" ", "");
 	}
 
+//	@PostPersist
+//	private void postPersistir() {
+//		Criador criador = new Criador(this);
+//		this.criadorDesseUsuario = criador;
+//		Alterador alterador = new Alterador(this);
+//		this.alteradorDesseUsuario = alterador;
+//		
+//	}
 	// Getters and Setters
 
 	public Long getId() {
@@ -212,6 +238,14 @@ public class Usuario implements Serializable {
 
 	public List<Acesso> getAcessos() {
 		return acessos;
+	}
+
+	public Alterador getAlteradorDesseUsuario() {
+		return alteradorDesseUsuario;
+	}
+
+	public Criador getCriadorDesseUsuario() {
+		return criadorDesseUsuario;
 	}
 
 	// Getters and Setters das Relacoes

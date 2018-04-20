@@ -1,3 +1,5 @@
+<h:outputText value="#{sessionScope['usuarioLogado'].nome}" />
+
 handleLoginRequest(xhr, status, args)
 onclick="{PF('dlgLogar').hide();PF('dlgOutro').show();}">
 oncomplete="{PF('dlgLogar').hide(); PF('dlgEscolher').show();}">

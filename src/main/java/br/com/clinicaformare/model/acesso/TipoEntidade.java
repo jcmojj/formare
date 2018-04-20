@@ -1,7 +1,7 @@
 package br.com.clinicaformare.model.acesso;
 
 public enum TipoEntidade {
-	LOGRADOURO("Logradouro"), ENDERECO("Endereço"), PAESCI("Paesci"), TELEFONE("Telefone");
+	LOGRADOURO("Logradouro"), ENDERECO("Endereço"), PAESCI("Paesci"), TELEFONE("Telefone"), TIPOTELEFONE("TipoTelefone"), TIPOENDERECO("TipoEndereço");
 	
 	private String tipo;
 

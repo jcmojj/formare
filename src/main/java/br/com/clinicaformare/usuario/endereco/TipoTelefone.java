@@ -16,11 +16,12 @@ import javax.persistence.PreUpdate;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
+import br.com.clinicaformare.model.Modelo;
 import br.com.clinicaformare.model.usuario.Usuario;
 
 @Entity
 @Table(uniqueConstraints=  @UniqueConstraint(columnNames = {"tipo", "whatsapp"}))
-public class TipoTelefone implements Serializable {
+public class TipoTelefone implements Serializable, Modelo {
 	private static final long serialVersionUID = 1L;
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -53,9 +54,17 @@ public class TipoTelefone implements Serializable {
 	public String getTipo() {
 		return tipo;
 	}
+	
+
+	public void setTipo(String tipo) {
+		this.tipo = tipo;
+	}
 
 	public boolean isWhatsapp() {
 		return whatsapp;
+	}
+	public void setWhatsapp(boolean whatsapp) {
+		this.whatsapp = whatsapp;
 	}
 
 	public List<Telefone> getTelefones() {
@@ -65,7 +74,7 @@ public class TipoTelefone implements Serializable {
 	// String, hashCode and Equals
 	@Override
 	public String toString() {
-		return "TipoTelefone [id=" + id + ", tipo=" + tipo + ", whatsapp=" + whatsapp + "]";
+		return "[" + id + "] " + tipo + ((whatsapp == true) ? " com whatsapp":" sem whatsapp");
 	}
 
 	@Override
@@ -95,43 +104,45 @@ public class TipoTelefone implements Serializable {
 	}
 
 	// -----------------------------------Registro de Alteração-----------------------------------------
-	// Parâmetros de Persistência
-	private LocalDateTime dataCriacao;
-	private LocalDateTime dataAlteracao;
-	@ManyToOne
-	private Usuario alterador;
-	@ManyToOne
-	private Usuario criador;
-	
-	// Getters de persistência
-	public LocalDateTime getDataCriacao() {
-		return dataCriacao;
-	}
-	public LocalDateTime getDataAlteracao() {
-		return dataAlteracao;
-	}
-	public Usuario getAlterador() {
-		return alterador;
-	}
-	public Usuario getCriador() {
-		return criador;
-	}
-	
-	// Método Callback para persistir
-	@PrePersist
-	public void quandoCriar() {
-		this.dataCriacao = (LocalDateTime.now());
-		this.dataAlteracao = (LocalDateTime.now());
-		this.criador = (Usuario)FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("usuarioLogado");
-		this.alterador = (Usuario)FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("usuarioLogado");
-	}
+		// Parâmetros de Persistência
+		private LocalDateTime dataCriacao;
+		private LocalDateTime dataAlteracao;
+		@ManyToOne
+		private Usuario alterador;
+		@ManyToOne
+		private Usuario criador;
+		
+		// Getters de persistência
+		public LocalDateTime getDataCriacao() {
+			return dataCriacao;
+		}
+		public LocalDateTime getDataAlteracao() {
+			return dataAlteracao;
+		}
+		public Usuario getAlterador() {
+			return alterador;
+		}
+		public Usuario getCriador() {
+			return criador;
+		}
+		
+		// Método Callback para persistir
+		@PrePersist
+		public void quandoCriar() {
+			this.dataCriacao = (LocalDateTime.now());
+			this.dataAlteracao = (LocalDateTime.now());
+			this.criador = (Usuario)FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("usuarioLogado");
+			this.alterador = (Usuario)FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("usuarioLogado");
+		}
 
-	// Método Callback para update
-	@PreUpdate
-	public void quandoAtualizar() {
-		this.dataAlteracao = (LocalDateTime.now());
-		this.alterador  = (Usuario)FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("usuarioLogado");
-	}
-	// ------------------------------------------------------------------------------------------------
-
+		// Método Callback para update
+		@PreUpdate
+		public void quandoAtualizar() {
+			this.dataAlteracao = (LocalDateTime.now());
+			this.alterador  = (Usuario)FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("usuarioLogado");
+		}
+		// ------------------------------------------------------------------------------------------------
+		public Class<?> getClasse(){
+			return this.getClass();
+		}
 }
