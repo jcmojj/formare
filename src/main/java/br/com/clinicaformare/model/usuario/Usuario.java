@@ -11,6 +11,7 @@ import javax.faces.context.FacesContext;
 import javax.persistence.Cacheable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -21,7 +22,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
-import javax.persistence.PostPersist;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 import javax.persistence.QueryHint;
@@ -52,11 +52,7 @@ public class Usuario implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id", updatable = false, nullable = false)
 	private Long id;
-	// Variáveis de alteração
-	@OneToOne(mappedBy = "usuario")
-	private Alterador alteradorDesseUsuario;
-	@OneToOne(mappedBy = "usuario")
-	private Criador criadorDesseUsuario;
+
 
 	// Necessário para criação
 	@Email(message = "Não é um endereço de e-mail válido")
@@ -240,13 +236,6 @@ public class Usuario implements Serializable {
 		return acessos;
 	}
 
-	public Alterador getAlteradorDesseUsuario() {
-		return alteradorDesseUsuario;
-	}
-
-	public Criador getCriadorDesseUsuario() {
-		return criadorDesseUsuario;
-	}
 
 	// Getters and Setters das Relacoes
 	public Paciente getPaciente() {
@@ -404,9 +393,9 @@ public class Usuario implements Serializable {
 		// Parâmetros de Persistência
 		private LocalDateTime dataCriacao;
 		private LocalDateTime dataAlteracao;
-		@ManyToOne
+		@ManyToOne(fetch = FetchType.LAZY)
 		private Usuario alterador;
-		@ManyToOne
+		@ManyToOne(fetch = FetchType.LAZY)
 		private Usuario criador;
 		
 		// Getters de persistência

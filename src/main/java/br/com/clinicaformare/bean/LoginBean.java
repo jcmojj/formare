@@ -17,8 +17,6 @@ import org.primefaces.context.RequestContext;
 
 import br.com.clinicaformare.bean.entity.StartEntity;
 import br.com.clinicaformare.daos.usuario.AdministradorDao;
-import br.com.clinicaformare.daos.usuario.AlteradorDao;
-import br.com.clinicaformare.daos.usuario.CriadorDao;
 import br.com.clinicaformare.daos.usuario.FinanceiroDao;
 import br.com.clinicaformare.daos.usuario.ProfissionalDao;
 import br.com.clinicaformare.daos.usuario.SecretariaDao;
@@ -32,8 +30,6 @@ import br.com.clinicaformare.daos.usuario.endereco.TipoEnderecoDao;
 import br.com.clinicaformare.daos.usuario.endereco.TipoTelefoneDao;
 import br.com.clinicaformare.model.acesso.AcessoProducer;
 import br.com.clinicaformare.model.usuario.Administrador;
-import br.com.clinicaformare.model.usuario.Alterador;
-import br.com.clinicaformare.model.usuario.Criador;
 import br.com.clinicaformare.model.usuario.Financeiro;
 import br.com.clinicaformare.model.usuario.Secretaria;
 import br.com.clinicaformare.model.usuario.Usuario;
@@ -73,10 +69,7 @@ public class LoginBean implements Serializable {
 	private ProfissionalDao profissionalDao;
 	@Inject
 	private SecretariaDao secretariaDao;
-	@Inject
-	private CriadorDao criadorDao;
-	@Inject
-	private AlteradorDao alteradorDao;
+
 	// @Inject
 	// @SessionMap
 	// private Map<String, Object> sessionMap;// ---> precisa nao pode te por conta do viewscoped
@@ -189,7 +182,6 @@ public class LoginBean implements Serializable {
 	}
 
 	public boolean isLogado() {
-		System.out.println("IsLogado");
 		return logado;
 	}
 
@@ -245,10 +237,7 @@ public class LoginBean implements Serializable {
 			usuario.setPassword("123");
 			usuario = usuarioDao.adicionaVolta(usuario);
 			System.out.println("Usuario Criado:" + usuario);
-			Criador criador = new Criador(usuario);
-			criadorDao.adicionaVolta(criador);
-			Alterador alterador = new Alterador(usuario);
-			alteradorDao.adicionaVolta(alterador);
+
 			
 			
 			Usuario usuario2 = new Usuario();
@@ -263,10 +252,7 @@ public class LoginBean implements Serializable {
 			usuario2.setPassword("123");
 			usuario2 = usuarioDao.adicionaVolta(usuario2);
 			System.out.println("Usuario Criado:" + usuario2);
-			Criador criador2 = new Criador(usuario2);
-			criadorDao.adicionaVolta(criador2);
-			Alterador alterador2 = new Alterador(usuario2);
-			alteradorDao.adicionaVolta(alterador2);
+
 			
 			
 		}

@@ -8,6 +8,7 @@ import java.util.List;
 import javax.faces.context.FacesContext;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -17,8 +18,6 @@ import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 
 import br.com.clinicaformare.model.Modelo;
-import br.com.clinicaformare.model.usuario.Alterador;
-import br.com.clinicaformare.model.usuario.Criador;
 import br.com.clinicaformare.model.usuario.Usuario;
 import br.com.clinicaformare.util.ArrumarTexto;
 
@@ -124,10 +123,10 @@ public class Logradouro implements Serializable, Modelo{
 	// Parâmetros de Persistência
 	private LocalDateTime dataCriacao;
 	private LocalDateTime dataAlteracao;
-	@ManyToOne
-	private Alterador alterador;
-	@ManyToOne
-	private Criador criador;
+	@ManyToOne(fetch = FetchType.LAZY)
+	private Usuario alterador;
+	@ManyToOne(fetch = FetchType.LAZY)
+	private Usuario criador;
 	
 	// Getters de persistência
 	public LocalDateTime getDataCriacao() {
@@ -136,12 +135,10 @@ public class Logradouro implements Serializable, Modelo{
 	public LocalDateTime getDataAlteracao() {
 		return dataAlteracao;
 	}
-	public Alterador getAlterador() {
-		System.out.println("Logradouro + getalterador");
+	public Usuario getAlterador() {
 		return alterador;
 	}
-	public Criador getCriador() {
-		System.out.println("Logradouro + getCriador");
+	public Usuario getCriador() {
 		return criador;
 	}
 	
@@ -150,20 +147,18 @@ public class Logradouro implements Serializable, Modelo{
 	public void quandoCriar() {
 		this.dataCriacao = (LocalDateTime.now());
 		this.dataAlteracao = (LocalDateTime.now());
-		System.out.println("Criador de logradouro");
-		this.criador = ((Usuario)FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("usuarioLogado")).getCriadorDesseUsuario();
-		System.out.println("Alterador de logradouro");
-		this.alterador = ((Usuario)FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("usuarioLogado")).getAlteradorDesseUsuario();
+		this.criador = 		(Usuario)FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("usuarioLogado");
+		this.alterador = 	(Usuario)FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("usuarioLogado");
 	}
 
 	// Método Callback para update
 	@PreUpdate
 	public void quandoAtualizar() {
-		System.out.println("Logradouro + quandoAtualizar");
 		this.dataAlteracao = (LocalDateTime.now());
-		this.alterador = ((Usuario)FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("usuarioLogado")).getAlteradorDesseUsuario();
+		this.alterador  = (Usuario)FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("usuarioLogado");
 	}
 	// ------------------------------------------------------------------------------------------------
+
 	public Class<?> getClasse(){
 		return this.getClass();
 	}
