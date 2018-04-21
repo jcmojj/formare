@@ -23,8 +23,8 @@ import org.primefaces.event.RowEditEvent;
 import br.com.clinicaformare.dao.acesso.AcessoDao;
 import br.com.clinicaformare.daos.Dao;
 import br.com.clinicaformare.model.Modelo;
-import br.com.clinicaformare.model.usuario.Usuario;
-import br.com.clinicaformare.util.listeners.login.UsuarioLogado;
+import br.com.clinicaformare.model.usuario.BasicUser;
+import br.com.clinicaformare.util.listeners.login.BasicUserLogado;
 
 @Named
 @ViewScoped
@@ -40,9 +40,11 @@ public abstract class EntityBean<T extends Modelo> implements Serializable {
 	private String shortPath;
 	private String fileName;
 
-	@Inject
-	@UsuarioLogado
-	Usuario usuarioLogado;
+//	@Inject
+//	@UsuarioLogado
+//	Usuario usuarioLogado;
+	@Inject @BasicUserLogado
+	private BasicUser basicUser;
 
 	// Construtor
 	// @SuppressWarnings("unchecked")
@@ -75,11 +77,11 @@ public abstract class EntityBean<T extends Modelo> implements Serializable {
 
 	protected void postContructEntityBean() {
 		System.out.println("PostConstruct ENTITYBEAN abriu metodo");
-		inicializar = acessoDao.buscaAcessoInicializarPara(usuarioLogado, fileName);
-		listar = acessoDao.buscaAcessoListarPara(usuarioLogado, fileName);
-		alterar = acessoDao.buscaAcessoAlterarPara(usuarioLogado, fileName);
-		incluir = acessoDao.buscaAcessoIncluirPara(usuarioLogado, fileName);
-		deletar = acessoDao.buscaAcessoDeletarPara(usuarioLogado, fileName);
+		inicializar = acessoDao.buscaAcessoInicializarPara(basicUser, fileName);
+		listar = acessoDao.buscaAcessoListarPara(basicUser, fileName);
+		alterar = acessoDao.buscaAcessoAlterarPara(basicUser, fileName);
+		incluir = acessoDao.buscaAcessoIncluirPara(basicUser, fileName);
+		deletar = acessoDao.buscaAcessoDeletarPara(basicUser, fileName);
 		System.out.println("PostConstruct ENTITYBEAN fechou metodo");
 	}
 

@@ -30,8 +30,8 @@ public class Paciente implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
-	@Inject @UsuarioLogado
-	private Usuario usuarioLogado;
+//	@Inject @UsuarioLogado
+//	private Usuario usuarioLogado;
 	
 	// Parâmetros Próprios
 	@OneToOne(mappedBy = "paciente")//, cascade = {CascadeType.ALL, CascadeType.MERGE, CascadeType.PERSIST})
@@ -182,19 +182,5 @@ public class Paciente implements Serializable {
 		return true;
 	}
 
-	// Método Callback para persistir
-	@PrePersist
-	public void quandoCriar() {
-		this.dataCriacao = (Calendar.getInstance());
-		this.dataAlteracao = (Calendar.getInstance());
-		this.criadoPor = usuarioLogado;
-		this.alteradoPor = usuarioLogado;
-	}
 
-	// Método Callback para update
-	@PreUpdate
-	public void quandoAtualizar() {
-		this.dataAlteracao = (Calendar.getInstance());
-		this.alteradoPor = usuarioLogado;
-	}
 }

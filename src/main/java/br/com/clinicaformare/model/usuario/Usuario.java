@@ -19,9 +19,7 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
-import javax.persistence.PostPersist;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 import javax.persistence.QueryHint;
@@ -30,7 +28,6 @@ import org.apache.commons.text.WordUtils;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.br.CPF;
 
-import br.com.clinicaformare.model.acesso.Acesso;
 import br.com.clinicaformare.usuario.endereco.Endereco;
 import br.com.clinicaformare.usuario.endereco.Paesci;
 import br.com.clinicaformare.usuario.endereco.Telefone;
@@ -53,10 +50,6 @@ public class Usuario implements Serializable {
 	@Column(name = "id", updatable = false, nullable = false)
 	private Long id;
 	// Variáveis de alteração
-	@OneToOne(mappedBy = "usuario")
-	private Alterador alteradorDesseUsuario;
-	@OneToOne(mappedBy = "usuario")
-	private Criador criadorDesseUsuario;
 
 	// Necessário para criação
 	@Email(message = "Não é um endereço de e-mail válido")
@@ -75,6 +68,12 @@ public class Usuario implements Serializable {
 	@CPF
 	private String cpf;
 	private String rg;
+	@OneToOne//(mappedBy = "usuario")
+	private BasicUser basicUser;
+
+	public BasicUser getBasicUser() {
+		return basicUser;
+	}
 
 	// Relações com tipos de Usuário
 	protected Boolean cliente = false;
@@ -97,8 +96,7 @@ public class Usuario implements Serializable {
 	private Fornecedor fornecedor;
 	@OneToOne
 	private Financeiro financeiro;
-	@OneToMany(mappedBy = "usuario")
-	List<Acesso> acessos = new ArrayList<>();
+
 
 
 	@ManyToMany // Join para criar uma tabela única em relacionamento many to many
@@ -119,7 +117,17 @@ public class Usuario implements Serializable {
 	// Constructor
 	public Usuario() {
 		System.out.println("New Usuario");
+		StackTraceElement[] stackTraceElements = Thread.currentThread().getStackTrace();
+		System.out.println("Dentro NOVO USUARIO");
+		for(int i  = 0;i<stackTraceElements.length;i++) {
+			System.out.println("i"+stackTraceElements[i].toString());
+		}
 	}
+	public Usuario(BasicUser basicUser) {
+		System.out.println("New Usuario");
+		this.basicUser = basicUser;
+	}
+	
 
 //	public Usuario(Long id) {
 //		this.id = id;
@@ -236,17 +244,7 @@ public class Usuario implements Serializable {
 		this.profissao = WordUtils.capitalize(profissao).trim().replaceAll("  ", " ").replaceAll("  ", " ").replaceAll("  ", " ").replaceAll("  ", " ");
 	}
 
-	public List<Acesso> getAcessos() {
-		return acessos;
-	}
 
-	public Alterador getAlteradorDesseUsuario() {
-		return alteradorDesseUsuario;
-	}
-
-	public Criador getCriadorDesseUsuario() {
-		return criadorDesseUsuario;
-	}
 
 	// Getters and Setters das Relacoes
 	public Paciente getPaciente() {

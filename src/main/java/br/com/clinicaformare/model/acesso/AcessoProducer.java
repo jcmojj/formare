@@ -9,6 +9,8 @@ import javax.inject.Inject;
 import javax.transaction.Transactional;
 
 import br.com.clinicaformare.dao.acesso.AcessoDao;
+import br.com.clinicaformare.daos.usuario.BasicUserDao;
+import br.com.clinicaformare.model.usuario.BasicUser;
 import br.com.clinicaformare.model.usuario.Usuario;
 
 //@Named
@@ -19,8 +21,12 @@ public class AcessoProducer {
 	@Inject
 	AcessoDao acessoDao;
 	
+	@Inject
+	BasicUserDao basicUsarDao;
+	
 	@Transactional
-	public void criarNovoAcessoPara(Usuario usuario) {
+	public void criarNovoAcessoPara(BasicUser basicUser) {
+		Usuario usuario = basicUsarDao.usarioDeBasicUser(basicUser);
 		List<Acesso> acessos = new ArrayList<>();
 		// Procurar o tipo de TipoUsuario do Usuario e criar um Acesso para cada TipoEntidade
 		for(TipoEntidade tipoEntidade:EnumSet.allOf(TipoEntidade.class)) {
@@ -36,7 +42,7 @@ public class AcessoProducer {
 		}
 		// Dentro de um TipoEntidade ver todos os acessos de cada tipo e se algum for true, definir tru
 		for(TipoEntidade tipoEntidade:EnumSet.allOf(TipoEntidade.class)) {
-			Acesso acesso = new Acesso(usuario);
+			Acesso acesso = new Acesso(basicUser);
 			acesso.setTipoEntidade(tipoEntidade);
 			acesso.setAlterar(acessos.stream().filter(a -> a.getTipoEntidade().equals(tipoEntidade)).anyMatch(aa -> aa.isAlterar()));
 			acesso.setDeletar(acessos.stream().filter(a -> a.getTipoEntidade().equals(tipoEntidade)).anyMatch(aa -> aa.isDeletar()));
@@ -150,9 +156,9 @@ public class AcessoProducer {
 		return acesso;
 	}
 	
-	public Acesso produzirAcessoUsuario(Usuario usuario) {
+	public Acesso produzirAcessoUsuario(BasicUser basicUser) {
 		TipoUsuario tipoUsuario = null;
-		Acesso acesso = new Acesso(usuario); // tipoUsuario = null
+		Acesso acesso = new Acesso(basicUser); // tipoUsuario = null
 //		acesso.
 		
 		

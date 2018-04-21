@@ -8,6 +8,7 @@ import java.util.List;
 import javax.faces.context.FacesContext;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -17,9 +18,7 @@ import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 
 import br.com.clinicaformare.model.Modelo;
-import br.com.clinicaformare.model.usuario.Alterador;
-import br.com.clinicaformare.model.usuario.Criador;
-import br.com.clinicaformare.model.usuario.Usuario;
+import br.com.clinicaformare.model.usuario.BasicUser;
 import br.com.clinicaformare.util.ArrumarTexto;
 
 @Entity
@@ -121,52 +120,47 @@ public class Logradouro implements Serializable, Modelo{
 //	}
 
 	// -----------------------------------Registro de Alteração-----------------------------------------
-	// Parâmetros de Persistência
-	private LocalDateTime dataCriacao;
-	private LocalDateTime dataAlteracao;
-	@ManyToOne
-	private Alterador alterador;
-	@ManyToOne
-	private Criador criador;
-	
-	// Getters de persistência
-	public LocalDateTime getDataCriacao() {
-		return dataCriacao;
-	}
-	public LocalDateTime getDataAlteracao() {
-		return dataAlteracao;
-	}
-	public Alterador getAlterador() {
-		System.out.println("Logradouro + getalterador");
-		return alterador;
-	}
-	public Criador getCriador() {
-		System.out.println("Logradouro + getCriador");
-		return criador;
-	}
-	
-	// Método Callback para persistir
-	@PrePersist
-	public void quandoCriar() {
-		this.dataCriacao = (LocalDateTime.now());
-		this.dataAlteracao = (LocalDateTime.now());
-		System.out.println("Criador de logradouro");
-		this.criador = ((Usuario)FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("usuarioLogado")).getCriadorDesseUsuario();
-		System.out.println("Alterador de logradouro");
-		this.alterador = ((Usuario)FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("usuarioLogado")).getAlteradorDesseUsuario();
-	}
+		// Parâmetros de Persistência
+		private LocalDateTime dataCriacao;
+		private LocalDateTime dataAlteracao;
+		@ManyToOne(fetch = FetchType.LAZY)
+		private BasicUser alterador;
+		@ManyToOne(fetch = FetchType.LAZY)
+		private BasicUser criador;
+		
+		// Getters de persistência
+		public LocalDateTime getDataCriacao() {
+			return dataCriacao;
+		}
+		public LocalDateTime getDataAlteracao() {
+			return dataAlteracao;
+		}
+		public BasicUser getAlterador() {
+			return alterador;
+		}
+		public BasicUser getCriador() {
+			return criador;
+		}
+		
+		// Método Callback para persistir
+		@PrePersist
+		public void quandoCriar() {
+			this.dataCriacao = (LocalDateTime.now());
+			this.dataAlteracao = (LocalDateTime.now());
+			this.criador = (BasicUser)FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("basicUser");
+			this.alterador = (BasicUser)FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("basicUser");
+		}
 
-	// Método Callback para update
-	@PreUpdate
-	public void quandoAtualizar() {
-		System.out.println("Logradouro + quandoAtualizar");
-		this.dataAlteracao = (LocalDateTime.now());
-		this.alterador = ((Usuario)FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("usuarioLogado")).getAlteradorDesseUsuario();
-	}
-	// ------------------------------------------------------------------------------------------------
-	public Class<?> getClasse(){
-		return this.getClass();
-	}
+		// Método Callback para update
+		@PreUpdate
+		public void quandoAtualizar() {
+			this.dataAlteracao = (LocalDateTime.now());
+			this.alterador  = (BasicUser)FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("basicUser");
+		}
+		// ------------------------------------------------------------------------------------------------
+		public Class<?> getClasse(){
+			return this.getClass();
+		}
 	public static String capitalizeString(String string) {
 		  char[] chars = string.toLowerCase().toCharArray();
 		  boolean found = false;

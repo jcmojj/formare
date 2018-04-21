@@ -18,6 +18,7 @@ import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 import javax.persistence.QueryHint;
 
+import br.com.clinicaformare.model.usuario.BasicUser;
 import br.com.clinicaformare.model.usuario.Usuario;
 
 @Entity
@@ -38,11 +39,11 @@ public class Acesso implements Serializable{
 	
 	// Variáveis
 	@ManyToOne
-	Usuario usuario; // null quando for os de tipoUsurio
+	private BasicUser basicUser; // null quando for os de tipoUsurio
 	@Enumerated(EnumType.STRING)
-	TipoUsuario tipoUsuario;  // null quando for de usuario
+	private TipoUsuario tipoUsuario;  // null quando for de usuario
 	@Enumerated(EnumType.STRING)
-	TipoEntidade tipoEntidade;
+	private TipoEntidade tipoEntidade;
 	private Boolean inicializar;
 	private Boolean listar;
 	private Boolean alterar;
@@ -53,14 +54,14 @@ public class Acesso implements Serializable{
 	public Acesso() {
 		super();
 	}
-	public Acesso(Usuario usuario) {
+	public Acesso(BasicUser basicUser) {
 		super();
 		this.tipoUsuario = null;
-		this.usuario = usuario;
+		this.basicUser = basicUser;
 	}
 	public Acesso(TipoUsuario tipoUsuario) {
 		super();
-		this.usuario = null;
+		this.basicUser = null;
 		this.tipoUsuario = tipoUsuario;
 	}
 	// Getters and Setters
@@ -100,8 +101,8 @@ public class Acesso implements Serializable{
 	public void setDeletar(Boolean deletar) {
 		this.deletar = deletar;
 	}
-	public Usuario getUsuario() {
-		return usuario;
+	public BasicUser getBasicUser() {
+		return basicUser;
 	}
 	public TipoUsuario getTipoUsuario() {
 		return tipoUsuario;

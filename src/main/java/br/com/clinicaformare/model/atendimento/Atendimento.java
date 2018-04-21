@@ -33,8 +33,8 @@ public class Atendimento implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
-	@Inject @UsuarioLogado
-	private Usuario usuarioLogado;
+//	@Inject @UsuarioLogado
+//	private Usuario usuarioLogado;
 	
 	
 	// Parâmetros Próprios
@@ -242,24 +242,8 @@ public class Atendimento implements Serializable {
 			return false;
 		return true;
 	}
-	
-	// Método Callback para persistir
-	@PrePersist
-	public void quandoCriar() {
-		this.dataCriacao = LocalDateTime.now();
-		this.dataAlteracao = LocalDateTime.now();
-		this.criadoPor = usuarioLogado;
-		this.alteradoPor = usuarioLogado;
-	}
-
-	// Método Callback para update
-	@PreUpdate
-	public void quandoAtualizar() {
-		this.dataAlteracao = LocalDateTime.now();;
-		this.alteradoPor = usuarioLogado;
-	}
 }
-
+	
 //pacote
 //List<Invoice> invoiceList = new ArrayList<>();
 //populate

@@ -32,8 +32,6 @@ public class Pacote implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
-	@Inject @UsuarioLogado
-	private Usuario usuarioLogado;
 
 //	@Transient
 //	private String nome;
@@ -86,8 +84,8 @@ public class Pacote implements Serializable {
 		responsavelFinanceiro.getPacotes().add(this);
 		this.paciente = paciente;
 		paciente.getPacotes().add(this);
-		this.sociaResponsavel = usuarioLogado.getSocia();
-		this.sociaSupervisora = usuarioLogado.getSocia();
+//		this.sociaResponsavel = usuarioLogado.getSocia();
+//		this.sociaSupervisora = usuarioLogado.getSocia();
 		sociaResponsavel.getPacotes().add(this);
 		this.atendimentos.addAll(atendimentos);
 		atendimentos.forEach(a -> a.setPacote(this));
@@ -222,21 +220,7 @@ public class Pacote implements Serializable {
 		return true;
 	}
 
-	// Método Callback para persistir
-	@PrePersist
-	public void quandoCriar() {
-		this.dataCriacao = LocalDateTime.now();
-		this.dataAlteracao = LocalDateTime.now();
-		this.criadoPor = usuarioLogado;
-		this.alteradoPor = usuarioLogado;
-	}
 
-	// Método Callback para update
-	@PreUpdate
-	public void quandoAtualizar() {
-		this.dataAlteracao = LocalDateTime.now();;
-		this.alteradoPor = usuarioLogado;
-	}
 
 }
 

@@ -17,8 +17,7 @@ import org.primefaces.context.RequestContext;
 
 import br.com.clinicaformare.bean.entity.StartEntity;
 import br.com.clinicaformare.daos.usuario.AdministradorDao;
-import br.com.clinicaformare.daos.usuario.AlteradorDao;
-import br.com.clinicaformare.daos.usuario.CriadorDao;
+import br.com.clinicaformare.daos.usuario.BasicUserDao;
 import br.com.clinicaformare.daos.usuario.FinanceiroDao;
 import br.com.clinicaformare.daos.usuario.ProfissionalDao;
 import br.com.clinicaformare.daos.usuario.SecretariaDao;
@@ -32,8 +31,7 @@ import br.com.clinicaformare.daos.usuario.endereco.TipoEnderecoDao;
 import br.com.clinicaformare.daos.usuario.endereco.TipoTelefoneDao;
 import br.com.clinicaformare.model.acesso.AcessoProducer;
 import br.com.clinicaformare.model.usuario.Administrador;
-import br.com.clinicaformare.model.usuario.Alterador;
-import br.com.clinicaformare.model.usuario.Criador;
+import br.com.clinicaformare.model.usuario.BasicUser;
 import br.com.clinicaformare.model.usuario.Financeiro;
 import br.com.clinicaformare.model.usuario.Secretaria;
 import br.com.clinicaformare.model.usuario.Usuario;
@@ -64,7 +62,6 @@ public class LoginBean implements Serializable {
 	private LogradouroDao logradouroDao;
 	@Inject
 	private EnderecoDao enderecoDao;
-	private Usuario usuarioLogado = new Usuario();
 	@Inject
 	private AcessoProducer acessoProducer;
 	@Inject
@@ -74,14 +71,14 @@ public class LoginBean implements Serializable {
 	@Inject
 	private SecretariaDao secretariaDao;
 	@Inject
-	private CriadorDao criadorDao;
-	@Inject
-	private AlteradorDao alteradorDao;
+	private BasicUserDao basicUserDao;
 	// @Inject
 	// @SessionMap
 	// private Map<String, Object> sessionMap;// ---> precisa nao pode te por conta do viewscoped
 
 	// Variáveis
+//	private Usuario usuarioLogado = new Usuario();
+	private BasicUser basicUser = new BasicUser();
 	private boolean logado = false;
 	private boolean outro = false;
 	private String email = "";
@@ -125,13 +122,15 @@ public class LoginBean implements Serializable {
 
 	public String selecionar() {
 		System.out.println("METODO: SELECIONAR --> ID:"+ this.userId);
-		usuarioLogado = usuarioDao.buscaPorId(Long.valueOf(this.userId));
+		Usuario usuarioLogado = usuarioDao.buscaPorId(Long.valueOf(this.userId));
 		System.out.println("Usuário:" + usuarioLogado);
 		FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Bem-Vindo", usuarioLogado.getNome());
 		FacesContext.getCurrentInstance().addMessage(null, message);
 		this.logado = true;
 		this.outro = false;
-		FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("usuarioLogado", usuarioLogado);
+//		FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("usuarioLogado", usuarioLogado);
+		basicUser = usuarioLogado.getBasicUser();
+		FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("basicUser", basicUser);
 		posLogado();
 		return "dashboard?faces-redirect=true";
 	}
@@ -168,8 +167,10 @@ public class LoginBean implements Serializable {
 		
 		this.logado = false;
 		listaUsuariosComEmailESenha = null;
-		usuarioLogado = null;
-		FacesContext.getCurrentInstance().getExternalContext().getSessionMap().remove("usuarioLogado");
+//		usuarioLogado = null;
+		basicUser = null;
+//		FacesContext.getCurrentInstance().getExternalContext().getSessionMap().remove("usuarioLogado");
+		FacesContext.getCurrentInstance().getExternalContext().getSessionMap().remove("basicUser");
 		return "/home?faces-redirect=true";
 	}
 	
@@ -189,7 +190,7 @@ public class LoginBean implements Serializable {
 	}
 
 	public boolean isLogado() {
-		System.out.println("IsLogado");
+//		System.out.println("IsLogado");
 		return logado;
 	}
 
@@ -223,9 +224,15 @@ public class LoginBean implements Serializable {
 		this.userId = userId;
 	}
 
-	public Usuario getUsuarioLogado() {
-		System.out.println("LoginBean: getUsuarioLogado");
-		return usuarioLogado = (Usuario)FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("usuarioLogado");
+//	public Usuario getUsuarioLogado() {
+//		System.out.println("LoginBean: getUsuarioLogado");
+//		return usuarioLogado (Usuario)FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("usuarioLogado");
+//	}
+	
+	public BasicUser getBasicUser() {
+//		System.out.println("LoginBean: getBasicUserLogado");
+//		return  (BasicUser)FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("BasicUser");
+		return this.basicUser;
 	}
 
 	// Métodos de inicialização do Usuário Raiz no Servidor
@@ -233,41 +240,54 @@ public class LoginBean implements Serializable {
 	@PostConstruct
 	public void criarUsuarioRaiz() {
 		if (usuarioDao.buscaPorId(1L) == null) {
-			Usuario usuario = new Usuario();
-			usuario.setCpf("331.881.858-55");
-			usuario.setNome("José Carlos");
-			usuario.setSobrenome("Melo de Oliveira Júnior");
+			BasicUser basicUser = new BasicUser();
+			basicUser.setCpf("331.881.858-55");
+			basicUser.setNome("José Carlos");
+			basicUser.setSobrenome("Melo de Oliveira Júnior");
+			basicUser = basicUserDao.adicionaVolta(basicUser);
+			System.out.println("BasicUser Criado:" + basicUser);
+			Usuario usuario = new Usuario(basicUser);
+			usuario = usuarioDao.adicionaVolta(usuario);
+			basicUser.setUsuario(usuario);
+			basicUserDao.atualiza(basicUser);
+			
 			usuario.setEmail("jcmojj@gmail.com");
 			usuario.setRg("30.028.659-4");
 			LocalDate dataDeNascimento = LocalDate.of(1984, 12, 11);
 			usuario.setDataNascimento(dataDeNascimento);
 			usuario.setProfissao("Developer");
 			usuario.setPassword("123");
-			usuario = usuarioDao.adicionaVolta(usuario);
 			System.out.println("Usuario Criado:" + usuario);
-			Criador criador = new Criador(usuario);
-			criadorDao.adicionaVolta(criador);
-			Alterador alterador = new Alterador(usuario);
-			alteradorDao.adicionaVolta(alterador);
+			usuarioDao.atualiza(usuario);
+			
+//			BasicUser basicUser = new BasicUser(usuario);
+//			basicUserDao.adicionaVolta(basicUser);
 			
 			
-			Usuario usuario2 = new Usuario();
-			usuario2.setCpf("339.541.588-09");
-			usuario2.setNome("Daniela");
-			usuario2.setSobrenome("Barbiere");
+			
+			BasicUser basicUser2 = new BasicUser();
+			basicUser2.setCpf("339.541.588-09");
+			basicUser2.setNome("Daniela");
+			basicUser2.setSobrenome("Giglioli Barbiere");
+			basicUser2 = basicUserDao.adicionaVolta(basicUser2);
+			System.out.println("BasicUser Criado:" + basicUser2);
+			Usuario usuario2 = new Usuario(basicUser2);
+			usuario2 = usuarioDao.adicionaVolta(usuario2);
+			System.out.println("Usuario Criado:" + usuario2);
+			
 			usuario2.setEmail("jcmojj@gmail.com");
 			usuario2.setRg("30.028.659-4");
 			LocalDate dataDeNascimento2 = LocalDate.of(1985, 10, 02);
 			usuario2.setDataNascimento(dataDeNascimento2);
 			usuario2.setProfissao("Publicitária");
 			usuario2.setPassword("123");
-			usuario2 = usuarioDao.adicionaVolta(usuario2);
+//			usuario2 = usuarioDao.adicionaVolta(usuario2);
 			System.out.println("Usuario Criado:" + usuario2);
-			Criador criador2 = new Criador(usuario2);
-			criadorDao.adicionaVolta(criador2);
-			Alterador alterador2 = new Alterador(usuario2);
-			alteradorDao.adicionaVolta(alterador2);
-			
+			usuarioDao.atualiza(usuario2);
+//			BasicUser basicUser2 = new BasicUser(usuario2);
+//			basicUserDao.adicionaVolta(basicUser2);
+			basicUser2.setUsuario(usuario2);
+			basicUserDao.atualiza(basicUser2);
 			
 		}
 	}
@@ -275,7 +295,7 @@ public class LoginBean implements Serializable {
 	@Transactional
 	public void posLogado() {
 		System.out.println("LoginBean - poslogado");
-		Usuario usuario = (Usuario) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("usuarioLogado");
+//		Usuario usuario = ((Usuario) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("usuarioLogado"));
 
 		if (administradorDao.buscaPorId(1L) == null) {
 //			Usuario usuario = (Usuario) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("usuarioLogado");
@@ -307,7 +327,15 @@ public class LoginBean implements Serializable {
 //			usuario.getEnderecos().add(endereco); // chefe da relação
 //			usuarioDao.atualiza(usuario); // persiste aqui
 //			enderecoDao.atualiza(endereco);
-//
+			System.out.println("aaa");
+	System.out.println("IMPRIMINDO basicuser:" + basicUser);
+	System.out.println("ddd");
+	System.out.println("IMPRIMINDO basicuser:" + (BasicUser)FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("basicUser"));
+	System.out.println("ccc");		
+	Usuario usuario = basicUser.getUsuario();
+			System.out.println("IMPRIMINDO USUARIO:" + usuario);
+			usuario = usuarioDao.usarioDeBasicUser(basicUser);
+			System.out.println("IMPRIMINDO USUARIO:" + usuario);
 			acessoProducer.adicionarAcessoPadrao();
 			
 			System.out.println("Administrador");
@@ -321,11 +349,11 @@ public class LoginBean implements Serializable {
 			usuario.setFinanceiro(financeiro);
 			usuarioDao.atualiza(usuario);
 			
-			acessoProducer.criarNovoAcessoPara(usuario);
+			acessoProducer.criarNovoAcessoPara(basicUser);
 			
-			Usuario usuario2 = usuarioDao.buscaPorId(2L);
-			
-			
+//			Usuario usuario2 = usuarioDao.buscaPorId(2L);
+			BasicUser basicUser2 = basicUserDao.buscaPorId(2L);
+			Usuario usuario2 = usuarioDao.usarioDeBasicUser(basicUser2);
 //			System.out.println("Socia");
 //			Socia socia = new Socia(usuario2);
 //			socia = sociaDao.adicionaVolta(socia);
@@ -343,7 +371,7 @@ public class LoginBean implements Serializable {
 			usuario2.setSecretaria(secretaria);
 			usuarioDao.atualiza(usuario2);
 			
-			acessoProducer.criarNovoAcessoPara(usuario2);
+			acessoProducer.criarNovoAcessoPara(basicUser2);
 			
 			
 		}

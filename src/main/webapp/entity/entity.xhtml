@@ -11,9 +11,9 @@
 	<ui:define name="dynContent">
 <h:form>
 <h4>
-Usuário Logado: #{startEntity.usuarioLogado}
+Usuário Logado: #{loginBean.basicUser}
 </h4>
-<h:outputText value="#{sessionScope['usuarioLogado'].nome}" />
+
 </h:form>
 
 <h:form> 
@@ -119,11 +119,7 @@ Usuário Logado: #{startEntity.usuarioLogado}
 	
 	<p:row>
 		<p:column colspan="1" ><h:outputText value="Logradouro"/></p:column>
-		<p:column colspan="1" ><h:commandLink value="Inicializar" 	action="#{logradouroBean.inicializar}"/></p:column>
-		<p:column colspan="1" ><h:commandLink value="Listar" 			action="#{logradouroBean.listar}"/></p:column>
-		<p:column colspan="1" ><h:commandLink value="Alterar" 		action="#{logradouroBean.alterar}"/></p:column>
-		<p:column colspan="1" ><h:commandLink value="Incluir" 		action="#{logradouroBean.incluir}"/></p:column>
-		<p:column colspan="1" ><h:commandLink value="Incluir" 		action="#{logradouroBean.deletar}"/></p:column>
+
 	</p:row>
 	
 	<p:row>

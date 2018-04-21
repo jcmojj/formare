@@ -11,7 +11,7 @@ import br.com.clinicaformare.daos.Dao;
 import br.com.clinicaformare.model.acesso.Acesso;
 import br.com.clinicaformare.model.acesso.TipoEntidade;
 import br.com.clinicaformare.model.acesso.TipoUsuario;
-import br.com.clinicaformare.model.usuario.Usuario;
+import br.com.clinicaformare.model.usuario.BasicUser;
 
 @Stateless
 public class AcessoDao extends Dao<Acesso> {
@@ -38,58 +38,58 @@ public class AcessoDao extends Dao<Acesso> {
 		return query.getSingleResult();
 	}
 
-	public Boolean buscaAcessoInicializarPara(Usuario usuario, String enumString) {
+	public Boolean buscaAcessoInicializarPara(BasicUser basicUser, String enumString) {
 		System.out.println("ACESSODAO: buscaAcessoInicializarPara");
 		TipoEntidade tipoEntidade  = this.tipoEntidadeFromString(enumString);
-		String jpql = "select (a.inicializar) from Acesso a where a.tipoEntidade = :tipoEntidade " + "and a.usuario = :usuario";
+		String jpql = "select (a.inicializar) from Acesso a where a.tipoEntidade = :tipoEntidade " + "and a.basicUser = :basicUser";
 		TypedQuery<Boolean> query = manager.createQuery(jpql, Boolean.class);
 		query.setParameter("tipoEntidade", tipoEntidade);
-		query.setParameter("usuario", usuario);
+		query.setParameter("basicUser", basicUser);
 		query.getResultList().forEach(r -> System.out.println("Inicializar: " + r));
 		return query.getSingleResult();
 	}
 
-	public Boolean buscaAcessoListarPara(Usuario usuario, String enumString) {
+	public Boolean buscaAcessoListarPara(BasicUser basicUser, String enumString) {
 		System.out.println("ACESSODAO: buscaAcessoListarPara");
 		TipoEntidade tipoEntidade  = this.tipoEntidadeFromString(enumString);
-		String jpql = "select (a.listar) from Acesso a where a.tipoEntidade = :tipoEntidade " + "and a.usuario = :usuario";
+		String jpql = "select (a.listar) from Acesso a where a.tipoEntidade = :tipoEntidade " + "and a.basicUser = :basicUser";
 		TypedQuery<Boolean> query = manager.createQuery(jpql, Boolean.class);
 		query.setParameter("tipoEntidade", tipoEntidade);
-		query.setParameter("usuario", usuario);
+		query.setParameter("basicUser", basicUser);
 		query.getResultList().forEach(r -> System.out.println("Listar: " + r));
 		return query.getSingleResult();
 	}
 
-	public Boolean buscaAcessoAlterarPara(Usuario usuario, String enumString) {
+	public Boolean buscaAcessoAlterarPara(BasicUser basicUser, String enumString) {
 		System.out.println("ACESSODAO: buscaAcessoAlterarPara");
 		TipoEntidade tipoEntidade  = this.tipoEntidadeFromString(enumString);
-		String jpql = "select (a.alterar) from Acesso a where a.tipoEntidade = :tipoEntidade " + "and a.usuario = :usuario";
+		String jpql = "select (a.alterar) from Acesso a where a.tipoEntidade = :tipoEntidade " + "and a.basicUser = :basicUser";
 		TypedQuery<Boolean> query = manager.createQuery(jpql, Boolean.class);
 		query.setParameter("tipoEntidade", tipoEntidade);
-		query.setParameter("usuario", usuario);
+		query.setParameter("basicUser", basicUser);
 		query.getResultList().forEach(r -> System.out.println("Alterar: " + r));
 		return query.getSingleResult();
 	}
 
-	public Boolean buscaAcessoIncluirPara(Usuario usuario, String enumString) {
+	public Boolean buscaAcessoIncluirPara(BasicUser basicUser, String enumString) {
 		System.out.println("ACESSODAO: buscaAcessoIncluirPara");
 		TipoEntidade tipoEntidade  = this.tipoEntidadeFromString(enumString);
-		String jpql = "select (a.incluir) from Acesso a where a.tipoEntidade = :tipoEntidade " + "and a.usuario = :usuario";
+		String jpql = "select (a.incluir) from Acesso a where a.tipoEntidade = :tipoEntidade " + "and a.basicUser = :basicUser";
 		TypedQuery<Boolean> query = manager.createQuery(jpql, Boolean.class);
 		query.setParameter("tipoEntidade", tipoEntidade);
-		query.setParameter("usuario", usuario);
+		query.setParameter("basicUser", basicUser);
 		query.getResultList().forEach(r -> System.out.println("Incluir: " + r));
 		return query.getSingleResult();
 	}
 
-	public Boolean buscaAcessoDeletarPara(Usuario usuario, String enumString) {
+	public Boolean buscaAcessoDeletarPara(BasicUser basicUser, String enumString) {
 		System.out.println("ACESSODAO: buscaAcessoDeletarPara");
 		TipoEntidade tipoEntidade  = this.tipoEntidadeFromString(enumString);
-		System.out.println("Procurando Acesso para: " + tipoEntidade + " e " + usuario.getId());
-		String jpql = "select (a.deletar) from Acesso a where a.tipoEntidade = :tipoEntidade " + "and a.usuario = :usuario";
+		System.out.println("Procurando Acesso para: " + tipoEntidade + " e " + basicUser.getId());
+		String jpql = "select (a.deletar) from Acesso a where a.tipoEntidade = :tipoEntidade " + "and a.basicUser = :basicUser";
 		TypedQuery<Boolean> query = manager.createQuery(jpql, Boolean.class);
 		query.setParameter("tipoEntidade", tipoEntidade);
-		query.setParameter("usuario", usuario);
+		query.setParameter("basicUser", basicUser);
 		query.getResultList().forEach(r -> System.out.println("Deletar: " + r));
 		System.out.println("Fim do buscaAcessoDeletarPara");
 		return query.getSingleResult();

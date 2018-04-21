@@ -10,6 +10,7 @@ import javax.persistence.TypedQuery;
 
 import br.com.clinicaformare.daos.Dao;
 import br.com.clinicaformare.model.acesso.Acesso;
+import br.com.clinicaformare.model.usuario.BasicUser;
 import br.com.clinicaformare.model.usuario.Usuario;
 
 @Stateless
@@ -118,4 +119,11 @@ public class UsuarioDao extends Dao<Usuario> implements Serializable {
 //		return query.getResultList();
 //	}
 
+	public Usuario usarioDeBasicUser(BasicUser basicUser) {
+		System.out.println("BasicUserDao usarioDeBasicUser");
+		String jpql = "select u from Usuario u where u.basicUser =:basicUser";
+		TypedQuery<Usuario> query = manager.createQuery(jpql,Usuario.class);
+		query.setParameter("basicUser", basicUser);
+		return query.getSingleResult();
+	}
 }
