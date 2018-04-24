@@ -82,7 +82,7 @@ Usuário Logado: #{startEntity.usuarioLogado}
         <h:outputText value="#{tipoGrupo}" />
     </p:column>
     <p:column headerText="Inicializar">
-        <h:outputText value="Inicializar Todos" />
+    		<h:commandLink value="Inicializar Todos" 	action="#{entityDataTableBean.inicializando}"/>
     </p:column>
 	<p:rowExpansion>
 		<p:dataTable var="tipoEntidade" styleClass="noHeader " style="border-style: none;" value="#{entityDataTableBean.getTiposEntidadedDe(tipoGrupo)}">
@@ -91,7 +91,7 @@ Usuário Logado: #{startEntity.usuarioLogado}
 				<h:commandLink value="#{tipoEntidade.tipo}" 	action="#{entityDataTableBean.abrir(tipoEntidade)}"/>
 		    </p:column>
 		    <p:column>
-		        <h:outputText value="Inicializar" />
+		    		<h:commandLink value="Inicializar" 	action="#{entityDataTableBean.inicializando(tipoEntidade)}"/>
 		    </p:column>
 	    </p:dataTable>
     </p:rowExpansion>

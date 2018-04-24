@@ -7,6 +7,7 @@ import java.util.EnumSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import javax.enterprise.inject.Any;
 import javax.enterprise.inject.Instance;
@@ -74,61 +75,102 @@ public class EntityDataTableBean implements Serializable{
 ////		injetar o fooBean a partir de nomeBean
 ////		fooBean(nomeBean).abrir;
 //	}
+	@SuppressWarnings("rawtypes")
 	public String abrir(TipoEntidade tipoEntidade) {
-		listarInstancias();
-		listarInstancias2(tipoEntidade);
+		for (EntityBean eb : entityBeanIntance) {
+			 System.out.println("abrir: " + eb.getClass().getSimpleName());
+			 if(eb.getClass().getSimpleName().startsWith(tipoEntidade.getNomeBean())) {
+				 return eb.abrir();
+	        }
+		}
+		return "";
+//		 entityBeanIntance.iterator().forEachRemaining(eb -> 
+//		 {
+//			 System.out.println("abrir: " + eb.getClass().getSimpleName());
+//			 if(eb.getClass().getSimpleName().startsWith(tipoEntidade.getNomeBean())) {
+//				 retorno = eb.abrir();
+//	        }
+//		 });
+//		listarInstancias();
 //		if (isListar()) {
-		System.out.println("abrir");
+//		System.out.println("abrir");
 //		System.out.println("/entity/" + tipoEntidade.getFileName() + "?faces-redirect=true");
 //		System.out.println(getCurrentInstance(tipoEntidade).getClasse().getSimpleName());
 //		System.out.println(getCurrentInstance(tipoEntidade).inicializando());
-		System.out.println("teste");
-			return "/entity/" + tipoEntidade.getFileName() + "?faces-redirect=true";
+//		System.out.println("teste");
+//			return "/entity/" + tipoEntidade.getFileName() + "?faces-redirect=true";
 //		} else {
 //			return "";
 //		}
 	}
 	
-	 public void listarInstancias() {
-		 System.out.println("listarInstancias");
-		    for (EntityBean eb : entityBeanIntance) {
-		        System.out.println(eb.toString());
-		    }
-		    System.out.println("abrir2");
-		    for (EntityBean eb : entityBeanIntance) {
-		        System.out.println(eb.getClasse().toString());
-		    }
-		    System.out.println("abrir3");
-		    for (EntityBean eb : entityBeanIntance) {
-		        System.out.println(eb.getClass().toString());
-		    }
-		    System.out.println("abrir4");
-		    for (EntityBean eb : entityBeanIntance) {
-		        System.out.println(eb.getClass().getSimpleName());
-		    }
-		    System.out.println("abrir5");
-		    for (EntityBean eb : entityBeanIntance) {
-		        System.out.println(eb.getClass().getName());
-		    }
-		  }
-	 
-	 public void listarInstancias2(TipoEntidade tipoEntidade) {
-		 System.out.println("listarInstancias2");
-		    for (EntityBean eb : entityBeanIntance) {
-		        System.out.println(eb.toString());
-		        Class<? extends EntityBean> class1 = eb.getClass();
-		        Class class2 = eb.getClasse();
-		        System.out.println("getClass:" + class1.getSimpleName());
-		        System.out.println("Incializando");
-		        if(eb.getClass().getSimpleName().startsWith(tipoEntidade.getNomeBean())) {
-		        		eb.inicializando();
-		        }
-		        
-		    }
+//	 public void listarInstancias() {
+//		 System.out.println("listarInstancias");
+//		    for (EntityBean eb : entityBeanIntance) {
+//		        System.out.println(eb.toString());
+//		    }
+//		    System.out.println("abrir2");
+//		    for (EntityBean eb : entityBeanIntance) {
+//		        System.out.println(eb.getClasse().toString());
+//		    }
+//		    System.out.println("abrir3");
+//		    for (EntityBean eb : entityBeanIntance) {
+//		        System.out.println(eb.getClass().toString());
+//		    }
 //		    System.out.println("abrir4");
 //		    for (EntityBean eb : entityBeanIntance) {
-//		        System.out.println(eb.get\);
+//		        System.out.println(eb.getClass().getSimpleName());
 //		    }
+//		    System.out.println("abrir5");
+//		    for (EntityBean eb : entityBeanIntance) {
+//		        System.out.println(eb.getClass().getName());
+//		    }
+//		  }
+	
+	public void inicializando() {
+		 entityBeanIntance.iterator().forEachRemaining(eb -> 
+		 {
+			System.out.println("Incializando: " + eb.getClass().getSimpleName());
+	        	eb.inicializando();
+		 });
+	 }
+	 
+	 @SuppressWarnings("rawtypes")
+	public String inicializando(TipoEntidade tipoEntidade) {
+		 for (EntityBean eb : entityBeanIntance) {
+			 System.out.println("abrir: " + eb.getClass().getSimpleName());
+			 if(eb.getClass().getSimpleName().startsWith(tipoEntidade.getNomeBean())) {
+				 return eb.inicializando();
+	        }
+		}
+		return "";
+//		 entityBeanIntance.iterator().forEachRemaining(eb -> 
+//		 {
+//			 System.out.println("Incializando: " + eb.getClass().getSimpleName());
+//			 if(eb.getClass().getSimpleName().startsWith(tipoEntidade.getNomeBean())) {
+//	        		return eb.inicializando();
+//	        }
+//		 });
+		 
+////		 entityBeanIntance.forEach(u -> u.);
+////		 entityBeanIntance.
+//
+//		 System.out.println("listarInstancias2");
+//		    for (EntityBean eb : entityBeanIntance) {
+//		        System.out.println(eb.toString());
+//		        Class<? extends EntityBean> class1 = eb.getClass();
+//		        Class class2 = eb.getClasse();
+//		        System.out.println("getClass:" + class1.getSimpleName());
+//		        System.out.println("Incializando");
+//		        if(eb.getClass().getSimpleName().startsWith(tipoEntidade.getNomeBean())) {
+//		        		eb.inicializando();
+//		        }
+//		        
+//		    }
+////		    System.out.println("abrir4");
+////		    for (EntityBean eb : entityBeanIntance) {
+////		        System.out.println(eb.get\);
+////		    }
 		  }
 //	
 	public String inicializa(TipoEntidade tipoEntidade) {

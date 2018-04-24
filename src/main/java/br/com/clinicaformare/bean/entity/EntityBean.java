@@ -23,6 +23,7 @@ import org.primefaces.event.RowEditEvent;
 import br.com.clinicaformare.dao.acesso.AcessoDao;
 import br.com.clinicaformare.daos.Dao;
 import br.com.clinicaformare.model.Modelo;
+import br.com.clinicaformare.model.acesso.TipoEntidade;
 import br.com.clinicaformare.model.usuario.Usuario;
 import br.com.clinicaformare.util.listeners.login.UsuarioLogado;
 
@@ -39,6 +40,8 @@ public abstract class EntityBean<T extends Modelo> implements Serializable {
 	private Dao<T> dao;
 	private String shortPath;
 	private String fileName;
+	
+	private TipoEntidade tipoEntidade;
 
 	@Inject
 	@UsuarioLogado
@@ -350,5 +353,8 @@ public abstract class EntityBean<T extends Modelo> implements Serializable {
 	// }
 	// }
 	
+//	public String getTituloTabelas() {
+//		return 
+//	}
 
 }
