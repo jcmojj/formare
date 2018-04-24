@@ -2,7 +2,6 @@ package br.com.clinicaformare.usuario.endereco;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.faces.context.FacesContext;
@@ -24,92 +23,66 @@ import br.com.clinicaformare.model.usuario.Usuario;
 import br.com.clinicaformare.util.FixOnText;
 
 @Entity
-@Table (uniqueConstraints= {@UniqueConstraint(columnNames = {"cidade","estado","pais"})})
-public class Paesci implements Serializable, Modelo {
+@Table(uniqueConstraints=  @UniqueConstraint(columnNames = {"codigo", "pais", "continente"}))
+public class CodigoInternacionalTelefonico implements Serializable, Modelo {
 	private static final long serialVersionUID = 1L;
 	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
 	
 	// Parâmetros Próprios
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	private Long id;
 	@Column(nullable = false)
-	private String cidade;
-	@Column(nullable = false, length = 2)
-	private String estado;
+	private String codigo;
 	@Column(nullable = false)
 	private String pais;
+	@Column(nullable = false)
+	private String continente;
 	
 	// Parâmetros Derivados
-	@OneToMany(mappedBy="paesci")
-	private List<Endereco> endereco  = new ArrayList<>();
-	@OneToMany(mappedBy="localNascimento")
-	private List<Usuario> usuariosLocalNascimento  = new ArrayList<>();
+	@OneToMany(mappedBy = "codigoInternacionalTelefonico")
+	private List<Telefone> telefones;
 	
 	// Constructor
-	public Paesci() {
+	public CodigoInternacionalTelefonico() {
 		super();
 	}
-
-	public Paesci(String pais, String estado, String cidade) {
+	public CodigoInternacionalTelefonico(String codigo, String pais, String continente) {
 		super();
-		this.cidade = FixOnText.withAllWordsFirstCharCapitalized(cidade);
-		this.estado = FixOnText.withAllCharsUpperCase(estado);
+		this.codigo = FixOnText.withInternationalCode(codigo);
 		this.pais = FixOnText.withAllWordsFirstCharCapitalized(pais);
+		this.continente = FixOnText.withAllWordsFirstCharCapitalized(continente);
 	}
 
-	// getters and setters
-	public String getCidade() {
-		return cidade;
-	}
-
-	public void setCidade(String cidade) {
-		this.cidade = FixOnText.withAllWordsFirstCharCapitalized(cidade);
-	}
-
-	public String getEstado() {
-		return estado;
-	}
-
-	public void setEstado(String estado) {
-		this.estado = FixOnText.withAllCharsUpperCase(estado);
-	}
-
-	public String getPais() {
-		return pais;
-	}
-
-	public void setPais(String pais) {
-		this.pais = FixOnText.withAllWordsFirstCharCapitalized(pais);
-	}
-
+	//Getters and Setters
 	public Long getId() {
 		return id;
 	}
-
-	public void setId(Long id) {
-		this.id = id;
+	public String getCodigo() {
+		return codigo;
+	}
+	public void setCodigo(String codigo) {
+		this.codigo = FixOnText.withInternationalCode(codigo);
+	}
+	public String getPais() {
+		return pais;
+	}
+	public void setPais(String pais) {
+		this.pais = FixOnText.withAllWordsFirstCharCapitalized(pais);
+	}
+	public String getContinente() {
+		return continente;
+	}
+	public void setContinente(String continente) {
+		this.continente = FixOnText.withAllWordsFirstCharCapitalized(continente);
+	}
+	public List<Telefone> getTelefones() {
+		return telefones;
 	}
 
-	public List<Endereco> getEndereco() {
-		return endereco;
-	}
-
-	public void setEndereco(List<Endereco> endereco) {
-		this.endereco = endereco;
-	}
-
-	public List<Usuario> getUsuariosLocalNascimento() {
-		return usuariosLocalNascimento;
-	}
-
-	public void setUsuariosLocalNascimento(List<Usuario> usuariosLocalNascimento) {
-		this.usuariosLocalNascimento = usuariosLocalNascimento;
-	}
-	
 	// String, hashCode and Equals
 	@Override
 	public String toString() {
-		return "(" + id + ") " + cidade + " - " + estado + " - " + pais + " ";
+		return "(" + id + ")"+ codigo + " - " + pais + " - " + continente;
 	}
 
 	@Override
@@ -128,7 +101,7 @@ public class Paesci implements Serializable, Modelo {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Paesci other = (Paesci) obj;
+		CodigoInternacionalTelefonico other = (CodigoInternacionalTelefonico) obj;
 		if (id == null) {
 			if (other.id != null)
 				return false;
@@ -180,5 +153,4 @@ public class Paesci implements Serializable, Modelo {
 		public Class<?> getClasse(){
 			return this.getClass();
 		}
-
 }

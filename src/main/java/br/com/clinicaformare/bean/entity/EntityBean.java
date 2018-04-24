@@ -30,7 +30,7 @@ import br.com.clinicaformare.util.listeners.login.UsuarioLogado;
 @ViewScoped
 public abstract class EntityBean<T extends Modelo> implements Serializable {
 	private static final long serialVersionUID = 1L;
-
+//	private final T value;
 	private final Class<?> classe;
 	// private String className;
 	@Inject
@@ -75,6 +75,8 @@ public abstract class EntityBean<T extends Modelo> implements Serializable {
 
 	protected void postContructEntityBean() {
 		System.out.println("PostConstruct ENTITYBEAN abriu metodo");
+		System.out.println("usuarioLogado" + usuarioLogado);
+		System.out.println("fileName" + fileName);
 		inicializar = acessoDao.buscaAcessoInicializarPara(usuarioLogado, fileName);
 		listar = acessoDao.buscaAcessoListarPara(usuarioLogado, fileName);
 		alterar = acessoDao.buscaAcessoAlterarPara(usuarioLogado, fileName);
@@ -162,7 +164,7 @@ public abstract class EntityBean<T extends Modelo> implements Serializable {
 				e.printStackTrace();
 			}
 		}
-		return "/entity/" + fileName + "entity?faces-redirect=true";
+		return "/entity/" + fileName + "?faces-redirect=true";
 	}
 
 	public Stream<String> getLinha(String shortPath, String fileName) throws IOException {
@@ -195,7 +197,7 @@ public abstract class EntityBean<T extends Modelo> implements Serializable {
 
 	public String abrir() {
 		if (isListar()) {
-			return "/entity/" + fileName + "entity?faces-redirect=true";
+			return "/entity/" + fileName + "?faces-redirect=true";
 		} else {
 			return "";
 		}
@@ -279,7 +281,7 @@ public abstract class EntityBean<T extends Modelo> implements Serializable {
 				FacesContext.getCurrentInstance().getExternalContext().getFlash().setKeepMessages(true);
 				FacesContext.getCurrentInstance().addMessage("formMessages:msgs", msg);
 				try {
-					FacesContext.getCurrentInstance().getExternalContext().redirect(fileName + "entity.xhtml");
+					FacesContext.getCurrentInstance().getExternalContext().redirect(fileName + ".xhtml");
 				} catch (IOException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
@@ -289,7 +291,7 @@ public abstract class EntityBean<T extends Modelo> implements Serializable {
 				FacesContext.getCurrentInstance().getExternalContext().getFlash().setKeepMessages(true);
 				FacesContext.getCurrentInstance().addMessage("formMessages:msgs", msg);
 				try {
-					FacesContext.getCurrentInstance().getExternalContext().redirect(fileName + "entity.xhtml");
+					FacesContext.getCurrentInstance().getExternalContext().redirect(fileName + ".xhtml");
 				} catch (IOException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
@@ -299,7 +301,7 @@ public abstract class EntityBean<T extends Modelo> implements Serializable {
 				FacesContext.getCurrentInstance().getExternalContext().getFlash().setKeepMessages(true);
 				FacesContext.getCurrentInstance().addMessage("formMessages:msgs", msg);
 				try {
-					FacesContext.getCurrentInstance().getExternalContext().redirect(fileName + "entity.xhtml");
+					FacesContext.getCurrentInstance().getExternalContext().redirect(fileName + ".xhtml");
 				} catch (IOException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
@@ -318,6 +320,10 @@ public abstract class EntityBean<T extends Modelo> implements Serializable {
 
 	public void atualizaModelo() {
 
+	}
+
+	public Class<?> getClasse() {
+		return classe;
 	}
 
 	//// @SuppressWarnings("unchecked")
@@ -343,5 +349,6 @@ public abstract class EntityBean<T extends Modelo> implements Serializable {
 	// FacesContext.getCurrentInstance().addMessage(null, msg);
 	// }
 	// }
+	
 
 }

@@ -40,13 +40,62 @@ Usuário Logado: #{startEntity.usuarioLogado}
 		<p:column colspan="1" ><h:commandLink value="Inicializar"  	action="#{tipoTelefoneBean.inicializando}" />	</p:column>
 	</p:row>
 	<p:row>
+		<p:column colspan="1" ><h:commandLink value="Código Internacional" 	action="#{codigoInternacionalTelefonicoBean.abrir}"/>			</p:column>
+		<p:column colspan="1" ><h:commandLink value="Inicializar"  			action="#{codigoInternacionalTelefonicoBean.inicializando}" />	</p:column>
+	</p:row>
+	<p:row>
+		<p:column colspan="1" ><h:commandLink value="Telefone" 		action="#{telefoneBean.abrir}"/>			</p:column>
+		<p:column colspan="1" ><h:commandLink value="Inicializar"  	action="#{telefoneBean.inicializando}" />	</p:column>
+	</p:row>
+	<p:row>
 		<p:column colspan="1" ><h:commandLink value="Tipo Endereço" 	action="#{tipoEnderecoBean.abrir}"/>			</p:column>
 		<p:column colspan="1" ><h:commandLink value="Inicializar"  	action="#{tipoEnderecoBean.inicializando}" />	</p:column>
+	</p:row>
+	<p:row>
+		<p:column colspan="1" ><h:commandLink value="Endereço" 		action="#{enderecoBean.abrir}"/>			</p:column>
+		<p:column colspan="1" ><h:commandLink value="Inicializar"  	action="#{enderecoBean.inicializando}" />	</p:column>
 	</p:row>
 	
 	
 </p:panelGrid>
 
+
+<p:dataTable var="tipoEntidade" value="#{entityDataTableBean.tiposEntidadeSorted}">
+    <p:column headerText="Grupo">
+        <h:outputText value="#{tipoEntidade.grupo}" />
+    </p:column>
+    <p:column headerText="Entidade">
+        <h:outputText value="#{tipoEntidade.tipo}" />
+    </p:column>
+ 
+    <p:column headerText="Inicializar">
+        <h:outputText value="Inicializar" />
+    </p:column>
+</p:dataTable>
+
+
+<p:dataTable var="tipoGrupo" tableStyle="padding:0px;" style="border-style: none;" value="#{entityDataTableBean.grupos}">
+	<p:column style="width:30px">
+            <p:rowToggler />
+    </p:column>
+    <p:column headerText="Grupo">
+        <h:outputText value="#{tipoGrupo}" />
+    </p:column>
+    <p:column headerText="Inicializar">
+        <h:outputText value="Inicializar Todos" />
+    </p:column>
+	<p:rowExpansion>
+		<p:dataTable var="tipoEntidade" styleClass="noHeader " style="border-style: none;" value="#{entityDataTableBean.getTiposEntidadedDe(tipoGrupo)}">
+			<p:column style="width:30px"/>
+			<p:column>
+				<h:commandLink value="#{tipoEntidade.tipo}" 	action="#{entityDataTableBean.abrir(tipoEntidade)}"/>
+		    </p:column>
+		    <p:column>
+		        <h:outputText value="Inicializar" />
+		    </p:column>
+	    </p:dataTable>
+    </p:rowExpansion>
+</p:dataTable>
 
 
 

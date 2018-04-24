@@ -11,5 +11,5 @@ import javax.inject.Qualifier;
 @Target({ElementType.TYPE,ElementType.FIELD})
 @Qualifier
 public @interface Entidade {
-	TipoEntidade tipo();
+	TipoEntidade tipoEntidade();
 }

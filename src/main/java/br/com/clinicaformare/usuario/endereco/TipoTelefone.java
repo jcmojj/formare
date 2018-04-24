@@ -5,7 +5,9 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import javax.faces.context.FacesContext;
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -18,6 +20,7 @@ import javax.persistence.UniqueConstraint;
 
 import br.com.clinicaformare.model.Modelo;
 import br.com.clinicaformare.model.usuario.Usuario;
+import br.com.clinicaformare.util.FixOnText;
 
 @Entity
 @Table(uniqueConstraints=  @UniqueConstraint(columnNames = {"tipo", "whatsapp"}))
@@ -28,7 +31,9 @@ public class TipoTelefone implements Serializable, Modelo {
 	private Long id;
 	
 	// Parâmetros Próprios
+	@Column(nullable = false)
 	private String tipo;
+	@Column(nullable = false)
 	private boolean whatsapp;
 	
 	// Parâmetros Derivados
@@ -38,7 +43,7 @@ public class TipoTelefone implements Serializable, Modelo {
 	// Constructor
 	public TipoTelefone(String tipo, boolean hasWhatsapp) {
 		super();
-		this.tipo = tipo;
+		this.tipo = FixOnText.withFirstCharOnStringCapitalized(tipo);
 		this.whatsapp = hasWhatsapp;
 	}
 
@@ -57,7 +62,7 @@ public class TipoTelefone implements Serializable, Modelo {
 	
 
 	public void setTipo(String tipo) {
-		this.tipo = tipo;
+		this.tipo = FixOnText.withAllWordsFirstCharCapitalized(tipo);
 	}
 
 	public boolean isWhatsapp() {
@@ -107,9 +112,9 @@ public class TipoTelefone implements Serializable, Modelo {
 		// Parâmetros de Persistência
 		private LocalDateTime dataCriacao;
 		private LocalDateTime dataAlteracao;
-		@ManyToOne
+		@ManyToOne(fetch = FetchType.LAZY)
 		private Usuario alterador;
-		@ManyToOne
+		@ManyToOne(fetch = FetchType.LAZY)
 		private Usuario criador;
 		
 		// Getters de persistência
@@ -131,8 +136,8 @@ public class TipoTelefone implements Serializable, Modelo {
 		public void quandoCriar() {
 			this.dataCriacao = (LocalDateTime.now());
 			this.dataAlteracao = (LocalDateTime.now());
-			this.criador = (Usuario)FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("usuarioLogado");
-			this.alterador = (Usuario)FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("usuarioLogado");
+			this.criador = 		(Usuario)FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("usuarioLogado");
+			this.alterador = 	(Usuario)FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("usuarioLogado");
 		}
 
 		// Método Callback para update
@@ -142,6 +147,7 @@ public class TipoTelefone implements Serializable, Modelo {
 			this.alterador  = (Usuario)FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("usuarioLogado");
 		}
 		// ------------------------------------------------------------------------------------------------
+
 		public Class<?> getClasse(){
 			return this.getClass();
 		}

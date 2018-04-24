@@ -19,12 +19,12 @@
 		<p:fieldset value="Incluir" rendered="#{tipoEnderecoBean.incluir}">
 			<br/>
 			<h:panelGrid columns="3">
-				<p:outputLabel for="nometipoEndereco" value="Tipo:" />
-				<p:inputText id="nometipoEndereco" value="#{tipoEnderecoBean.tipoEnderecoNovo.nome}"
+				<p:outputLabel for="tipoEndereco" value="Tipo:" />
+				<p:inputText id="tipoEndereco" value="#{tipoEnderecoBean.tipoEnderecoNovo.tipo}"
 					required="true"
 					requiredMessage="Campo obrigatório." label="TipoEndereco">
 				</p:inputText>
-				<p:message for="nometipoEndereco" />
+				<p:message for="tipoEndereco" />
 			</h:panelGrid>
 			<br/>	
 			<p:commandButton value="Incluir"
@@ -53,10 +53,10 @@
            </p:cellEditor>
        </p:column>
  
-       <p:column headerText="Nome" style="text-align: center" sortBy="#{tipoEndereco.nome}">
+       <p:column headerText="Tipo" style="text-align: center" sortBy="#{tipoEndereco.tipo}">
            <p:cellEditor>
-               <f:facet name="output"><h:outputText value="#{tipoEndereco.nome}" /></f:facet>
-               <f:facet name="input"><p:inputText value="#{tipoEndereco.nome}" style="width:100%" label="Nome"/></f:facet>
+               <f:facet name="output"><h:outputText value="#{tipoEndereco.tipo}" /></f:facet>
+               <f:facet name="input"><p:inputText value="#{tipoEndereco.tipo}" style="width:100%" label="Tipo"/></f:facet>
            </p:cellEditor>
        </p:column>
  

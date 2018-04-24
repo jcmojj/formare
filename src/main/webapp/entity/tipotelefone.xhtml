@@ -74,8 +74,8 @@
         <p:column headerText="Whatsapp" style="text-align: center; width:150px;" sortBy="#{tipoTelefone.whatsapp}">
            <p:cellEditor>
                <f:facet name="output">
-               		<p:outputPanel layout="inline" styleClass="ui-icon ui-icon-circle-check" 	rendered="#{tipoTelefone.whatsapp}" />
-					<p:outputPanel layout="inline" styleClass="ui-icon ui-icon-circle-close" rendered="#{!tipoTelefone.whatsapp}" />
+               		<p:outputPanel layout="inline"  styleClass="fa fa-check-square fa-boolean-table-true" 	rendered="#{tipoTelefone.whatsapp}" />
+					<p:outputPanel layout="inline" style="display:block; margin-left: auto; margin-right: auto;" styleClass="ui-icon ui-icon-circle-close red" rendered="#{!tipoTelefone.whatsapp}" />
                </f:facet>
                <f:facet name="input">
                		<p:selectBooleanButton value="#{tipoTelefone.whatsapp}" onLabel="Sim" offLabel="Não" style="width:100%" label="Whatsapp"/>

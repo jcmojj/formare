@@ -58,3 +58,23 @@ loginFieldset{
 .ui-state-error{
 	color:#333;
 }
+
+.fa-boolean-table-true{
+	display:block; 
+	margin-left: auto; 
+	margin-right: auto;
+	color: #000; !important
+}
+
+.noHeader.ui-datatable table thead tr {
+    display: none;
+    border-style: none;
+}
+
+.ui-expanded-row-content td {
+	margin: 0px !important;
+	padding: 0px !important;
+}
+.noHeader.ui-datatable table tbody tr td {
+	padding: 4px 10px !important;
+}

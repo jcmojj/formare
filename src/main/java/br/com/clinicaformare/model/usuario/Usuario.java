@@ -56,9 +56,9 @@ public class Usuario implements Serializable {
 
 	// Necessário para criação
 	@Email(message = "Não é um endereço de e-mail válido")
-	@Column(nullable = true)//, unique = true)
+	@Column(nullable = false)//, unique = true)
 	private String email;
-	@Column(nullable = true, length = 15)//, unique = true)
+	@Column(nullable = false, length = 15)//, unique = true)
 	private String password;
 
 	private String nome;

@@ -6,7 +6,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.faces.context.FacesContext;
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -15,28 +17,31 @@ import javax.persistence.ManyToOne;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 
-import org.apache.commons.text.WordUtils;
-
+import br.com.clinicaformare.model.Modelo;
 import br.com.clinicaformare.model.usuario.Usuario;
+import br.com.clinicaformare.util.FixOnText;
 
 @Entity
-public class Endereco implements Serializable {
+public class Endereco implements Serializable, Modelo {
 	private static final long serialVersionUID = 1L;
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
 	// Parâmetros Próprios
-	@ManyToOne
+	@ManyToOne(optional = false)
 	private TipoEndereco tipoEndereco;
-	@ManyToOne
+	@ManyToOne(optional = false)
 	private Logradouro logradouro;
+	@Column(nullable = false)
 	private String endereco;
+	@Column(nullable = false)
 	private String numero;
 	private String complemento;
+	@Column(nullable = false)
 	private String cep;
 	private String bairro;
-	@ManyToOne
+	@ManyToOne(optional = false)
 	private Paesci paesci;
 	
 	// Parâmetros Derivados
@@ -67,7 +72,7 @@ public class Endereco implements Serializable {
 	}
 
 	public void setEndereco(String endereco) {
-		this.endereco = WordUtils.capitalize(endereco).trim().replaceAll("  ", " ").replaceAll("  ", " ").replaceAll("  ", " ").replaceAll("  ", " ");
+		this.endereco = FixOnText.withAllWordsFirstCharCapitalized(endereco);
 	}
 
 	public String getNumero() {
@@ -83,7 +88,7 @@ public class Endereco implements Serializable {
 	}
 
 	public void setComplemento(String complemento) {
-		this.complemento = WordUtils.capitalize(complemento).trim().replaceAll("  ", " ").replaceAll("  ", " ").replaceAll("  ", " ").replaceAll("  ", " ");
+		this.complemento = FixOnText.withAllWordsFirstCharCapitalized(complemento);
 	}
 
 	public String getCep() {
@@ -91,7 +96,7 @@ public class Endereco implements Serializable {
 	}
 
 	public void setCep(String cep) {
-		this.cep = cep.trim().replaceAll(" ", "");
+		this.cep = FixOnText.withOnlyNumbersOnString(cep);
 	}
 
 	public String getBairro() {
@@ -99,8 +104,9 @@ public class Endereco implements Serializable {
 	}
 
 	public void setBairro(String bairro) {
-		this.bairro = WordUtils.capitalize(bairro).trim().replaceAll("  ", " ").replaceAll("  ", " ").replaceAll("  ", " ").replaceAll("  ", " ");
+		this.bairro = FixOnText.withAllWordsFirstCharCapitalized(bairro);
 	}
+	
 	public Paesci getPaesci() {
 		return paesci;
 	}
@@ -158,43 +164,46 @@ public class Endereco implements Serializable {
 
 
 	// -----------------------------------Registro de Alteração-----------------------------------------
-	// Parâmetros de Persistência
-	private LocalDateTime dataCriacao;
-	private LocalDateTime dataAlteracao;
-	@ManyToOne
-	private Usuario alterador;
-	@ManyToOne
-	private Usuario criador;
-	
-	// Getters de persistência
-	public LocalDateTime getDataCriacao() {
-		return dataCriacao;
-	}
-	public LocalDateTime getDataAlteracao() {
-		return dataAlteracao;
-	}
-	public Usuario getAlterador() {
-		return alterador;
-	}
-	public Usuario getCriador() {
-		return criador;
-	}
-	
-	// Método Callback para persistir
-	@PrePersist
-	public void quandoCriar() {
-		this.dataCriacao = (LocalDateTime.now());
-		this.dataAlteracao = (LocalDateTime.now());
-		this.criador = (Usuario)FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("usuarioLogado");
-		this.alterador = (Usuario)FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("usuarioLogado");
-	}
+			// Parâmetros de Persistência
+			private LocalDateTime dataCriacao;
+			private LocalDateTime dataAlteracao;
+			@ManyToOne(fetch = FetchType.LAZY)
+			private Usuario alterador;
+			@ManyToOne(fetch = FetchType.LAZY)
+			private Usuario criador;
+			
+			// Getters de persistência
+			public LocalDateTime getDataCriacao() {
+				return dataCriacao;
+			}
+			public LocalDateTime getDataAlteracao() {
+				return dataAlteracao;
+			}
+			public Usuario getAlterador() {
+				return alterador;
+			}
+			public Usuario getCriador() {
+				return criador;
+			}
+			
+			// Método Callback para persistir
+			@PrePersist
+			public void quandoCriar() {
+				this.dataCriacao = (LocalDateTime.now());
+				this.dataAlteracao = (LocalDateTime.now());
+				this.criador = 		(Usuario)FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("usuarioLogado");
+				this.alterador = 	(Usuario)FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("usuarioLogado");
+			}
 
-	// Método Callback para update
-	@PreUpdate
-	public void quandoAtualizar() {
-		this.dataAlteracao = (LocalDateTime.now());
-		this.alterador  = (Usuario)FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("usuarioLogado");
-	}
-	// ------------------------------------------------------------------------------------------------
+			// Método Callback para update
+			@PreUpdate
+			public void quandoAtualizar() {
+				this.dataAlteracao = (LocalDateTime.now());
+				this.alterador  = (Usuario)FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("usuarioLogado");
+			}
+			// ------------------------------------------------------------------------------------------------
 
+			public Class<?> getClasse(){
+				return this.getClass();
+			}
 }

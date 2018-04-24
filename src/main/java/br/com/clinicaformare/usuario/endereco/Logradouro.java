@@ -19,7 +19,7 @@ import javax.persistence.PreUpdate;
 
 import br.com.clinicaformare.model.Modelo;
 import br.com.clinicaformare.model.usuario.Usuario;
-import br.com.clinicaformare.util.ArrumarTexto;
+import br.com.clinicaformare.util.FixOnText;
 
 @Entity
 public class Logradouro implements Serializable, Modelo{
@@ -29,7 +29,7 @@ public class Logradouro implements Serializable, Modelo{
 	private Long id;
 	
 	// Parâmetros Próprios
-	@Column(unique = true)
+	@Column(unique = true, nullable = false)
 	private String nome;
 	
 	// Parâmetros Derivados
@@ -43,7 +43,7 @@ public class Logradouro implements Serializable, Modelo{
 
 	public Logradouro(String nome) {
 		super();
-		this.nome = nome;
+		this.nome = FixOnText.withAllWordsFirstCharCapitalized(nome);
 	}
 
 	// Getters and setters
@@ -59,17 +59,13 @@ public class Logradouro implements Serializable, Modelo{
 		return id;
 	}
 
-	public void setId(Long id) {
-		this.id = id;
-	}
-
 	public String getNome() {
 		return nome;
 	}
 
 	public void setNome(String nome) {
 		
-		this.nome = ArrumarTexto.capitalizeString(nome.trim());
+		this.nome = FixOnText.withAllWordsFirstCharCapitalized(nome);
 	}
 	// String, hashCode and Equals
 	
@@ -162,17 +158,4 @@ public class Logradouro implements Serializable, Modelo{
 	public Class<?> getClasse(){
 		return this.getClass();
 	}
-	public static String capitalizeString(String string) {
-		  char[] chars = string.toLowerCase().toCharArray();
-		  boolean found = false;
-		  for (int i = 0; i < chars.length; i++) {
-		    if (!found && Character.isLetter(chars[i])) {
-		      chars[i] = Character.toUpperCase(chars[i]);
-		      found = true;
-		    } else if (Character.isWhitespace(chars[i]) || chars[i]=='.' || chars[i]=='\'') { // You can add other chars here
-		      found = false;
-		    }
-		  }
-		  return String.valueOf(chars);
-		}
 }

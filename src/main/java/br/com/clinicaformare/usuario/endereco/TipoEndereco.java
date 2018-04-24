@@ -8,6 +8,7 @@ import java.util.List;
 import javax.faces.context.FacesContext;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -18,6 +19,7 @@ import javax.persistence.PreUpdate;
 
 import br.com.clinicaformare.model.Modelo;
 import br.com.clinicaformare.model.usuario.Usuario;
+import br.com.clinicaformare.util.FixOnText;
 
 @Entity
 public class TipoEndereco implements Serializable, Modelo {
@@ -27,7 +29,7 @@ public class TipoEndereco implements Serializable, Modelo {
 	private Long id;
 	
 	// Parâmetros Próprios
-	@Column(unique=true)
+	@Column(unique=true, nullable = false)
 	private String tipo;
 	
 	// Parâmetros Derivados
@@ -44,7 +46,7 @@ public class TipoEndereco implements Serializable, Modelo {
 //	}
 	public TipoEndereco(String tipo) {
 		super();
-		this.tipo = tipo;
+		this.tipo = FixOnText.withFirstCharOnStringCapitalized(tipo);
 	}
 
 	//Getters and Setters
@@ -53,7 +55,7 @@ public class TipoEndereco implements Serializable, Modelo {
 	}
 
 	public void setTipo(String tipo) {
-		this.tipo = tipo;
+		this.tipo = FixOnText.withFirstCharOnStringCapitalized(tipo);
 	}
 
 	public List<Endereco> getEnderecos() {
@@ -68,9 +70,6 @@ public class TipoEndereco implements Serializable, Modelo {
 		return id;
 	}
 
-	public void setId(Long id) {
-		this.id = id;
-	}
 	// String, hashCode and Equals
 	@Override
 	public String toString() {
@@ -106,9 +105,9 @@ public class TipoEndereco implements Serializable, Modelo {
 		// Parâmetros de Persistência
 		private LocalDateTime dataCriacao;
 		private LocalDateTime dataAlteracao;
-		@ManyToOne
+		@ManyToOne(fetch = FetchType.LAZY)
 		private Usuario alterador;
-		@ManyToOne
+		@ManyToOne(fetch = FetchType.LAZY)
 		private Usuario criador;
 		
 		// Getters de persistência
@@ -130,8 +129,8 @@ public class TipoEndereco implements Serializable, Modelo {
 		public void quandoCriar() {
 			this.dataCriacao = (LocalDateTime.now());
 			this.dataAlteracao = (LocalDateTime.now());
-			this.criador = (Usuario)FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("usuarioLogado");
-			this.alterador = (Usuario)FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("usuarioLogado");
+			this.criador = 		(Usuario)FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("usuarioLogado");
+			this.alterador = 	(Usuario)FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("usuarioLogado");
 		}
 
 		// Método Callback para update
@@ -141,6 +140,7 @@ public class TipoEndereco implements Serializable, Modelo {
 			this.alterador  = (Usuario)FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("usuarioLogado");
 		}
 		// ------------------------------------------------------------------------------------------------
+
 		public Class<?> getClasse(){
 			return this.getClass();
 		}
