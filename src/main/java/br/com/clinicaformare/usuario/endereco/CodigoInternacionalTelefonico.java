@@ -24,7 +24,7 @@ import br.com.clinicaformare.util.FixOnText;
 
 @Entity
 @Table(uniqueConstraints=  @UniqueConstraint(columnNames = {"codigo", "pais", "continente"}))
-public class CodigoInternacionalTelefonico implements Serializable, Modelo {
+public class CodigoInternacionalTelefonico extends Modelo implements Serializable {
 	private static final long serialVersionUID = 1L;
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

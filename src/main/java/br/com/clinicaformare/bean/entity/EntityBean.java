@@ -37,7 +37,7 @@ public abstract class EntityBean<T extends Modelo> implements Serializable {
 	@Inject
 	private AcessoDao acessoDao;
 	@Inject
-	private Dao<T> dao;
+	protected Dao<T> dao;
 //	private String shortPath;
 //	private String fileName;
 	
@@ -202,9 +202,7 @@ public abstract class EntityBean<T extends Modelo> implements Serializable {
 		});
 	}
 
-	public Modelo gerar(String linha) {
-		return null;
-	}
+	public abstract Modelo gerar(String linha);
 	// public T gerar(String linha, Class <T> classe) {
 	// Container<String> container = new Container<>(() -> linha);
 	//// return new EntityBean<>()
@@ -220,8 +218,7 @@ public abstract class EntityBean<T extends Modelo> implements Serializable {
 	}
 
 	
-	public void atualizaLista() {
-	}
+	public abstract void atualizaLista();
 
 	@SuppressWarnings("unchecked")
 	@Transactional
@@ -229,7 +226,7 @@ public abstract class EntityBean<T extends Modelo> implements Serializable {
 		System.out.println("EntityBean metodo onRowEdit");
 		dao.atualiza((T) event.getObject());
 		this.atualizaLista();
-		FacesMessage msg = new FacesMessage(classe.getSimpleName() + " Editado:", (((T) event.getObject())).toString());
+		FacesMessage msg = new FacesMessage(this.tipoEntidade.getTipo() + " editado:", (((T) event.getObject())).toString());
 		FacesContext.getCurrentInstance().addMessage(null, msg);
 	}
 
@@ -246,7 +243,7 @@ public abstract class EntityBean<T extends Modelo> implements Serializable {
 	@Transactional
 	public void apagar() {
 		System.out.println("EntityBean metodo apagar");
-		FacesMessage msg = new FacesMessage(classe.getSimpleName() + " deletado:", modeloDelete.toString());
+		FacesMessage msg = new FacesMessage(this.tipoEntidade.getTipo() + " deletado:", modeloDelete.toString());
 		FacesContext.getCurrentInstance().addMessage(null, msg);
 		dao.remove((T) modeloDelete);
 		this.atualizaLista();
@@ -257,7 +254,7 @@ public abstract class EntityBean<T extends Modelo> implements Serializable {
 	@Transactional
 	public void adicionar() {
 		System.out.println("EntityBean metodo adicionar");
-		FacesMessage msg = new FacesMessage(classe.getSimpleName() + " nao entrou");
+		FacesMessage msg = new FacesMessage(this.tipoEntidade.getTipo() + " não entrou");
 		atualizaModelo();
 		// if(dao.adiciona((T) modeloNovo)) {
 		// FacesMessage msg = new FacesMessage(classe.getSimpleName() + " Adicionado", modeloNovo.toString());
@@ -272,7 +269,7 @@ public abstract class EntityBean<T extends Modelo> implements Serializable {
 		// modeloNovo = new Logradouro();
 		try {
 			dao.adiciona((T) modeloNovo);
-			msg = new FacesMessage(classe.getSimpleName() + " Adicionado", modeloNovo.toString());
+			msg = new FacesMessage(this.tipoEntidade.getTipo() + " Adicionado", modeloNovo.toString());
 		} catch (PersistenceException p) {
 			p.printStackTrace();
 			if (p.getMessage().contains("ConstraintViolationException")) {
@@ -331,12 +328,10 @@ public abstract class EntityBean<T extends Modelo> implements Serializable {
 		geraNovaEntidade();
 	}
 
-	public void geraNovaEntidade() {
-	}
+	public abstract void geraNovaEntidade();
 
-	public void atualizaModelo() {
-
-	}
+	public abstract void atualizaModelo();
+	
 
 	public Class<?> getClasse() {
 		return classe;

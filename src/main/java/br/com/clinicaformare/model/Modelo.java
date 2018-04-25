@@ -4,18 +4,22 @@ import java.time.LocalDateTime;
 
 import br.com.clinicaformare.model.usuario.Usuario;
 
-public interface Modelo {
-	public Long getId();
-	public String toString();
-	public int hashCode();
-	public boolean equals(Object obj);
-//	public void quandoCriar();
-//	public void quandoAtualizar();
-//	public LocalDateTime getDataCriacao();
-//	public LocalDateTime getDataAlteracao();
-//	public Usuario getAlterador();
-//	public Usuario getCriador();
-	public Class<?> getClasse();
-//	public String getNome();
-//	public void setNome(String nome);
+public abstract class Modelo {
+	protected abstract Long getId();
+//	protected abstract String getTipo();
+//	protected abstract void setTipo(String tipo);
+	//	public String toString(){
+//		return null;
+//	}
+	public abstract int hashCode();
+	public abstract boolean equals(Object obj);
+	public abstract void quandoCriar();
+	public abstract void quandoAtualizar();
+	public abstract LocalDateTime getDataCriacao();
+	public abstract LocalDateTime getDataAlteracao();
+	public abstract Usuario getAlterador();
+	public abstract Usuario getCriador();
+	public abstract Class<?> getClasse();
+////	public String getNome(){}
+////	public void setNome(String nome){}
 }

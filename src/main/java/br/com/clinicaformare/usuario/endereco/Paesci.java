@@ -25,7 +25,7 @@ import br.com.clinicaformare.util.FixOnText;
 
 @Entity
 @Table (uniqueConstraints= {@UniqueConstraint(columnNames = {"cidade","estado","pais"})})
-public class Paesci implements Serializable, Modelo {
+public class Paesci extends Modelo implements Serializable {
 	private static final long serialVersionUID = 1L;
 	@Id
 	

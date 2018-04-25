@@ -8,10 +8,9 @@ import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 
-import br.com.clinicaformare.daos.Dao;
+import br.com.clinicaformare.model.Modelo;
 import br.com.clinicaformare.model.acesso.TipoEntidade;
 import br.com.clinicaformare.usuario.endereco.TipoEndereco;
-import br.com.clinicaformare.usuario.endereco.TipoTelefone;
 
 @Named
 @ViewScoped
@@ -19,7 +18,7 @@ public class TipoEnderecoBean extends EntityBean<TipoEndereco> implements Serial
 	private static final long serialVersionUID = 1L;
 
 	@Inject
-	private Dao<TipoEndereco> tipoEnderecoDao;
+//	private Dao<TipoEndereco> tipoEnderecoDao;
 
 	// Variáveis
 	TipoEndereco tipoEnderecoDelete;
@@ -49,7 +48,7 @@ public class TipoEnderecoBean extends EntityBean<TipoEndereco> implements Serial
 	
 	// Métodos Criados
 	public void atualizaLista() {
-		tipoEnderecos = tipoEnderecoDao.listaTodos();
+		tipoEnderecos = dao.listaTodos();
 	}
 	
 	public void atualizaModelo() {

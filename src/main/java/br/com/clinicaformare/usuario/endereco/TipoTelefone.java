@@ -24,7 +24,7 @@ import br.com.clinicaformare.util.FixOnText;
 
 @Entity
 @Table(uniqueConstraints=  @UniqueConstraint(columnNames = {"tipo", "whatsapp"}))
-public class TipoTelefone implements Serializable, Modelo {
+public class TipoTelefone extends Modelo implements Serializable {
 	private static final long serialVersionUID = 1L;
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -21,7 +21,7 @@ import br.com.clinicaformare.model.usuario.Usuario;
 import br.com.clinicaformare.util.FixOnText;
 
 @Entity
-public class Telefone implements Serializable, Modelo {
+public class Telefone extends Modelo implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id

@@ -22,7 +22,7 @@ import br.com.clinicaformare.model.usuario.Usuario;
 import br.com.clinicaformare.util.FixOnText;
 
 @Entity
-public class Endereco implements Serializable, Modelo {
+public class Endereco extends Modelo implements Serializable {
 	private static final long serialVersionUID = 1L;
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

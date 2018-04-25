@@ -11,7 +11,6 @@ import javax.inject.Named;
 import br.com.clinicaformare.daos.Dao;
 import br.com.clinicaformare.model.acesso.TipoEntidade;
 import br.com.clinicaformare.usuario.endereco.Paesci;
-import br.com.clinicaformare.usuario.endereco.Telefone;
 
 @Named
 @ViewScoped
