@@ -9,13 +9,14 @@ import javax.inject.Inject;
 import javax.inject.Named;
 
 import br.com.clinicaformare.daos.Dao;
+import br.com.clinicaformare.model.acesso.TipoEntidade;
 import br.com.clinicaformare.usuario.endereco.Logradouro;
 
 @Named
 @ViewScoped
 public class LogradouroBean extends EntityBean<Logradouro> implements Serializable{
 	private static final long serialVersionUID = 1L;
-
+	
 	@Inject
 	private Dao<Logradouro> logradouroDao;
 
@@ -31,7 +32,7 @@ public class LogradouroBean extends EntityBean<Logradouro> implements Serializab
 	}
 	// Constructor
 	public LogradouroBean() {
-		super(Logradouro.class, "/entity/usuario/endereco/", "logradouro");
+		super(Logradouro.class, TipoEntidade.LOGRADOURO);
 	}
 	
 	// Getters and Setters

@@ -9,7 +9,9 @@ import javax.inject.Inject;
 import javax.inject.Named;
 
 import br.com.clinicaformare.daos.Dao;
+import br.com.clinicaformare.model.acesso.TipoEntidade;
 import br.com.clinicaformare.usuario.endereco.Paesci;
+import br.com.clinicaformare.usuario.endereco.Telefone;
 
 @Named
 @ViewScoped
@@ -31,7 +33,8 @@ public class PaesciBean extends EntityBean<Paesci> implements Serializable{
 	}
 	// Constructor
 	public PaesciBean() {
-		super(Paesci.class, "/entity/usuario/endereco/", "paesci");
+//		super(Paesci.class, "/entity/usuario/endereco/", "paesci");
+		super(Paesci.class, TipoEntidade.PAESCI);
 	}
 	// Getters and Setters
 	public List<Paesci> getPaescis() {
@@ -54,6 +57,7 @@ public class PaesciBean extends EntityBean<Paesci> implements Serializable{
 	}
 
 	public Paesci gerar(String linha) {
+		System.out.println("Linha: " + linha);
 		Integer i0 = 0;
 		Integer i1 = linha.indexOf("-", i0);
 		Integer i2 = linha.indexOf("-", i1+1);

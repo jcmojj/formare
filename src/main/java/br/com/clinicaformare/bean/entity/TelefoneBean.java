@@ -11,9 +11,11 @@ import javax.inject.Named;
 import br.com.clinicaformare.daos.Dao;
 import br.com.clinicaformare.daos.usuario.UsuarioDao;
 import br.com.clinicaformare.daos.usuario.endereco.CodigoInternacionalTelefonicoDao;
+import br.com.clinicaformare.model.acesso.TipoEntidade;
 import br.com.clinicaformare.model.usuario.Usuario;
 import br.com.clinicaformare.usuario.endereco.CodigoInternacionalTelefonico;
 import br.com.clinicaformare.usuario.endereco.Telefone;
+import br.com.clinicaformare.usuario.endereco.TipoEndereco;
 import br.com.clinicaformare.usuario.endereco.TipoTelefone;
 
 @Named
@@ -41,7 +43,8 @@ public class TelefoneBean extends EntityBean<Telefone> implements Serializable{
 	}
 	// Constructor
 	public TelefoneBean() {
-		super(Telefone.class, "/entity/usuario/endereco/", "telefone");
+//		super(Telefone.class, "/entity/usuario/endereco/", "telefone");
+		super(Telefone.class, TipoEntidade.TIPOTELEFONE);
 	}
 	
 	// Getters and Setters

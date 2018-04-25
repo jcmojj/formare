@@ -9,7 +9,9 @@ import javax.inject.Inject;
 import javax.inject.Named;
 
 import br.com.clinicaformare.daos.Dao;
+import br.com.clinicaformare.model.acesso.TipoEntidade;
 import br.com.clinicaformare.usuario.endereco.CodigoInternacionalTelefonico;
+import br.com.clinicaformare.usuario.endereco.Logradouro;
 
 @Named
 @ViewScoped
@@ -31,7 +33,8 @@ public class CodigoInternacionalTelefonicoBean extends EntityBean<CodigoInternac
 	}
 	// Constructor
 	public CodigoInternacionalTelefonicoBean() {
-		super(CodigoInternacionalTelefonico.class, "/entity/usuario/endereco/", "codigointernacionaltelefonico");
+		super(CodigoInternacionalTelefonico.class, TipoEntidade.CODIGOINTERNACIONALTELEFONICO);
+//		super(CodigoInternacionalTelefonico.class, "/entity/usuario/endereco/", "codigointernacionaltelefonico");
 	}
 	// Getters and Setters
 	public List<CodigoInternacionalTelefonico> getCodigoInternacionalTelefonicos() {

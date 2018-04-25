@@ -4,10 +4,10 @@ public enum TipoEntidade {		// Título Tabelas	-	Grupo		-	Nome do Bean			-	Nome 
 	ENDERECO						("Endereço",				"Endereço",		"EnderecoBean",			"Endereco",			"endereco",			"/entity/usuario/endereco/"), 
 	LOGRADOURO					("Logradouro",			"Endereço",		"LogradouroBean",		"Logradouro",		"logradouro",		"/entity/usuario/endereco/"),  
 	TIPOENDERECO					("Tipo Endereço",		"Endereço",		"TipoEnderecoBean",		"TipoEndereco",		"tipoendereco",		"/entity/usuario/endereco/"), 
-	PAESCI						("Cidade, Estado e País","Endereço",		"EnderecoBean",			"Endereco",			"endereco",			"/entity/usuario/endereco/"),  
-	TELEFONE						("Telefone",				"Telefone",		"TelefoneBean",			"Telefone",			"telefone",			"/entity/usuario/endereco/"),  
-	TIPOTELEFONE					("Tipo de Telefone",		"Telefone",		"TipoTelefoneBean",		"TipoTelefone",		"tipotelefone",		"/entity/usuario/endereco/"),  
-	CODIGOINTERNACIONALTELEFONICO("Código Internacional Telefonico","Telefone","CodigoInternacionalTelefonicoBean","CodigoInternacionalTelefonico",			"codigointernacionaltelefonico",			"/entity/usuario/endereco/"),;
+	PAESCI						("Cidade, Estado e País","Endereço",		"PaesciBean",			"Paesci",			"paesci",			"/entity/usuario/endereco/"),  
+	TELEFONE						("Telefone",				"Telefone",		"TelefoneBean",			"Telefone",			"telefone",			"/entity/usuario/telefone/"),  
+	TIPOTELEFONE					("Tipo de Telefone",		"Telefone",		"TipoTelefoneBean",		"TipoTelefone",		"tipotelefone",		"/entity/usuario/telefone/"),  
+	CODIGOINTERNACIONALTELEFONICO("Código Internacional Telefônico","Telefone","CodigoInternacionalTelefonicoBean","CodigoInternacionalTelefonico",			"codigointernacionaltelefonico",			"/entity/usuario/telefone/"),;
 	
 	private String tipo;
 	private String grupo;

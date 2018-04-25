@@ -9,6 +9,8 @@ import javax.inject.Inject;
 import javax.inject.Named;
 
 import br.com.clinicaformare.daos.Dao;
+import br.com.clinicaformare.model.acesso.TipoEntidade;
+import br.com.clinicaformare.usuario.endereco.CodigoInternacionalTelefonico;
 import br.com.clinicaformare.usuario.endereco.TipoTelefone;
 
 @Named
@@ -31,7 +33,8 @@ public class TipoTelefoneBean extends EntityBean<TipoTelefone> implements Serial
 	}
 	// Constructor
 	public TipoTelefoneBean() {
-		super(TipoTelefone.class, "/entity/usuario/endereco/", "tipotelefone");
+//		super(TipoTelefone.class, "/entity/usuario/endereco/", "tipotelefone");
+		super(TipoTelefone.class, TipoEntidade.TIPOTELEFONE);
 	}
 	// Getters and Setters
 	public List<TipoTelefone> getTipoTelefones() {

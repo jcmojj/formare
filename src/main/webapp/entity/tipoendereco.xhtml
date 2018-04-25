@@ -13,7 +13,7 @@
 	
 
 		<h:outputLink value="entity.xhtml">
-		<h2>TipoEndereco</h2>
+		<h2><h:outputText value="#{tipoEnderecoBean.tipoEntidade.tipo}" /></h2>
 		</h:outputLink>
 		<br/>
 		<p:fieldset value="Incluir" rendered="#{tipoEnderecoBean.incluir}">
@@ -40,13 +40,13 @@
 		draggableColumns="true" >
                          >
 	       <f:facet name="header">
-	           TipoEndereco
+	           <h:outputText value="#{tipoEnderecoBean.tipoEntidade.tipo}" />
 	       </f:facet>
  
        <p:ajax event="rowEdit" 		listener="#{tipoEnderecoBean.onRowEdit}" 	update="formMessages:msgs" />
        <p:ajax event="rowEditCancel" listener="#{tipoEnderecoBean.onRowCancel}" 	update="formMessages:msgs" />
  
-       <p:column headerText="Id" style="width:40px; text-align: center" sortBy="#{tipoEndereco.id}">
+       <p:column headerText="Id" style="width:60px; text-align: center" sortBy="#{tipoEndereco.id}">
            <p:cellEditor>
                <f:facet name="output"><h:outputText value="#{tipoEndereco.id}" /></f:facet>
                <f:facet name="input"><h:outputText value="#{tipoEndereco.id}" /></f:facet>

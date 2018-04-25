@@ -13,7 +13,7 @@
 	
 
 		<h:outputLink value="entity.xhtml">
-		<h2>CodigoInternacionalTelefonico</h2>
+		<h2><h:outputText value="#{codigoInternacionalTelefonicoBean.tipoEntidade.tipo}" /></h2>
 		</h:outputLink>
 		<br/>
 		<p:fieldset value="Incluir" rendered="#{codigoInternacionalTelefonicoBean.incluir}">
@@ -22,7 +22,7 @@
 				<p:outputLabel for="codigoCodigoInternacionalTelefonico" value="Código:" />
 				<p:inputText id="codigoCodigoInternacionalTelefonico" value="#{codigoInternacionalTelefonicoBean.codigoInternacionalTelefonicoNovo.codigo}"
 					required="true"
-					requiredMessage="Campo obrigatório." label="Código Internacional Telefonico">
+					requiredMessage="Campo obrigatório." label="Código">
 				</p:inputText>
 				<p:message for="codigoCodigoInternacionalTelefonico" />
 				
@@ -56,13 +56,13 @@
 		draggableColumns="true" >
                          >
 	       <f:facet name="header">
-	           Código Internacional Telefônico
+	         <h:outputText value="#{codigoInternacionalTelefonicoBean.tipoEntidade.tipo}" />
 	       </f:facet>
  
        <p:ajax event="rowEdit" 		listener="#{codigoInternacionalTelefonicoBean.onRowEdit}" 	update="formMessages:msgs" />
        <p:ajax event="rowEditCancel" listener="#{codigoInternacionalTelefonicoBean.onRowCancel}" 	update="formMessages:msgs" />
  
-       <p:column headerText="Id" style="width:40px; text-align: center" sortBy="#{codigoInternacionalTelefonico.id}">
+       <p:column headerText="Id" style="width:60px; text-align: center" sortBy="#{codigoInternacionalTelefonico.id}">
            <p:cellEditor>
                <f:facet name="output"><h:outputText value="#{codigoInternacionalTelefonico.id}" /></f:facet>
                <f:facet name="input"><h:outputText value="#{codigoInternacionalTelefonico.id}" /></f:facet>

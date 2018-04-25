@@ -13,7 +13,7 @@
 	
 
 		<h:outputLink value="entity.xhtml">
-		<h2>Paesci</h2>
+		<h2><h:outputText value="#{paesciBean.tipoEntidade.tipo}" /></h2>
 		</h:outputLink>
 		<br/>
 		<p:fieldset value="Incluir" rendered="#{paesciBean.incluir}">
@@ -50,14 +50,14 @@
 		</h:form>
 		<h:form id="formListaPaesciEntity">
 		<p:dataTable id="paesciTable" var="paesci" value="#{paesciBean.paescis}" 
-		editable="true" style="margin-bottom:20px" rendered="#{paesciBean.listar}"
+		editable="true" style="margin-bottom:60px" rendered="#{paesciBean.listar}"
 		draggableColumns="true"  stickyHeader="true" 
 		paginator="true" rows="20" rowsPerPageTemplate="5,10,15"
 		paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                          >
        	
 	       <f:facet name="header">
-	           Paesci
+	           <h:outputText value="#{paesciBean.tipoEntidade.tipo}" />
 	       </f:facet>
  
        <p:ajax event="rowEdit" 		listener="#{paesciBean.onRowEdit}" 	update="formMessages:msgs" />

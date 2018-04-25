@@ -13,7 +13,7 @@
 	
 
 		<h:outputLink value="entity.xhtml">
-		<h2>Telefone</h2>
+		<h2><h:outputText value="#{telefoneBean.tipoEntidade.tipo}" /></h2>
 		</h:outputLink>
 		<br/>
 		<p:fieldset value="Incluir" rendered="#{telefoneBean.incluir}">
@@ -50,14 +50,14 @@
 		</h:form>
 		<h:form id="formListaTelefoneEntity">
 		<p:dataTable id="telefoneTable" var="telefone" value="#{telefoneBean.telefones}" 
-		editable="true" style="margin-bottom:20px" rendered="#{telefoneBean.listar}"
+		editable="true" style="margin-bottom:60px" rendered="#{telefoneBean.listar}"
 		draggableColumns="true"  stickyHeader="true" 
 		paginator="true" rows="20" rowsPerPageTemplate="5,10,15"
 		paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                          >
        	
 	       <f:facet name="header">
-	           Telefone
+	           <h:outputText value="#{telefoneBean.tipoEntidade.tipo}" />
 	       </f:facet>
  
        <p:ajax event="rowEdit" 		listener="#{telefoneBean.onRowEdit}" 	update="formMessages:msgs" />

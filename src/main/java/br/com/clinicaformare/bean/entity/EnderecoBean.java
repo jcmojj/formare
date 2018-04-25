@@ -9,6 +9,7 @@ import javax.inject.Inject;
 import javax.inject.Named;
 
 import br.com.clinicaformare.daos.Dao;
+import br.com.clinicaformare.model.acesso.TipoEntidade;
 import br.com.clinicaformare.usuario.endereco.Endereco;
 import br.com.clinicaformare.usuario.endereco.Logradouro;
 import br.com.clinicaformare.usuario.endereco.Paesci;
@@ -41,7 +42,8 @@ public class EnderecoBean extends EntityBean<Endereco> implements Serializable {
 
 	// Constructor
 	public EnderecoBean() {
-		super(Endereco.class, "/entity/usuario/endereco/", "endereco");
+//		super(Endereco.class, "/entity/usuario/endereco/", "endereco");
+		super(Endereco.class, TipoEntidade.ENDERECO);
 	}
 
 	// Getters and Setters

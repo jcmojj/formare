@@ -128,6 +128,7 @@ public class EntityDataTableBean implements Serializable{
 //		  }
 	
 	public void inicializando() {
+		System.out.println("Inicializando com e sem nada");
 		 entityBeanIntance.iterator().forEachRemaining(eb -> 
 		 {
 			System.out.println("Incializando: " + eb.getClass().getSimpleName());
@@ -137,9 +138,11 @@ public class EntityDataTableBean implements Serializable{
 	 
 	 @SuppressWarnings("rawtypes")
 	public String inicializando(TipoEntidade tipoEntidade) {
+		 System.out.println("Inicializando com parâmetro");
 		 for (EntityBean eb : entityBeanIntance) {
 			 System.out.println("abrir: " + eb.getClass().getSimpleName());
 			 if(eb.getClass().getSimpleName().startsWith(tipoEntidade.getNomeBean())) {
+				 System.out.println("Escolhido: " + eb.getClass().getSimpleName());
 				 return eb.inicializando();
 	        }
 		}

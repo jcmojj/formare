@@ -13,7 +13,7 @@
 	
 
 		<h:outputLink value="entity.xhtml">
-		<h2>Logradouro</h2>
+		<h2><h:outputText value="#{logradouroBean.tipoEntidade.tipo}" /></h2>
 		</h:outputLink>
 		<br/>
 		<p:fieldset value="Incluir" rendered="#{logradouroBean.incluir}">
@@ -40,13 +40,13 @@
 		draggableColumns="true" >
                          >
 	       <f:facet name="header">
-	           Logradouro
+	           <h:outputText value="#{logradouroBean.tipoEntidade.tipo}" />
 	       </f:facet>
  
        <p:ajax event="rowEdit" 		listener="#{logradouroBean.onRowEdit}" 	update="formMessages:msgs" />
        <p:ajax event="rowEditCancel" listener="#{logradouroBean.onRowCancel}" 	update="formMessages:msgs" />
  
-       <p:column headerText="Id" style="width:40px; text-align: center" sortBy="#{logradouro.id}">
+       <p:column headerText="Id" style="width:60px; text-align: center" sortBy="#{logradouro.id}">
            <p:cellEditor>
                <f:facet name="output"><h:outputText value="#{logradouro.id}" /></f:facet>
                <f:facet name="input"><h:outputText value="#{logradouro.id}" /></f:facet>
