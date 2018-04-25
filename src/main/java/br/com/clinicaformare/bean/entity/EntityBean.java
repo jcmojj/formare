@@ -234,7 +234,7 @@ public abstract class EntityBean<T extends Modelo> implements Serializable {
 	public void onRowCancel(RowEditEvent event) {
 		System.out.println("EntityBean metodo onRowCancel");
 		@SuppressWarnings("unchecked")
-		FacesMessage msg = new FacesMessage("Edição Cancelada", (((T) event.getObject())).toString());
+		FacesMessage msg = new FacesMessage("Edição de "+ this.tipoEntidade.getTipo() +  " cancelada", (((T) event.getObject())).toString());
 		FacesContext.getCurrentInstance().addMessage(null, msg);
 	}
 
