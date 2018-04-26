@@ -49,7 +49,7 @@
 		<br/>
 		</h:form>
 		<h:form id="formListaPaesciEntity">
-		<p:dataTable id="paesciTable" var="paesci" value="#{paesciBean.paescis}" 
+		<p:dataTable id="#{paesciBean.tableId}" var="paesci" value="#{paesciBean.paescis}" 
 		editable="true" style="margin-bottom:60px" rendered="#{paesciBean.listar}"
 		draggableColumns="true"  stickyHeader="true" 
 		paginator="true" rows="20" rowsPerPageTemplate="5,10,15"

@@ -23,21 +23,23 @@ public class TipoTelefoneBean extends EntityBean<TipoTelefone> implements Serial
 	// Variáveis
 	TipoTelefone tipoTelefoneDelete;
 	TipoTelefone tipoTelefoneNovo = new TipoTelefone();
-	List<TipoTelefone> tipoTelefones;
+	List<TipoTelefone> tiposTelefone;
 
 	@PostConstruct
 	public void init() {
 		postContructEntityBean();
+//		System.out.println("@PostConstruct TipoTelefone");
 		atualizaLista();
 	}
 	// Constructor
 	public TipoTelefoneBean() {
-//		super(TipoTelefone.class, "/entity/usuario/endereco/", "tipotelefone");
 		super(TipoTelefone.class, TipoEntidade.TIPOTELEFONE);
 	}
 	// Getters and Setters
-	public List<TipoTelefone> getTipoTelefones() {
-		return tipoTelefones;
+	public List<TipoTelefone> getTiposTelefone() {
+//		System.out.println("getTiposTelefone");
+//		tiposTelefone.stream().forEach(System.out::println);
+		return tiposTelefone;
 	}
 	public TipoTelefone getTipoTelefoneNovo() {
 		return tipoTelefoneNovo;
@@ -48,7 +50,9 @@ public class TipoTelefoneBean extends EntityBean<TipoTelefone> implements Serial
 	
 	// Métodos Criados
 	public void atualizaLista() {
-		tipoTelefones = tipoTelefoneDao.listaTodos();
+		System.out.println("atualizaLista");
+		tiposTelefone = tipoTelefoneDao.listaTodos();
+		tiposTelefone.stream().forEach(System.out::println);
 	}
 	
 	public void atualizaModelo() {

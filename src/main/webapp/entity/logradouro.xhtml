@@ -35,7 +35,7 @@
 		</h:form>
 		<h:form id="formListaLogradouroEntity">
 		
-		<p:dataTable id="logradouroTable" var="logradouro" value="#{logradouroBean.logradouros}" 
+		<p:dataTable id="#{logradouroBean.tableId}" var="logradouro" value="#{logradouroBean.logradouros}" 
 		editable="true" style="margin-bottom:20px" rendered="#{logradouroBean.listar}"
 		draggableColumns="true" >
                          >

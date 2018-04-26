@@ -43,7 +43,7 @@ public class TipoTelefone extends Modelo implements Serializable {
 	// Constructor
 	public TipoTelefone(String tipo, boolean hasWhatsapp) {
 		super();
-		this.tipo = FixOnText.withFirstCharOnStringCapitalized(tipo);
+		this.tipo = FixOnText.withAllWordsFirstCharCapitalized(tipo);
 		this.whatsapp = hasWhatsapp;
 	}
 

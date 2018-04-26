@@ -3,13 +3,11 @@ package br.com.clinicaformare.bean.entity;
 import java.io.Serializable;
 import java.util.List;
 
-import javax.annotation.PostConstruct;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 
 import br.com.clinicaformare.daos.Dao;
-import br.com.clinicaformare.daos.usuario.endereco.CodigoInternacionalTelefonicoDao;
 import br.com.clinicaformare.model.acesso.TipoEntidade;
 import br.com.clinicaformare.usuario.endereco.CodigoInternacionalTelefonico;
 import br.com.clinicaformare.usuario.endereco.Telefone;
@@ -25,23 +23,17 @@ public class TelefoneBean extends EntityBean<Telefone> implements Serializable{
 	@Inject
 	private Dao<TipoTelefone> tipoTelefoneDao;
 	@Inject
-//	private Dao<CodigoInternacionalTelefonico> codigoInternacionalTelefonicoDao;
-	private CodigoInternacionalTelefonicoDao codigoInternacionalTelefonicoDao;
+	private Dao<CodigoInternacionalTelefonico> codigoInternacionalTelefonicoDao;
+//	private CodigoInternacionalTelefonicoDao codigoInternacionalTelefonicoDao;
 
 	// Variáveis
 	Telefone telefoneDelete;
 	Telefone telefoneNovo = new Telefone();
 	List<Telefone> telefones;
 
-	@PostConstruct
-	public void init() {
-		postContructEntityBean();
-		atualizaLista();
-	}
 	// Constructor
 	public TelefoneBean() {
-//		super(Telefone.class, "/entity/usuario/endereco/", "telefone");
-		super(Telefone.class, TipoEntidade.TIPOTELEFONE);
+		super(Telefone.class, TipoEntidade.TELEFONE);
 	}
 	
 	// Getters and Setters
@@ -75,19 +67,8 @@ public class TelefoneBean extends EntityBean<Telefone> implements Serializable{
 		Telefone telefone = new Telefone(ddd, codigoInternacionalTelefonico, numero, TipoTelefone);
 		return telefone;
 	}
-
 	public void geraNovaEntidade(){
 		telefoneNovo = new Telefone();
 		modeloNovo = telefoneNovo;
 	}
-
-//	@Inject
-//	Dao<Usuario> usuarioDao;
-//	@Inject
-//	UsuarioDao usuarioDaos;
-//	
-//	public void test() {
-//		usuarioDao.buscaQuantidadeUsuariosComEmailEPassword("a","b");
-//	}
-	
 }

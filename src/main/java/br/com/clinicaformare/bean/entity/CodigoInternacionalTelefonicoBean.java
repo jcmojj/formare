@@ -23,7 +23,7 @@ public class CodigoInternacionalTelefonicoBean extends EntityBean<CodigoInternac
 	// Variáveis
 	CodigoInternacionalTelefonico codigoInternacionalTelefonicoDelete;
 	CodigoInternacionalTelefonico codigoInternacionalTelefonicoNovo = new CodigoInternacionalTelefonico();
-	List<CodigoInternacionalTelefonico> codigoInternacionalTelefonicos;
+	List<CodigoInternacionalTelefonico> codigosInternacionaisTelefonicos;
 
 	@PostConstruct
 	public void init() {
@@ -36,8 +36,10 @@ public class CodigoInternacionalTelefonicoBean extends EntityBean<CodigoInternac
 //		super(CodigoInternacionalTelefonico.class, "/entity/usuario/endereco/", "codigointernacionaltelefonico");
 	}
 	// Getters and Setters
-	public List<CodigoInternacionalTelefonico> getCodigoInternacionalTelefonicos() {
-		return codigoInternacionalTelefonicos;
+	public List<CodigoInternacionalTelefonico> getCodigosInternacionaisTelefonicos() {
+		System.out.println("getCodigosInternacionaisTelefonicos");
+		codigosInternacionaisTelefonicos.stream().forEach(System.out::println);
+		return codigosInternacionaisTelefonicos;
 	}
 	public CodigoInternacionalTelefonico getCodigoInternacionalTelefonicoNovo() {
 		return codigoInternacionalTelefonicoNovo;
@@ -48,7 +50,7 @@ public class CodigoInternacionalTelefonicoBean extends EntityBean<CodigoInternac
 	
 	// Métodos Criados
 	public void atualizaLista() {
-		codigoInternacionalTelefonicos = codigoInternacionalTelefonicoDao.listaTodos();
+		codigosInternacionaisTelefonicos = codigoInternacionalTelefonicoDao.listaTodos();
 	}
 	
 	public void atualizaModelo() {

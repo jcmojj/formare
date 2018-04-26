@@ -35,7 +35,7 @@
 		</h:form>
 		<h:form id="formListaTipoEnderecoEntity">
 		
-		<p:dataTable id="tipoEnderecoTable" var="tipoEndereco" value="#{tipoEnderecoBean.tipoEnderecos}" 
+		<p:dataTable id="#{tipoEnderecoBean.tableId}" var="tipoEndereco" value="#{tipoEnderecoBean.tipoEnderecos}" 
 		editable="true" style="margin-bottom:20px" rendered="#{tipoEnderecoBean.listar}"
 		draggableColumns="true" >
                          >

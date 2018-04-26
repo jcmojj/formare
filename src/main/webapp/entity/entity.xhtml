@@ -17,64 +17,13 @@ Usuário Logado: #{startEntity.usuarioLogado}
 </h:form>
 
 <h:form> 
-<h2>Populate Entities Sistema Novo</h2>
+<h2>Tabelas</h2>
 
-<p:panelGrid id="entityTable"  style="margin-top:20px">
-	<f:facet name="header">
-		<p:row>
-			<p:column colspan="1" ><h:outputText value="Abrir"/></p:column>
-			<p:column colspan="1" ><h:outputText value="Inicializar"/></p:column>
-		</p:row>
-	</f:facet>
-	
-	<p:row>
-		<p:column colspan="1" ><h:commandLink value="Logradouro" 		action="#{logradouroBean.abrir}"/>			</p:column>
-		<p:column colspan="1" ><h:commandLink value="Inicializar"  	action="#{logradouroBean.inicializando}" />	</p:column>
-	</p:row>
-	<p:row>
-		<p:column colspan="1" ><h:commandLink value="País, Estado, Município" 	action="#{paesciBean.abrir}"/>			</p:column>
-		<p:column colspan="1" ><h:commandLink value="Inicializar"  	action="#{paesciBean.inicializando}" />	</p:column>
-	</p:row>
-	<p:row>
-		<p:column colspan="1" ><h:commandLink value="Tipo Telefone" 	action="#{tipoTelefoneBean.abrir}"/>			</p:column>
-		<p:column colspan="1" ><h:commandLink value="Inicializar"  	action="#{tipoTelefoneBean.inicializando}" />	</p:column>
-	</p:row>
-	<p:row>
-		<p:column colspan="1" ><h:commandLink value="Código Internacional" 	action="#{codigoInternacionalTelefonicoBean.abrir}"/>			</p:column>
-		<p:column colspan="1" ><h:commandLink value="Inicializar"  			action="#{codigoInternacionalTelefonicoBean.inicializando}" />	</p:column>
-	</p:row>
-	<p:row>
-		<p:column colspan="1" ><h:commandLink value="Telefone" 		action="#{telefoneBean.abrir}"/>			</p:column>
-		<p:column colspan="1" ><h:commandLink value="Inicializar"  	action="#{telefoneBean.inicializando}" />	</p:column>
-	</p:row>
-	<p:row>
-		<p:column colspan="1" ><h:commandLink value="Tipo Endereço" 	action="#{tipoEnderecoBean.abrir}"/>			</p:column>
-		<p:column colspan="1" ><h:commandLink value="Inicializar"  	action="#{tipoEnderecoBean.inicializando}" />	</p:column>
-	</p:row>
-	<p:row>
-		<p:column colspan="1" ><h:commandLink value="Endereço" 		action="#{enderecoBean.abrir}"/>			</p:column>
-		<p:column colspan="1" ><h:commandLink value="Inicializar"  	action="#{enderecoBean.inicializando}" />	</p:column>
-	</p:row>
-	
-	
-</p:panelGrid>
+<p:panelGrid columns="2" tableStyle="tabelaEntidades">
 
 
-<p:dataTable var="tipoEntidade" value="#{entityDataTableBean.tiposEntidadeSorted}">
-    <p:column headerText="Grupo">
-        <h:outputText value="#{tipoEntidade.grupo}" />
-    </p:column>
-    <p:column headerText="Entidade">
-        <h:outputText value="#{tipoEntidade.tipo}" />
-    </p:column>
- 
-    <p:column headerText="Inicializar">
-        <h:outputText value="Inicializar" />
-    </p:column>
-</p:dataTable>
 
-
-<p:dataTable var="tipoGrupo" tableStyle="padding:0px;" style="border-style: none;" value="#{entityDataTableBean.grupos}">
+<p:dataTable var="tipoGrupo" tableStyle="padding:0px;" style="width: 80%; margin: auto; border-style: none;" value="#{entityDataTableBean.grupos}">
 	<p:column style="width:30px">
             <p:rowToggler />
     </p:column>
@@ -99,139 +48,11 @@ Usuário Logado: #{startEntity.usuarioLogado}
 
 
 
-<h:commandLink actionListener="#{startEntity.paesci}" value="Paesci" /><br />
-<h:commandLink actionListener="#{startEntity.logradouro}" value="Logradouro" /><br />
-<h:commandLink actionListener="#{startEntity.tipoTelefone}" value="Tipo Telefone" /><br />
-<h:commandLink actionListener="#{startEntity.tipoEndereco}" value="Tipo Endereco" /><br />
-<h:commandLink actionListener="#{startEntity.nivelProfissional}" value="Nível Profissional" /><br />
-<h:commandLink actionListener="#{startEntity.especializacaoDoProfissional}" value="Especialização do Profissional" /><br />
-<h:commandLink actionListener="#{startEntity.profissional}" value="Profissional" /><br />
-</h:form>
-
-<h:form>
-<h2>Populate Entities Todos</h2>
-<h:commandLink action="#{startEntity.allMainValues}" value="Todos" /><br /><br />
-</h:form>
-<h:form> 
-<h2>Populate Entities Usuario</h2>
-<h:commandLink action="#{startEntity.paesci}" value="Paesci" /><br />
-<h:commandLink action="#{startEntity.logradouro}" value="Logradouro" /><br />
-<h:commandLink action="#{startEntity.tipoTelefone}" value="Tipo Telefone" /><br />
-<h:commandLink action="#{startEntity.tipoEndereco}" value="Tipo Endereco" /><br />
-<h:commandLink action="#{startEntity.tipoProfissional}" value="Tipo Profissional" /><br />
-<h:commandLink action="#{startEntity.profissional}" value="Profissional" /><br />
-<h:commandLink action="#{startEntity.tipoSocia}" value="Tipo Socia" /><br />
-<h:commandLink action="#{startEntity.socia}" value="Socia" /><br />
-<h:commandLink action="#{startEntity.paciente}" value="Paciente" /><br />
-<h:commandLink action="#{startEntity.atendimentoPadrao}" value="Atendimento Padrão" /><br />
-<h:commandLink action="#{startEntity.responsavelFinanceiroPaciente}" value="Responsável Financeiro Paciente" /><br />
-<h:commandLink action="#{startEntity.teste}" value="Teste" /><br />
-</h:form>
-<h:form>
-<h2>Populate Entities Todos Financeiro</h2>
-<h:commandLink action="#{startEntity.allMainFinanceValues}" value="Todos Financeiros" /><br /><br />
-</h:form>
-<h:form> 
-<h2>Populate Entities Financeiro</h2>
-<h:commandLink action="#{startEntity.banco}" value="Banco" /><br />
-<h:commandLink action="#{startEntity.operacaoFinanceira}" value="Operacao Financeira" /><br />
-<h:commandLink action="#{startEntity.operacaoFinanceiraTarifa}" value="Operacao Financeira Tarifa" /><br />
-<h:commandLink action="#{startEntity.calculadoraParametrosTeste}" value="Calculadora Parametros Teste" /><br />
-</h:form>
-<h:form> 
-<h2>Populate Entities Calendario</h2>
-<h:commandLink action="#{startEntity.calendarios}" value="Calendarios" /><br />
-</h:form>
-
-<h:form> 
-<h2>Populate Entities Sistema Novo</h2>
-
-<p:panelGrid id="entityTable"  style="margin-top:20px">
-	<f:facet name="header">
-	<p:row>
-		<p:column colspan="1" ><h:outputText value="Nome"/></p:column>
-		<p:column colspan="1" ><h:outputText value="Inicializar"/></p:column>
-		<p:column colspan="1" ><h:outputText value="Listar"/></p:column>
-		<p:column colspan="1" ><h:outputText value="Alterar"/></p:column>
-		<p:column colspan="1" ><h:outputText value="Incluir"/></p:column>
-		<p:column colspan="1" ><h:outputText value="Deletar"/></p:column>
-	</p:row>
-	</f:facet>
-	<p:row>
-		<p:column colspan="1" ><h:outputText value="Cidade, Estado, País"/></p:column>
-		<p:column colspan="1" ><h:outputText value="2"/></p:column>
-		<p:column colspan="1" ><h:outputText value="3"/></p:column>
-		<p:column colspan="1" ><h:outputText value="4444"/></p:column>
-		<p:column colspan="1" ><h:outputText value="5555"/></p:column>
-		<p:column colspan="1" ><h:outputText value="5555"/></p:column>
-	</p:row>
-	
-	<p:row>
-		<p:column colspan="1" ><h:outputText value="Logradouro"/></p:column>
-		<p:column colspan="1" ><h:commandLink value="Inicializar" 	action="#{logradouroBean.inicializar}"/></p:column>
-		<p:column colspan="1" ><h:commandLink value="Listar" 			action="#{logradouroBean.listar}"/></p:column>
-		<p:column colspan="1" ><h:commandLink value="Alterar" 		action="#{logradouroBean.alterar}"/></p:column>
-		<p:column colspan="1" ><h:commandLink value="Incluir" 		action="#{logradouroBean.incluir}"/></p:column>
-		<p:column colspan="1" ><h:commandLink value="Incluir" 		action="#{logradouroBean.deletar}"/></p:column>
-	</p:row>
-	
-	<p:row>
-		<p:column colspan="1" ><h:outputText value="Tipo Telefone"/></p:column>
-		<p:column colspan="1" ><h:outputText value="Inicializar"/></p:column>
-		<p:column colspan="1" ><h:outputText value="Listar"/></p:column>
-		<p:column colspan="1" ><h:outputText value="Alterar"/></p:column>
-		<p:column colspan="1" ><h:outputText value="Incluir"/></p:column>
-		<p:column colspan="1" ><h:outputText value="Deletar"/></p:column>
-	</p:row>
-	
-	<p:row>
-		<p:column colspan="1" ><h:outputText value="Tipo Endereço"/></p:column>
-		<p:column colspan="1" ><h:outputText value="Inicializar"/></p:column>
-		<p:column colspan="1" ><h:outputText value="Listar"/></p:column>
-		<p:column colspan="1" ><h:outputText value="Alterar"/></p:column>
-		<p:column colspan="1" ><h:outputText value="Incluir"/></p:column>
-		<p:column colspan="1" ><h:outputText value="Deletar"/></p:column>
-	</p:row>
-	
-	<p:row>
-		<p:column colspan="1" ><h:outputText value="Nível Profissional"/></p:column>
-		<p:column colspan="1" ><h:outputText value="Inicializar"/></p:column>
-		<p:column colspan="1" ><h:outputText value="Listar"/></p:column>
-		<p:column colspan="1" ><h:outputText value="Alterar"/></p:column>
-		<p:column colspan="1" ><h:outputText value="Incluir"/></p:column>
-		<p:column colspan="1" ><h:outputText value="Deletar"/></p:column>
-	</p:row>
-	
-	<p:row>
-		<p:column colspan="1" ><h:outputText value="Nome"/></p:column>
-		<p:column colspan="1" ><h:outputText value="Inicializar"/></p:column>
-		<p:column colspan="1" ><h:outputText value="Listar"/></p:column>
-		<p:column colspan="1" ><h:outputText value="Alterar"/></p:column>
-		<p:column colspan="1" ><h:outputText value="Incluir"/></p:column>
-		<p:column colspan="1" ><h:outputText value="Deletar"/></p:column>
-	</p:row>
-	
 </p:panelGrid>
 
-
-
-
-<h:commandLink actionListener="#{startEntity.paesci}" value="Paesci" /><br />
-<h:commandLink actionListener="#{startEntity.logradouro}" value="Logradouro" /><br />
-<h:commandLink actionListener="#{startEntity.tipoTelefone}" value="Tipo Telefone" /><br />
-<h:commandLink actionListener="#{startEntity.tipoEndereco}" value="Tipo Endereco" /><br />
-<h:commandLink actionListener="#{startEntity.nivelProfissional}" value="Nível Profissional" /><br />
-<h:commandLink actionListener="#{startEntity.especializacaoDoProfissional}" value="Especialização do Profissional" /><br />
-<h:commandLink actionListener="#{startEntity.profissional}" value="Profissional" /><br />
 </h:form>
 
 
-<h:form>
-<h2>Coletar Base de Arquivos de Dados de Sites</h2>
-
-	
-
-</h:form>
 
 </ui:define>
 

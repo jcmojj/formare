@@ -16,22 +16,37 @@ public class TipoTelefoneConverter implements Converter{
 	TipoTelefoneDao tipoTelefoneDao;
 	@Override
 	public Object getAsObject(FacesContext context, UIComponent component, String string) {
+		System.out.println("TipoTelefoneConverter" + " string: " + string);
 		if(string == null || string.trim().isEmpty()) {
+			System.out.println("Null");
 			return null;
 		}
-		Long id =Long.valueOf(string);
-		TipoTelefone tipoTelefone = tipoTelefoneDao.buscaPorId(id);
-		return tipoTelefone;
+		try {
+			Long id = Long.parseLong(string,10);
+			System.out.println("Long Id: " + id);
+			TipoTelefone tipoTelefone = tipoTelefoneDao.buscaPorId(id);
+			System.out.println("tipoTelefone"+tipoTelefone);
+			return tipoTelefone;
+		} catch (NumberFormatException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+//		return (TipoTelefone) component.getAttributes().get(string);
 	}
 
 	@Override
 	public String getAsString(FacesContext context, UIComponent component, Object object) {
+		System.out.println("TipoTelefoneConverter" + " object: " + object);
 		if(object == null) return null;
 		TipoTelefone tipoTelefone = (TipoTelefone) object;
 		if(tipoTelefone == null || tipoTelefone.getId() == null) {
 			return null;
 		}
+		System.out.println("String.valueOf(tipoTelefone.getId())" + String.valueOf(tipoTelefone.getId()));
 		return String.valueOf(tipoTelefone.getId());
+//		component.getAttributes().put( tipoTelefone.getId().toString(), tipoTelefone);
+//        return tipoTelefone.getId().toString();
 	}
 
 }

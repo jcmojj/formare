@@ -11,84 +11,158 @@
 <ui:define name="dynContent">
 	<h:form id="formNovoTelefoneEntity">
 	
-
 		<h:outputLink value="entity.xhtml">
-		<h2><h:outputText value="#{telefoneBean.tipoEntidade.tipo}" /></h2>
+		<h2><h:outputText value="#{telefoneBean.completeName}" /></h2>
 		</h:outputLink>
 		<br/>
 		<p:fieldset value="Incluir" rendered="#{telefoneBean.incluir}">
 			<br/>
 			<h:panelGrid columns="3">
-				<p:outputLabel for="pais" value="País:" />
-				<p:inputText id="pais" value="#{telefoneBean.telefoneNovo.pais}"
+				<p:outputLabel for="tipoTelefoneTelefone" value="Tipo:" />
+				<p:selectOneMenu 
+					id="tipoTelefoneTelefone" 
+					value="#{telefoneBean.telefoneNovo.tipoTelefone}"
+					converter="#{tipoTelefoneConverter}" 
+					label = "Tipo Telefone:"
 					required="true"
-					requiredMessage="Campo obrigatório." label="País">
-				</p:inputText>
-				<p:message for="pais" />
+					requiredMessage="Campo obrigatório."
+					validatorMessage="Valor inválido"
+					converterMessage="Valor não se aplica a esse campo">
+				<f:selectItem itemValue="#{null}" itemLabel="Selecione um tipo" />
+				<f:selectItems value="#{tipoTelefoneBean.tiposTelefone}"
+						var="tipoTelefone" itemValue="#{tipoTelefone}" itemLabel="#{tipoTelefone.tipo}" />
+				</p:selectOneMenu>
+				<p:message for="tipoTelefoneTelefone" />
 				
-				<p:outputLabel for="estado" value="Cidade:" />
-				<p:inputText id="estado" value="#{telefoneBean.telefoneNovo.estado}"
+				<p:outputLabel for="codigoInternacionalTelefone" value="Código Internacional Telefônico:" />
+				<p:selectOneMenu 
+					id="codigoInternacionalTelefone" 
+					value="#{telefoneBean.telefoneNovo.codigoInternacionalTelefonico}"
+					converter="#{codigoInternacionalTelefonicoConverter}"
+					label = "Código Internacional:"
 					required="true"
-					requiredMessage="Campo obrigatório." label="Estado">
-				</p:inputText>
-				<p:message for="estado" />
+					requiredMessage="Campo obrigatório."
+					validatorMessage="Valor inválido"
+					converterMessage="Valor não se aplica a esse campo">
+				<f:selectItem itemValue="#{null}" itemLabel="Selecione um código" />
+				<f:selectItems value="#{codigoInternacionalTelefonicoBean.codigosInternacionaisTelefonicos}"
+						var="codigoInternacionalTelefonico" itemValue="#{codigoInternacionalTelefonico}" itemLabel="#{codigoInternacionalTelefonico.codigo} #{codigoInternacionalTelefonico.pais}" />
+				</p:selectOneMenu>
+				<p:message for="codigoInternacionalTelefone" />
 				
-				<p:outputLabel for="cidade" value="País" />
-				<p:inputText id="cidade" value="#{telefoneBean.telefoneNovo.cidade}"
+				<p:outputLabel for="dddTelefone" value="DDD:" />
+				<p:inputText 
+					id="dddTelefone" 
+					value="#{telefoneBean.telefoneNovo.ddd}"
+					label = "DDD:"
 					required="true"
-					requiredMessage="Campo obrigatório." label="Cidade">
+					requiredMessage="Campo obrigatório."
+					validatorMessage="Valor inválido"
+					converterMessage="Valor não se aplica a esse campo">
+					 <f:validateRegex pattern="^[1-9]{2}$" />
 				</p:inputText>
-				<p:message for="cidade" />
+				<p:message for="dddTelefone" />
+				
+				<p:outputLabel for="numeroTelefone" value="Número:" />
+				<p:inputText 
+					id="numeroTelefone" 
+					value="#{telefoneBean.telefoneNovo.numero}"
+					label="Número:"
+					required="true"
+					requiredMessage="Campo obrigatório."
+					validatorMessage="Valor inválido"
+					converterMessage="Valor não se aplica a esse campo">
+					 <f:validateRegex pattern="^[2-9][0-9]{7,8}$" />
+				</p:inputText>
+				<p:message for="numeroTelefone" />
 				
 			</h:panelGrid>
 			<br/>	
 			<p:commandButton value="Incluir"
-							actionListener="#{telefoneBean.adicionar}" update="@form formMessages:msgs :formListaTelefoneEntity"
-							/>		
+							actionListener="#{telefoneBean.adicionar}" 
+							update="@form formMessages:msgs :formListaTelefoneEntity"/>		
 		</p:fieldset>
 		<br/>
 		</h:form>
 		<h:form id="formListaTelefoneEntity">
-		<p:dataTable id="telefoneTable" var="telefone" value="#{telefoneBean.telefones}" 
-		editable="true" style="margin-bottom:60px" rendered="#{telefoneBean.listar}"
-		draggableColumns="true"  stickyHeader="true" 
-		paginator="true" rows="20" rowsPerPageTemplate="5,10,15"
-		paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-                         >
+		
+		<p:dataTable 
+			id="#{telefoneBean.tableId}" 
+			var="telefone" 
+			value="#{telefoneBean.telefones}" 
+			editable="true" style="margin-bottom:60px" 
+			rendered="#{telefoneBean.listar}"
+			draggableColumns="true" 
+			paginator="true" rows="20" rowsPerPageTemplate="5,10,15"
+			paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
        	
-	       <f:facet name="header">
-	           <h:outputText value="#{telefoneBean.tipoEntidade.tipo}" />
-	       </f:facet>
+       <f:facet name="header">
+           <h:outputText value="#{telefoneBean.completeName}" />
+       </f:facet>
  
        <p:ajax event="rowEdit" 		listener="#{telefoneBean.onRowEdit}" 	update="formMessages:msgs" />
        <p:ajax event="rowEditCancel" listener="#{telefoneBean.onRowCancel}" 	update="formMessages:msgs" />
  
-       <p:column headerText="Id" style="width:40px; text-align: center" sortBy="#{telefone.id}">
+       <p:column headerText="Id" styleClass="columnId" sortBy="#{telefone.id}">
            <p:cellEditor>
                <f:facet name="output"><h:outputText value="#{telefone.id}" /></f:facet>
                <f:facet name="input"><h:outputText value="#{telefone.id}" /></f:facet>
            </p:cellEditor>
        </p:column>
  
-       <p:column headerText="ddd" style="text-align: center" sortBy="#{telefone.ddd}">
+ 	  <p:column headerText="Tipo Telefone" styleClass="columnNormal" sortBy="#{telefone.tipoTelefone}">
+           <p:cellEditor>
+               <f:facet name="output"><h:outputText value="#{telefone.tipoTelefone.tipo}" /></f:facet>
+               <f:facet name="input">
+               	<p:selectOneMenu value="#{telefone.tipoTelefone}"
+								  required="true"
+								  converter="#{tipoTelefoneConverter}">
+				<f:selectItems 	value="#{tipoTelefoneBean.tiposTelefone}"
+								var="tipoTelefone" 
+								itemValue="#{tipoTelefone}" 
+								itemLabel="#{tipoTelefone.tipo}" />
+				</p:selectOneMenu>
+               </f:facet>
+           </p:cellEditor>
+       </p:column>
+       
+       <p:column headerText="Código Internacional" styleClass="columnNormal" sortBy="#{telefone.dcodigoInternacionalTelefonico}">
+           <p:cellEditor>
+               <f:facet name="output"><h:outputText value="#{telefone.codigoInternacionalTelefonico.codigo} #{telefone.codigoInternacionalTelefonico.pais}" /></f:facet>
+               <f:facet name="input">
+               	<p:selectOneMenu value="#{telefone.codigoInternacionalTelefonico}"
+		               			converter="#{codigoInternacionalTelefonicoConverter}"
+							  	required="true">
+				<f:selectItem 	itemValue="#{telefone.codigoInternacionalTelefonico}" 
+								itemLabel="#{telefone.codigoInternacionalTelefonico.codigo} #{telefone.codigoInternacionalTelefonico.pais}" />
+				<f:selectItems 	value="#{codigoInternacionalTelefonicoBean.codigosInternacionaisTelefonicos}"
+								var="codigoInternacionalTelefonico" 
+								itemValue="#{codigoInternacionalTelefonico}" 
+								itemLabel="#{codigoInternacionalTelefonico.codigo} #{codigoInternacionalTelefonico.pais}" />
+				</p:selectOneMenu>
+               </f:facet>
+           </p:cellEditor>
+       </p:column>
+ 
+       <p:column headerText="DDD" style="width:80px;" styleClass="columnNormal" sortBy="#{telefone.ddd}">
            <p:cellEditor>
                <f:facet name="output"><h:outputText value="#{telefone.ddd}" /></f:facet>
-               <f:facet name="input"><p:inputText value="#{telefone.ddd}" style="width:100%" label="ddd"/></f:facet>
+               <f:facet name="input">
+               		<p:inputText value="#{telefone.ddd}" style="width:100%" label="ddd">
+               			 <f:validateRegex pattern="^[1-9]{2}$" />
+               		</p:inputText>
+               </f:facet>
            </p:cellEditor>
        </p:column>
        
-      <p:column headerText="Número" style="text-align: center" sortBy="#{telefone.numero}">
+      <p:column headerText="Número" styleClass="columnNormal" sortBy="#{telefone.numero}">
            <p:cellEditor>
                <f:facet name="output"><h:outputText value="#{telefone.numero}" /></f:facet>
-               <f:facet name="input"><p:inputText value="#{telefone.numero}" style="width:100%" label="Número"/></f:facet>
-           </p:cellEditor>
-       </p:column>
-       
-       
-       <p:column headerText="Cidade" style="text-align: center" sortBy="#{telefone.cidade}">
-           <p:cellEditor>
-               <f:facet name="output"><h:outputText value="#{telefone.cidade}" /></f:facet>
-               <f:facet name="input"><p:inputText value="#{telefone.cidade}" style="width:100%" label="Cidade"/></f:facet>
+               <f:facet name="input">
+		               <p:inputText value="#{telefone.numero}" style="width:100%" label="Número">
+		               		<f:validateRegex pattern="^[2-9][0-9]{7,8}$" />
+		               </p:inputText>
+               </f:facet>
            </p:cellEditor>
        </p:column>
  

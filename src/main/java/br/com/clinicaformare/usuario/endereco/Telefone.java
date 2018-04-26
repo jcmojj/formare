@@ -36,6 +36,8 @@ public class Telefone extends Modelo implements Serializable {
 	private TipoTelefone tipoTelefone;
 	@ManyToOne(optional = false)
 	private CodigoInternacionalTelefonico codigoInternacionalTelefonico;
+	@Column(nullable = false)
+	private boolean whatsapp;
 
 	// Parâmetros Derivados
 	@ManyToMany(mappedBy = "telefones")
@@ -102,7 +104,7 @@ public class Telefone extends Modelo implements Serializable {
 	// String, hashCode and Equals
 	@Override
 	public String toString() {
-		return "(" + id + ") " + codigoInternacionalTelefonico + " " + ddd + " " + numero + " - " + tipoTelefone;
+		return "(" + id + ") Telefone " + tipoTelefone + " " + codigoInternacionalTelefonico.getCodigo() + " " + ddd + " " + numero;
 	}
 
 	@Override

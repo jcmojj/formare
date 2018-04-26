@@ -11,71 +11,82 @@
 <ui:define name="dynContent">
 	<h:form id="formNovoTipoTelefoneEntity">
 	
-
 		<h:outputLink value="entity.xhtml">
-		<h2><h:outputText value="#{tipoTelefoneBean.tipoEntidade.tipo}" /></h2>
+		<h2><h:outputText value="#{tipoTelefoneBean.completeName}" /></h2>
 		</h:outputLink>
 		<br/>
 		<p:fieldset value="Incluir" rendered="#{tipoTelefoneBean.incluir}">
 			<br/>
 			<h:panelGrid columns="3">
-				<p:outputLabel for="tipoTelefone" value="Tipo:" />
-				<p:inputText id="tipoTelefone" value="#{tipoTelefoneBean.tipoTelefoneNovo.tipo}"
+				<p:outputLabel for="tipoTipoTelefone" value="Tipo:" />
+				<p:inputText 
+					id="tipoTipoTelefone" 
+					value="#{tipoTelefoneBean.tipoTelefoneNovo.tipo}"
+					label="TipoTelefone:"
 					required="true"
-					requiredMessage="Campo obrigatório." label="TipoTelefone">
+					requiredMessage="Campo obrigatório."
+					validatorMessage="Valor inválido"
+					converterMessage="Valor não se aplica a esse campo">
 				</p:inputText>
-				<p:message for="tipoTelefone" />
+				<p:message for="tipoTipoTelefone" />
 				
-				
-				
-				<p:outputLabel for="whatsapp" value="Whatsapp:" />
-				 <p:selectBooleanButton id="whatsapp" value="#{tipoTelefoneBean.tipoTelefoneNovo.whatsapp}" onLabel="Sim" offLabel="Não" style="width:60px" 
-				 required="true" 	requiredMessage="Campo obrigatório." label="Whatsapp"/>
-				<p:message for="whatsapp" />
-				
-	
-				
+				<p:outputLabel for="whatsappTipoTelefone" value="Whatsapp:" />
+				 <p:selectBooleanButton 
+					id="whatsappTipoTelefone" 
+					value="#{tipoTelefoneBean.tipoTelefoneNovo.whatsapp}" 
+					style="width:60px" 
+					label="Whatsapp"
+					onLabel="Sim" offLabel="Não" 
+					required="true"
+					requiredMessage="Campo obrigatório."
+					validatorMessage="Valor inválido"
+					converterMessage="Valor não se aplica a esse campo"/>
+				<p:message for="whatsappTipoTelefone" />
 				
 			</h:panelGrid>
 			<br/>	
 			<p:commandButton value="Incluir"
-							actionListener="#{tipoTelefoneBean.adicionar}" update="@form formMessages :formListaTipoTelefoneEntity"
-							/>		
+							actionListener="#{tipoTelefoneBean.adicionar}" 
+							update="@form formMessages :formListaTipoTelefoneEntity"/>		
 		</p:fieldset>
 		<br/>
 		</h:form>
 		<h:form id="formListaTipoTelefoneEntity">
 		
-		<p:dataTable id="tipoTelefoneTable" var="tipoTelefone" value="#{tipoTelefoneBean.tipoTelefones}" 
-		editable="true" style="margin-bottom:60px" rendered="#{tipoTelefoneBean.listar}"
-		draggableColumns="true" >
+		<p:dataTable 
+			id="#{tipoTelefoneBean.tableId}" 
+			var="tipoTelefone" 
+			value="#{tipoTelefoneBean.tiposTelefone}" 
+			editable="true" style="margin-bottom:60px" 
+			rendered="#{tipoTelefoneBean.listar}"
+			draggableColumns="true" >
                          >
-	       <f:facet name="header">
-	           <h:outputText value="#{tipoTelefoneBean.tipoEntidade.tipo}" />
-	       </f:facet>
+       <f:facet name="header">
+           <h:outputText value="#{tipoTelefoneBean.completeName}" />
+       </f:facet>
  
        <p:ajax event="rowEdit" 		listener="#{tipoTelefoneBean.onRowEdit}" 	update="formMessages:msgs" />
        <p:ajax event="rowEditCancel" listener="#{tipoTelefoneBean.onRowCancel}" 	update="formMessages:msgs" />
  
-       <p:column headerText="Id" style="width:40px; text-align: center" sortBy="#{tipoTelefone.id}">
+       <p:column headerText="Id" styleClass="columnId" sortBy="#{tipoTelefone.id}">
            <p:cellEditor>
                <f:facet name="output"><h:outputText value="#{tipoTelefone.id}" /></f:facet>
                <f:facet name="input"><h:outputText value="#{tipoTelefone.id}" /></f:facet>
            </p:cellEditor>
        </p:column>
  
-       <p:column headerText="Nome" style="text-align: center" sortBy="#{tipoTelefone.tipo}">
+       <p:column headerText="Nome" styleClass="columnNormal" sortBy="#{tipoTelefone.tipo}">
            <p:cellEditor>
                <f:facet name="output"><h:outputText value="#{tipoTelefone.tipo}" /></f:facet>
                <f:facet name="input"><p:inputText value="#{tipoTelefone.tipo}" style="width:100%" label="Nome"/></f:facet>
            </p:cellEditor>
        </p:column>
        
-        <p:column headerText="Whatsapp" style="text-align: center; width:150px;" sortBy="#{tipoTelefone.whatsapp}">
+        <p:column headerText="Whatsapp" style=" width:150px;" styleClass="columnNormal" sortBy="#{tipoTelefone.whatsapp}">
            <p:cellEditor>
                <f:facet name="output">
-               		<p:outputPanel layout="inline"  styleClass="fa fa-check-square fa-boolean-table-true" 	rendered="#{tipoTelefone.whatsapp}" />
-					<p:outputPanel layout="inline" style="display:block; margin-left: auto; margin-right: auto;" styleClass="ui-icon ui-icon-circle-close red" rendered="#{!tipoTelefone.whatsapp}" />
+               		<p:outputPanel layout="inline"  styleClass="fa fa-check-square fa-boolean-table-true"  rendered="#{tipoTelefone.whatsapp}" />
+					<p:outputPanel layout="inline" styleClass="fa fa-times-circle fa-boolean-table-false"  rendered="#{!tipoTelefone.whatsapp}" />
                </f:facet>
                <f:facet name="input">
                		<p:selectBooleanButton value="#{tipoTelefone.whatsapp}" onLabel="Sim" offLabel="Não" style="width:100%" label="Whatsapp"/>

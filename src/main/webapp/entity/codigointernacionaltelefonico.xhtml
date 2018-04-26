@@ -11,32 +11,47 @@
 <ui:define name="dynContent">
 	<h:form id="formNovoCodigoInternacionalTelefonicoEntity">
 	
-
 		<h:outputLink value="entity.xhtml">
-		<h2><h:outputText value="#{codigoInternacionalTelefonicoBean.tipoEntidade.tipo}" /></h2>
+		<h2><h:outputText value="#{codigoInternacionalTelefonicoBean.completeName}" /></h2>
 		</h:outputLink>
 		<br/>
 		<p:fieldset value="Incluir" rendered="#{codigoInternacionalTelefonicoBean.incluir}">
 			<br/>
 			<h:panelGrid columns="3">
 				<p:outputLabel for="codigoCodigoInternacionalTelefonico" value="Código:" />
-				<p:inputText id="codigoCodigoInternacionalTelefonico" value="#{codigoInternacionalTelefonicoBean.codigoInternacionalTelefonicoNovo.codigo}"
+				<p:inputText
+					id="codigoCodigoInternacionalTelefonico" 
+					value="#{codigoInternacionalTelefonicoBean.codigoInternacionalTelefonicoNovo.codigo}"
+					label = "Código:"
 					required="true"
-					requiredMessage="Campo obrigatório." label="Código">
+					requiredMessage="Campo obrigatório."
+					validatorMessage="Valor inválido"
+					converterMessage="Valor não se aplica a esse campo">
+						<f:validateRegex pattern="^?([ +]?)(?:[1-9][0-9][0-9]|[1-9][0-9]|[1-9])$" />
 				</p:inputText>
 				<p:message for="codigoCodigoInternacionalTelefonico" />
 				
 				<p:outputLabel for="paisCodigoInternacionalTelefonico" value="País:" />
-				<p:inputText id="paisCodigoInternacionalTelefonico" value="#{codigoInternacionalTelefonicoBean.codigoInternacionalTelefonicoNovo.pais}"
+				<p:inputText 
+					id="paisCodigoInternacionalTelefonico" 
+					value="#{codigoInternacionalTelefonicoBean.codigoInternacionalTelefonicoNovo.pais}"
 					required="true"
-					requiredMessage="Campo obrigatório." label="País do Código Internacional Telefonico">
+					label = "País"
+					requiredMessage="Campo obrigatório."
+					validatorMessage="Valor inválido"
+					converterMessage="Valor não se aplica a esse campo">
 				</p:inputText>
 				<p:message for="paisCodigoInternacionalTelefonico" />
 				
 				<p:outputLabel for="continenteCodigoInternacionalTelefonico" value="Continente:" />
-				<p:inputText id="continenteCodigoInternacionalTelefonico" value="#{codigoInternacionalTelefonicoBean.codigoInternacionalTelefonicoNovo.continente}"
+				<p:inputText 
+					id="continenteCodigoInternacionalTelefonico" 
+					value="#{codigoInternacionalTelefonicoBean.codigoInternacionalTelefonicoNovo.continente}"
 					required="true"
-					requiredMessage="Campo obrigatório." label="Continente do País do Código Internacional Telefonico">
+					label = "Continente:"
+					requiredMessage="Campo obrigatório."
+					validatorMessage="Valor inválido"
+					converterMessage="Valor não se aplica a esse campo">
 				</p:inputText>
 				<p:message for="continenteCodigoInternacionalTelefonico" />
 				
@@ -44,39 +59,48 @@
 			</h:panelGrid>
 			<br/>	
 			<p:commandButton value="Incluir"
-							actionListener="#{codigoInternacionalTelefonicoBean.adicionar}" update="@form formMessages:msgs :formListaCodigoInternacionalTelefonicoEntity"
-							/>		
+							actionListener="#{codigoInternacionalTelefonicoBean.adicionar}" 
+							update="@form formMessages:msgs :formListaCodigoInternacionalTelefonicoEntity"/>		
 		</p:fieldset>
 		<br/>
 		</h:form>
 		<h:form id="formListaCodigoInternacionalTelefonicoEntity">
 		
-		<p:dataTable id="codigoInternacionalTelefonicoTable" var="codigoInternacionalTelefonico" value="#{codigoInternacionalTelefonicoBean.codigoInternacionalTelefonicos}" 
-		editable="true" style="margin-bottom:20px" rendered="#{codigoInternacionalTelefonicoBean.listar}"
-		draggableColumns="true" >
-                         >
-	       <f:facet name="header">
-	         <h:outputText value="#{codigoInternacionalTelefonicoBean.tipoEntidade.tipo}" />
-	       </f:facet>
+		<p:dataTable 
+			id="#{codigoInternacionalTelefonicoBean.tableId}" 
+			var="codigoInternacionalTelefonico" 
+			value="#{codigoInternacionalTelefonicoBean.codigosInternacionaisTelefonicos}" 
+			editable="true" style="margin-bottom:20px" 
+			rendered="#{codigoInternacionalTelefonicoBean.listar}"
+			draggableColumns="true" 
+			paginator="true" rows="20" rowsPerPageTemplate="5,10,15"
+			paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
+                         
+       <f:facet name="header">
+         <h:outputText value="#{codigoInternacionalTelefonicoBean.completeName}" />
+       </f:facet>
  
        <p:ajax event="rowEdit" 		listener="#{codigoInternacionalTelefonicoBean.onRowEdit}" 	update="formMessages:msgs" />
        <p:ajax event="rowEditCancel" listener="#{codigoInternacionalTelefonicoBean.onRowCancel}" 	update="formMessages:msgs" />
  
-       <p:column headerText="Id" style="width:60px; text-align: center" sortBy="#{codigoInternacionalTelefonico.id}">
+       <p:column headerText="Id" styleClass="columnId" sortBy="#{codigoInternacionalTelefonico.id}">
            <p:cellEditor>
                <f:facet name="output"><h:outputText value="#{codigoInternacionalTelefonico.id}" /></f:facet>
                <f:facet name="input"><h:outputText value="#{codigoInternacionalTelefonico.id}" /></f:facet>
            </p:cellEditor>
        </p:column>
  
-       <p:column headerText="Código" style="text-align: center" sortBy="#{codigoInternacionalTelefonico.codigo}">
+       <p:column headerText="Código" styleClass="columnNormal" sortBy="#{codigoInternacionalTelefonico.codigo}">
            <p:cellEditor>
                <f:facet name="output"><h:outputText value="#{codigoInternacionalTelefonico.codigo}" /></f:facet>
-               <f:facet name="input"><p:inputText value="#{codigoInternacionalTelefonico.codigo}" style="width:100%" label="Código"/></f:facet>
+	               <f:facet name="input"><p:inputText value="#{codigoInternacionalTelefonico.codigo}" style="width:100%" label="Código">
+	               		<f:validateRegex pattern="^?([ +]?)(?:[1-9][0-9][0-9]|[1-9][0-9]|[1-9])$" />
+	               </p:inputText>
+               </f:facet>
            </p:cellEditor>
        </p:column>
        
-       <p:column headerText="País" style="text-align: center" sortBy="#{codigoInternacionalTelefonico.pais}">
+       <p:column headerText="País" styleClass="columnNormal" sortBy="#{codigoInternacionalTelefonico.pais}">
            <p:cellEditor>
                <f:facet name="output"><h:outputText value="#{codigoInternacionalTelefonico.pais}" /></f:facet>
                <f:facet name="input"><p:inputText value="#{codigoInternacionalTelefonico.pais}" style="width:100%" label="Código"/></f:facet>

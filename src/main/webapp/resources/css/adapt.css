@@ -55,15 +55,26 @@ loginFieldset{
 	float:left
 }
 
+/* Cores quando da erro de validação, conversão, etc */
 .ui-state-error{
 	color:#333;
 }
-
+.ui-state-error, .ui-widget-content .ui-state-error, .ui-widget-header .ui-state-error{
+	color:#333;
+}
+/* fim */
 .fa-boolean-table-true{
 	display:block; 
 	margin-left: auto; 
 	margin-right: auto;
-	color: #000; !important
+	color: #2E8B57; !important
+}
+
+.fa-boolean-table-false{
+	display:block; 
+	margin-left: auto; 
+	margin-right: auto;
+	color: #FF0000; !important
 }
 
 .noHeader.ui-datatable table thead tr {
@@ -77,4 +88,21 @@ loginFieldset{
 }
 .noHeader.ui-datatable table tbody tr td {
 	padding: 4px 10px !important;
+}
+
+.tabelaEntidades{
+	border:0px; 
+	background-color: transparent !important; 
+	border-radius: 15px;
+}
+.ui-selectonemenu .ui-selectonemenu-trigger{
+	width: auto !important; 
+}
+/* style="width:60px; text-align: center" */
+.columnId{
+	width:60px; 
+	text-align: center;
+}
+.columnNormal{
+	text-align: center;
 }
