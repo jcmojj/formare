@@ -19,9 +19,14 @@ public class TipoEnderecoConverter implements Converter{
 		if(string == null || string.trim().isEmpty()) {
 			return null;
 		}
-		Long id =Long.valueOf(string);
-		TipoEndereco tipoEndereco = tipoEnderecoDao.buscaPorId(id);
-		return tipoEndereco;
+		try {
+			Long id =Long.valueOf(string);
+			TipoEndereco tipoEndereco = tipoEnderecoDao.buscaPorId(id);
+			return tipoEndereco;
+		} catch (NumberFormatException e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 
 	@Override

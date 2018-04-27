@@ -124,7 +124,10 @@
         </p:column> -->
        <p:column style="width:32px; text-align: center" rendered="#{codigoInternacionalTelefonicoBean.deletar}">
            <p:commandLink update="@form formMessages:msgs" title="Deletar" action="#{codigoInternacionalTelefonicoBean.apagar}">
-           		<i class="fa fa-trash"></i>
+           		<span class="change-icon">
+					  <i class="change fa fa-trash dataTableTrash"></i>
+					  <i class="change fa fa-ban dataTableTrash"></i>
+				</span>
                 <f:setPropertyActionListener value="#{codigoInternacionalTelefonico}" target="#{codigoInternacionalTelefonicoBean.modeloDelete}" />
             </p:commandLink>
        </p:column>

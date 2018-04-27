@@ -55,14 +55,7 @@ loginFieldset{
 	float:left
 }
 
-/* Cores quando da erro de validação, conversão, etc */
-.ui-state-error{
-	color:#333;
-}
-.ui-state-error, .ui-widget-content .ui-state-error, .ui-widget-header .ui-state-error{
-	color:#333;
-}
-/* fim */
+
 .fa-boolean-table-true{
 	display:block; 
 	margin-left: auto; 
@@ -106,3 +99,52 @@ loginFieldset{
 .columnNormal{
 	text-align: center;
 }
+/* Altera RowEditor Icon do Primefaces */
+.ui-datatable table tbody tr td .ui-row-editor .ui-icon-pencil 
+{
+	color: #191970;
+   background: none !important;
+   text-indent: initial;
+   /* display: inline-block; */
+   font: normal normal normal 14px/1 FontAwesome;
+   font-size: inherit;
+   text-rendering: auto;
+   -webkit-font-smoothing: antialiased;
+   -moz-osx-font-smoothing: grayscale;
+   transform: translate(0, 0);
+}
+.ui-datatable table tbody tr td .ui-row-editor .ui-icon-pencil:before {
+   content: "\f044";
+}
+.ui-datatable table tbody tr td .ui-row-editor .ui-icon-pencil:hover {
+   font-weight: bold;
+}
+/* FIM - Altera RowEditor Icon do Primefaces */
+
+
+.dataTableTrash:hover{
+	font-weight: bold;
+}
+.dataTableTrash{
+	 color: #191970; 
+}
+.change{
+	
+}
+.change-icon > .change + .change,
+.change-icon:hover > .change {
+  display: none;
+}
+.change-icon:hover > .change + .change {
+  display: inherit;
+}
+
+
+/* Cores quando da erro de validação, conversão, etc */
+.ui-state-error{
+	color:#333;
+}
+.ui-state-error, .ui-widget-content .ui-state-error, .ui-widget-header .ui-state-error{
+	color:#333;
+}
+/* FIM - Cores quando da erro de validação, conversão, etc */

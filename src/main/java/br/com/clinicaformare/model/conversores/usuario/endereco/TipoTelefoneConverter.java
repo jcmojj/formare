@@ -16,16 +16,12 @@ public class TipoTelefoneConverter implements Converter{
 	TipoTelefoneDao tipoTelefoneDao;
 	@Override
 	public Object getAsObject(FacesContext context, UIComponent component, String string) {
-		System.out.println("TipoTelefoneConverter" + " string: " + string);
 		if(string == null || string.trim().isEmpty()) {
-			System.out.println("Null");
 			return null;
 		}
 		try {
 			Long id = Long.parseLong(string,10);
-			System.out.println("Long Id: " + id);
 			TipoTelefone tipoTelefone = tipoTelefoneDao.buscaPorId(id);
-			System.out.println("tipoTelefone"+tipoTelefone);
 			return tipoTelefone;
 		} catch (NumberFormatException e) {
 			// TODO Auto-generated catch block

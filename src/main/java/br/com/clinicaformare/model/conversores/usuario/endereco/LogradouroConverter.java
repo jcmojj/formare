@@ -20,9 +20,14 @@ public class LogradouroConverter implements Converter{
 		if(string == null || string.trim().isEmpty()) {
 			return null;
 		}
-		Long id =Long.valueOf(string);
-		Logradouro logradouro = logradouroDao.buscaPorId(id);
-		return logradouro;
+		try {
+			Long id =Long.valueOf(string);
+			Logradouro logradouro = logradouroDao.buscaPorId(id);
+			return logradouro;
+		} catch (NumberFormatException e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 
 	@Override

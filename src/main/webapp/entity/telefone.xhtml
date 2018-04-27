@@ -76,6 +76,20 @@
 				</p:inputText>
 				<p:message for="numeroTelefone" />
 				
+				
+				<p:outputLabel for="whatsappTelefone" value="Whatsapp:" />
+				 <p:selectBooleanButton 
+					id="whatsappTelefone" 
+					value="#{telefoneBean.telefoneNovo.whatsapp}" 
+					style="width:60px" 
+					label="Whatsapp"
+					onLabel="Sim" offLabel="Não" 
+					required="true"
+					requiredMessage="Campo obrigatório."
+					validatorMessage="Valor inválido"
+					converterMessage="Valor não se aplica a esse campo"/>
+				<p:message for="whatsappTelefone" />
+				
 			</h:panelGrid>
 			<br/>	
 			<p:commandButton value="Incluir"
@@ -165,6 +179,18 @@
                </f:facet>
            </p:cellEditor>
        </p:column>
+       
+       <p:column headerText="Whatsapp" style=" width:150px;" styleClass="columnNormal" sortBy="#{telefone.whatsapp}">
+           <p:cellEditor>
+               <f:facet name="output">
+               		<p:outputPanel layout="inline"  styleClass="fa fa-check-square fa-boolean-table-true"  rendered="#{telefone.whatsapp}" />
+					<p:outputPanel layout="inline" styleClass="fa fa-times-circle fa-boolean-table-false"  rendered="#{!telefone.whatsapp}" />
+               </f:facet>
+               <f:facet name="input">
+               		<p:selectBooleanButton value="#{telefone.whatsapp}" onLabel="Sim" offLabel="Não" style="width:100%" label="Whatsapp"/>
+               </f:facet>
+           </p:cellEditor>
+       </p:column>
  
        <p:column style="width:32px" rendered="#{telefoneBean.alterar}">
            <p:rowEditor />
@@ -175,8 +201,11 @@
             </p:commandButton>
         </p:column> -->
        <p:column style="width:32px; text-align: center" rendered="#{telefoneBean.deletar}">
-           <p:commandLink update="@form formMessages:msgs" title="Deletar" action="#{telefoneBean.apagar}">
-                <i class="fa fa-trash"></i>
+           <p:commandLink  update="@form formMessages:msgs" title="Deletar" action="#{telefoneBean.apagar}">
+           		<span class="change-icon">
+					  <i class="change fa fa-trash dataTableTrash"></i>
+					  <i class="change fa fa-ban dataTableTrash"></i>
+				</span>
                 <f:setPropertyActionListener value="#{telefone}" target="#{telefoneBean.modeloDelete}" />
             </p:commandLink>
        </p:column>

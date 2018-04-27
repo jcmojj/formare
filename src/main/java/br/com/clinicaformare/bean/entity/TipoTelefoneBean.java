@@ -61,16 +61,16 @@ public class TipoTelefoneBean extends EntityBean<TipoTelefone> implements Serial
 
 	public TipoTelefone gerar(String linha) {
 		Integer i0 = 0;
-		Integer i1 = linha.indexOf(";", i0);
+//		Integer i1 = linha.indexOf(";", i0);
 		Integer lenght = linha.length();
-		boolean hasWhatsapp;
-		if(linha.substring(i0, i1).equals("0")) {
-			hasWhatsapp = false; System.out.println("F");
-		}else {
-			hasWhatsapp = true; System.out.println("T");
-		}
-		String tipo = linha.substring(i1 + 1, lenght);
-		TipoTelefone tipoTelefone = new TipoTelefone(tipo,hasWhatsapp);
+//		boolean hasWhatsapp;
+//		if(linha.substring(i0, i1).equals("0")) {
+//			hasWhatsapp = false; System.out.println("F");
+//		}else {
+//			hasWhatsapp = true; System.out.println("T");
+//		}
+		String tipo = linha.substring(i0, lenght);
+		TipoTelefone tipoTelefone = new TipoTelefone(tipo);//,hasWhatsapp);
 		return tipoTelefone;
 	}
 	public void geraNovaEntidade(){

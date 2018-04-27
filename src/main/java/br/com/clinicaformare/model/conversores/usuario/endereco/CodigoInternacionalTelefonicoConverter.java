@@ -1,6 +1,5 @@
 package br.com.clinicaformare.model.conversores.usuario.endereco;
 
-import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
@@ -17,18 +16,12 @@ public class CodigoInternacionalTelefonicoConverter implements Converter{
 	CodigoInternacionalTelefonicoDao codigoInternacionalTelefonicoDao;
 	@Override
 	public Object getAsObject(FacesContext context, UIComponent component, String string) {
-		System.out.println("CodigoInternacionalTelefonicoConverter" + " string: " + string);
 		if(string == null || string.trim().isEmpty()) {
-			System.out.println("Null1");
 			return null;
 		}
-		
-		Long id;
 		try {
-			id = Long.parseLong(string,10);
-			System.out.println("Long Id: " + id);
+			Long id = Long.parseLong(string,10);
 			CodigoInternacionalTelefonico codigoInternacionalTelefonico = codigoInternacionalTelefonicoDao.buscaPorId(id);
-			System.out.println("codigoInternacionalTelefonico"+codigoInternacionalTelefonico);
 			return codigoInternacionalTelefonico;
 		} catch (NumberFormatException e) {
 //			context.addMessage(

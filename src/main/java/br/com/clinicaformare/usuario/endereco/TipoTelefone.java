@@ -23,7 +23,7 @@ import br.com.clinicaformare.model.usuario.Usuario;
 import br.com.clinicaformare.util.FixOnText;
 
 @Entity
-@Table(uniqueConstraints=  @UniqueConstraint(columnNames = {"tipo", "whatsapp"}))
+//@Table(uniqueConstraints=  @UniqueConstraint(columnNames = {"tipo", "whatsapp"}))
 public class TipoTelefone extends Modelo implements Serializable {
 	private static final long serialVersionUID = 1L;
 	@Id
@@ -31,20 +31,20 @@ public class TipoTelefone extends Modelo implements Serializable {
 	private Long id;
 	
 	// Parâmetros Próprios
-	@Column(nullable = false)
+	@Column(nullable = false, unique = true)
 	private String tipo;
-	@Column(nullable = false)
-	private boolean whatsapp;
+//	@Column(nullable = false)
+//	private boolean whatsapp;
 	
 	// Parâmetros Derivados
 	@OneToMany(mappedBy = "tipoTelefone")
 	private List<Telefone> telefones;
 	
 	// Constructor
-	public TipoTelefone(String tipo, boolean hasWhatsapp) {
+	public TipoTelefone(String tipo) {//, boolean hasWhatsapp) {
 		super();
 		this.tipo = FixOnText.withAllWordsFirstCharCapitalized(tipo);
-		this.whatsapp = hasWhatsapp;
+//		this.whatsapp = hasWhatsapp;
 	}
 
 	public TipoTelefone() {
@@ -65,12 +65,12 @@ public class TipoTelefone extends Modelo implements Serializable {
 		this.tipo = FixOnText.withAllWordsFirstCharCapitalized(tipo);
 	}
 
-	public boolean isWhatsapp() {
-		return whatsapp;
-	}
-	public void setWhatsapp(boolean whatsapp) {
-		this.whatsapp = whatsapp;
-	}
+//	public boolean isWhatsapp() {
+//		return whatsapp;
+//	}
+//	public void setWhatsapp(boolean whatsapp) {
+//		this.whatsapp = whatsapp;
+//	}
 
 	public List<Telefone> getTelefones() {
 		return telefones;
@@ -79,7 +79,7 @@ public class TipoTelefone extends Modelo implements Serializable {
 	// String, hashCode and Equals
 	@Override
 	public String toString() {
-		return "[" + id + "] " + tipo + ((whatsapp == true) ? " com whatsapp":" sem whatsapp");
+		return "[" + id + "] " + tipo;
 	}
 
 	@Override

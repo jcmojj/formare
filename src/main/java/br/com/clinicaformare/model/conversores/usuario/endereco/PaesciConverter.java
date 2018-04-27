@@ -19,9 +19,15 @@ public class PaesciConverter implements Converter{
 		if(string == null || string.trim().isEmpty()) {
 			return null;
 		}
-		Long id =Long.valueOf(string);
-		Paesci paesci = paesciDao.buscaPorId(id);
-		return paesci;
+		try {
+			Long id =Long.valueOf(string);
+			Paesci paesci = paesciDao.buscaPorId(id);
+			return paesci;
+		} catch (NumberFormatException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
 	}
 
 	@Override

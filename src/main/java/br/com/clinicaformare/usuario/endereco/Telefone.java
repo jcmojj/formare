@@ -48,12 +48,13 @@ public class Telefone extends Modelo implements Serializable {
 		super();
 	}
 
-	public Telefone(String ddd, CodigoInternacionalTelefonico codigoInternacionalTelefonico, String numero, TipoTelefone tipoTelefone) {
+	public Telefone(String ddd, CodigoInternacionalTelefonico codigoInternacionalTelefonico, String numero, TipoTelefone tipoTelefone, boolean hasWhatsapp) {
 		super();
 		this.ddd = FixOnText.withOnlyNumbersOnString(ddd);
 		this.numero = FixOnText.withOnlyNumbersOnString(numero);
 		this.tipoTelefone = tipoTelefone;
 		this.codigoInternacionalTelefonico = codigoInternacionalTelefonico;
+		this.whatsapp = hasWhatsapp;
 	}
 
 	// Getters and Setters
@@ -92,7 +93,14 @@ public class Telefone extends Modelo implements Serializable {
 	public void setCodigoInternacionalTelefonico(CodigoInternacionalTelefonico codigoInternacionalTelefonico) {
 		this.codigoInternacionalTelefonico = codigoInternacionalTelefonico;
 	}
-
+	
+	public boolean isWhatsapp() {
+		return whatsapp;
+	}
+	public void setWhatsapp(boolean whatsapp) {
+		this.whatsapp = whatsapp;
+	}
+	
 	public List<Usuario> getUsuarios() {
 		return usuarios;
 	}
@@ -104,7 +112,7 @@ public class Telefone extends Modelo implements Serializable {
 	// String, hashCode and Equals
 	@Override
 	public String toString() {
-		return "(" + id + ") Telefone " + tipoTelefone + " " + codigoInternacionalTelefonico.getCodigo() + " " + ddd + " " + numero;
+		return "(" + id + ") Telefone " + tipoTelefone + " " + codigoInternacionalTelefonico.getCodigo() + " " + ddd + " " + numero + ((whatsapp == true) ? " com whatsapp":" sem whatsapp");
 	}
 
 	@Override

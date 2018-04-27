@@ -59,12 +59,19 @@ public class TelefoneBean extends EntityBean<Telefone> implements Serializable{
 		Integer i1 = linha.indexOf(";", i0);
 		Integer i2 = linha.indexOf(";", i1+1);
 		Integer i3 = linha.indexOf(";", i2+1);
+		Integer i4 = linha.indexOf(";", i3+1);
 		Integer lenght = linha.length();
 		TipoTelefone TipoTelefone = tipoTelefoneDao.buscaPorId(Long.parseLong(linha.substring(i0, i1)));
 		CodigoInternacionalTelefonico codigoInternacionalTelefonico = codigoInternacionalTelefonicoDao.buscaPorId(Long.parseLong(linha.substring(i1+1, i2)));
 		String ddd = linha.substring(i2 + 1, i3);
-		String numero = linha.substring(i3 + 1, lenght);
-		Telefone telefone = new Telefone(ddd, codigoInternacionalTelefonico, numero, TipoTelefone);
+		String numero = linha.substring(i3 + 1, i4);
+		boolean hasWhatsapp;
+		if(linha.substring(i4+1, lenght).equals("0")) {
+			hasWhatsapp = false; System.out.println("F");
+		}else {
+			hasWhatsapp = true; System.out.println("T");
+		}
+		Telefone telefone = new Telefone(ddd, codigoInternacionalTelefonico, numero, TipoTelefone, hasWhatsapp);
 		return telefone;
 	}
 	public void geraNovaEntidade(){

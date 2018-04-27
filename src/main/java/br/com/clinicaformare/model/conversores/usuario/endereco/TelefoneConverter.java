@@ -16,9 +16,7 @@ public class TelefoneConverter implements Converter{
 	TelefoneDao telefoneDao;
 	@Override
 	public Object getAsObject(FacesContext context, UIComponent component, String string) {
-		System.out.println("TelefoneConverter" + " string: " + string);
 		if(string == null || string.trim().isEmpty()) {
-			System.out.println("Null1");
 			return null;
 		}
 		
